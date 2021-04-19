@@ -1,0 +1,225 @@
+<div id="app">
+  <span id="latlngDiv" style="position: fixed; bottom: 40px; left: 20px; z-index: 10000; color: white;">{{latlngstr}}</span>
+  <table class="maintable" border="1">
+    <tr>
+      <td style="width: 60%; text-align: center; vertical-align: top;">
+        <div id="mapid"></div>
+      </td>
+      <td style="border: 2px solid grey; text-align: center; vertical-align: top;">
+        <div class="row">
+          <div class="col s12">
+            <ul class="tabs">
+              <li class="tab col s5"><a class="active" href="#viewer">Flights Viewer</a></li>
+              <li class="tab col s7"><a href="#reports">Downloads</a></li>
+            </ul>
+          </div>
+          <!-- Flights Viewer Tab -->
+          <div id="viewer" class="col s12">
+            <br/>
+            <div class="row">
+              <div class="input-field col s4">
+                <input type="text" class="datepicker" id="fromdate">
+                <label for="fromdate">From Date</label>
+              </div>
+              <div class="input-field col s4">
+                <input type="text" class="datepicker" id="todate">
+                <label for="todate">To Date</label>
+              </div>
+              <div class="input-field col s4">
+                <a class="waves-effect waves-red btn-flat" v-on:click="getFlights">FetchData</a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s2">
+                <a class="waves-effect waves-light btn-flat modal-trigger" style="border: 2px solid orange; border-radius: 25px; font-size:18px;" href="#modal1">!</a>
+              </div>
+
+              <div class="input-field col s5">
+                <span>{{statusText}}</span>
+              </div>
+              
+              <div class="input-field col s5">
+                <select id="districts" v-model="districtselected" v-on:change="handleAbadiChange">
+                  <option value="" disabled selected>Select District</option>
+                  <option v-for="district in districtsData" v-bind:value="district">{{district}}</option>
+                </select>
+                <label>Load Abadi Limits</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col s6 viewerdivs">
+                <button v-on:click="switchNLoadGJ('-', 'date')">❮</button>
+                <span>{{currentdate}}</span>
+                <button v-on:click="switchNLoadGJ('+', 'date')">❯</button>
+              </div>
+              <div class="col s6 viewerdivs">
+                <button v-on:click="switchNLoadGJ('-', 'drone')">❮</button>
+                <span>{{currentdrone}}</span>
+                <button v-on:click="switchNLoadGJ('+', 'drone')">❯</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <table border="1">
+                <tr>
+                  <td>Total Flights for the day {{currentdate}}</td><td>{{totalflightsOnDate}}</td>
+                </tr>
+                <tr>
+                  <td>{{currentdrone}} ({{currentdate}}) - Flights Registered</td><td>{{totalflightsDateNDrone}}</td>
+                </tr>
+                <tr>
+                  <td>{{currentdrone}} ({{currentdate}}) - Flights Uploaded</td><td>{{flightlinesuploadedOnDateDrone}}</td>
+                </tr>
+              </table>
+
+            </div>
+
+          </div>
+          <!-- Reports Generator Tab -->
+          <div id="reports" class="col s12">
+            <br/>
+            <div class="row">
+              <span>{{downloadingStatus}}</span>
+            </div>
+
+            <div class="row">
+              <div class="col s6" v-if="isAllDPRsLoaded">
+                <a class="waves-effect waves-red btn-flat red white-text" v-on:click="loadAllDPRs">Load All DPRs</a>
+              </div>
+              <div class="col s6" v-else>
+                <a class="waves-effect waves-red btn-flat green white-text" v-on:click="loadAllDPRs">Reload All DPRs</a>
+              </div>
+
+              <div class="col s6" v-if="isAllFlightsLoaded">
+                <a class="waves-effect waves-red btn-flat red white-text" v-on:click="loadAllFlightlines">
+                  Load All Flights
+                </a>
+              </div>
+              <div class="col s6" v-else>
+                <a class="waves-effect waves-red btn-flat green white-text" v-on:click="loadAllFlightlines">
+                  Reload All Flights
+                </a>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col s6" v-if="isShapesLoaded">
+                <a class="waves-effect waves-red btn-flat red white-text" v-on:click="loadAllPlannedAreas">
+                  Load All Shapes
+                </a>
+              </div>
+              <div class="col s6" v-else>
+                <a class="waves-effect waves-red btn-flat green white-text" v-on:click="loadAllPlannedAreas">
+                  Reload All Shapes
+                </a>
+              </div>
+
+              <div class="col s6" v-if="isAbadisLoaded">
+                <a class="waves-effect waves-red btn-flat red white-text" v-on:click="loadAllAbadiLimits">
+                  Load All Abadis
+                </a>
+              </div>
+              <div class="col s6" v-else>
+                <a class="waves-effect waves-red btn-flat green white-text" v-on:click="loadAllAbadiLimits">
+                  Reload All Abadis
+                </a>
+              </div>
+            </div>
+
+            <br/>
+
+            <div class="row">
+              <a class="waves-effect waves-light btn" v-if="isAllFlightsLoaded" disabled>
+                Download Flightlines
+              </a>
+              <a class="waves-effect waves-light btn" v-on:click="downloadFlightLines" v-else>
+                Download Flightlines
+              </a>
+            </div>
+            <div class="row">
+              <a class="waves-effect waves-light btn" v-if="isShapesLoaded" disabled>
+                Download Shapefiles
+              </a>
+              <a class="waves-effect waves-light btn" v-on:click="downloadShapefiles" v-else>
+                Download Shapefiles
+              </a>
+            </div>
+            <div class="row">
+              <a class="waves-effect waves-light btn" v-if="isAbadisLoaded" disabled>
+                Download Abadi Limits
+              </a>
+              <a class="waves-effect waves-light btn" v-on:click="downloadAbadiLimits" v-else>
+                Download Abadi Limits
+              </a>
+            </div>
+
+            <div class="row">
+              <table class="flightsshapesstatus">
+                <tr><td colspan="2">Total Flights Registered: {{allDPRs.length}}</td></tr>
+                <tr>
+                  <td>
+                    Missing Flights: {{allDPRs.length - allFlightlines.length}}
+                  </td>
+                  <td>
+                    Missing Flights: {{allDPRs.length - allPlannedAreas.length}}
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td v-if="isAllFlightsLoaded">
+                    <a class="waves-effect waves-light btn-flat red white-text" disabled>
+                      Missing Flightlines
+                    </a>
+                  </td>
+                  <td v-else>
+                    <a class="waves-effect waves-l3ght btn-flat orange white-text" v-on:click="missingflights">
+                      Missing Flightlines
+                    </a>
+                  </td>
+
+                  <td v-if="isShapesLoaded">
+                    <a class="waves-effect waves-light btn-flat red white-text" disabled>
+                      Missing Shapefiles
+                    </a>
+                  </td>
+                  <td v-else>
+                    <a class="waves-effect waves-l3ght btn-flat orange white-text" v-on:click="missingshapes">
+                      Missing Shapefiles
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <div class="modals">
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h6 style="padding:0;"><b>Details of Period Between {{fromdate}} & {{todate}}</b></h6>
+        <span>Total Flights: {{viewerdata.flightIDsDateWise.length}}</span>
+        &emsp;&emsp;
+        <span>Flightlines Uploaded: {{viewerdata.availFlightGJsWithIDs.length}}</span>
+        &emsp;&emsp;
+        <span>Planned Areas Uploaded: {{viewerdata.availPlannedGJsWithIDs.length}}</span>
+        <table>
+          <tr><td colspan="4"><b>Dronewise Breakup</b></td></tr>
+          <tr>
+            <td><b>Drone Number</b></td><td><b>Flights Registered</b></td>
+            <td><b>Flightlines</b></td><td><b>Shapefiles</b></td>
+          </tr>
+          <template v-for="(value, name) in dronewisebreakupObj">
+            <tr>
+              <td>{{name}}</td><td>{{value.flights}}</td>
+              <td>{{value.flightlines}}</td><td>{{value.shapefiles}}</td>
+            </tr>
+          </template>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

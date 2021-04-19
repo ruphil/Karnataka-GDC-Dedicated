@@ -1,0 +1,137 @@
+<div id="app">
+  <span style="position: fixed; bottom: 40px; left: 20px; z-index: 10000; color: white;">{{latlngTxt}}</span>
+  <table>
+    <tr>
+      <td style="width: 60%; text-align: center; vertical-align: top;">
+        <div id="mapid"></div>
+      </td>
+      <td style="border: 2px solid grey; text-align: center; vertical-align: top;">
+        <div class="row">
+          <div class="col s12">
+            <ul class="tabs">
+              <li class="tab col s5"><a class="active" href="#flightstab">Flights Manager</a></li>
+              <li class="tab col s7"><a href="#abadilimitstab">Abadi Limits Manager</a></li>
+            </ul>
+          </div>
+          <div id="flightstab" class="col s12">
+            <div class="row">
+              <div class="col s12">
+                <br/>
+                <div class="chip" id="status">
+                  {{flightStatusTxt}}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s6">
+                <select id="drones">
+                  <option value="" disabled selected>Select Drone</option>
+                  <option v-for="droneNo in dronesData">{{droneNo}}</option>
+                </select>
+              </div>
+              <div class="col s6">
+                <a class="waves-effect waves-light btn" v-on:click="fetchFlightIDsNOthers">Fetch Details</a>
+              </div>
+            </div>
+            <div id="flightstablediv" style="overflow-y: auto; height: 65vh">
+              <table border="1" class="flightstable" style="border-collapse: collapse;">
+                <template v-for="flightIDObj in dronesGJStatusData.flightIDsInRecord">
+                  <tr><td colspan="2"><b>{{flightIDObj.id}} ({{flightIDObj.date}})</b></td></tr>
+                  <tr v-if="checkIfIdsAvail(dronesGJStatusData.idsFlightlines, flightIDObj.id)" v-bind:id="'flight_' + flightIDObj.id">
+                    <td>
+                      <button category="flight" v-bind:flightid="flightIDObj.id" v-on:click="loadgeojsonfromserver">
+                        Load Flight Line
+                      </button>
+                    </td>
+                    <td>
+                      <button category="flight" v-bind:flightid="flightIDObj.id" v-on:click="zoomtolayer">
+                        Zoom It
+                      </button>
+                    </td>
+                  </tr>
+                  <tr v-else v-bind:id="'flight_' + flightIDObj.id">
+                    <td>
+                      <b style="color:red;">Flight Line (KML Only)</b><br/>
+                      <input type="file" v-bind:flightid="flightIDObj.id" v-on:change="flightlinechange"/>
+                    </td>
+                    <td><button v-bind:flightid="flightIDObj.id" v-on:click="uploadflightline">Upload KML</button></td>
+                  </tr>
+
+                  <tr v-if="checkIfIdsAvail(dronesGJStatusData.idsPlannedareas, flightIDObj.id)" v-bind:id="'planned_' + flightIDObj.id">
+                    <td>
+                      <button category="planned" v-bind:flightid="flightIDObj.id" v-on:click="loadgeojsonfromserver">
+                        Load Planned Area
+                      </button>
+                    </td>
+                    <td>
+                      <button category="planned" v-bind:flightid="flightIDObj.id" v-on:click="zoomtolayer">
+                        Zoom It
+                      </button>
+                    </td>
+                  </tr>
+                  <tr v-else v-bind:id="'planned_' + flightIDObj.id">
+                    <td>
+                      <b style="color:red;">Planned Area (Shapefile Zip)</b><br/>
+                      <input type="file" v-bind:flightid="flightIDObj.id" v-on:change="plannedareachange"/>
+                    </td>
+                    <td><button v-bind:flightid="flightIDObj.id" v-on:click="uploadplannedarea">Upload Shapefile</button></td>
+                  </tr>
+                </template>
+              </table>
+            </div>
+          </div>
+          <div id="abadilimitstab" class="col s12">
+            <br/>
+            <div class="row">
+              <div class="col s12">
+                <div class="chip">
+                  Today's Date: {{todaysDate}}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s6">
+                <select id="districts" v-model="districtselected" v-on:change="handleAbadiCheck">
+                  <option value="" disabled selected>Select District</option>
+                  <option v-for="district in districtsData" v-bind:value="district">{{district}}</option>
+                </select>
+              </div>
+              <div class="col s6">
+                <label>
+                  <input type="checkbox" v-on:change="handleAbadiCheck" v-model="selectedabadicheck"/>
+                  <span>Load Abadi Limits</span>
+                </label>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <button v-on:click="handleNumberChangeGJ('-')"><b style="font-size:20px;">❮</b></button>
+              &emsp;&emsp;
+              <span>{{gjAbadiStatus.currentGJ}} of {{gjAbadiStatus.gjDistrictCount}}</span>
+              &emsp;&emsp;
+              <button v-on:click="handleNumberChangeGJ('+')"><b style="font-size:20px;">❯</b></button>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col s12">
+                <div class="chip" id="abadistatus">{{abadiStatusTxt}}</div>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col s12">
+                <input type="file" v-on:change="abadilimitchange"/>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col s12">
+                <a class="waves-effect waves-light btn" v-on:click="uploadabadilimit">Upload Abadi Limits</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

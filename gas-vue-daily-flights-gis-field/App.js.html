@@ -1,0 +1,766 @@
+<script>
+  const App = Vue.createApp({
+    data() {
+      return {
+        districtselected: '',
+        selectedabadicheck: false,
+        todaysDate: moment().format('DD-MM-YYYY'),
+        latlngTxt: '',
+        flightStatusTxt: 'Loading... Please Wait...',
+        abadiStatusTxt: 'Select District and Load / Upload',
+        fObj: {},
+        abadiObj: {},
+        mymap: null,
+        dronesData: [],
+        districtsData: ['BAGALKOTE', 'BALLARI', 'BELAGAVI', 'BENGALURU_URBAN', 'BENGALURU_RURAL', 'BIDAR', 'CHAMARAJANAGARA', 'CHIKKABALLAPURA', 'CHIKKAMAGALURU', 'CHITRADURGA', 'DAKSHINA_KANNADA', 'DAVANGERE', 'DHARWAD', 'GADAG', 'HASSAN', 'HAVERI', 'KALABURAGI', 'KODAGU', 'KOLAR', 'KOPPAL', 'MANDYA', 'MYSURU', 'RAICHUR', 'RAMANAGARA', 'SHIVAMOGGA', 'TUMAKURU', 'UDUPI', 'UTTARA_KANNADA', 'VIJAYAPURA', 'YADGIR'],
+        dronesGJStatusData: {},
+        gjAbadiStatus: {
+          gjStatusTxt: '',
+          gjDistrictCount: 0,
+          currentGJ: 0,
+          uploadingGJ: {
+            valid: false,
+            gjStr: '',
+            gjlyr: null
+          }
+        },
+  
+      }
+    },
+  
+    /*  fObj Structure
+      fOJb = {
+        'flightid1': {
+          'flight': {
+            'gjlayer': leafletlyr,
+            'gjvalid': false,
+            'gj': geojson
+          },
+          'planned': {
+            'gjlayer': leafletlyr,
+            'gjvalid': false,
+            'gj': geojson
+          },
+          'abadi': {
+            'gjlayer': leafletlyr,
+            'gjvalid': false,
+            'gj': geojson
+          }
+        },
+        'flightid2': ...
+      }
+    */
+  
+    methods: {
+      //  -----------------------------------------------------------------------------------------------------------------------
+      //  Setup Functions
+      getDronesDataFromField(){
+        google.script.run.withSuccessHandler(this.handleDronesData).getDronesDataFromField();
+      },
+  
+      handleDronesData(dronesData){
+        console.log(dronesData);
+        this.dronesData = dronesData;
+  
+        setTimeout(()=>{
+          M.FormSelect.init(document.querySelectorAll('select'), {});
+          this.flightStatusTxt = 'Loaded';
+        }, 1500);
+      },
+      
+      //  -----------------------------------------------------------------------------------------------------------------------
+      //  Flight Viewer Functions
+      fetchFlightIDsNOthers(){
+        this.flightStatusTxt = 'Please Wait...';
+        this.dronesGJStatusData = {};
+  
+        let dronesSelect = document.getElementById('drones');
+        let droneSheet = dronesSelect.options[dronesSelect.selectedIndex].text;
+        if(droneSheet == 'Select Drone'){
+          this.flightStatusTxt = 'Select Drone Number...';
+          setTimeout(()=>{
+            this.flightStatusTxt = '';
+          }, 2000);
+          return 0;
+        }
+  
+        google.script.run.withSuccessHandler(this.handleFlightIDsNOthers).getFlightIDsNOthers(droneSheet);
+      },
+      handleFlightIDsNOthers(data){
+        console.log(data);
+        this.dronesGJStatusData = data;
+        this.flightStatusTxt = 'Loaded...';
+      },
+  
+      loadgeojsonfromserver(e){
+        let flightid = e.currentTarget.getAttribute('flightid');
+        let category = e.currentTarget.getAttribute('category');
+  
+        this.flightStatusTxt = category + ' for ' + flightid + ' loading...';
+        google.script.run.withSuccessHandler(this.handleGeoJSONFromServer)
+          .withUserObject([flightid, category]).loadgeojsonfromserver([flightid, category]);
+      },
+  
+      handleGeoJSONFromServer(data, obj){
+        // console.log(data);
+  
+        let flightid = obj[0];
+        let category = obj[1];
+  
+        let geojson = JSON.parse(data);
+        // console.log(geojson);
+  
+        this.fObj[flightid] = {
+          ...this.fObj[flightid],
+          [category]: {
+            'gj': geojson,
+            'gjvalid': true
+          }
+        };
+  
+        this.fObj[flightid][category] = {
+          ...this.fObj[flightid][category],
+          'gjlyr': L.geoJSON(null, {style: this.styleloader(category)}).addTo(this.mymap)
+        };
+  
+        this.fObj[flightid][category]['gjlyr'].addData(this.fObj[flightid][category]['gj']);
+  
+        this.flightStatusTxt = category + ' for ' + flightid + ' loaded...';
+  
+        console.log(this.fObj);
+      },
+  
+      styleloader(category) {
+        console.log(category);
+        if(category == 'flight'){
+          return {
+            weight: 2,
+            color: 'white'
+          };
+        } else if(category == 'planned'){
+          return {
+            weight: 2,
+            color: 'green'
+          };
+        } else if(category == 'abadi'){
+          return {
+            weight: 2,
+            color: 'yellow'
+          };
+        }
+      },
+      zoomtolayer(e){
+        let flightid = e.currentTarget.getAttribute('flightid');
+        let category = e.currentTarget.getAttribute('category');
+  
+        try{
+          this.mymap.fitBounds(this.fObj[flightid][category]['gjlyr'].getBounds());
+        } catch (e) {
+          this.flightStatusTxt = 'First Load ' + category + ' in ' + flightid + ' ...';
+        }
+      },
+  
+      //  -----------------------------------------------------------------------------------------------------------------------
+      //  Flight Uploader Functions
+      flightlinechange(e){
+        console.log('flightlinechange');
+  
+        let flightid = e.currentTarget.getAttribute('flightid');
+        this.fObj['currentid'] = flightid;
+  
+        let file = e.target.files[0];
+        // console.log(file);
+  
+        if(file.type == 'application/vnd.google-earth.kml+xml'){
+          this.fObj[flightid] = {
+            ...this.fObj[flightid],
+            'flight':{
+              'gjvalid': true
+            }
+          };
+  
+          this.flightStatusTxt = 'Valid KML...';
+  
+          let reader = new FileReader();
+          reader.readAsText(file);
+          reader.onload = this.loadFlightKML;
+        } else {
+          this.fObj[flightid] = {
+            ...this.fObj[flightid],
+            'flight':{
+              'gjvalid': false
+            }
+          };
+  
+          this.flightStatusTxt = 'Select Valid KML Flightline...';
+          e.target.value = [];
+        }
+      },
+  
+      loadFlightKML(evt){
+        let kmltext = evt.target.result;
+        
+        const parser = new DOMParser();
+        const kml = parser.parseFromString(kmltext, 'text/xml');
+        // console.log(kml);
+  
+        var geojsonFlight = toGeoJSON.kml(kml);
+        let features = geojsonFlight.features;
+        // console.log(features);
+  
+        features = features.filter((feature) => {
+          return feature.geometry.type == 'LineString'
+        });
+  
+        for (let i = 0; i < features.length; i++){
+          let feature = features[i];
+          let featGeomCoords = feature.geometry.coordinates;
+  
+          let numberofCoordsReqd = 300 * 2;
+          let modulus = parseInt(featGeomCoords.length / numberofCoordsReqd);
+          // console.log(modulus);
+          
+          featGeomCoords = featGeomCoords.filter((element, index) => {
+            return index % modulus == 0;
+          });
+  
+          feature.geometry.coordinates = featGeomCoords;
+        }
+  
+        let geojsonFlightLine = {
+          type: "FeatureCollection",
+          features: features
+        }
+  
+        // console.log(geojsonFlightLine);
+  
+        let flightid = this.fObj['currentid'];
+  
+        this.fObj[flightid]['flight'] = {
+          ...this.fObj[flightid]['flight'],
+          'gjlyr': L.geoJSON(null, {style: this.styleflightline}).addTo(this.mymap)
+        };
+  
+        this.fObj[flightid]['flight']['gjlyr'].addData(geojsonFlightLine);
+  
+        this.mymap.fitBounds(this.fObj[flightid]['flight']['gjlyr'].getBounds());
+  
+        this.fObj[flightid]['flight'] = {
+          ...this.fObj[flightid]['flight'],
+          'gj': geojsonFlightLine
+        };
+  
+        console.log(this.fObj);
+      },
+  
+      styleflightline(feature) {
+        return {
+          weight: 2,
+          color: 'red'
+        };
+      },
+  
+      uploadflightline(e){
+        let flightid = e.currentTarget.getAttribute('flightid');
+        console.log(flightid);
+  
+        let validflightline = false;
+        try{
+          validflightline = this.fObj[flightid]['flight']['gjvalid'];
+        } catch(e) {}
+        
+        if(validflightline){
+          let geoJSONFlightLine = this.fObj[flightid]['flight']['gj'];
+          
+          google.script.run.withSuccessHandler(this.handleFlightResponse)
+          .withUserObject([flightid, 'Flight Line']).uploadFlightGeoJSON([flightid, JSON.stringify(geoJSONFlightLine)]);
+  
+          this.flightStatusTxt = 'Please Wait... Uploading...';
+        } else {
+          this.flightStatusTxt = 'Select Some KML Flightline...';
+        }
+      },
+  
+      handleFlightResponse(msg, userObj){
+        console.log(userObj);
+        let flightid = userObj[0];
+        let category = userObj[1];
+  
+        this.dronesGJStatusData.idsFlightlines.push([flightid]);
+        // console.log(this.dronesGJStatusData);
+  
+        this.flightStatusTxt = 'Uploaded ' + category + ' for ' + flightid + ' ...';
+      },
+  
+      //  -----------------------------------------------------------------------------------------------------------------------
+      //  Planned Area Uploader Functions
+  
+      plannedareachange(e){
+        console.log('plannedareachange');
+  
+        let flightid = e.currentTarget.getAttribute('flightid');
+        console.log(flightid);
+        this.fObj['currentid'] = flightid;
+  
+        if(this.fObj[flightid] == null){
+          this.flightStatusTxt = 'Load Flight Line First...';
+          e.target.value = [];
+          return 0;
+        } else if (this.fObj[flightid]['flight'] == null){
+          this.flightStatusTxt = 'Load Flight Line First...';
+          e.target.value = [];
+          return 0;
+        } else if (this.fObj[flightid]['flight']['gj'] == null){
+          this.flightStatusTxt = 'Load Flight Line First...';
+          e.target.value = [];
+          return 0;
+        }
+  
+        let file = e.target.files[0];
+        // console.log(file.type);
+  
+        if(file.type == 'application/x-zip-compressed'){
+          this.fObj[flightid] = {
+            ...this.fObj[flightid],
+            'planned':{
+              'gjvalid': true
+            }
+          };
+  
+          this.flightStatusTxt = 'Valid Shapefile Zip...';
+  
+          let reader = new FileReader();
+          reader.readAsArrayBuffer(file);
+          reader.onload = this.loadShapefile;
+        } else {
+          this.fObj[flightid] = {
+            ...this.fObj[flightid],
+            'planned':{
+              'gjvalid': false
+            }
+          };
+  
+          this.flightStatusTxt = 'Select Valid Shapefile Zip...';
+          e.target.value = [];
+        }
+      },
+  
+      loadShapefile(evt){
+        let shapefileArryBuffer = evt.target.result;
+        let that = this;
+  
+        shp(shapefileArryBuffer).then(function(geojson){
+          if(Array.isArray(geojson)){
+            geojsonFiles = geojson                 
+          } else {
+            geojsonFiles = [geojson]
+          }
+  
+          // console.log(geojsonFiles);
+          that.handleshapefilegeojsonFiles(geojsonFiles);
+        });
+      },
+  
+      handleshapefilegeojsonFiles(geojsonFiles){
+        let flightid = this.fObj['currentid'];
+  
+        let flightlinebbox = turf.bbox(this.fObj[flightid]['flight']['gj']);
+        let flightbboxPoly = turf.bboxPolygon(flightlinebbox);
+  
+        let totalFeatureCount = 0;
+        let newgeojsonshapefeatures = [];
+  
+        for (let f = 0; f < geojsonFiles.length; f++){
+          let geojsonshapes = geojsonFiles[f];
+  
+          let geojsonshapefeatures = geojsonshapes.features;
+          geojsonshapefeatures = geojsonshapefeatures.filter((feature) => {
+            return feature.geometry.type == 'Polygon'
+          });
+  
+          for (let i = 0; i < geojsonshapefeatures.length; i++){
+            let shapefilebbox = turf.bbox(geojsonshapefeatures[i]);
+            let shapebboxPoly = turf.bboxPolygon(shapefilebbox);
+  
+            let intersection = turf.intersect(flightbboxPoly, shapebboxPoly);
+            if(intersection != null) newgeojsonshapefeatures.push(geojsonshapefeatures[i]);
+  
+            totalFeatureCount++;
+          }
+        }
+  
+        let overlappingFeaturesCount = newgeojsonshapefeatures.length;
+        
+        let overlappingMsg = overlappingFeaturesCount + ' out of ' + totalFeatureCount ;
+        overlappingMsg += ' Features overlaps Flight Line';
+  
+        setTimeout(()=>{
+          this.flightStatusTxt = overlappingMsg;
+        }, 1000);
+  
+        if(overlappingFeaturesCount == 0){
+          this.flightStatusTxt = 'No Overlapping Features...';
+          return 0;
+        }
+  
+        let newgeojsonShapefile = {
+          type: "FeatureCollection",
+          features: newgeojsonshapefeatures,
+          fileName: 'PlannedArea'
+        }
+  
+        console.log(newgeojsonShapefile);
+  
+        this.fObj[flightid]['planned'] = {
+          ...this.fObj[flightid]['planned'],
+          'gjlyr': L.geoJSON(null, {style: this.styleplannedarea}).addTo(this.mymap)
+        };
+  
+        this.fObj[flightid]['planned']['gjlyr'].addData(newgeojsonShapefile);
+  
+        this.mymap.fitBounds(this.fObj[flightid]['planned']['gjlyr'].getBounds());
+  
+        this.fObj[flightid]['planned'] = {
+          ...this.fObj[flightid]['planned'],
+          'gj': newgeojsonShapefile
+        };
+  
+        console.log(this.fObj);
+      },
+  
+      styleplannedarea(feature) {
+        return {
+            weight: 2,
+            color: 'green'
+        };
+      },
+  
+      uploadplannedarea(e){
+        let flightid = e.currentTarget.getAttribute('flightid');
+        console.log(flightid);
+  
+        let validplannedarea = false;
+        try{
+          validplannedarea = this.fObj[flightid]['planned']['gjvalid'];
+        } catch(e) {}
+        
+        if(validplannedarea){
+          let geoJSONPlannedArea = this.fObj[flightid]['planned']['gj'];
+          
+          google.script.run.withSuccessHandler(this.handlePlannedAreaResponse)
+          .withUserObject([flightid, 'Planned Area']).uploadPlannedAreaGeoJSON([flightid, JSON.stringify(geoJSONPlannedArea)]);
+  
+          this.flightStatusTxt = 'Please Wait... Uploading...';
+        } else {
+          this.flightStatusTxt = 'Select Some Shapefile Zip...';
+        }
+      },
+  
+      handlePlannedAreaResponse(msg, userObj){
+        console.log(userObj);
+        let flightid = userObj[0];
+        let category = userObj[1];
+  
+        this.dronesGJStatusData.idsPlannedareas.push([flightid]);
+        this.flightStatusTxt = 'Uploaded ' + category + ' for ' + flightid + ' ...';
+      },
+  
+      //  -----------------------------------------------------------------------------------------------------------------------
+      //  Abadi Loader Functions
+  
+      handleAbadiCheck(e){
+        console.log('handleAbadiCheck');
+  
+        let district = this.districtselected;
+        if(district == ''){
+          this.abadiStatusTxt = 'First Select District';
+          return 0;
+        }
+  
+        if(this.selectedabadicheck){
+          if(this.abadiObj[district] == null){
+            this.abadiStatusTxt = 'Loading... Wait...';
+            google.script.run.withSuccessHandler(this.handleAbadiLimitsGeoJSONFromServer)
+            .withUserObject(district).loadabadilimitsgeojsonfromserver(district);
+          } else {
+            console.log('loading from local');
+            this.loadDistrictAbadis(district);
+            console.log(this.abadiObj);
+          }
+        } else {
+          console.log('Unload Abadi Limits');
+  
+          if(this.abadiObj[district] != null){
+            this.mymap.removeLayer(this.abadiObj[district]['gjlyr']);
+          }
+        }
+      },
+  
+      handleAbadiLimitsGeoJSONFromServer(data, district){
+        // console.log(data);
+  
+        this.abadiObj[district] = {
+          ...this.abadiObj[district],
+          gjObj: data
+        };
+  
+        this.loadDistrictAbadis(district);
+        this.abadiStatusTxt = 'Loaded...';
+      },
+  
+      loadDistrictAbadis(district){
+        let abadigjObjArry = this.abadiObj[district]['gjObj'];
+  
+        let gjArry = [];
+        for(let i = 0; i < abadigjObjArry.length; i++){
+          let date = abadigjObjArry[i][0];
+          let gj = JSON.parse(abadigjObjArry[i][1]);
+          let rowNo = abadigjObjArry[i][2];
+  
+          let gjfeatures = gj.features;
+    
+          gjfeatures = gjfeatures.map((feature) => {
+            feature.properties = {
+              ...feature.properties,
+              'date': date,
+              'rowNo': rowNo,
+              'district': district
+            }
+  
+            return feature;
+          });
+  
+          let gjAbadi = {
+            type: "FeatureCollection",
+            features: gjfeatures
+          }
+  
+          gjArry.push(gjAbadi);
+  
+        }
+  
+        this.gjAbadiStatus.gjDistrictCount = gjArry.length;
+  
+        let gjlyr = L.geoJSON(null, {
+          style: this.styleabadilimit,
+          onEachFeature: function (feature, layer) {
+            // console.log(feature.properties);
+            let popupHTML = '<div><b>Upload Date: ' + feature.properties.date + '</b></div>';
+            popupHTML += '<div><b>Row No: ' + feature.properties.rowNo + '</b></div>';
+            popupHTML += '<div><b>District: ' + feature.properties.district + '</b></div>';
+            layer.bindPopup(popupHTML);
+          }
+        }).addTo(this.mymap);
+  
+        this.abadiObj[district] = {
+          ...this.abadiObj[district],
+          'gjlyr': gjlyr
+        };
+  
+        this.abadiObj[district]['gjlyr'].addData(gjArry);
+  
+        this.mymap.fitBounds(this.abadiObj[district]['gjlyr'].getBounds());
+        
+        console.log(this.abadiObj);
+      },
+  
+      styleabadilimit(feature) {
+        return {
+          weight: 2,
+          color: 'red'
+        };
+      },
+  
+      handleNumberChangeGJ(sign){
+        if(sign == '+'){
+          if(this.gjAbadiStatus.currentGJ < this.gjAbadiStatus.gjDistrictCount){
+            this.gjAbadiStatus.currentGJ++;
+            this.zoomAbadiGeoJson();
+          }
+        } else {
+          if(this.gjAbadiStatus.currentGJ > 1){
+            this.gjAbadiStatus.currentGJ--;
+            this.zoomAbadiGeoJson();
+          }
+        }
+      },
+  
+      zoomAbadiGeoJson(){
+        let arryIndex = this.gjAbadiStatus.currentGJ - 1;
+        let district = this.districtselected;
+        console.log(arryIndex, district);
+  
+        let gj = JSON.parse(this.abadiObj[district]['gjObj'][arryIndex][1]);
+        // console.log(gj);
+        let bbox = turf.bbox(gj);
+        // console.log(bbox);
+  
+        this.mymap.fitBounds([[bbox[1], bbox[0]], [bbox[3], bbox[2]]]);
+        this.mymap.setZoom(16);
+      },
+  
+      //  -----------------------------------------------------------------------------------------------------------------------
+      //  Abadi Limits Uploader Functions
+  
+      abadilimitchange(e){
+        console.log('abadilimitchange');
+  
+        let file = e.target.files[0];
+        console.log(file.type);
+  
+        if(file.type == 'application/vnd.google-earth.kml+xml'){
+          this.gjAbadiStatus.uploadingGJ.valid = true;
+          this.abadiStatusTxt = 'Valid KML...';
+  
+          let reader = new FileReader();
+          reader.readAsText(file);
+          reader.onload = this.loadAbadiLimitKML;
+  
+        } else if (file.type == 'application/vnd.google-earth.kmz'){
+          this.gjAbadiStatus.uploadingGJ.valid = true;
+          this.abadiStatusTxt = 'Valid KMZ...';
+  
+          this.loadAndHandleKMZ(file);
+        } else {
+          this.gjAbadiStatus.uploadingGJ.valid = false;
+          this.abadiStatusTxt = 'Select Valid KML Abadi Limit...';
+          e.target.value = [];
+        }
+      },
+  
+      loadAbadiLimitKML(evt){
+        let kmltext = evt.target.result;
+        
+        const parser = new DOMParser();
+        const kml = parser.parseFromString(kmltext, 'text/xml');
+        // console.log(kml);
+  
+        let geojsonAbadiLimit = toGeoJSON.kml(kml);
+        console.log(geojsonAbadiLimit);
+  
+        this.gjAbadiStatus.uploadingGJ.gjlyr = L.geoJSON(null, {style: this.styleabadilimit}).addTo(this.mymap)
+  
+        this.gjAbadiStatus.uploadingGJ.gjlyr.addData(geojsonAbadiLimit);
+  
+        this.mymap.fitBounds(this.gjAbadiStatus.uploadingGJ.gjlyr.getBounds());
+  
+        this.gjAbadiStatus.uploadingGJ.gjStr = JSON.stringify(geojsonAbadiLimit);
+  
+        console.log(this.gjAbadiStatus);
+      },
+  
+      styleabadilimit(feature) {
+        return {
+          weight: 2,
+          color: 'red'
+        };
+      },
+  
+      loadAndHandleKMZ(file){
+  
+        let getDom = xml => (new DOMParser()).parseFromString(xml, "text/xml");
+        let getExtension = fileName => fileName.split(".").pop();
+  
+        let getKmlDom = (kmzFile) => {
+          var zip = new JSZip();
+          return zip.loadAsync(kmzFile)
+            .then(zip => {
+              let kmlDom = null
+              zip.forEach((relPath, file) => {
+                if (getExtension(relPath) === "kml" && kmlDom === null) {
+                  kmlDom = file.async("string").then(getDom)
+                }
+              })
+              return kmlDom || Promise.reject("No kml file found")
+            });
+        }
+  
+        let geoJsonAbadi = getKmlDom(file).then(kmlDom => {
+          let geoJsonObject = toGeoJSON.kml(kmlDom)
+          // return JSON.stringify(geoJsonObject);
+          return geoJsonObject;
+        });
+  
+        this.gjAbadiStatus.uploadingGJ.gjlyr = L.geoJSON(null, {style: this.styleabadilimit}).addTo(this.mymap);
+  
+        geoJsonAbadi.then(geojsonAbadiLimit => {
+          console.log(geojsonAbadiLimit);
+  
+          this.gjAbadiStatus.uploadingGJ.gjlyr.addData(geojsonAbadiLimit);
+  
+          this.mymap.fitBounds(this.gjAbadiStatus.uploadingGJ.gjlyr.getBounds());
+  
+          this.gjAbadiStatus.uploadingGJ.gjStr = JSON.stringify(geojsonAbadiLimit);
+        });
+      },
+  
+      uploadabadilimit(){
+        if(this.districtselected == ''){
+          this.abadiStatusTxt = 'First Select District...';
+          return 0;
+        }
+  
+        if(this.gjAbadiStatus.uploadingGJ.valid){
+          let district = this.districtselected;
+          let date = moment().format('DD-MM-YYYY');
+          let gjStr = this.gjAbadiStatus.uploadingGJ.gjStr;
+          
+          google.script.run.withSuccessHandler(this.handleAbadiLimitResponse).uploadAbadiLimitGeoJSON([district, date, gjStr]);
+  
+          this.abadiStatusTxt = 'Please Wait... Uploading...';
+        } else {
+          this.abadiStatusTxt = 'Select Some KML / KMZ Abadi Limit...';
+        }
+      },
+  
+      handleAbadiLimitResponse(msg){
+        this.abadiStatusTxt = msg + ' Uploaded...';
+      },
+  
+      //  -----------------------------------------------------------------------------------------------------------------------
+      //  Basemap Functions
+      getReadyMapLayer(){
+        this.mymap = L.map('mapid').setView([14.8810453,76.273253], 7);
+        let options = { modal: true, title: "Box Area Zoom" };
+        let control = L.control.zoomBox(options);
+        this.mymap.addControl(control);
+  
+        this.mymap.on('mousemove', this.latlngDisp);
+  
+        this.loadBaseMap();
+      },
+      loadBaseMap(){
+        basemaplyr = L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains:['mt0','mt1','mt2','mt3']
+        });
+        
+        basemaplyr.addTo(this.mymap);
+      },
+      latlngDisp(e) {
+        this.latlngTxt = e.latlng.toString();
+      },
+    },
+    computed: {
+      checkIfIdsAvail(){
+        return (flightlines, flightid) => {
+          for (let i = 0; i < flightlines.length; i++){
+            let flightlineid = flightlines[i][0];
+            // console.log(flightlineid, flightid);
+            if(flightlineid.toUpperCase() == flightid.toUpperCase()){
+              return true;
+            }
+          }
+          return false;
+        }
+      },
+    },
+    mounted: function(){
+      this.getReadyMapLayer();
+      this.getDronesDataFromField();
+      M.Tabs.init(document.querySelectorAll('.tabs'), {});
+    }
+  });
+  
+  App.mount('#app');
+  </script>

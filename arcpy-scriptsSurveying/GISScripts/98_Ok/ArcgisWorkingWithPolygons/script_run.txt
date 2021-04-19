@@ -1,0 +1,1 @@
+C:\Python27\ArcGIS10.7\python.exe C:\Users\user\Documents\GitHub\scriptsSurveying\GISScripts\98_Ok\ArcgisWorkingWithPolygons\Optimizing_Polygons.py

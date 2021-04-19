@@ -1,0 +1,32 @@
+{
+  "name": "vue-electron-collector-gis",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "vue:serve": "vue-cli-service serve",
+    "vue:build": "vue-cli-service build",
+    "serve": "vue-cli-service electron:serve",
+    "build": "vue-cli-service electron:build",
+    "buildportable": "vue-cli-service electron:build --windows portable:x64",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps"
+  },
+  "main": "background.js",
+  "dependencies": {
+    "archiver": "^5.3.0",
+    "core-js": "^3.9.1",
+    "dateformat": "^4.5.1",
+    "regenerator-runtime": "^0.13.7",
+    "vue": "^3.0.0",
+    "xlsx": "^0.16.9"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "electron": "^11.0.0",
+    "electron-devtools-installer": "^3.1.0",
+    "vue-cli-plugin-electron-builder": "~2.0.0-rc.6",
+    "vue-loader-v16": "^16.0.0-beta.5.4"
+  }
+}

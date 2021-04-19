@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+
+      td {
+        text-align: center; 
+        vertical-align: middle;
+      }
+    </style>
+</head>
+<body>
+    <br/>
+    <h2>Data Transfer Register Generator</h2>
+    
+    <label for="drones">Select Drone:</label><br/>
+    <select id="drones" name="drones"></select>
+    <br/><br/>
+
+    <button onclick="fetchFlightIDs();">Fetch Details</button>
+    <button style="display: none;" onclick="generateDTR();" id="generatedtrbtn">Generate DTR</button>
+    <button style="display: none;" onclick="printPDF();" id="downloadpdf">Print PDF</button>
+    <button style="display: none;" onclick="downloadExcel();" id="downloadexcel">Download Excel</button>
+    <br/><br/>
+
+    <div id="status">Please Wait...</div>
+    <br/>
+
+    <div id="flightidsdiv"></div><br/>
+
+    <!-- <div id="tableContainer"> -->
+    <div style="display:none;" id="tableContainer">
+      <div id="datatransferregistertable"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+    <script>
+      //  -------------------------------------------------------------------------
+      
+      window.onload = function(){
+        getDronesDataFromField();
+      }
+
+      function getDronesDataFromField(){
+        google.script.run.withSuccessHandler(handleDronesData).getDronesDataFromField();
+      }
+
+      function handleDronesData(dronesData){
+        document.getElementById('status').innerText = '';
+        console.log(dronesData);
+
+        let dronesselect = document.getElementById('drones');
+
+        for (let i = 0; i < dronesData.length; i++){
+          let opt = document.createElement('option');
+          opt.value = dronesData[i];
+          opt.innerHTML = dronesData[i];
+          dronesselect.appendChild(opt);
+        }
+      }
+
+      //  --------------------------------------------------------------------------------
+
+      function fetchFlightIDs(){
+        document.getElementById('status').innerText = 'Please Wait...';
+        document.getElementById('flightidsdiv').innerHTML = '';
+        document.getElementById('datatransferregistertable').innerHTML = '';
+
+        let dronesSelect = document.getElementById('drones');
+        let droneSheet = dronesSelect.options[dronesSelect.selectedIndex].text;
+        google.script.run.withSuccessHandler(handleFlightIDs).getFlightIDs(droneSheet);
+      }
+
+      let currentSheet = '';
+      function handleFlightIDs(data){
+        let flightIDs = data[0];
+        console.log(flightIDs);
+        
+        currentSheet = data[1];
+
+        let tableHTML = '<table border="1" id="flightidtable" name="flights">';
+        tableHTML += '<tr><td><b>Check<b></td><td><b>Row No<b></td><td><b>Flight ID<b></td></tr>';
+        for (let i = 0; i < flightIDs.length; i++){
+          tableHTML += '<tr><td><input type="checkbox" id="';
+          tableHTML += flightIDs[i].rowNo + '" value="' + flightIDs[i].rowNo + '"/></td>';
+          tableHTML += '<td>' +  flightIDs[i].rowNo + '</td><td>' + flightIDs[i].id + '</td><tr>';
+        }
+        tableHTML += '</table>';
+
+        document.getElementById('flightidsdiv').innerHTML = tableHTML;
+        document.getElementById('generatedtrbtn').style.display = 'initial';
+        document.getElementById('status').innerText = '';
+      }
+
+      //  --------------------------------------------------------------------------------
+
+      function generateDTR(){
+        console.log('generating DTR');
+        document.getElementById('status').innerText = 'Please Wait...';
+        
+        let requiredRows = getRequiredRows();
+        // console.log(requiredRows);
+
+        if(requiredRows.length == 0){
+          document.getElementById('status').innerText = 'Select Some Checkboxes...';
+          return 0;
+        }
+
+        google.script.run.withSuccessHandler(handleDataTransferDetails).getDataTransferDetails([currentSheet, requiredRows]);
+      }
+
+      function getRequiredRows(){
+        let checkRows = [];
+        let inputs = document.querySelectorAll("input[type='checkbox']");
+        for(var i = 0; i < inputs.length; i++) {
+            if(inputs[i].checked){
+              checkRows.push(inputs[i].value);
+            }
+        }
+        console.log(currentSheet, checkRows);
+
+        return checkRows;
+      }
+
+      function handleDataTransferDetails(dronewiseDetails){
+        console.log(dronewiseDetails);
+        createTable(dronewiseDetails);
+      }
+
+      function createTable(dronewiseDetails){
+        let requiredCols = {
+          'DATE': 3, 'FOLDER<br/>NAME': 1, 'PROJECT': 2, 'TALUK': 15, 
+          'BASEID': 27, 'GCPs': 28, 'LGDs': 18, 'VILLAGES': 17, 'HAMLETS': 19, 
+          'VILLAGES<br/>COUNT': 20, 'HAMLET<br/>COUNT': 21, 'FILES': 39, 'SIZE<br/>(GB)': 40, 
+          'AREA<br/>(SQ.KM.)': 9, 'RAW<br/>IMAGES': 31, 'GEOTAGGED<br/>IMAGES': 32
+        };
+
+        let tableHTML = '<table border="1" id="dtrtable" class="dtrtable" style="width: 100%">';
+        tableHTML += '<tr><td colspan="18" style="text-align: left;">To <br/> The Director, KGDC</td></tr>';
+        tableHTML += '<tr><td colspan="18" style="text-align: center;">';
+        tableHTML += '<b>Sub: Submission of Drone Flying Raw Data with the follwing details</b></td></tr>';
+        tableHTML += '<tr><td colspan="18"></tr>';
+
+        tableHTML += '<tr><td colspan="3">Number of Flights</td><td colspan="1"';
+        tableHTML += ' id="flightscounttd">' + (dronewiseDetails.length).toString() + '</td>';
+        tableHTML += '<td colspan="2">Harddisk No</td><td colspan="2"></td>';
+        tableHTML += '<td colspan="2">DroneNumber</td><td colspan="2">' + currentSheet + '</td>';
+        tableHTML += '<td colspan="3">District</td><td colspan="3">' + dronewiseDetails[1][14] + '</td></tr>';
+
+        tableHTML += '<tr><td colspan="3">Number of Villages</td><td colspan="1"></td>';
+        tableHTML += '<td colspan="2">Through</td><td colspan="2"></td>';
+        tableHTML += '<td colspan="2">Successful Flights</td><td colspan="2">' + (dronewiseDetails.length).toString() + '</td>';
+        tableHTML += '<td colspan="3">Prepared By</td><td colspan="3"></td></tr>';
+
+        tableHTML += '<tr><td colspan="3">Number of Hamlets</td><td colspan="1"></td>';
+        tableHTML += '<td colspan="2">Sent On</td><td colspan="2"></td>';
+        tableHTML += '<td colspan="2">UnSuccessful</td><td colspan="2">0</td>';
+        tableHTML += '<td colspan="3">Checked By</td><td colspan="3"></td></tr>';
+
+        tableHTML += '<tr><td colspan="16"><br/></tr>';
+
+        tableHTML += '<tr>';
+        tableHTML += '<td><b>SNO</b></td>'; 
+        Object.keys(requiredCols).forEach(function eachKey(col) {
+            tableHTML += '<td style="word-wrap: break-word"><b>' + col + '</b></td>';
+        });
+
+        tableHTML += '<td><b>REMARKS</b></td>';  
+        tableHTML += '</tr>';
+
+        for (let i = 0; i < dronewiseDetails.length; i++){
+          tableHTML += '<tr>';
+          tableHTML += '<td>' + (i+1).toString() + '</td>';
+
+          Object.keys(requiredCols).forEach(function eachKey(col) {
+            tableHTML += '<td style="word-wrap: break-word">' + dronewiseDetails[i][requiredCols[col]] + '</td>';
+          });
+
+          tableHTML += '<td></td>';
+          tableHTML += '</tr>';
+        }
+
+        tableHTML += '</table>';
+        
+        document.getElementById('datatransferregistertable').innerHTML = tableHTML;
+        document.getElementById('status').innerText = '';
+
+        document.getElementById('downloadpdf').style.display = 'initial';
+        document.getElementById('downloadexcel').style.display = 'initial';
+      }
+
+      function downloadExcel(){
+        TableToExcel.convert(document.getElementById('datatransferregistertable'));
+      }
+
+      function printPDF(){
+        console.log('generatingpdf');
+
+        let tableHTML = document.getElementById('datatransferregistertable').innerHTML;
+
+        let w = window.open();
+
+        w.document.head.innerHTML = `
+          <title>Data Transfer Register</title>
+          <style>
+            table {
+              border-collapse: collapse;
+            }
+            
+            td {
+              text-align: center; 
+              vertical-align: middle;
+            }
+          </style>
+        `;
+
+        w.document.body.innerHTML = tableHTML;
+        w.document.close();
+            
+        w.focus();
+        w.print();
+      }
+    </script>
+</body>
+</html>
