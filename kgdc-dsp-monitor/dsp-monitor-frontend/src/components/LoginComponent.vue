@@ -30,19 +30,11 @@ export default {
     const route = useRouter();
     const store = useStore();
 
-    const getSheetURL = async () => {
-      let dataURL = store.getters.getDataURL;
-
-      axios.get(dataURL)
-      .then(res => {
-        console.log(res.data.wsServerURL);
-        wsServerURL.value = res.data.wsServerURL;
-
-        store.dispatch('setWSURL', res.data.wsServerURL);
-      });
+    const getWSSURL = async () => {
+      wsServerURL.value = store.getters.getWSSURL;
     }
             
-    onMounted(getSheetURL);
+    onMounted(getWSSURL);
     
     const loginBtnClick = async () => {
       let mobilenumber = mobilenumberref.value;
