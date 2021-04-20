@@ -7,7 +7,9 @@ import express from 'express';
 const app: express.Application = express();
 
 const staticDir: string = join(__dirname, 'frontend');
+
 app.use('/', express.static(staticDir));
+
 app.get('/', function(req, res) {
     res.sendFile(join(staticDir, 'index.html'));
 });
