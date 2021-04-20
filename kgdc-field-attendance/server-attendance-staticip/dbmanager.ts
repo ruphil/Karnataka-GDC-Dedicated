@@ -337,7 +337,7 @@ export const deleteUser = (ws: WebSocket, msgObj: any) => {
 export const getAttendanceRegister = (ws: WebSocket, msgObj: any) => {
     try{
         if(msgObj.user == 'admin' && msgObj.pass == 'dbadminkgdc'){
-            let db = new sqlite3.Database(databaseURL, (err: any) => {
+            let db = new sqlite3.Database(attendanceDB, (err: any) => {
                 if (err) {
                     console.log(err.message);
                     respondWithFailureMsg(ws);
