@@ -2,7 +2,6 @@ import WebSocket, { Server } from 'ws';
 
 import { newregistration, checkUser, logAttendance } from './dbmanager';
 import { displayUsersTable, approveBanUser, deleteUser, checkAdmin, getAttendanceRegister } from './dbmanager';
-import { createTablesIfNotExistsIntoDatabase } from './dbmanager';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{

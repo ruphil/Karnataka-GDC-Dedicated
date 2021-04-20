@@ -4,6 +4,7 @@ import http from 'http'
 import express from 'express';
 
 import { handleWebSocketConnection } from './handlesockets';
+import { createTablesIfNotExistsIntoDatabase } from './dbmanager';
 
 const staticDir: string = join(__dirname, 'frontend');
 const app: express.Application = express();
@@ -20,5 +21,6 @@ wss.on('connection', (ws: WebSocket) => {
 
 const PORT = 3010;
 server.listen(PORT, () => {
+    createTablesIfNotExistsIntoDatabase();
     console.log(`Server listening on port ${PORT}`);
 });
