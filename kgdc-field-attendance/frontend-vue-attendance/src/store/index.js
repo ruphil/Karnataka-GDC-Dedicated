@@ -5,13 +5,11 @@ export default createStore({
     name: '',
     mobilenumber: '',
     password: '',
-    wsServerURL: 'ws://192.168.1.200:3010',
-    dataURL: 'https://raw.githubusercontent.com/daw-kgdc/file-host-permanent/main/vue-attendance-register/app.data',
+    wsServerURL: 'ws://localhost:3010',
+    adminuser: '',
+    adminpass: ''
   },
   getters: {
-    getDataURL: state => {
-      return state.dataURL;
-    },
     getWSURL: state => {
       return state.wsServerURL;
     },
@@ -23,12 +21,15 @@ export default createStore({
     },
     getPassword: state => {
       return state.password;
+    },
+    getAdminUser: state => {
+      return state.adminuser;
+    },
+    getAdminPass: state => {
+      return state.adminpass;
     }
   },
   mutations: {
-    setWSURL(state, payload){
-      state.wsServerURL = payload;
-    },
     setName(state, payload){
       state.name = payload;
     },
@@ -37,7 +38,13 @@ export default createStore({
     },
     setPass(state, payload){
       state.password = payload;
-    }
+    },
+    setAdminUser(state, payload){
+      state.adminuser = payload;
+    },
+    setAdminPass(state, payload){
+      state.adminpass = payload;
+    },
   },
   actions: {
     setWSURL(context, payload){
@@ -51,6 +58,12 @@ export default createStore({
     },
     setPass(context, payload){
       context.commit('setPass', payload);
+    },
+    setAdminUser(context, payload){
+      context.commit('setAdminUser', payload);
+    },
+    setAdminPass(context, payload){
+      context.commit('setAdminPass', payload);
     }
   },
   modules: {

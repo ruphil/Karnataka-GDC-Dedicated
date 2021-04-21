@@ -1,16 +1,12 @@
 <template>
-  <div class="login">
-    <img alt="Vue logo" src="../assets/logo.png" height="150">
-    <h2>Karnataka GDC</h2>
-    <h3>Attendance Register</h3>
-    <h3 class="title">Login To Continue</h3>
-    <input class="mobilenumber" type="number" size="20" placeholder="mobilenumber" v-model="mobilenumberref"/>
+  <div>
+    <h2>Admin KGDC Field Attendance</h2>
+    <input class="username" type="text" size="20" placeholder="user" v-model="usernameref"/>
     <br/><br/>
-    <input class="password" type="password" size="20" placeholder="password" v-model="passwordref"/>
+    <input class="password" type="password" size="20" placeholder="pass" v-model="passwordref"/>
     <br/><br/>
     <button class="loginregisterbtn" v-on:click="loginBtnClick">Login</button>
     <br/><br/>
-    <button class="loginregisterbtn" v-on:click="registerBtnClick">Register</button>
     <div id="logintoast">{{ toastmsgref }}</div>
   </div>
 </template>
@@ -20,42 +16,32 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-import axios from 'axios';
-
 export default {
   setup() {
     const wsServerURL = ref('');
-    const mobilenumberref = ref('');
+    const usernameref = ref('');
     const passwordref = ref('');
     const toastmsgref = ref('');
 
     const route = useRouter();
     const store = useStore();
 
-    const getSheetURL = async () => {
-      let dataURL = store.getters.getDataURL;
-
-      axios.get(dataURL)
-      .then(res => {
-        console.log(res.data.wsServerURL);
-        wsServerURL.value = res.data.wsServerURL;
-
-        store.dispatch('setWSURL', res.data.wsServerURL);
-      });
+    const getWSURL = async () => {
+      wsServerURL.value = store.getters.getWSURL;
     }
             
-    onMounted(getSheetURL);
+    onMounted(getWSURL);
     
     const loginBtnClick = async () => {
-      let mobilenumber = mobilenumberref.value;
-      let password = passwordref.value;
+      let user = usernameref.value;
+      let pass = passwordref.value;
 
-      if(mobilenumber.length != 10){
-        showToast('Invalid Mobile...');
+      if(user.length == 0){
+        showToast('Unauthorized Admin...');
         return 0;
       }
 
-      if(password.length == 0){
+      if(pass.length == 0){
         showToast('Password cannot be null...');
         return 0;
       }
@@ -65,21 +51,18 @@ export default {
         // console.log(event.data);
 
         let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
-        console.log(responseObj);
-        
-        if (responseObj.requestStatus == 'success' && responseObj.validUser){
-          console.log('Login Sucess...')
-          showToast('Login Success... Wait...');
 
-          store.dispatch('setMobile', mobilenumber);
-          store.dispatch('setPass', password);
-          store.dispatch('setName', responseObj.name);
+        if (responseObj.requestStatus == 'success' && responseObj.adminuser){
+          showToast('Welcome back Admin...');
 
+          store.dispatch('setAdminUser', user);
+          store.dispatch('setAdminPass', pass);
+          
           setTimeout(() => {
-            route.push({path: '/mainscreen'});
+            route.push({path: '/users'});
           }, 1000);
         } else {
-          showToast('Invalid Username / Password...');
+          showToast('Unauthorized Admin...');
           passwordref.value = '';
         }
 
@@ -87,18 +70,14 @@ export default {
       });
 
       ws.addEventListener('open', (event) => {
-        let checkUserObj = {
-          requesttype: 'checkuser',
-          mobilenumber,
-          password
+        let checkAdminObj = {
+          requesttype: 'checkadmin',
+          user,
+          pass
         };
 
-        ws.send(Buffer.from(JSON.stringify(checkUserObj)).toString('base64'));
+        ws.send(Buffer.from(JSON.stringify(checkAdminObj)).toString('base64'));
       });
-    }
-
-    const registerBtnClick = () => {
-      route.push({path: '/register'});
     }
 
     const showToast = async (msg) => {
@@ -109,17 +88,13 @@ export default {
       setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 
-    return { mobilenumberref, passwordref, toastmsgref, loginBtnClick, registerBtnClick, showToast }
+    return { usernameref, passwordref, toastmsgref, loginBtnClick, showToast }
   },
 }
 </script>
 
 <style scoped>
-  .title{
-    color: #4e73e3;
-  }
-
-  .mobilenumber {
+  .username {
     padding: 15px;
     border: 2px solid #4e73e3;
     font-size: 20px;

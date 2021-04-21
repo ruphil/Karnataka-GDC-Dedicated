@@ -3,15 +3,27 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    component: () => import('../views/LoginScreen.vue')
+    component: () => import('../views/android/LoginScreen.vue')
   },
   {
     path: '/mainscreen',
-    component: () => import('../views/MainScreen.vue')
+    component: () => import('../views/android/MainScreen.vue')
   },
   {
     path: '/register',
-    component: () => import('../views/RegisterScreen.vue')
+    component: () => import('../views/android/RegisterScreen.vue')
+  },
+  {
+    path: '/admin',
+    component: () => import('../views/admin/Login.vue')
+  },
+  {
+    path: '/users',
+    component: () => import('../views/admin/Users.vue')
+  },
+  {
+    path: '/attendanceregister',
+    component: () => import('../views/admin/AttendanceRegister.vue')
   }
 ]
 

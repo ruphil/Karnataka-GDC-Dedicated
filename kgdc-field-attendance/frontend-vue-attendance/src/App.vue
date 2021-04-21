@@ -13,7 +13,9 @@ export default {
     const route = useRouter();
 
     const doOpeningCeremony = async () => {
-      route.push({path: '/'});
+      if(window.location.pathname != '/admin'){
+        route.push({path: '/'});
+      }
     }
 
     onMounted(doOpeningCeremony);

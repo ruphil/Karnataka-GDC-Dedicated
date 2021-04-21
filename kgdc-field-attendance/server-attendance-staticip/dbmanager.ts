@@ -21,7 +21,7 @@ export const createTablesIfNotExistsIntoDatabase = () => {
                 MobileNumber TEXT NOT NULL PRIMARY KEY,
                 Password TEXT NOT NULL,
                 UUID TEXT,
-                TYPE TEXT
+                ROLES TEXT
             );`;
 
             usersdb.exec(createTableQuery, (err: any)=>{
@@ -40,14 +40,7 @@ export const createTablesIfNotExistsIntoDatabase = () => {
             console.log(err.message);
             return 0;
         } else {
-            let createTableQuery = `CREATE TABLE IF NOT EXISTS users(
-                Name TEXT NOT NULL,
-                MobileNumber TEXT NOT NULL PRIMARY KEY,
-                Password TEXT NOT NULL,
-                UUID TEXT,
-                TYPE TEXT
-            );
-            CREATE TABLE IF NOT EXISTS attendanceregister(
+            let createTableQuery = `CREATE TABLE IF NOT EXISTS attendanceregister(
                 ServerDate TEXT NOT NULL,
                 ServerTime TEXT NOT NULL,
                 ClientDate TEXT NOT NULL,
@@ -83,11 +76,11 @@ export const newregistration = (ws: WebSocket, msgObj: any) => {
                 console.log(err.message);
                 respondWithFailureMsg(ws);
             } else {
-                let insertQuery = `INSERT INTO users(Name, MobileNumber, Password, UUID, TYPE) VALUES (?,?,?,?,?)`;
+                let insertQuery = `INSERT INTO users(Name, MobileNumber, Password, UUID, ROLES) VALUES (?,?,?,?,?)`;
                 
                 let { name, mobilenumber, password, UUID } = msgObj;
                 // console.log(name, mobilenumber, password, UUID);
-                let insertData = [name, mobilenumber, password, UUID, 'New'];
+                let insertData = [name, mobilenumber, password, UUID, ''];
         
                 db.run(insertQuery, insertData, function(err: any) {
                     db.close();
@@ -158,7 +151,7 @@ export const logAttendance = (ws: WebSocket, msgObj: any) => {
             } else {
                 let { mobilenumber, password } = msgObj;
     
-                let sql = `SELECT Name, MobileNumber, Password, TYPE FROM users`;
+                let sql = `SELECT Name, MobileNumber, Password, ROLES FROM users`;
                 db.all(sql, [], (err: ErrorEvent, rows: Array<any>) => {
                     if (err) {
                         console.log(err.message);
@@ -234,15 +227,16 @@ export const makeAttendanceEntry = (ws: WebSocket, msgObj: any) => {
 
 export const displayUsersTable = (ws: WebSocket, msgObj: any) => {
     try{
-        if(msgObj.username == 'admin' && msgObj.password == 'dbadminkgdc'){
+        if(msgObj.user == 'admin' && msgObj.pass == 'dbadminkgdc'){
             let db = new sqlite3.Database(usersDB, (err: any) => {
                 if (err) {
                     console.log(err.message);
                     respondWithFailureMsg(ws);
                 } else {
-                    let sql = `SELECT Name, MobileNumber, Password, UUID, TYPE FROM users`;
+                    let sql = `SELECT Name, MobileNumber, Password, UUID, ROLES FROM users`;
                     db.all(sql, [], (err, rows) => {
-                        db.close();
+                        console.log(rows);
+                        // db.close();
                         if (err) {
                             console.log(err.message);
                             respondWithFailureMsg(ws);
@@ -260,7 +254,7 @@ export const displayUsersTable = (ws: WebSocket, msgObj: any) => {
     }
 }
 
-export const approveBanUser = (ws: WebSocket, msgObj: any) => {
+export const assignRole = (ws: WebSocket, msgObj: any) => {
     try {
         if(msgObj.user == 'admin' && msgObj.pass == 'dbadminkgdc'){
             let db = new sqlite3.Database(usersDB, (err: any) => {
@@ -269,23 +263,16 @@ export const approveBanUser = (ws: WebSocket, msgObj: any) => {
                     respondWithFailureMsg(ws);
                 } else {
                     let mobileNumberToUpdate = msgObj.mobilenumber;
+                    let modifiedRole = msgObj.modifiedRole;
     
-                    let sql = ``;
-                    let responseObj = {};
-                    if(msgObj.action == 'toapprove'){
-                        sql = `UPDATE users SET TYPE = 'Approved' WHERE MobileNumber = ?`;
-                        responseObj = { requestStatus: 'success', adminuser: true, action: 'approved' };
-                    } else {
-                        sql = `UPDATE users SET TYPE = 'Banned' WHERE MobileNumber = ?`;
-                        responseObj = { requestStatus: 'success', adminuser: true, action: 'banned' };
-                    }
-
-                    db.run(sql, mobileNumberToUpdate, (err: any) => {
+                    let sql = `UPDATE users SET ROLES = '${modifiedRole}' WHERE MobileNumber = ?`;
+                    db.run(sql, [mobileNumberToUpdate], (err: any) => {
                         db.close();
                         if(err){
                             console.log(err.message);
                             respondWithFailureMsg(ws);
                         } else {
+                            let responseObj = { requestStatus: 'success', adminuser: true, action: 'assigned' };
                             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
                         }
                     });

@@ -1,7 +1,7 @@
 import WebSocket, { Server } from 'ws';
 
 import { newregistration, checkUser, logAttendance } from './dbmanager';
-import { displayUsersTable, approveBanUser, deleteUser, checkAdmin, getAttendanceRegister } from './dbmanager';
+import { displayUsersTable, assignRole, deleteUser, checkAdmin, getAttendanceRegister } from './dbmanager';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -18,8 +18,8 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
             displayUsersTable(ws, msgObj);
         } else if (msgObj.requesttype == 'deleteuser'){
             deleteUser(ws, msgObj);
-        } else if (msgObj.requesttype == 'approvebanuser'){
-            approveBanUser(ws, msgObj);
+        } else if (msgObj.requesttype == 'assignrole'){
+            assignRole(ws, msgObj);
         } else if (msgObj.requesttype == 'checkadmin'){
             checkAdmin(ws, msgObj);
         } else if (msgObj.requesttype == 'attendanceregister'){
