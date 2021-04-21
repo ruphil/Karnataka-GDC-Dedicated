@@ -87,7 +87,10 @@ export default {
       let rolesArry = rolesPresent.split(',');
       rolesArry.push(roleToAdd);
 
-      let modifiedRole = rolesArry.join(',');
+      let modifiedRolesArry = [...new Set(rolesArry)];
+      console.log(modifiedRolesArry);
+
+      let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
       
       let ws = new WebSocket(wsServerURL.value);
       ws.addEventListener('message', (event) => {
@@ -120,7 +123,11 @@ export default {
 
     const renderRolesOptions = computed(() => {
       return (roles) => {
-        return roles.split(',');
+        if(roles != ''){
+          return [...new Set(roles.split(','))];
+        } else {
+          return []
+        }
       }
     });
 
@@ -134,7 +141,7 @@ export default {
       let rolesArry = rolesPresent.split(',');
       let modifiedRolesArry = rolesArry.filter(i => i != roleToRemove);
 
-      let modifiedRole = modifiedRolesArry.join(',');
+      let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
       // console.log(mobilenumber, rolesPresent, modifiedRole);
       
       let ws = new WebSocket(wsServerURL.value);
