@@ -1,4 +1,4 @@
-# frontend-attendance-admin
+# android-app-wrapper
 
 ## Project setup
 ```
