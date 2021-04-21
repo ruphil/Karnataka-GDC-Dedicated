@@ -16,7 +16,7 @@ export default {
       axios.get('https://raw.githubusercontent.com/daw-kgdc/file-host-permanent/main/vue-attendance-register/app.json')
       .then((res) => {
         iframeref.value.src = 'http://' + res.data.serverIP + ':' + res.data.httpPort;
-      })
+      });
     }
 
     onMounted(getWSSURL);
