@@ -1,0 +1,1 @@
+node %~dp0\attendance-server\index.js
