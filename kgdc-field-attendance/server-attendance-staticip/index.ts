@@ -9,7 +9,7 @@ import { createTablesIfNotExistsIntoDatabase } from './dbmanager';
 const staticDir: string = join(__dirname, 'frontend');
 const app: express.Application = express();
 app.use('/', express.static(staticDir));
-app.get('/', function(req, res) {
+app.get('*', function(req, res) {
     res.sendFile(join(staticDir, 'index.html'));
 });
 
