@@ -2,8 +2,8 @@ import WebSocket from 'ws';
 import sql from 'sqlite3';
 
 const sqlite3 = sql.verbose();
-const usersDB = 'D:/databases/kgdc-users.db';
-const attendanceDB = 'D:/databases/kgdc-attendance.db';
+const usersDB = 'D:/Databases/kgdc-users.db';
+const attendanceDB = 'D:/Databases/kgdc-attendance.db';
 
 const respondWithFailureMsg = (ws: WebSocket) => {
     let responseObj = { requestStatus: 'failure' };
