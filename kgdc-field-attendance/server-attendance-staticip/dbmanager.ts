@@ -108,8 +108,8 @@ export const checkUser = (ws: WebSocket, msgObj: any) => {
                 console.log(err.message);
                 respondWithFailureMsg(ws);
             } else {
-                let { mobilenumber, password } = msgObj;
-                let sql = `SELECT Name, MobileNumber, Password, TYPE FROM users`;
+                let { mobilenumber, password, rolecheck } = msgObj;
+                let sql = `SELECT Name, MobileNumber, Password, ROLES FROM users`;
                 db.all(sql, [], (err: ErrorEvent, rows: Array<any>) => {
                     db.close();
                     if (err) {
@@ -119,7 +119,17 @@ export const checkUser = (ws: WebSocket, msgObj: any) => {
                         let userFound = false;
                         for (let i = 0; i < rows.length; i++){
                             let row = rows[i];
-                            if(row.MobileNumber == mobilenumber && row.Password == password && row.TYPE == 'Approved'){
+                            
+                            let hasRole = false;
+                            let roles = row.ROLES;
+                            if(roles != ''){
+                                let rolesArry = roles.split(',');
+                                if(rolesArry.includes(rolecheck)){
+                                    hasRole = true;
+                                }
+                            }
+                            
+                            if(row.MobileNumber == mobilenumber && row.Password == password && hasRole){
                                 userFound = true;
                                 let responseObj = { requestStatus: 'success', validUser: true, name: row.Name };
                                 ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
