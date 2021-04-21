@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1>Field Attendance Register KGDC</h1>
+    <h1 style="display:inline-block;">Field Attendance Register KGDC</h1>
+    &emsp;&emsp;
+    <router-link to="/users" style="font-size: 25px">Go to Users</router-link>
     <table border="1" class="tablecenter">
       <tr>
           <th>ServerDate</th><th>ServerTime</th><th>ClientDate</th><th>ClientTime</th>
@@ -33,8 +35,8 @@ export default {
 
     const getWSURL = async () => {
       wsServerURL.value = store.getters.getWSURL;
-      usernameref.value = store.getters.getUser;
-      passwordref.value = store.getters.getPass;
+      usernameref.value = store.getters.getAdminUser;
+      passwordref.value = store.getters.getAdminPass;
 
       getAttendanceRegister();
     }

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1>Users</h1>
+    <h1 style="display:inline-block;">Users</h1>
+    &emsp;&emsp;
+    <router-link to="/attendanceregister" style="font-size: 25px">Go to Attendance Register</router-link>
     <table border="1" class="tablecenter">
       <tr>
         <td>MobileNumber</td><td>Name</td><td>Password</td><td>ROLES</td><td>UUID</td><td>Add Role</td><td>Remove Role</td><td>Delete</td>
