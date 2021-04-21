@@ -55,7 +55,7 @@ export default {
         // console.log(event.data);
 
         let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
-        console.log(responseObj);
+        // console.log(responseObj);
 
         users.value = responseObj;
 
