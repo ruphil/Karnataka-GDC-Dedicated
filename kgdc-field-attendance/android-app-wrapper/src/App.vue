@@ -1,26 +1,37 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="main">
+    <iframe ref="iframeref" src="" frameborder="0" height="100%" width="100%"></iframe>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  setup() {
+    const iframeref = ref(null);
+
+    const getWSSURL = () => {
+      axios.get('https://raw.githubusercontent.com/daw-kgdc/file-host-permanent/main/vue-attendance-register/app.json')
+      .then((res) => {
+        iframeref.value.src = 'http://' + res.data.serverIP + ':' + res.data.httpPort;
+      })
+    }
+
+    onMounted(getWSSURL);
+
+    return { iframeref }
+  },
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  body, html {
+    margin: 0; padding: 0; height: 100%; overflow: hidden;
+  }
+
+  #main{
+    position:absolute; left: 0; right: 0; bottom: 0; top: 0px; 
+  }
 </style>
