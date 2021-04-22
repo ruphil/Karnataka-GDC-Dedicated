@@ -32,27 +32,38 @@ export default {
     const route = useRouter();
     const store = useStore();
 
-    const getSheetURL = async () => {
+    const getWSURL = async () => {
       let dataURL = store.getters.getDataURL;
+      let errMsg = 'netslow';
+      let fallbackWSSURL = 'ws://localhost:3010';
 
-      axios.get(dataURL)
+      axios.get(dataURL, {
+        timeout: 3000,
+        timeoutErrorMessage: errMsg
+      })
       .then(res => {
         // console.log(res.data);
 
         let wsServerURL = 'ws://' + res.data.serverIP + ':' + res.data.wsPort;
 
         wsServerURLref.value = wsServerURL;
-        wsServerURLref.value = 'ws://localhost:3010';
+        wsServerURLref.value = fallbackWSSURL;
 
         store.dispatch('setWSURL', wsServerURLref.value);
         console.log(wsServerURLref.value);
       })
-      .catch(() => {
-        showToast('Please Connect To Internet...');
+      .catch((err) => {
+        if(err.message == errMsg){
+          wsServerURLref.value = fallbackWSSURL;
+          store.dispatch('setWSURL', wsServerURLref.value);
+          console.log(errMsg);
+        } else {
+          showToast('Please Connect To Internet...');
+        }
       })
     }
             
-    onMounted(getSheetURL);
+    onMounted(getWSURL);
     
     const loginBtnClick = async () => {
       let mobilenumber = mobilenumberref.value;
@@ -68,7 +79,7 @@ export default {
         return 0;
       }
 
-      let ws = new WebSocket(wsServerURL.value);
+      let ws = new WebSocket(wsServerURLref.value);
       ws.addEventListener('message', (event) => {
         // console.log(event.data);
 
@@ -76,7 +87,6 @@ export default {
         console.log(responseObj);
         
         if (responseObj.requestStatus == 'success' && responseObj.validUser){
-          console.log('Login Sucess...')
           showToast('Login Success... Wait...');
 
           store.dispatch('setMobile', mobilenumber);
@@ -96,7 +106,9 @@ export default {
 
       ws.addEventListener('open', (event) => {
         let checkUserObj = {
+          purpose: 'attendance',
           requesttype: 'checkuser',
+          rolecheck: 'attendance',
           mobilenumber,
           password
         };

@@ -23,13 +23,15 @@ import { Plugins } from '@capacitor/core';
 
 const { Device } = Plugins;
 
+import axios from 'axios';
+
 export default {
     setup() {
         const route = useRouter();
         const store = useStore();
 
         const isWorking = ref(false);
-        const wsServerURL = ref('');
+        const wsServerURLref = ref('');
         const uuidref = ref('');
         const nameref = ref('');
         const mobilenumberref = ref('');
@@ -39,11 +41,42 @@ export default {
 
         const dataRef = { isWorking, nameref, mobilenumberref, passwordref, repasswordref, statustxt };
 
+        const getWSURL = async () => {
+            let dataURL = store.getters.getDataURL;
+            let errMsg = 'netslow';
+            let fallbackWSSURL = 'ws://localhost:3010';
+
+            axios.get(dataURL, {
+                timeout: 3000,
+                timeoutErrorMessage: errMsg
+            })
+            .then(res => {
+                // console.log(res.data);
+
+                let wsServerURL = 'ws://' + res.data.serverIP + ':' + res.data.wsPort;
+
+                wsServerURLref.value = wsServerURL;
+                wsServerURLref.value = fallbackWSSURL;
+
+                store.dispatch('setWSURL', wsServerURLref.value);
+                console.log(wsServerURLref.value);
+            })
+            .catch((err) => {
+                if(err.message == errMsg){
+                wsServerURLref.value = fallbackWSSURL;
+                store.dispatch('setWSURL', wsServerURLref.value);
+                console.log(errMsg);
+                } else {
+                showToast('Please Connect To Internet...');
+                }
+            })
+        }
+
         const getUUIDNURL = async () => {
             const info = await Device.getInfo();
             uuidref.value = info.uuid;
 
-            wsServerURL.value = store.getters.getWSURL;
+            getWSURL();
         }
             
         onMounted(getUUIDNURL);
@@ -66,7 +99,7 @@ export default {
             } else {
                 statustxt.value = 'Please Wait... Registering...';
 
-                let ws = new WebSocket(wsServerURL.value);
+                let ws = new WebSocket(wsServerURLref.value);
                 ws.addEventListener('message', (event) => {
                     // console.log(event.data);
 

@@ -57,19 +57,6 @@ export default {
     const route = useRouter();
     const store = useStore();
 
-    onMounted(setupFunctions);
-
-    const getUserPosition = async () => {
-      navigator.geolocation.getCurrentPosition(makeItPrecise, handleFailure, { enableHighAccuracy: true });
-    }
-
-    const startTimer = () => {
-      setInterval(() => {
-        let dateNow = new Date();
-        currentTime.value = dateNow.toLocaleTimeString();
-      }, 1000);
-    }
-
     const setupFunctions = async () => {
       getUserPosition();
 
@@ -85,7 +72,41 @@ export default {
       currentDate.value = dateNow.toLocaleDateString('en-GB');
       startTimer();
     }
-    
+
+    onMounted(setupFunctions);
+
+    const makeItPrecise = async (posTmp) => {
+      console.log(posTmp);
+
+      position.value = posTmp;
+      accuracy.value = parseFloat(posTmp.coords.accuracy).toFixed(6);
+
+      if (accuracy.value > 10) {
+        getUserPosition();
+      }
+    }
+
+    const handleFailure = async (msg) => {
+      console.log(msg);
+      statustxt.value = 'Allow / Turn On GPS and Try Again...';
+
+      setTimeout(()=>{
+        getUserPosition();
+        statustxt.value = '';
+      }, 5000);
+    }
+
+    const getUserPosition = async () => {
+      navigator.geolocation.getCurrentPosition(makeItPrecise, handleFailure, { enableHighAccuracy: true });
+    }
+
+    const startTimer = () => {
+      setInterval(() => {
+        let dateNow = new Date();
+        currentTime.value = dateNow.toLocaleTimeString();
+      }, 1000);
+    }
+
     const submitAttendance = async () => {
       isWorking.value = true;
       statustxt.value = 'Please Wait...';
@@ -114,6 +135,7 @@ export default {
           ws.addEventListener('open', (event) => {
             let dateNow = new Date();
             let attendanceObj = {
+              purpose: 'attendance',
               requesttype: 'logattendance',
               clientdate: dateNow.toLocaleDateString('en-GB'),
               clienttime: dateNow.toLocaleTimeString('en-GB'),
@@ -137,27 +159,6 @@ export default {
           isWorking.value = false;
         }
       }, 1000);
-    }
-
-    const makeItPrecise = async (posTmp) => {
-      console.log(posTmp);
-
-      position.value = posTmp;
-      accuracy.value = parseFloat(posTmp.coords.accuracy).toFixed(6);
-
-      if (accuracy.value > 10) {
-        getUserPosition();
-      }
-    }
-
-    const handleFailure = async (msg) => {
-      console.log(msg);
-      statustxt.value = 'Allow / Turn On GPS and Try Again...';
-
-      setTimeout(()=>{
-        getUserPosition();
-        statustxt.value = '';
-      }, 5000);
     }
 
     const logOut = () => {

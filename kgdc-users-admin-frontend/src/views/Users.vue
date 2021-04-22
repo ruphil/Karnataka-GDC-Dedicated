@@ -197,6 +197,7 @@ export default {
       ws.addEventListener('open', (event) => {
 
         let deleteuserObj = {
+          purpose: 'attendanceadmin',
           requesttype: 'deleteuser',
           user: usernameref.value,
           pass: passwordref.value,

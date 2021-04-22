@@ -20,11 +20,11 @@ export const newregistration = async (ws: WebSocket, msgObj: any) => {
 
     client.query(insertQuery, insertData)
     .then(() => {
-        let responseObj = { requestStatus: 'success' };
+        let responseObj = { requestStatus: 'success', action: 'registered' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((err) => {
-        console.log(err);
+        // console.log(err);
         respondWithFailureMsg(ws);
         return 0;
     })
@@ -34,54 +34,50 @@ export const newregistration = async (ws: WebSocket, msgObj: any) => {
 }
 
 export const checkUser = (ws: WebSocket, msgObj: any) => {
-    // try {
-    //     let db = new sqlite3.Database(usersDB, (err: any) => {
-    //         if (err) {
-    //             console.log(err.message);
-    //             respondWithFailureMsg(ws);
-    //         } else {
-    //             let { mobilenumber, password, rolecheck } = msgObj;
-    //             let sql = `SELECT Name, MobileNumber, Password, ROLES FROM users`;
-    //             db.all(sql, [], (err: ErrorEvent, rows: Array<any>) => {
-    //                 db.close();
-    //                 if (err) {
-    //                     console.log(err.message);
-    //                     respondWithFailureMsg(ws);
-    //                 } else {
-    //                     let userFound = false;
-    //                     for (let i = 0; i < rows.length; i++){
-    //                         let row = rows[i];
-                            
-    //                         let hasRole = false;
-    //                         let roles = row.ROLES;
-    //                         if(roles != ''){
-    //                             let rolesArry = roles.split(',');
-    //                             if(rolesArry.includes(rolecheck)){
-    //                                 hasRole = true;
-    //                             }
-    //                         }
-                            
-    //                         if(row.MobileNumber == mobilenumber && row.Password == password && hasRole){
-    //                             userFound = true;
-    //                             let responseObj = { requestStatus: 'success', validUser: true, name: row.Name };
-    //                             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    //                             return 0;
-    //                         }
-    //                     }
-                        
-    //                     if(!userFound){
-    //                         let responseObj = { requestStatus: 'success', validUser: false };
-    //                         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //         return 0;
-    //     });
-    // } catch (e) {
-    //     respondWithFailureMsg(ws);
-    //     return 0;
-    // }
+    const client = new Client({ connectionString });
+    client.connect();
+
+    let { mobilenumber, password, rolecheck } = msgObj;
+
+    let getQuery = `SELECT Name, MOBILENUMBER, PASSWORD, ROLES FROM kgdcusers`;
+    client.query(getQuery)
+    .then((res) => {
+        let rows = res.rows;
+
+        let userFound = false;
+        for (let i = 0; i < rows.length; i++){
+            let row = rows[i];
+            
+            let hasRole = false;
+            let roles = row.roles;
+            if(roles != undefined && roles != ''){
+                let rolesArry = roles.split(',');
+                if(rolesArry.includes(rolecheck)){
+                    hasRole = true;
+                }
+            }
+            
+            if(row.mobilenumber == mobilenumber && row.password == password && hasRole){
+                userFound = true;
+                let responseObj = { requestStatus: 'success', validUser: true, name: row.Name };
+                ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+                return 0;
+            }
+        }
+        
+        if(!userFound){
+            let responseObj = { requestStatus: 'success', validUser: false };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        }
+    })
+    .catch((err) => {
+        // console.log(err);
+        respondWithFailureMsg(ws);
+        return 0;
+    })
+    .finally(() => {
+        client.end();
+    });
 }
 
 export const logAttendance = (ws: WebSocket, msgObj: any) => {
@@ -187,7 +183,7 @@ export const displayUsersTable = (ws: WebSocket, msgObj: any) => {
         ws.send(Buffer.from(JSON.stringify(res.rows)).toString('base64'));
     })
     .catch((err) => {
-        console.log(err);
+        // console.log(err);
         respondWithFailureMsg(ws);
         return 0;
     })
@@ -203,14 +199,14 @@ export const assignRole = (ws: WebSocket, msgObj: any) => {
     let mobileNumberToUpdate = msgObj.mobilenumber;
     let modifiedRole = msgObj.modifiedRole.toString();
 
-    let getQuery = `UPDATE kgdcusers SET ROLES = '${modifiedRole}' WHERE MOBILENUMBER = '${mobileNumberToUpdate}'`;
-    client.query(getQuery)
+    let sqlQuery = `UPDATE kgdcusers SET ROLES = '${modifiedRole}' WHERE MOBILENUMBER = '${mobileNumberToUpdate}'`;
+    client.query(sqlQuery)
     .then(() => {
         let responseObj = { requestStatus: 'success' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((err) => {
-        console.log(err);
+        // console.log(err);
         respondWithFailureMsg(ws);
         return 0;
     })
@@ -220,6 +216,26 @@ export const assignRole = (ws: WebSocket, msgObj: any) => {
 }
 
 export const deleteUser = (ws: WebSocket, msgObj: any) => {
+    const client = new Client({ connectionString });
+    client.connect();
+
+    let mobileNumberToDel = msgObj.mobilenumber;
+
+    let sqlQuery = `DELETE FROM kgdcusers WHERE MobileNumber='${mobileNumberToDel}'`;
+    client.query(sqlQuery)
+    .then(() => {
+        let responseObj = { requestStatus: 'success', adminuser: true, action: 'deleted' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    })
+    .catch((err) => {
+        // console.log(err);
+        respondWithFailureMsg(ws);
+        return 0;
+    })
+    .finally(() => {
+        client.end();
+    });
+
     // try {
     //     if(msgObj.user == 'admin' && msgObj.pass == 'dbadminkgdc'){
     //         let db = new sqlite3.Database(usersDB, (err: any) => {
@@ -265,7 +281,7 @@ export const getAttendanceRegister = (ws: WebSocket, msgObj: any) => {
         ws.send(Buffer.from(JSON.stringify(res.rows)).toString('base64'));
     })
     .catch((err) => {
-        console.log(err);
+        // console.log(err);
         respondWithFailureMsg(ws);
         return 0;
     })
