@@ -1,9 +1,14 @@
 import WebSocket from 'ws';
+import { join } from 'path';
 import sql from 'sqlite3';
+import { mkdirSync } from 'fs';
 
 const sqlite3 = sql.verbose();
-const usersDB = 'D:/Databases/kgdc-users.db';
-const attendanceDB = 'D:/Databases/kgdc-attendance.db';
+
+const databasesPath = 'D:/Servers/Databases/';
+
+const usersDB = join(databasesPath, 'kgdc-users.db');
+const attendanceDB = join(databasesPath, 'kgdc-attendance.db');
 
 const respondWithFailureMsg = (ws: WebSocket) => {
     let responseObj = { requestStatus: 'failure' };
@@ -11,6 +16,8 @@ const respondWithFailureMsg = (ws: WebSocket) => {
 }
 
 export const createTablesIfNotExistsIntoDatabase = () => {
+    mkdirSync(databasesPath, { recursive: true });
+    
     let usersdb = new sqlite3.Database(usersDB, (err: any) => {
         if (err) {
             console.log(err.message);

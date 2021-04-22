@@ -1,16 +1,13 @@
 import WebSocket, { Server } from 'ws';
-import { join } from 'path';
 import http from 'http'
 import express from 'express';
 
-import { handleWebSocketConnection } from './handlesockets';
+import { handleWebSocketConnection } from './sockethandler';
 import { createTablesIfNotExistsIntoDatabase } from './dbmanager';
 
-const staticDir: string = join(__dirname, 'frontend');
 const app: express.Application = express();
-app.use('/', express.static(staticDir));
 app.get('*', function(req, res) {
-    res.sendFile(join(staticDir, 'index.html'));
+    res.send('Message from HTTP Server: Socket Server Running Fine!');
 });
 
 const server: http.Server = http.createServer(app);
