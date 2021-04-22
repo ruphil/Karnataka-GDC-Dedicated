@@ -10,7 +10,8 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
 
         switch(msgObj.purpose){
             case 'attendance':
-                handleAttendanceConnections(ws, msgObj)
+                handleAttendanceConnections(ws, msgObj);
+                break;
             default:
                 // To clearly inform the Unanonymous Users Without Base64 String
                 ws.send('Invalid Request');

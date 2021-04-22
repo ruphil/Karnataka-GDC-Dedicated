@@ -89,6 +89,7 @@ export default {
 
                 ws.addEventListener('open', (event) => {
                     let registrationObj = {
+                        purpose: 'attendance',
                         requesttype: 'newregistration',
                         name: nameref.value,
                         mobilenumber: mobilenumberref.value.toString(),

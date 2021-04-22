@@ -1,4 +1,7 @@
 import WebSocket from 'ws';
+import { Client } from 'pg';
+
+const connectionString = 'postgres://postgres:philosopher@localhost:5432/kgdcdb';
 
 const respondWithFailureMsg = (ws: WebSocket) => {
     let responseObj = { requestStatus: 'failure' };
@@ -7,7 +10,31 @@ const respondWithFailureMsg = (ws: WebSocket) => {
 
 // User Logics
 
-export const newregistration = (ws: WebSocket, msgObj: any) => {
+export const newregistration = async (ws: WebSocket, msgObj: any) => {
+    let client: Client;
+    try {
+        let insertQuery = `INSERT INTO kgdcusers (Name, MobileNumber, Password, UUID, ROLES) VALUES ($1, $2, $3, $4, $5)`;
+        let { name, mobilenumber, password, UUID } = msgObj;
+        let insertData = [name, mobilenumber, password, UUID, ''];
+        
+        client = new Client({ connectionString });
+        await client.connect();
+
+        await client.query(insertQuery, insertData, (err) => {
+            if(err){
+                console.log(err.message);
+                respondWithFailureMsg(ws);
+                return 0;
+            } else {
+                let responseObj = { requestStatus: 'success' };
+                ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+            }
+            client.end();
+        });
+    } catch (e) {
+        console.log(e);
+    }
+
     // try {
     //     let db = new sqlite3.Database(usersDB, (err: any) => {
     //         if (err) {
