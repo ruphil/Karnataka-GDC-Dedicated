@@ -114,6 +114,7 @@ export default {
         // console.log(usernameref.value, passwordref.value);
 
         let assignRolesObj = {
+          purpose: 'attendanceadmin',
           requesttype: 'assignrole',
           user: usernameref.value,
           pass: passwordref.value,
@@ -165,6 +166,7 @@ export default {
         // console.log(usernameref.value, passwordref.value);
 
         let assignRolesObj = {
+          purpose: 'attendanceadmin',
           requesttype: 'assignrole',
           user: usernameref.value,
           pass: passwordref.value,

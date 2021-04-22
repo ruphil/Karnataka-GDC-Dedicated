@@ -29,6 +29,7 @@ export default {
     const wsServerURL = ref('');
     const usernameref = ref('');
     const passwordref = ref('');
+    const rowscountref = ref(100);
     const registerentries = ref([]);
 
     const store = useStore();
@@ -65,7 +66,7 @@ export default {
         // console.log(event.data);
 
         let msgObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
-        // console.log(msgObj);
+        console.log(msgObj);
 
         registerentries.value = msgObj;
 
@@ -78,12 +79,14 @@ export default {
         console.log(usernameref.value, passwordref.value);
 
         let attendanceRegisterObj = {
+          purpose: 'attendanceadmin',
           requesttype: 'attendanceregister',
+          rowscount: rowscountref.value,
           user: usernameref.value,
           pass: passwordref.value,
         }
 
-        console.log(attendanceRegisterObj);
+        // console.log(attendanceRegisterObj);
 
         ws.send(Buffer.from(JSON.stringify(attendanceRegisterObj)).toString('base64'));
       });

@@ -181,7 +181,7 @@ export const displayUsersTable = (ws: WebSocket, msgObj: any) => {
     const client = new Client({ connectionString });
     client.connect();
 
-    let getQuery = `SELECT NAME, MOBILENUMBER, PASSWORD, UUID, ROLES FROM kgdcusers`;
+    let getQuery = `SELECT NAME, MOBILENUMBER, PASSWORD, UUID, ROLES FROM kgdcusers ORDER BY MOBILENUMBER`;
     client.query(getQuery)
     .then((res) => {
         ws.send(Buffer.from(JSON.stringify(res.rows)).toString('base64'));
@@ -197,38 +197,26 @@ export const displayUsersTable = (ws: WebSocket, msgObj: any) => {
 }
 
 export const assignRole = (ws: WebSocket, msgObj: any) => {
-    // try {
-    //     if(msgObj.user == 'admin' && msgObj.pass == 'dbadminkgdc'){
-    //         let db = new sqlite3.Database(usersDB, (err: any) => {
-    //             if (err) {
-    //                 console.log(err.message);
-    //                 respondWithFailureMsg(ws);
-    //             } else {
-    //                 let mobileNumberToUpdate = msgObj.mobilenumber;
-    //                 let modifiedRole = msgObj.modifiedRole;
-    
-    //                 let sql = `UPDATE users SET ROLES = '${modifiedRole}' WHERE MobileNumber = ?`;
-    //                 db.run(sql, [mobileNumberToUpdate], (err: any) => {
-    //                     db.close();
-    //                     if(err){
-    //                         console.log(err.message);
-    //                         respondWithFailureMsg(ws);
-    //                     } else {
-    //                         let responseObj = { requestStatus: 'success', adminuser: true, action: 'assigned' };
-    //                         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    //                     }
-    //                 });
-    //             }
-    //             return 0;
-    //         });
-    //     } else {
-    //         let responseObj = { requestStatus: 'success', adminuser: false, action: 'ignored' };
-    //         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    //     }
-    // } catch (e) {
-    //     respondWithFailureMsg(ws);
-    //     return 0;
-    // }
+    const client = new Client({ connectionString });
+    client.connect();
+
+    let mobileNumberToUpdate = msgObj.mobilenumber;
+    let modifiedRole = msgObj.modifiedRole.toString();
+
+    let getQuery = `UPDATE kgdcusers SET ROLES = '${modifiedRole}' WHERE MOBILENUMBER = '${mobileNumberToUpdate}'`;
+    client.query(getQuery)
+    .then(() => {
+        let responseObj = { requestStatus: 'success' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    })
+    .catch((err) => {
+        console.log(err);
+        respondWithFailureMsg(ws);
+        return 0;
+    })
+    .finally(() => {
+        client.end();
+    });
 }
 
 export const deleteUser = (ws: WebSocket, msgObj: any) => {
@@ -264,11 +252,13 @@ export const deleteUser = (ws: WebSocket, msgObj: any) => {
 }
 
 export const getAttendanceRegister = (ws: WebSocket, msgObj: any) => {
+    let rowscount = msgObj.rowscount;
+
     const client = new Client({ connectionString });
     client.connect();
 
     let getQuery = `SELECT SERVERDATE, SERVERTIME, CLIENTDATE, CLIENTTIME, NAME, ATTENDANCETYPE, REMARKS, 
-    MOBILENUMBER, UUID, LATITUDE, LONGITUDE, ACCURACY FROM ATTENDANCEREGISTER ORDER BY ROWID DESC LIMIT 100;`;
+    MOBILENUMBER, UUID, LATITUDE, LONGITUDE, ACCURACY FROM kgdcfieldattendanceregister ORDER BY ID DESC LIMIT ${rowscount};`;
     
     client.query(getQuery)
     .then((res) => {
@@ -282,37 +272,6 @@ export const getAttendanceRegister = (ws: WebSocket, msgObj: any) => {
     .finally(() => {
         client.end();
     });
-
-    // try{
-    //     if(msgObj.user == 'admin' && msgObj.pass == 'dbadminkgdc'){
-    //         let db = new sqlite3.Database(attendanceDB, (err: any) => {
-    //             if (err) {
-    //                 console.log(err.message);
-    //                 respondWithFailureMsg(ws);
-    //             } else {
-    //                 let sql = `SELECT ServerDate, ServerTime, ClientDate, ClientTime, Name, AttendanceType, Remarks, 
-    //                 MobileNumber, UUID, Latitude, Longitude, Accuracy FROM attendanceregister ORDER BY rowid DESC LIMIT 100;`;
-                    
-    //                 db.all(sql, [], (err, rows) => {
-    //                     db.close();
-    //                     if (err) {
-    //                         console.log(err.message);
-    //                         respondWithFailureMsg(ws);
-    //                     } else {
-    //                         ws.send(Buffer.from(JSON.stringify(rows)).toString('base64'));
-    //                     }
-    //                 });
-    //             }
-    //             return 0;
-    //         });
-    //     } else {
-    //         let responseObj = { requestStatus: 'success', adminuser: false, action: 'ignored' };
-    //         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    //     }
-    // } catch (e) {
-    //     respondWithFailureMsg(ws);
-    //     return 0;
-    // }
 }
 
 export const checkAdmin = (ws: WebSocket, msgObj: any) => {
