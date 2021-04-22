@@ -37,21 +37,26 @@ const handleAttendanceUserConnections = (ws: WebSocket, msgObj: any) => {
 }
 
 const handleAttendanceAdminConnection = (ws: WebSocket, msgObj: any) => {
-    switch(msgObj.requesttype){
-        case 'userstable':
-            displayUsersTable(ws, msgObj);
-            break;
-        case 'deleteuser':
-            deleteUser(ws, msgObj);
-            break;
-        case 'assignrole':
-            assignRole(ws, msgObj);
-            break;
-        case 'checkadmin':
-            checkAdmin(ws, msgObj);
-            break;
-        case 'attendanceregister':
-            getAttendanceRegister(ws, msgObj);
-            break;
+    if(msgObj.user == 'admin' && msgObj.pass == 'dbadminkgdc'){
+        switch(msgObj.requesttype){
+            case 'userstable':
+                displayUsersTable(ws, msgObj);
+                break;
+            case 'deleteuser':
+                deleteUser(ws, msgObj);
+                break;
+            case 'assignrole':
+                assignRole(ws, msgObj);
+                break;
+            case 'checkadmin':
+                checkAdmin(ws, msgObj);
+                break;
+            case 'attendanceregister':
+                getAttendanceRegister(ws, msgObj);
+                break;
+        }
+    } else {
+        let responseObj = { requestStatus: 'success', adminuser: false, action: 'ignored' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     }
 }

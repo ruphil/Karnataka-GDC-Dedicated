@@ -8,21 +8,21 @@
         <td>MobileNumber</td><td>Name</td><td>Password</td><td>ROLES</td><td>UUID</td><td>Add Role</td><td>Remove Role</td><td>Delete</td>
       </tr>
       <tr v-for="(user, index) in users" v-bind:key="index">
-        <td>{{ user.MobileNumber }}</td><td>{{ user.Name }}</td><td>{{ user.Password }}</td>
-        <td>{{ user.ROLES }}</td><td>{{ user.UUID }}</td>
-        <td v-bind:mobile="user.MobileNumber" v-bind:roles="user.ROLES">
+        <td>{{ user.mobilenumber }}</td><td>{{ user.name }}</td><td>{{ user.password }}</td>
+        <td>{{ user.roles }}</td><td>{{ user.uuid }}</td>
+        <td v-bind:mobile="user.mobilenumber" v-bind:roles="user.roles">
           <input type="text" /><button v-on:click="addRole">Add</button>
         </td>
-        <td v-bind:mobile="user.MobileNumber" v-bind:roles="user.ROLES">
+        <td v-bind:mobile="user.mobilenumber" v-bind:roles="user.roles">
           <select>
             <option selected></option>
-            <option v-for="(item, index) in renderRolesOptions(user.ROLES)" v-bind:key="index">
+            <option v-for="(item, index) in renderRolesOptions(user.roles)" v-bind:key="index">
               {{ item }}
             </option>
           </select>
           <button v-on:click="removeRole">Remove</button>
         </td>
-        <td><button v-bind:mobile="user.MobileNumber" v-on:click="deleteuser">Delete User</button></td>
+        <td><button v-bind:mobile="user.mobilenumber" v-on:click="deleteuser">Delete User</button></td>
       </tr>
     </table>
   </div>
@@ -57,7 +57,7 @@ export default {
         // console.log(event.data);
 
         let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
-        // console.log(responseObj);
+        console.log(responseObj);
 
         users.value = responseObj;
 
@@ -70,6 +70,7 @@ export default {
         // console.log(usernameref.value, passwordref.value);
 
         let userstableObj = {
+          purpose: 'attendanceadmin',
           requesttype: 'userstable',
           user: usernameref.value,
           pass: passwordref.value,
