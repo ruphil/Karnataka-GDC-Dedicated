@@ -6,9 +6,9 @@
     <input type="number" v-model="rowscountref"/>
     <button v-on:click="getAttendanceRegister">Get Register</button>
     &emsp;&emsp;
-    <select>
-      <option selected>All</option>
-      <option v-for="(mobilenumber, index) in getUniqueMobileNumbers" v-bind:key="index">
+    <select v-model="selectedMobile">
+      <option selected value="1">All</option>
+      <option v-for="(mobilenumber, index) in getUniqueMobileNumbers" v-bind:key="index" v-bind:value="mobilenumber">
         {{ mobilenumber }}
       </option>
     </select>
@@ -20,7 +20,7 @@
           <th>UUID</th><th>Latitude</th><th>Longitude</th><th>Accuracy</th><th>Location</th>
       </tr>
       
-      <tr v-for="(register, index) in registerentries" v-bind:key="index">
+      <tr v-for="(register, index) in registerEntriesComputed" v-bind:key="index">
         <td>{{ register.serverdate }}</td><td>{{ register.servertime }}</td><td>{{ register.clientdate }}</td><td>{{ register.clienttime }}</td>
         <td>{{ register.name }}</td><td>{{ register.attendancetype }}</td><td>{{ register.remarks }}</td><td>{{ register.mobilenumber }}</td>
         <td>{{ register.uuid }}</td><td>{{ register.latitude }}</td><td>{{ register.longitude }}</td><td>{{ register.accuracy }}</td>
@@ -41,6 +41,8 @@ export default {
     const passwordref = ref('');
     const rowscountref = ref(100);
     const registerentries = ref([]);
+
+    const selectedMobile = ref('1');
 
     const store = useStore();
 
@@ -106,7 +108,15 @@ export default {
       return [...new Set(registerentries.value.map(register => register.mobilenumber))];
     });
 
-    return { registerentries, gmpasurl, rowscountref, getAttendanceRegister, getUniqueMobileNumbers }
+    const registerEntriesComputed = computed(() => {
+      if (selectedMobile.value == '1'){
+        return registerentries.value;
+      } else {
+        return registerentries.value.filter(entry => entry.mobilenumber == selectedMobile.value);
+      }
+    });
+
+    return { registerEntriesComputed, selectedMobile, gmpasurl, rowscountref, getAttendanceRegister, getUniqueMobileNumbers }
   },
 }
 </script>
