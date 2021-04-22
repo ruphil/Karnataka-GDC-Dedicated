@@ -1,77 +1,8 @@
 import WebSocket from 'ws';
-import { join } from 'path';
-import sql from 'sqlite3';
-import { mkdirSync } from 'fs';
-
-const sqlite3 = sql.verbose();
-
-const databasesPath = 'D:/Servers/Databases/';
-
-const usersDB = join(databasesPath, 'kgdc-users.db');
-const attendanceDB = join(databasesPath, 'kgdc-attendance.db');
 
 const respondWithFailureMsg = (ws: WebSocket) => {
     let responseObj = { requestStatus: 'failure' };
     ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-}
-
-export const createTablesIfNotExistsIntoDatabase = () => {
-    mkdirSync(databasesPath, { recursive: true });
-    
-    let usersdb = new sqlite3.Database(usersDB, (err: any) => {
-        if (err) {
-            console.log(err.message);
-            return 0;
-        } else {
-            let createTableQuery = `CREATE TABLE IF NOT EXISTS users(
-                Name TEXT NOT NULL,
-                MobileNumber TEXT NOT NULL PRIMARY KEY,
-                Password TEXT NOT NULL,
-                UUID TEXT,
-                ROLES TEXT
-            );`;
-
-            usersdb.exec(createTableQuery, (err: any)=>{
-                if (err){
-                    console.log(err.message);
-                    return 0;
-                } else {
-                    usersdb.close();
-                }
-            });
-        }
-    });
-
-    let attendancedb = new sqlite3.Database(attendanceDB, (err: any) => {
-        if (err) {
-            console.log(err.message);
-            return 0;
-        } else {
-            let createTableQuery = `CREATE TABLE IF NOT EXISTS attendanceregister(
-                ServerDate TEXT NOT NULL,
-                ServerTime TEXT NOT NULL,
-                ClientDate TEXT NOT NULL,
-                ClientTime TEXT NOT NULL,
-                Name TEXT NOT NULL,
-                AttendanceType TEXT NOT NULL,
-                Remarks TEXT NOT NULL,
-                MobileNumber TEXT NOT NULL,
-                UUID TEXT,
-                Latitude TEXT NOT NULL,
-                Longitude TEXT NOT NULL,
-                Accuracy TEXT NOT NULL
-            );`;
-
-            attendancedb.exec(createTableQuery, (err: any)=>{
-                if (err){
-                    console.log(err.message);
-                    return 0;
-                } else {
-                    attendancedb.close();
-                }
-            });
-        }
-    });
 }
 
 // User Logics

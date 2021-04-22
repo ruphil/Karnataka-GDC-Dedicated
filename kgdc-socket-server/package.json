@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "sqlite3": "^5.0.2",
+    "pg": "^8.6.0",
     "ws": "^7.4.5"
   },
   "devDependencies": {
