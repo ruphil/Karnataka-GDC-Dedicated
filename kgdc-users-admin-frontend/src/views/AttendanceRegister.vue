@@ -2,7 +2,17 @@
   <div>
     <h1 style="display:inline-block;">Field Attendance Register KGDC</h1>
     &emsp;&emsp;
-    <router-link to="/users" style="font-size: 25px">Go to Users</router-link>
+    <router-link to="/users" style="font-size: 25px">Go to Users</router-link><br/>
+    <input type="number" v-model="rowscountref"/>
+    <button v-on:click="getAttendanceRegister">Get Register</button>
+    &emsp;&emsp;
+    <select>
+      <option selected>All</option>
+      <option v-for="(mobilenumber, index) in getUniqueMobileNumbers" v-bind:key="index">
+        {{ mobilenumber }}
+      </option>
+    </select>
+    <br/><br/>
     <table border="1" class="tablecenter">
       <tr>
           <th>ServerDate</th><th>ServerTime</th><th>ClientDate</th><th>ClientTime</th>
@@ -92,7 +102,11 @@ export default {
       });
     }
 
-    return { registerentries, gmpasurl }
+    const getUniqueMobileNumbers = computed(() => {
+      return [...new Set(registerentries.value.map(register => register.mobilenumber))];
+    });
+
+    return { registerentries, gmpasurl, rowscountref, getAttendanceRegister, getUniqueMobileNumbers }
   },
 }
 </script>
