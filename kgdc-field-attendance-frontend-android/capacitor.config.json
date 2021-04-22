@@ -1,5 +1,5 @@
 {
-  "appId": "com.RDHInc.KGDCAttendance",
+  "appId": "com.rdhinc.kgdcattendance",
   "appName": "KGDC Field Attendance",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
