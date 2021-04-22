@@ -146,8 +146,10 @@ export default {
       statustxt.value = 'Please Wait...';
 
       let submitAttendanceJob = setInterval(() => {
-        if(accuracy.value < 10 || true){
-        // if(accuracy.value < 10){
+        let condition = accuracy.value;
+        // condition = accuracy.value < 10 || true;
+
+        if(condition){
           statustxt.value = 'Submitting... Now...';
 
           let ws = new WebSocket(wsServerURLref.value);
