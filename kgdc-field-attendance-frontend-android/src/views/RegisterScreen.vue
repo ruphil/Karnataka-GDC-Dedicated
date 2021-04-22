@@ -44,7 +44,7 @@ export default {
         const getWSURL = async () => {
             let dataURL = store.getters.getDataURL;
             let errMsg = 'netslow';
-            let fallbackWSSURL = 'ws://localhost:3010';
+            let fallbackWSSURL = store.getters.getFallbackWSSURL;
 
             axios.get(dataURL, {
                 timeout: 3000,
