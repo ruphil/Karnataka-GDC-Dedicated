@@ -10,7 +10,10 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
 
         switch(msgObj.purpose){
             case 'attendance':
-                handleAttendanceConnections(ws, msgObj);
+                handleAttendanceUserConnections(ws, msgObj);
+                break;
+            case 'attendanceadmin':
+                handleAttendanceAdminConnection(ws, msgObj);
                 break;
             default:
                 // To clearly inform the Unanonymous Users Without Base64 String
@@ -19,7 +22,7 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
     });
 }
 
-const handleAttendanceConnections = (ws: WebSocket, msgObj: any) => {
+const handleAttendanceUserConnections = (ws: WebSocket, msgObj: any) => {
     switch(msgObj.requesttype){
         case 'newregistration':
             newregistration(ws, msgObj);
@@ -30,6 +33,11 @@ const handleAttendanceConnections = (ws: WebSocket, msgObj: any) => {
         case 'logattendance':
             logAttendance(ws, msgObj);
             break;
+    }
+}
+
+const handleAttendanceAdminConnection = (ws: WebSocket, msgObj: any) => {
+    switch(msgObj.requesttype){
         case 'userstable':
             displayUsersTable(ws, msgObj);
             break;

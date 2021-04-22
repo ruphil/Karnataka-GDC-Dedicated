@@ -5,7 +5,7 @@ export default createStore({
     name: '',
     mobilenumber: '',
     password: '',
-    wsServerURL: 'ws://59.88.201.244:3010',
+    wsServerURL: '',
     adminuser: '',
     adminpass: ''
   },

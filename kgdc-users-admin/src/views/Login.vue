@@ -71,6 +71,7 @@ export default {
 
       ws.addEventListener('open', (event) => {
         let checkAdminObj = {
+          purpose: 'attendance',
           requesttype: 'checkadmin',
           user,
           pass
