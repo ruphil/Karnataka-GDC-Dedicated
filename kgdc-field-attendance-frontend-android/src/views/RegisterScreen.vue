@@ -76,6 +76,7 @@ export default {
             const info = await Device.getInfo();
             uuidref.value = info.uuid;
 
+            wsServerURLref.value = store.getters.getWSURL;
             getWSURL();
         }
             

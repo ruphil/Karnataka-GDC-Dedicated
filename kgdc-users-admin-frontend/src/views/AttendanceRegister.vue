@@ -11,10 +11,10 @@
       </tr>
       
       <tr v-for="(register, index) in registerentries" v-bind:key="index">
-        <td>{{ register.ServerDate }}</td><td>{{ register.ServerTime }}</td><td>{{ register.ClientDate }}</td><td>{{ register.ClientTime }}</td>
-        <td>{{ register.Name }}</td><td>{{ register.AttendanceType }}</td><td>{{ register.Remarks }}</td><td>{{ register.MobileNumber }}</td>
-        <td>{{ register.UUID }}</td><td>{{ register.Latitude }}</td><td>{{ register.Longitude }}</td><td>{{ register.Accuracy }}</td>
-        <td><a v-bind:href="gmpasurl(register.Latitude, register.Longitude)" target="_blank">Location</a></td>
+        <td>{{ register.serverdate }}</td><td>{{ register.servertime }}</td><td>{{ register.clientdate }}</td><td>{{ register.clienttime }}</td>
+        <td>{{ register.name }}</td><td>{{ register.attendancetype }}</td><td>{{ register.remarks }}</td><td>{{ register.mobilenumber }}</td>
+        <td>{{ register.uuid }}</td><td>{{ register.latitude }}</td><td>{{ register.longitude }}</td><td>{{ register.accuracy }}</td>
+        <td><a v-bind:href="gmpasurl(register.latitude, register.longitude)" target="_blank">Location</a></td>
       </tr>
     </table>
   </div>

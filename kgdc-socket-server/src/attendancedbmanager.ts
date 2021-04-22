@@ -59,7 +59,7 @@ export const checkUser = (ws: WebSocket, msgObj: any) => {
             
             if(row.mobilenumber == mobilenumber && row.password == password && hasRole){
                 userFound = true;
-                let responseObj = { requestStatus: 'success', validUser: true, name: row.Name };
+                let responseObj = { requestStatus: 'success', validUser: true, name: row.name };
                 ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
                 return 0;
             }
@@ -81,6 +81,49 @@ export const checkUser = (ws: WebSocket, msgObj: any) => {
 }
 
 export const logAttendance = (ws: WebSocket, msgObj: any) => {
+    const client = new Client({ connectionString });
+    client.connect();
+
+    let { mobilenumber, password, rolecheck } = msgObj;
+
+    let getQuery = `SELECT Name, MOBILENUMBER, PASSWORD, ROLES FROM kgdcusers`;
+    client.query(getQuery)
+    .then((res) => {
+        let rows = res.rows;
+
+        let userFound = false;
+        for (let i = 0; i < rows.length; i++){
+            let row = rows[i];
+            
+            let hasRole = false;
+            let roles = row.roles;
+            if(roles != undefined && roles != ''){
+                let rolesArry = roles.split(',');
+                if(rolesArry.includes(rolecheck)){
+                    hasRole = true;
+                }
+            }
+            
+            if(row.mobilenumber == mobilenumber && row.password == password && hasRole){
+                userFound = true;
+                makeAttendanceEntry(ws, msgObj);
+            }
+        }
+        
+        if(!userFound){
+            let responseObj = { requestStatus: 'success', validUser: false };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        }
+    })
+    .catch((err) => {
+        // console.log(err);
+        respondWithFailureMsg(ws);
+        return 0;
+    })
+    .finally(() => {
+        client.end();
+    });
+
     // try {
     //     let db = new sqlite3.Database(usersDB, (err: any) => {
     //         if (err) {
@@ -130,18 +173,47 @@ export const logAttendance = (ws: WebSocket, msgObj: any) => {
 }
 
 export const makeAttendanceEntry = (ws: WebSocket, msgObj: any) => {
+    let insertQuery = `INSERT INTO kgdcfieldattendanceregister (SERVERDATE, SERVERTIME, CLIENTDATE, CLIENTTIME, NAME, ATTENDANCETYPE, REMARKS, 
+        MOBILENUMBER, UUID, LATITUDE, LONGITUDE, ACCURACY) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;
+    
+    let dateNow = new Date();
+    let serverdate = dateNow.toLocaleDateString('en-GB');
+    let servertime = dateNow.toLocaleTimeString('en-GB');
+
+    let { clientdate, clienttime, name, attendancetype, remarks, mobilenumber, UUID } = msgObj;
+    let { latitude, longitude, accuracy } = msgObj;
+
+    let insertData = [serverdate, servertime, clientdate, clienttime, name, attendancetype, remarks, mobilenumber, UUID, latitude, longitude, accuracy];
+    
+    const client = new Client({ connectionString });
+    client.connect();
+
+    client.query(insertQuery, insertData)
+    .then(() => {
+        let responseObj = { requestStatus: 'success', action: 'attendanceentered' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    })
+    .catch((err) => {
+        // console.log(err);
+        respondWithFailureMsg(ws);
+        return 0;
+    })
+    .finally(() => {
+        client.end();
+    });
+
     // try {
     //     let db = new sqlite3.Database(attendanceDB, (err: any) => {
     //         if (err) {
     //             console.log(err.message);
     //             respondWithFailureMsg(ws);
     //         } else {
-    //             let dateNow = new Date();
-    //             let serverdate = dateNow.toLocaleDateString('en-GB');
-    //             let servertime = dateNow.toLocaleTimeString('en-GB');
+                // let dateNow = new Date();
+                // let serverdate = dateNow.toLocaleDateString('en-GB');
+                // let servertime = dateNow.toLocaleTimeString('en-GB');
 
-    //             let { clientdate, clienttime, name, attendancetype, remarks, mobilenumber, UUID } = msgObj;
-    //             let { latitude, longitude, accuracy } = msgObj;
+                // let { clientdate, clienttime, name, attendancetype, remarks, mobilenumber, UUID } = msgObj;
+                // let { latitude, longitude, accuracy } = msgObj;
 
     //             let insertQuery = `INSERT INTO attendanceregister(
     //                 ServerDate, ServerTime, ClientDate, ClientTime, Name, AttendanceType, Remarks, 

@@ -33,6 +33,8 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
+import axios from 'axios';
+
 import { Plugins } from '@capacitor/core';
 const { Device } = Plugins;
 
@@ -41,7 +43,7 @@ export default {
     const currentDate = ref('');
     const currentTime = ref('');
 
-    const wsServerURL = ref('');
+    const wsServerURLref = ref('');
     const isWorking = ref(false);
     const nameref = ref('');
     const movementType = ref('Transit from Camp to Field');
@@ -57,13 +59,44 @@ export default {
     const route = useRouter();
     const store = useStore();
 
+    const getWSURL = async () => {
+            let dataURL = store.getters.getDataURL;
+            let errMsg = 'netslow';
+            let fallbackWSSURL = 'ws://localhost:3010';
+
+            axios.get(dataURL, {
+                timeout: 3000,
+                timeoutErrorMessage: errMsg
+            })
+            .then(res => {
+                // console.log(res.data);
+
+                let wsServerURL = 'ws://' + res.data.serverIP + ':' + res.data.wsPort;
+
+                wsServerURLref.value = wsServerURL;
+                wsServerURLref.value = fallbackWSSURL;
+
+                store.dispatch('setWSURL', wsServerURLref.value);
+                console.log(wsServerURLref.value);
+            })
+            .catch((err) => {
+                if(err.message == errMsg){
+                wsServerURLref.value = fallbackWSSURL;
+                store.dispatch('setWSURL', wsServerURLref.value);
+                console.log(errMsg);
+                } else {
+                showToast('Please Connect To Internet...');
+                }
+            })
+        }
+
     const setupFunctions = async () => {
       getUserPosition();
 
       const info = await Device.getInfo();
       uuidref.value = info.uuid;
 
-      wsServerURL.value = store.getters.getWSURL;
+      wsServerURLref.value = store.getters.getWSURL;
       nameref.value = store.getters.getName;
       mobilenumberref.value = store.getters.getMobileNumber;
       passwordref.value = store.getters.getPassword;
@@ -71,6 +104,7 @@ export default {
       let dateNow = new Date();
       currentDate.value = dateNow.toLocaleDateString('en-GB');
       startTimer();
+      getWSURL();
     }
 
     onMounted(setupFunctions);
@@ -116,14 +150,14 @@ export default {
         // if(accuracy.value < 10){
           statustxt.value = 'Submitting... Now...';
 
-          let ws = new WebSocket(wsServerURL.value);
+          let ws = new WebSocket(wsServerURLref.value);
           ws.addEventListener('message', (event) => {
               // console.log(event.data);
 
               let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
               console.log(responseObj);
 
-              if (responseObj.requestStatus == 'success' && responseObj.action == 'attendanceregistered'){
+              if (responseObj.requestStatus == 'success' && responseObj.action == 'attendanceentered'){
                   statustxt.value = 'Attendance Submitted Successfully...';
               } else {
                   statustxt.value = 'Please Try Again...';
@@ -137,6 +171,7 @@ export default {
             let attendanceObj = {
               purpose: 'attendance',
               requesttype: 'logattendance',
+              rolecheck: 'attendance',
               clientdate: dateNow.toLocaleDateString('en-GB'),
               clienttime: dateNow.toLocaleTimeString('en-GB'),
               name: nameref.value,
