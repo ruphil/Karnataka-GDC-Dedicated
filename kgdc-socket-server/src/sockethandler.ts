@@ -1,7 +1,8 @@
-import WebSocket, { Server } from 'ws';
+import WebSocket from 'ws';
 
-import { newregistration, checkUser, logAttendance } from './dbtasks-attendance';
-import { displayUsersTable, assignRole, deleteUser, checkAdmin, getAttendanceRegister } from './dbtasks-attendance';
+import { newregistration, checkAdmin } from './dbtasks-commons';
+import { checkUserAttendance, logAttendance } from './dbtasks-attendance';
+import { displayUsersTable, assignRole, deleteUser, getAttendanceRegister } from './dbtasks-attendance';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -34,6 +35,9 @@ const handleCommonTasks = (ws: WebSocket, msgObj: any) => {
         case 'newregistration':
             newregistration(ws, msgObj);
             break;
+        case 'checkadmin':
+            checkAdmin(ws, msgObj);
+            break;
     }
 }
 
@@ -41,7 +45,7 @@ const handleCommonTasks = (ws: WebSocket, msgObj: any) => {
 const handleAttendanceUserConnections = (ws: WebSocket, msgObj: any) => {
     switch(msgObj.requesttype){
         case 'checkuser':
-            checkUser(ws, msgObj);
+            checkUserAttendance(ws, msgObj);
             break;
         case 'logattendance':
             logAttendance(ws, msgObj);
@@ -60,9 +64,6 @@ const handleAttendanceAdminConnection = (ws: WebSocket, msgObj: any) => {
                 break;
             case 'assignrole':
                 assignRole(ws, msgObj);
-                break;
-            case 'checkadmin':
-                checkAdmin(ws, msgObj);
                 break;
             case 'attendanceregister':
                 getAttendanceRegister(ws, msgObj);
