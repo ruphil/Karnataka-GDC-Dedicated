@@ -2,8 +2,7 @@
   <div class="login">
     <img alt="Vue logo" src="../assets/logo.png" height="150">
     <h2>Karnataka GDC</h2>
-    <h3>Attendance Register</h3>
-    <h3 class="title">Login To Continue</h3>
+    <h3>Drone Survey Project Progress</h3>
     <input class="mobilenumber" type="number" size="20" placeholder="mobilenumber" v-model="mobilenumberref"/>
     <br/><br/>
     <input class="password" type="password" size="20" placeholder="password" v-model="passwordref"/>

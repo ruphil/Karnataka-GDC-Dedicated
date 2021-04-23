@@ -57,6 +57,7 @@ export default {
 
           store.dispatch('setAdminUser', user);
           store.dispatch('setAdminPass', pass);
+          store.dispatch('setAdminStatus', true);
           
           setTimeout(() => {
             route.push({path: '/users'});

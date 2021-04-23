@@ -4,6 +4,8 @@ import { newregistration, checkAdmin } from './dbtasks-commons';
 import { checkUserAttendance, logAttendance } from './dbtasks-attendance';
 import { displayUsersTable, assignRole, deleteUser, getAttendanceRegister } from './dbtasks-attendance';
 
+import { checkUserDSP } from './dbtasks-dspprogress';
+
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
         let msgObj = JSON.parse(Buffer.from(data.toString(), 'base64').toString());
@@ -29,14 +31,11 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
     });
 }
 
-// Handle Common Tasks  -------------------------------------------------------------------------------------------
-const handleCommonTasks = (ws: WebSocket, msgObj: any) => {
+// Handle Drone Survey Project Progress Taks   -------------------------------------------------------------------------------------
+const handleDSPProgressConnection = (ws: WebSocket, msgObj: any) => {
     switch(msgObj.requesttype){
-        case 'newregistration':
-            newregistration(ws, msgObj);
-            break;
-        case 'checkadmin':
-            checkAdmin(ws, msgObj);
+        case 'checkuser':
+            checkUserDSP(ws, msgObj);
             break;
     }
 }
@@ -75,11 +74,14 @@ const handleAttendanceAdminConnection = (ws: WebSocket, msgObj: any) => {
     }
 }
 
-// Handle Drone Survey Project Progress Taks   -------------------------------------------------------------------------------------
-const handleDSPProgressConnection = (ws: WebSocket, msgObj: any) => {
+// Handle Common Tasks  -------------------------------------------------------------------------------------------
+const handleCommonTasks = (ws: WebSocket, msgObj: any) => {
     switch(msgObj.requesttype){
-        case 'checkuser':
+        case 'newregistration':
             newregistration(ws, msgObj);
+            break;
+        case 'checkadmin':
+            checkAdmin(ws, msgObj);
             break;
     }
 }

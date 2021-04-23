@@ -8,7 +8,7 @@ const respondWithFailureMsg = (ws: WebSocket) => {
     ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
 }
 
-export const checkUser = (ws: WebSocket, msgObj: any) => {
+export const checkUserDSP = (ws: WebSocket, msgObj: any) => {
     const client = new Client({ connectionString });
     client.connect();
 

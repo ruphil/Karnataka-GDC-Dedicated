@@ -8,7 +8,8 @@ export default createStore({
     wsServerURL: 'ws://localhost:3010',
     // wsServerURL: 'ws://59.88.201.244:3010/',
     adminuser: '',
-    adminpass: ''
+    adminpass: '',
+    isAdmin: false
   },
   getters: {
     getWSURL: state => {
@@ -28,6 +29,9 @@ export default createStore({
     },
     getAdminPass: state => {
       return state.adminpass;
+    },
+    isAdmin: state => {
+      return state.isAdmin;
     }
   },
   mutations: {
@@ -45,6 +49,9 @@ export default createStore({
     },
     setAdminPass(state, payload){
       state.adminpass = payload;
+    },
+    setAdminStatus(state, payload){
+      state.isAdmin = payload;
     },
   },
   actions: {
@@ -65,6 +72,9 @@ export default createStore({
     },
     setAdminPass(context, payload){
       context.commit('setAdminPass', payload);
+    },
+    setAdminStatus(context, payload){
+      context.commit('setAdminStatus', payload);
     }
   },
   modules: {

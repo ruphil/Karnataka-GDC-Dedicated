@@ -2,7 +2,7 @@
   <div>
     <h1 style="display:inline-block;">Field Attendance Register KGDC</h1>
     &emsp;&emsp;
-    <router-link to="/users" style="font-size: 25px">Go to Users</router-link><br/>
+    
     <input type="number" v-model="rowscountref"/>
     <button v-on:click="getAttendanceRegister">Get Register</button>
     &emsp;&emsp;
