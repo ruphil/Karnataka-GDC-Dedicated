@@ -1,10 +1,9 @@
 const path = require('path');
-const nodeExternals = require('webpack-node-externals');
+const webpack = require('webpack');
 
 module.exports = {
   entry: './src/index.ts',
   target: 'node',
-  externals: [nodeExternals()],
   mode: 'production',
   module: {
     rules: [
@@ -18,8 +17,11 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
+  plugins: [
+    new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ })
+  ],
   output: {
-    filename: 'server.js',
+    filename: 'attendanceserver.js',
     path: path.resolve(__dirname, 'dist'),
   },
 };
