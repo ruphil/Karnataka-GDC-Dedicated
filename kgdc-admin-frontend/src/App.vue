@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
     <div v-show="isAdmin">
-      <router-link to="/users">Users</router-link><br/> |
+      <router-link to="/users">Users</router-link> |
       <router-link to="/attendanceregister">Attendance Register</router-link>
     </div>
     <router-view/>
