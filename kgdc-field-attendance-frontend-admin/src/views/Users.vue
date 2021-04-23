@@ -112,7 +112,6 @@ export default {
         // console.log(usernameref.value, passwordref.value);
 
         let assignRolesObj = {
-          purpose: 'attendanceadmin',
           requesttype: 'assignrole',
           user: usernameref.value,
           pass: passwordref.value,
@@ -164,7 +163,6 @@ export default {
         // console.log(usernameref.value, passwordref.value);
 
         let assignRolesObj = {
-          purpose: 'attendanceadmin',
           requesttype: 'assignrole',
           user: usernameref.value,
           pass: passwordref.value,
@@ -195,7 +193,6 @@ export default {
       ws.addEventListener('open', (event) => {
 
         let deleteuserObj = {
-          purpose: 'attendanceadmin',
           requesttype: 'deleteuser',
           user: usernameref.value,
           pass: passwordref.value,

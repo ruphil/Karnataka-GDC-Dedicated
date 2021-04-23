@@ -148,8 +148,8 @@ export default {
       statustxt.value = 'Please Wait...';
 
       let submitAttendanceJob = setInterval(() => {
-        let condition = accuracy.value < 10;
-        // condition = accuracy.value < 10 || true;
+        // let condition = accuracy.value < 10;
+        let condition = accuracy.value < 10 || true;
 
         if(condition){
           statustxt.value = 'Submitting... Now...';
@@ -173,7 +173,6 @@ export default {
           ws.addEventListener('open', (event) => {
             let dateNow = new Date();
             let attendanceObj = {
-              purpose: 'attendance',
               requesttype: 'logattendance',
               clientdate: dateNow.toLocaleDateString('en-GB'),
               clienttime: dateNow.toLocaleTimeString('en-GB'),
@@ -208,6 +207,14 @@ export default {
       setTimeout(() => {
         route.push({path: '/'});
       }, 1000);
+    }
+
+    const showToast = async (msg) => {
+      toastmsgref.value = msg;
+
+      let x = document.getElementById("logintoast");
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 
     return { nameref, isWorking, accuracy, movementType, currentDate, currentTime, remarksref, statustxt, submitAttendance, logOut, toastmsgref }

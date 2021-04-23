@@ -91,7 +91,6 @@ export default {
         console.log(usernameref.value, passwordref.value);
 
         let attendanceRegisterObj = {
-          purpose: 'attendanceadmin',
           requesttype: 'attendanceregister',
           rowscount: rowscountref.value,
           user: usernameref.value,
