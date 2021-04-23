@@ -25,6 +25,7 @@
     <div class="statusdiv">{{ statustxt }}</div>
     <br/>
     <button class="logoutbtn" v-bind:disabled="isWorking" v-on:click="logOut">Logout</button>
+    <div id="logintoast">{{ toastmsgref }}</div>
   </div>
 </template>
 
@@ -51,6 +52,7 @@ export default {
     const mobilenumberref = ref('');
     const passwordref = ref('');
     const uuidref = ref('');
+    const toastmsgref = ref('');
 
     const statustxt = ref('');
     const position = ref(null);
@@ -146,7 +148,7 @@ export default {
       statustxt.value = 'Please Wait...';
 
       let submitAttendanceJob = setInterval(() => {
-        let condition = accuracy.value;
+        let condition = accuracy.value < 10;
         // condition = accuracy.value < 10 || true;
 
         if(condition){
@@ -208,7 +210,7 @@ export default {
       }, 1000);
     }
 
-    return { nameref, isWorking, accuracy, movementType, currentDate, currentTime, remarksref, statustxt, submitAttendance, logOut }
+    return { nameref, isWorking, accuracy, movementType, currentDate, currentTime, remarksref, statustxt, submitAttendance, logOut, toastmsgref }
   },
 }
 </script>
@@ -290,5 +292,50 @@ export default {
 
   .displayDateTime {
     color: blueviolet;
+  }
+
+  #logintoast {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #4e73e3; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+  }
+
+  /* Show the snackbar when clicking on a button (class added with JavaScript) */
+  #logintoast.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+
+  /* Animations to fade the snackbar in and out */
+  @-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+
+  @keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+
+  @-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+
+  @keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
   }
 </style>
