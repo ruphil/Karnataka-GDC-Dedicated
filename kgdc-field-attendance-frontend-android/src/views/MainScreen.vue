@@ -37,7 +37,7 @@ import { useStore } from 'vuex';
 import axios from 'axios';
 
 import { Plugins } from '@capacitor/core';
-const { Device } = Plugins;
+const { Geolocation, Device } = Plugins;
 
 export default {
   setup() {
@@ -133,6 +133,7 @@ export default {
     }
 
     const getUserPosition = async () => {
+      Geolocation.requestPermissions();
       navigator.geolocation.getCurrentPosition(makeItPrecise, handleFailure, { enableHighAccuracy: true });
     }
 
