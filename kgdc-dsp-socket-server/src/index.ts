@@ -6,7 +6,7 @@ import { handleWebSocketConnection } from './handlersocket';
 
 const app: express.Application = express();
 app.get('*', function(req, res) {
-    res.send('Message from HTTP Server: Attendance Socket Server Running Fine!');
+    res.send('Message from HTTP Server: DSP Socket Server Running Fine!');
 });
 
 const server: http.Server = http.createServer(app);
@@ -15,7 +15,7 @@ wss.on('connection', (ws: WebSocket) => {
     handleWebSocketConnection(ws);
 });
 
-const PORT = 3010;
+const PORT = 4010;
 server.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 });
