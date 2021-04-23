@@ -51,8 +51,9 @@ export default {
         // console.log(event.data);
 
         let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
+        console.log(responseObj);
 
-        if (responseObj.requestStatus == 'success' && responseObj.adminuser){
+        if (responseObj.requestStatus == 'success' && responseObj.isAdmin){
           showToast('Welcome back Admin...');
 
           store.dispatch('setAdminUser', user);
@@ -72,7 +73,6 @@ export default {
 
       ws.addEventListener('open', (event) => {
         let checkAdminObj = {
-          purpose: 'commontask',
           requesttype: 'checkadmin',
           user,
           pass

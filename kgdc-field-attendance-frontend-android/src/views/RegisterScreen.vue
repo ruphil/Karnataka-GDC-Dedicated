@@ -125,7 +125,6 @@ export default {
 
                 ws.addEventListener('open', (event) => {
                     let registrationObj = {
-                        purpose: 'commontask',
                         requesttype: 'newregistration',
                         name: nameref.value,
                         mobilenumber: mobilenumberref.value.toString(),

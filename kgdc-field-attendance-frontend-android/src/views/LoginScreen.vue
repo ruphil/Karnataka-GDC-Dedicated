@@ -106,7 +106,6 @@ export default {
 
       ws.addEventListener('open', (event) => {
         let checkUserObj = {
-          purpose: 'attendance',
           requesttype: 'checkuser',
           mobilenumber,
           password

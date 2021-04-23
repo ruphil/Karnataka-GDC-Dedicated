@@ -2,7 +2,7 @@ import WebSocket, { Server } from 'ws';
 import http from 'http'
 import express from 'express';
 
-import { handleWebSocketConnection } from './sockethandler';
+import { handleWebSocketConnection } from './handlersocket';
 
 const app: express.Application = express();
 app.get('*', function(req, res) {

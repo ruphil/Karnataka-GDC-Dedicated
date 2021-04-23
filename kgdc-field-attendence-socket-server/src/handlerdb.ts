@@ -10,7 +10,7 @@ const respondWithFailureMsg = (ws: WebSocket) => {
 
 // User Logics
 
-export const checkUserAttendance = (ws: WebSocket, msgObj: any) => {
+export const checkUser = (ws: WebSocket, msgObj: any) => {
     const client = new Client({ connectionString });
     client.connect();
 
@@ -136,22 +136,31 @@ export const makeAttendanceEntry = (ws: WebSocket, msgObj: any) => {
 // Admin Logics
 
 export const displayUsersTable = (ws: WebSocket, msgObj: any) => {
-    const client = new Client({ connectionString });
-    client.connect();
+    checkAdminUser(msgObj.user, msgObj.pass)
+    .then((res: any) => {
+        const client = new Client({ connectionString });
+        client.connect();
 
-    let getQuery = `SELECT NAME, MOBILENUMBER, PASSWORD, UUID, ROLES FROM kgdcusers ORDER BY MOBILENUMBER`;
-    client.query(getQuery)
-    .then((res) => {
-        ws.send(Buffer.from(JSON.stringify(res.rows)).toString('base64'));
+        let getQuery = `SELECT NAME, MOBILENUMBER, PASSWORD, UUID, ROLES FROM kgdcusers ORDER BY MOBILENUMBER`;
+        client.query(getQuery)
+        .then((res) => {
+            ws.send(Buffer.from(JSON.stringify(res.rows)).toString('base64'));
+        })
+        .catch((err) => {
+            // console.log(err);
+            respondWithFailureMsg(ws);
+            return 0;
+        })
+        .finally(() => {
+            client.end();
+        });
     })
-    .catch((err) => {
-        // console.log(err);
-        respondWithFailureMsg(ws);
-        return 0;
-    })
-    .finally(() => {
-        client.end();
+    .catch((res: any) => {
+        let responseObj = { requestStatus: 'success', ...res }
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
+
+    
 }
 
 export const assignRole = (ws: WebSocket, msgObj: any) => {
@@ -200,24 +209,77 @@ export const deleteUser = (ws: WebSocket, msgObj: any) => {
 }
 
 export const getAttendanceRegister = (ws: WebSocket, msgObj: any) => {
-    let rowscount = msgObj.rowscount;
+    checkAdminUser(msgObj.user, msgObj.pass)
+    .then((res: any) => {
+        let rowscount = msgObj.rowscount;
 
+        const client = new Client({ connectionString });
+        client.connect();
+
+        let getQuery = `SELECT SERVERDATE, SERVERTIME, CLIENTDATE, CLIENTTIME, NAME, ATTENDANCETYPE, REMARKS, 
+        MOBILENUMBER, UUID, LATITUDE, LONGITUDE, ACCURACY FROM kgdcfieldattendanceregister ORDER BY ID DESC LIMIT ${rowscount};`;
+        
+        client.query(getQuery)
+        .then((res) => {
+            ws.send(Buffer.from(JSON.stringify(res.rows)).toString('base64'));
+        })
+        .catch((err) => {
+            console.log(err);
+            respondWithFailureMsg(ws);
+            return 0;
+        })
+        .finally(() => {
+            client.end();
+        });
+    })
+    .catch((res: any) => {
+        let responseObj = { requestStatus: 'success', ...res }
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    });
+    
+}
+
+export const newregistration = async (ws: WebSocket, msgObj: any) => {
+    let insertQuery = `INSERT INTO kgdcusers (Name, MobileNumber, Password, UUID, ROLES) VALUES ($1, $2, $3, $4, $5)`;
+    let { name, mobilenumber, password, UUID } = msgObj;
+    let insertData = [name, mobilenumber, password, UUID, ''];
+    
     const client = new Client({ connectionString });
     client.connect();
 
-    let getQuery = `SELECT SERVERDATE, SERVERTIME, CLIENTDATE, CLIENTTIME, NAME, ATTENDANCETYPE, REMARKS, 
-    MOBILENUMBER, UUID, LATITUDE, LONGITUDE, ACCURACY FROM kgdcfieldattendanceregister ORDER BY ID DESC LIMIT ${rowscount};`;
-    
-    client.query(getQuery)
-    .then((res) => {
-        ws.send(Buffer.from(JSON.stringify(res.rows)).toString('base64'));
+    client.query(insertQuery, insertData)
+    .then(() => {
+        let responseObj = { requestStatus: 'success', action: 'registered' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((err) => {
-        // console.log(err);
+        console.log(err);
         respondWithFailureMsg(ws);
         return 0;
     })
     .finally(() => {
         client.end();
+    });
+}
+
+const checkAdminUser = (user: string, pass: string) => {
+    return new Promise((resolve, reject) => {
+        if(user == 'admin' && pass == 'dbadminkgdc'){
+            resolve({ isAdmin: true });
+        } else {
+            reject({ isAdmin: false });
+        }
+    });
+}
+
+export const checkAdmin = (ws: WebSocket, msgObj: any) => {
+    checkAdminUser(msgObj.user, msgObj.pass)
+    .then((res: any) => {
+        let responseObj = { requestStatus: 'success', ...res }
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    })
+    .catch((res: any) => {
+        let responseObj = { requestStatus: 'success', ...res }
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }

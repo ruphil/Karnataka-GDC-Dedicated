@@ -69,7 +69,6 @@ export default {
         // console.log(usernameref.value, passwordref.value);
 
         let userstableObj = {
-          purpose: 'attendanceadmin',
           requesttype: 'userstable',
           user: usernameref.value,
           pass: passwordref.value,
