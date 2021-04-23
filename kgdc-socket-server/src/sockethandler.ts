@@ -1,7 +1,7 @@
 import WebSocket, { Server } from 'ws';
 
-import { newregistration, checkUser, logAttendance } from './attendancedbmanager';
-import { displayUsersTable, assignRole, deleteUser, checkAdmin, getAttendanceRegister } from './attendancedbmanager';
+import { newregistration, checkUser, logAttendance } from './dbtasks-attendance';
+import { displayUsersTable, assignRole, deleteUser, checkAdmin, getAttendanceRegister } from './dbtasks-attendance';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -18,6 +18,9 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
             case 'attendanceadmin':
                 handleAttendanceAdminConnection(ws, msgObj);
                 break;
+            case 'dspprogress':
+                handleDSPProgressConnection(ws, msgObj);
+                break;
             default:
                 // To clearly inform the Unanonymous Users Without Base64 String
                 ws.send('Invalid Request');
@@ -25,6 +28,7 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
     });
 }
 
+// Handle Common Tasks  -------------------------------------------------------------------------------------------
 const handleCommonTasks = (ws: WebSocket, msgObj: any) => {
     switch(msgObj.requesttype){
         case 'newregistration':
@@ -33,6 +37,7 @@ const handleCommonTasks = (ws: WebSocket, msgObj: any) => {
     }
 }
 
+// Handle Attendance Taks   -------------------------------------------------------------------------------------
 const handleAttendanceUserConnections = (ws: WebSocket, msgObj: any) => {
     switch(msgObj.requesttype){
         case 'checkuser':
@@ -66,5 +71,14 @@ const handleAttendanceAdminConnection = (ws: WebSocket, msgObj: any) => {
     } else {
         let responseObj = { requestStatus: 'success', adminuser: false, action: 'ignored' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    }
+}
+
+// Handle Drone Survey Project Progress Taks   -------------------------------------------------------------------------------------
+const handleDSPProgressConnection = (ws: WebSocket, msgObj: any) => {
+    switch(msgObj.requesttype){
+        case 'checkuser':
+            newregistration(ws, msgObj);
+            break;
     }
 }

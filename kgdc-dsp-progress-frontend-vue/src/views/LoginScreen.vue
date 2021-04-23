@@ -106,7 +106,7 @@ export default {
 
       ws.addEventListener('open', (event) => {
         let checkUserObj = {
-          purpose: 'dspp',
+          purpose: 'dspprogress',
           requesttype: 'checkuser',
           mobilenumber,
           password
