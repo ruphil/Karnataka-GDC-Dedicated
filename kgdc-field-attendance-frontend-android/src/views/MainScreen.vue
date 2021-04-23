@@ -148,8 +148,8 @@ export default {
       statustxt.value = 'Please Wait...';
 
       let submitAttendanceJob = setInterval(() => {
-        // let condition = accuracy.value < 10;
-        let condition = accuracy.value < 10 || true;
+        let condition = accuracy.value < 10;
+        // let condition = accuracy.value < 10 || true;
 
         if(condition){
           statustxt.value = 'Submitting... Now...';
