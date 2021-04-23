@@ -1,1 +1,0 @@
-pm2 start D:\Servers\attendanceserver\attendanceserver.js
