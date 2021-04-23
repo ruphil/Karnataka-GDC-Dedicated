@@ -1,5 +1,5 @@
 {
-  "name": "kgdc-socket-server",
+  "name": "kgdc-dsp-socket-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
