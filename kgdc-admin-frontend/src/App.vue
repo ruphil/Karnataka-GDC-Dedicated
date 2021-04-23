@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div id="nav">
     <div v-show="isAdmin">
-      <router-link to="/attendanceregister" style="font-size: 25px">Go to Attendance Register</router-link>
-      <router-link to="/users" style="font-size: 25px">Go to Users</router-link><br/>
+      <router-link to="/users">Users</router-link><br/> |
+      <router-link to="/attendanceregister">Attendance Register</router-link>
     </div>
     <router-view/>
   </div>
