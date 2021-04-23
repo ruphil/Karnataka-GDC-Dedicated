@@ -9,6 +9,9 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
         console.log(msgObj);
 
         switch(msgObj.purpose){
+            case 'commontask':
+                handleCommonTasks(ws, msgObj);
+                break;
             case 'attendance':
                 handleAttendanceUserConnections(ws, msgObj);
                 break;
@@ -22,11 +25,16 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
     });
 }
 
-const handleAttendanceUserConnections = (ws: WebSocket, msgObj: any) => {
+const handleCommonTasks = (ws: WebSocket, msgObj: any) => {
     switch(msgObj.requesttype){
         case 'newregistration':
             newregistration(ws, msgObj);
             break;
+    }
+}
+
+const handleAttendanceUserConnections = (ws: WebSocket, msgObj: any) => {
+    switch(msgObj.requesttype){
         case 'checkuser':
             checkUser(ws, msgObj);
             break;
