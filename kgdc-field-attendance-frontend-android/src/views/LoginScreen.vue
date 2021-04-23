@@ -128,7 +128,7 @@ export default {
       setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 
-    return { mobilenumberref, passwordref, toastmsgref, loginBtnClick, registerBtnClick, showToast }
+    return { mobilenumberref, passwordref, toastmsgref, loginBtnClick, registerBtnClick }
   },
 }
 </script>

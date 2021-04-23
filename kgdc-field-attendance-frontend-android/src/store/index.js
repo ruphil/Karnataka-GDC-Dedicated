@@ -9,7 +9,7 @@ export default createStore({
     // dataURL: 'https://raw.githubusercontent.com/daw-kgdc/file-host-permanent/main/vue-attendance-register/app.json',
     // fallbackWSSURL: 'ws://59.88.201.244:3010',
     dataURL: '',
-    // fallbackWSSURL: 'ws://localhost:3010',
+    fallbackWSSURL: 'ws://localhost:3010',
   },
   getters: {
     getDataURL: state => {

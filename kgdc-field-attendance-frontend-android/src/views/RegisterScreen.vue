@@ -11,6 +11,7 @@
         <div>{{ statustxt }}</div><br/><br/>
         <button class="loginregisterbtn" v-on:click="registerUser">Register</button>
         <button class="homebtn" v-bind:disabled="isWorking" v-on:click="goToHome">Home</button>
+        <div id="logintoast">{{ toastmsgref }}</div>
     </div>
 </template>
 
@@ -37,6 +38,7 @@ export default {
         const mobilenumberref = ref('');
         const passwordref = ref('');
         const repasswordref = ref('');
+        const toastmsgref = ref('');
         const statustxt = ref('Register to continue...');
 
         const dataRef = { isWorking, nameref, mobilenumberref, passwordref, repasswordref, statustxt };
@@ -67,7 +69,7 @@ export default {
                 store.dispatch('setWSURL', wsServerURLref.value);
                 console.log(errMsg);
                 } else {
-                showToast('Please Connect To Internet...');
+                    showToast('Please Connect To Internet...');
                 }
             })
         }
@@ -136,13 +138,21 @@ export default {
             }
         }
 
+        const showToast = async (msg) => {
+            toastmsgref.value = msg;
+
+            let x = document.getElementById("logintoast");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }
+
         const goToHome = () => {
             route.push({path: '/'});
         }
 
         const methodsRef = { registerUser, goToHome };
         
-        return { ...dataRef, ...methodsRef };
+        return { ...dataRef, ...methodsRef, toastmsgref };
     },
 }
 </script>
@@ -197,5 +207,50 @@ export default {
     border-radius: 20px;
     color:#4e73e3;
     background: white;
+  }
+
+  #logintoast {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #4e73e3; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+  }
+
+  /* Show the snackbar when clicking on a button (class added with JavaScript) */
+  #logintoast.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+
+  /* Animations to fade the snackbar in and out */
+  @-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+
+  @keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+
+  @-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+
+  @keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
   }
 </style>
