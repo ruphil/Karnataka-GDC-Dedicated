@@ -22,7 +22,7 @@ export const newregistration = async (ws: WebSocket, msgObj: any) => {
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((err) => {
-        // console.log(err);
+        console.log(err);
         respondWithFailureMsg(ws);
         return 0;
     })
