@@ -37,9 +37,9 @@ export const checkUser = (ws: WebSocket, msgObj: any) => {
     const client = new Client({ connectionString });
     client.connect();
 
-    let { mobilenumber, password, rolecheck } = msgObj;
+    let { mobilenumber, password } = msgObj;
 
-    let getQuery = `SELECT Name, MOBILENUMBER, PASSWORD, ROLES FROM kgdcusers`;
+    let getQuery = `SELECT NAME, MOBILENUMBER, PASSWORD, ROLES FROM kgdcusers`;
     client.query(getQuery)
     .then((res) => {
         let rows = res.rows;
@@ -52,7 +52,7 @@ export const checkUser = (ws: WebSocket, msgObj: any) => {
             let roles = row.roles;
             if(roles != undefined && roles != ''){
                 let rolesArry = roles.split(',');
-                if(rolesArry.includes(rolecheck)){
+                if(rolesArry.includes('attendance')){
                     hasRole = true;
                 }
             }
@@ -84,9 +84,9 @@ export const logAttendance = (ws: WebSocket, msgObj: any) => {
     const client = new Client({ connectionString });
     client.connect();
 
-    let { mobilenumber, password, rolecheck } = msgObj;
+    let { mobilenumber, password } = msgObj;
 
-    let getQuery = `SELECT Name, MOBILENUMBER, PASSWORD, ROLES FROM kgdcusers`;
+    let getQuery = `SELECT NAME, MOBILENUMBER, PASSWORD, ROLES FROM kgdcusers`;
     client.query(getQuery)
     .then((res) => {
         let rows = res.rows;
@@ -99,7 +99,7 @@ export const logAttendance = (ws: WebSocket, msgObj: any) => {
             let roles = row.roles;
             if(roles != undefined && roles != ''){
                 let rolesArry = roles.split(',');
-                if(rolesArry.includes(rolecheck)){
+                if(rolesArry.includes('attendance')){
                     hasRole = true;
                 }
             }
@@ -220,36 +220,6 @@ export const deleteUser = (ws: WebSocket, msgObj: any) => {
     .finally(() => {
         client.end();
     });
-
-    // try {
-    //     if(msgObj.user == 'admin' && msgObj.pass == 'dbadminkgdc'){
-    //         let db = new sqlite3.Database(usersDB, (err: any) => {
-    //             if (err) {
-    //                 console.log(err.message);
-    //                 respondWithFailureMsg(ws);
-    //             } else {
-    //                 let mobileNumberToDel = msgObj.mobilenumber;
-        
-    //                 db.run(`DELETE FROM users WHERE MobileNumber=?`, mobileNumberToDel, function(err: any) {
-    //                     db.close();
-    //                     if (err) {
-    //                         console.log(err.message);
-    //                         respondWithFailureMsg(ws);
-    //                     } else {
-    //                         let responseObj = { requestStatus: 'success', adminuser: true, action: 'deleted' };
-    //                         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    //                     }
-    //                 });
-    //             }
-    //         });
-    //     } else {
-    //         let responseObj = { requestStatus: 'success', adminuser: false, action: 'ignored' };
-    //         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    //     }
-    // } catch (e) {
-    //     respondWithFailureMsg(ws);
-    //     return 0;
-    // }
 }
 
 export const getAttendanceRegister = (ws: WebSocket, msgObj: any) => {

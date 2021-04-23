@@ -173,6 +173,7 @@ export default {
             let attendanceObj = {
               purpose: 'attendance',
               requesttype: 'logattendance',
+              rolecheck: 'attendance',
               clientdate: dateNow.toLocaleDateString('en-GB'),
               clienttime: dateNow.toLocaleTimeString('en-GB'),
               name: nameref.value,

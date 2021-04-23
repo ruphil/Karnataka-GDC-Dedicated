@@ -108,6 +108,7 @@ export default {
         let checkUserObj = {
           purpose: 'attendance',
           requesttype: 'checkuser',
+          rolecheck: 'attendance',
           mobilenumber,
           password
         };
