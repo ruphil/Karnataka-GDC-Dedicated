@@ -59,7 +59,10 @@ export default defineComponent({
       style: districtStyleFunction
     });
 
+    // const layers = 
+
     const initMap = () => {
+      document.title = 'KGDC Flights Manager'
       new Map({
         target: mapref.value!,
         layers: [ baseMapLayer, karndistbounds ],

@@ -34,3 +34,17 @@ html, body {
     border-left: 2px solid grey;
 }
 
+#controller {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    text-align: center;
+
+    input {
+        padding: 10px;
+    }
+
+    button {
+        padding: 10px;
+    }
+}
