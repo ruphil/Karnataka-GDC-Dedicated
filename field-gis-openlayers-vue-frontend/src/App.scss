@@ -1,0 +1,36 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#map {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid grey;
+    height: 99vh;
+    width: 99vw;
+}
+
+#mapview {
+    position: absolute;
+    display: inline-block;
+    left: 0;
+    height: 100%;
+    width: 70vw;
+}
+
+#controllercontainer {
+    position: absolute;
+    display: inline-block;
+    right: 0;
+    height: 100%;
+    width: 29vw;
+    border-left: 2px solid grey;
+}
+
