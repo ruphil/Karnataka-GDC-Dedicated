@@ -6,6 +6,9 @@
 </template>
 
 <script lang="ts">
+import Controller from './components/Controller.vue';
+import mapStyler from './composables/mapStyler';
+
 import 'ol/ol.css';
 import './App.scss';
 
@@ -14,15 +17,13 @@ import { defineComponent, ref, onMounted } from 'vue';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 
-import Controller from './components/Controller.vue';
 import XYZ from 'ol/source/XYZ';
 import { fromLonLat } from 'ol/proj';
 import VectorLayer from 'ol/layer/Vector';
-import Style from 'ol/style/Style';
-import Stroke from 'ol/style/Stroke';
 import {bbox as bboxStrategy} from 'ol/loadingstrategy';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
+import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style';
 
 export default defineComponent({
   name: 'App',
@@ -30,6 +31,8 @@ export default defineComponent({
     Controller
   },
   setup() {
+    const { districtStyleFunction } = mapStyler();
+
     const mapref = ref(null);
 
     const baseMapLayer = new TileLayer({
@@ -37,8 +40,6 @@ export default defineComponent({
         url: 'http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}'
       })
     });
-
-    
 
     const karndistbounds = new VectorLayer({
       source: new VectorSource({
@@ -55,12 +56,7 @@ export default defineComponent({
         },
         strategy: bboxStrategy,
       }),
-      style: new Style({
-        stroke: new Stroke({
-          color: 'rgba(0, 0, 255, 1.0)',
-          width: 2,
-        }),
-      }),
+      style: districtStyleFunction
     });
 
     const initMap = () => {
@@ -68,8 +64,8 @@ export default defineComponent({
         target: mapref.value!,
         layers: [ baseMapLayer, karndistbounds ],
         view: new View({
-          zoom: 7,
-          center: fromLonLat([77.5593125, 14.3882808]),
+          zoom: 6.5,
+          center: fromLonLat([76.56, 14.85]),
           constrainResolution: true
         }),
       })
