@@ -6,7 +6,7 @@
 import { useStore } from 'vuex';
 import 'ol/ol.css';
 
-import { defineComponent, ref, onMounted } from 'vue';
+import { getCurrentInstance, defineComponent, ref, onMounted } from 'vue';
 
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
@@ -16,6 +16,7 @@ import { fromLonLat } from 'ol/proj';
 
 export default defineComponent({
     setup() {
+        const app = getCurrentInstance()!;
         const store = useStore();
         
         const mapref = ref(null);
@@ -40,12 +41,17 @@ export default defineComponent({
                 }),
             });
 
-            console.log(mapObj);
+            const foo = app.appContext.config.globalProperties.$foo
+
+            console.log(foo);
+
+            app.appContext.config.globalProperties.$foo = 'micky';
+            console.log(app.appContext.config.globalProperties.$foo);
 
             store.dispatch('setMapObj', mapObj);
-            store.dispatch('addMapLayersObj', {
-                'basemap': baseMapLayer
-            });
+            // store.dispatch('addMapLayersObj', {
+            //     'basemap': baseMapLayer
+            // });
         }
 
         onMounted(initMap);

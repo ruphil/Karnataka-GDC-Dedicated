@@ -65,11 +65,15 @@ export default defineComponent({
                     });
 
                     const mapObj = store.getters.mapObj;
-                    console.log(mapObj);
-                    mapObj.addLayer(karndistbounds);
-                    store.dispatch('addMapLayersObj', {
-                        'karnbounds': karndistbounds
-                    });
+
+                    setTimeout(() => {
+                        console.log(mapObj);    
+                    }, 10000);
+                    
+                    // mapObj.addLayer(karndistbounds);
+                    // store.dispatch('addMapLayersObj', {
+                    //     'karnbounds': karndistbounds
+                    // });
                 }
             })
             .catch((reason: any) => {

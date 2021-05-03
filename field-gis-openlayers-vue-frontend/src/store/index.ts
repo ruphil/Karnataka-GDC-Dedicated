@@ -3,8 +3,8 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     loggedIn: false,
-    mapObj: null,
-    mapLayersObj: {}
+    mapObj: {},
+    // mapLayersObj: {}
   },
   getters: {
     getLoggedInStatus(state){
@@ -21,12 +21,12 @@ export default createStore({
     setMapObj(state, mapObj){
       state.mapObj = mapObj;
     },
-    addMapLayersObj(state, mapLayerObj){
-      state.mapLayersObj = {
-        ...state.mapLayersObj,
-        mapLayerObj
-      };
-    }
+    // addMapLayersObj(state, mapLayerObj){
+    //   state.mapLayersObj = {
+    //     ...state.mapLayersObj,
+    //     mapLayerObj
+    //   };
+    // }
   },
   actions: {
     setLoggedIn(context, loggedIn){
@@ -35,9 +35,9 @@ export default createStore({
     setMapObj(context, mapObj){
       context.commit('setMapObj', mapObj);
     },
-    addMapLayersObj(context, mapLayerObj){
-      context.commit('addMapLayersObj', mapLayerObj);
-    }
+    // addMapLayersObj(context, mapLayerObj){
+    //   context.commit('addMapLayersObj', mapLayerObj);
+    // }
   },
   modules: {
   }
