@@ -1,20 +1,24 @@
 <template>
     <div id="controllercontainer">
         <div id="controllerbtncontainer">
-            <button id="controllerbtn">⚙</button>
+            <button id="controllerbtn" v-on:click="showContainer = !showContainer">⚙</button>
         </div>
-        
-        <!-- <Login /> -->
+        <Controller v-show="showContainer"/>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import Login from './Login.vue';
+import { defineComponent, ref } from 'vue';
+import Controller from './Controller.vue';
 
 export default defineComponent({
     components: {
-        Login
+        Controller
+    },
+    setup() {
+        const showContainer = ref(true);
+
+        return { showContainer };
     }
 })
 </script>

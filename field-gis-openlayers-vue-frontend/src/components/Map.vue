@@ -4,8 +4,6 @@
 
 <script lang="ts">
 import { useStore } from 'vuex';
-
-
 import 'ol/ol.css';
 
 import { defineComponent, ref, onMounted } from 'vue';
@@ -30,7 +28,7 @@ export default defineComponent({
 
         const initMap = () => {
             document.title = 'KGDC Flights Manager'
-            let map = new Map({
+            const mapObj = new Map({
                 target: mapref.value!,
                 layers: [ baseMapLayer ],
                 view: new View({
@@ -42,7 +40,9 @@ export default defineComponent({
                 }),
             });
 
-            store.dispatch('setMapObj', map);
+            console.log(mapObj);
+
+            store.dispatch('setMapObj', mapObj);
             store.dispatch('addMapLayersObj', {
                 'basemap': baseMapLayer
             });

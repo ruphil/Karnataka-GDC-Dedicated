@@ -1,12 +1,12 @@
 <template>
-    <div class="loginsection" v-show="!loggedIn">
+    <div id="loginsection" v-show="!loggedIn">
         <b>Kindly Login</b>
         <br/><br/>
         <input class="mobilenumber" type="text" size="20" placeholder="Username" v-model="username"/>
         <br/><br/>
         <input class="password" type="password" size="20" placeholder="Password" v-model="password" v-on:keyup.enter="doLogin"/>
         <br/><br/>
-        <div id="loginstatus">{{ loginStatus }}</div>
+        <div style="font-size:10px;">{{ loginStatus }}</div>
     </div>
 </template>
 
@@ -21,7 +21,6 @@ import VectorLayer from 'ol/layer/Vector';
 import {bbox as bboxStrategy} from 'ol/loadingstrategy';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
-import BaseLayer from 'ol/layer/Base';
 
 export default defineComponent({
     setup() {
@@ -46,7 +45,7 @@ export default defineComponent({
                 console.log(res.status);
                 if(res.status == 200){
                     store.dispatch('setLoggedIn', true);
-                    let map = store.getters.mapObj
+                    
                     const karndistbounds = new VectorLayer({
                         source: new VectorSource({
                             format: new GeoJSON(),
@@ -65,7 +64,9 @@ export default defineComponent({
                         style: districtStyleFunction
                     });
 
-                    map.addLayer(karndistbounds);
+                    const mapObj = store.getters.mapObj;
+                    console.log(mapObj);
+                    mapObj.addLayer(karndistbounds);
                     store.dispatch('addMapLayersObj', {
                         'karnbounds': karndistbounds
                     });
