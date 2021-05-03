@@ -1,6 +1,6 @@
 <template>
     <div id="controllerbox">
-        <Login />
+        <Login/>
         Jack
     </div>
 </template>
@@ -12,6 +12,6 @@ import { defineComponent } from 'vue';
 export default defineComponent({
     components: {
         Login
-    }
+    },
 })
 </script>

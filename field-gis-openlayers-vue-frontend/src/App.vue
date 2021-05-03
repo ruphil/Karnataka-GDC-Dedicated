@@ -1,6 +1,6 @@
 <template>
   <div id="map">
-    <Map />
+    <Map/>
     <ControllerContainer/>
   </div>
 </template>
@@ -11,7 +11,7 @@ import ControllerContainer from './components/ControllerContainer.vue';
 
 import './App.scss';
 
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'App',

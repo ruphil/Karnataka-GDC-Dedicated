@@ -3,41 +3,31 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     loggedIn: false,
-    mapObj: {},
-    // mapLayersObj: {}
+    mapElement: null
   },
   getters: {
     getLoggedInStatus(state){
       return state.loggedIn;
     },
-    getMapObj(state){
-      return state.mapObj;
-    }
+    getMapElement(state){
+      return state.mapElement;
+    },
   },
   mutations: {
     setLoggedIn(state, loggedIn){
       state.loggedIn = loggedIn;
     },
-    setMapObj(state, mapObj){
-      state.mapObj = mapObj;
+    setMapElement(state, mapElement){
+      state.mapElement = mapElement;
     },
-    // addMapLayersObj(state, mapLayerObj){
-    //   state.mapLayersObj = {
-    //     ...state.mapLayersObj,
-    //     mapLayerObj
-    //   };
-    // }
   },
   actions: {
     setLoggedIn(context, loggedIn){
       context.commit('setLoggedIn', loggedIn);
     },
-    setMapObj(context, mapObj){
-      context.commit('setMapObj', mapObj);
+    setMapElement(context, mapElement){
+      context.commit('setMapElement', mapElement);
     },
-    // addMapLayersObj(context, mapLayerObj){
-    //   context.commit('addMapLayersObj', mapLayerObj);
-    // }
   },
   modules: {
   }
