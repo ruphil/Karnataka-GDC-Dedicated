@@ -11,7 +11,7 @@ import ControllerContainer from './components/ControllerContainer.vue';
 
 import './App.scss';
 
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'App',

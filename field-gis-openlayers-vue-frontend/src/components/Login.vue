@@ -6,16 +6,14 @@
         <br/><br/>
         <input class="password" type="password" size="20" placeholder="Password" v-model="password" v-on:keyup.enter="doLogin"/>
         <br/><br/>
-        <div style="font-size:10px;">{{ loginStatus }}</div>
+        <div style="font-size:8px;">{{ loginStatus }}</div>
     </div>
 </template>
 
 <script lang="ts">
 import { useStore } from 'vuex';
 
-import { defineComponent, ref, computed } from 'vue';
-
-import authenticator from '../composables/authenticator';
+import { defineComponent, ref } from 'vue';
 import mapLoader from '../composables/mapLoader';
 
 export default defineComponent({
@@ -28,6 +26,7 @@ export default defineComponent({
         const loginStatus = ref('Press Enter To Continue...');
 
         const doLogin = () => {
+            loginStatus.value = 'Please Wait...';
             const mapEl = store.getters.getMapElement;
             let url: string = 'http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=kgdc:karndistbounds&srsname=EPSG:3857&outputFormat=application/json';
             loadBaseMapNKarnBounds(mapEl, url, username.value, password.value)
@@ -38,6 +37,10 @@ export default defineComponent({
             })
             .catch((reason) => {
                 console.log(reason);
+                loginStatus.value = 'Incorrect Credentials... Please Try Again...';
+                setTimeout(() => {
+                    loginStatus.value = 'Press Enter To Continue...';
+                }, 5000);
             })
             .finally(() => {
                 username.value = '';
