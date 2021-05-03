@@ -12,20 +12,18 @@
 
 <script lang="ts">
 import { useStore } from 'vuex';
-import mapStyler from '../composables/mapStyler';
 
 import { defineComponent, ref, computed, getCurrentInstance } from 'vue';
 import axios from 'axios';
 
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import GeoJSON from 'ol/format/GeoJSON';
+import mapLoader from '../composables/mapLoader';
 
 export default defineComponent({
     setup() {
         const app = getCurrentInstance()!;
         const store = useStore();
-        const { districtStyleFunction } = mapStyler();
+        const { loadBaseMapNKarnBounds } = mapLoader();
+
 
         const loggedIn = computed(() => store.getters.getLoggedInStatus);
 
@@ -47,19 +45,10 @@ export default defineComponent({
                 if(res.status == 200){
                     store.dispatch('setLoggedIn', true);
                     
-                    const karndistbounds = new VectorLayer({
-                        source: new VectorSource({
-                            format: new GeoJSON(),
-                            url: function () {
-                                return (
-                                    'http://localhost:8080/geoserver/kgdc/ows?service=WFS&' +
-                                    'version=2.0.0&request=GetFeature&typeName=kgdc:karndistbounds&' +
-                                    'outputFormat=application/json'
-                                );
-                            },
-                        }),
-                        style: districtStyleFunction
-                    });
+                    const mapEl = store.getters.getMapElement;
+                    mapEl.innerText = '';
+
+                    loadBaseMapNKarnBounds(mapEl);
                 }
             })
             .catch((reason: any) => {
