@@ -21,7 +21,6 @@ import mapLoader from '../composables/mapLoader';
 export default defineComponent({
     setup() {
         const store = useStore();
-        const { doAuthentication } = authenticator();
         const { loadBaseMapNKarnBounds } = mapLoader();
 
         const username = ref('');
@@ -29,15 +28,13 @@ export default defineComponent({
         const loginStatus = ref('Press Enter To Continue...');
 
         const doLogin = () => {
-            
-            const url: string = 'http://localhost:8080/geoserver/ows?service=wfs&version=2.0.0&request=GetCapabilities';
-            doAuthentication(url, username.value, password.value)
+            const mapEl = store.getters.getMapElement;
+            let url: string = 'http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=kgdc:karndistbounds&srsname=EPSG:3857&outputFormat=application/json';
+            loadBaseMapNKarnBounds(mapEl, url, username.value, password.value)
             .then((res)=>{
+                console.log(res);
                 store.dispatch('setLoggedIn', true);
                 const mapEl = store.getters.getMapElement;
-                mapEl.innerText = '';
-
-                loadBaseMapNKarnBounds(mapEl);
             })
             .catch((reason) => {
                 console.log(reason);

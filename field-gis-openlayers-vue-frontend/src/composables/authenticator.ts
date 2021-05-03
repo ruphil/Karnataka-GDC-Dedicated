@@ -13,14 +13,14 @@ const authenticator = () => {
             .then((res: AxiosResponse) => {
                 // console.log(res.status);
                 if(res.status == 200){
-                    resolve({'response': res});
+                    resolve(res);
                 } else {
-                    reject({'response': null});
+                    reject(res);
                 }
             })
-            .catch((reason) => {
-                // console.log(reason);
-                reject({'response': null});
+            .catch((error) => {
+                console.log(error);
+                reject(error);
             })
         });
     }

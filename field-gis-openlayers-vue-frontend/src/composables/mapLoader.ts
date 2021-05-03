@@ -9,28 +9,16 @@ import GeoJSON from 'ol/format/GeoJSON';
 import OSM from 'ol/source/OSM';
 
 import mapStyler from './mapStyler';
+import authenticator from '../composables/authenticator';
 
 const mapLoader = () => {
     const { districtStyleFunction } = mapStyler();
+    const { doAuthentication } = authenticator();
 
     const baseMapLayer = new TileLayer({
         source: new XYZ({
             url: 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
         })
-    });
-
-    const karndistbounds = new VectorLayer({
-        source: new VectorSource({
-            format: new GeoJSON(),
-            url: function () {
-                return (
-                    'http://user:password@localhost:8080/geoserver/kgdc/ows?service=WFS&' +
-                    'version=2.0.0&request=GetFeature&typeName=kgdc:karndistbounds&' +
-                    'outputFormat=application/json&srsname=EPSG:3857'
-                );
-            },
-        }),
-        style: districtStyleFunction
     });
 
     const loadBaseMap = (el: any) => {
@@ -45,15 +33,38 @@ const mapLoader = () => {
         });
     }
 
-    const loadBaseMapNKarnBounds = (el: any) => {
-        new Map({
-            target: el,
-            layers: [ baseMapLayer, karndistbounds ],
-            view: new View({
-                zoom: 6.5,
-                center: fromLonLat([76.56, 14.85]),
-                constrainResolution: true
-            }),
+    const loadBaseMapNKarnBounds = (el: HTMLElement, url: string, username: string, password: string) => {
+        return new Promise((resolve, reject) => {
+            doAuthentication(url, username, password)
+            .then((res: any)=>{
+                el.innerText = '';
+                // console.log(res.data);
+                let karnGJ = res.data;
+                
+                const karndistbounds = new VectorLayer({
+                    source: new VectorSource({
+                        features: new GeoJSON().readFeatures(karnGJ)
+                    }),
+                    style: districtStyleFunction
+                });
+        
+                new Map({
+                    target: el,
+                    layers: [ baseMapLayer, karndistbounds ],
+                    view: new View({
+                        zoom: 6.5,
+                        center: fromLonLat([76.56, 14.85]),
+                        constrainResolution: true
+                    }),
+                });
+
+                resolve('success');
+            })
+            .catch((error) => {
+                console.log('failed');
+                console.log(error);
+                reject('failure');
+            });
         });
     }
 
