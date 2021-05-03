@@ -1,5 +1,5 @@
 <template>
-    <div id="loginsection" v-show="!loggedIn">
+    <div id="loginsection">
         <b>Kindly Login</b>
         <br/><br/>
         <input class="mobilenumber" type="text" size="20" placeholder="Username" v-model="username"/>
@@ -23,8 +23,6 @@ export default defineComponent({
         const store = useStore();
         const { doAuthentication } = authenticator();
         const { loadBaseMapNKarnBounds } = mapLoader();
-        
-        const loggedIn = computed(() => store.getters.getLoggedInStatus);
 
         const username = ref('');
         const password = ref('');
@@ -50,7 +48,7 @@ export default defineComponent({
             });
         }
 
-        return { loggedIn, username, password, loginStatus, doLogin }
+        return { username, password, loginStatus, doLogin }
     },
 })
 </script>
