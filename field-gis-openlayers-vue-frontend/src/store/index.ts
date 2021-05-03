@@ -9,6 +9,9 @@ export default createStore({
   getters: {
     getLoggedInStatus(state){
       return state.loggedIn;
+    },
+    getMapObj(state){
+      return state.mapObj;
     }
   },
   mutations: {
@@ -18,8 +21,11 @@ export default createStore({
     setMapObj(state, mapObj){
       state.mapObj = mapObj;
     },
-    setMapLayersObj(state, mapLayer){
-      state.mapLayersObj = mapLayer;
+    addMapLayersObj(state, mapLayerObj){
+      state.mapLayersObj = {
+        ...state.mapLayersObj,
+        mapLayerObj
+      };
     }
   },
   actions: {
@@ -29,8 +35,8 @@ export default createStore({
     setMapObj(context, mapObj){
       context.commit('setMapObj', mapObj);
     },
-    setMapLayersObj(context, mapLayer){
-      context.commit('setMapLayersObj', mapLayer);
+    addMapLayersObj(context, mapLayerObj){
+      context.commit('addMapLayersObj', mapLayerObj);
     }
   },
   modules: {

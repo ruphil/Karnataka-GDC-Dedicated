@@ -1,13 +1,13 @@
 <template>
   <div id="map">
-    <div><Map /></div>
-    <div id="controllercontainer"><Controller /></div>
+    <Map />
+    <Controller/>
   </div>
 </template>
 
 <script lang="ts">
 import Map from './components/Map.vue';
-import Controller from './components/Controller.vue';
+import Controller from './components/ControllerContainer.vue';
 
 import './App.scss';
 

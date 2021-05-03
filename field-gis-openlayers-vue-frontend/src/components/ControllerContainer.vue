@@ -1,7 +1,10 @@
 <template>
-    <div id="controller">
-        <br/>
-        <Login />
+    <div id="controllercontainer">
+        <div id="controllerbtncontainer">
+            <button id="controllerbtn">⚙</button>
+        </div>
+        
+        <!-- <Login /> -->
     </div>
 </template>
 

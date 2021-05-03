@@ -8,13 +8,9 @@ html, body {
 }
 
 #map {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    border: 2px solid grey;
-    height: 99vh;
-    width: 99vw;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
 }
 
 #mapview {
@@ -22,29 +18,60 @@ html, body {
     display: inline-block;
     left: 0;
     height: 100%;
-    width: 70vw;
+    width: 100%;
 }
 
-#controllercontainer {
+#controllerbtncontainer {
     position: absolute;
-    display: inline-block;
-    right: 0;
-    height: 100%;
-    width: 29vw;
-    border-left: 2px solid grey;
+    pointer-events: auto;
+    top: .5em;
+    right: .5em;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 4px;
+    padding: 2px;
 }
 
-#controller {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0%);
+#controllerbtn {
+    display: block;
+    margin: 1px;
+    padding: 0;
+    color: white;
+    font-size: 1.14em;
+    font-weight: bold;
+    text-decoration: none;
     text-align: center;
+    height: 1.375em;
+    width: 1.375em;
+    line-height: .4em;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
 
-    input {
-        padding: 10px;
-    }
-
-    button {
-        padding: 10px;
+    &:hover {
+        background-color: rgba(0,60,136,0.7);
     }
 }
+
+// #controllercontainer {
+//     position: absolute;
+//     display: inline-block;
+//     right: 0;
+//     height: 100%;
+//     width: 28vw;
+//     border-left: 2px solid grey;
+// }
+
+// #controller {
+//     position: absolute;
+//     left: 50%;
+//     transform: translate(-50%, 0%);
+//     text-align: center;
+
+//     input {
+//         padding: 10px;
+//     }
+
+//     button {
+//         padding: 10px;
+//     }
+// }
