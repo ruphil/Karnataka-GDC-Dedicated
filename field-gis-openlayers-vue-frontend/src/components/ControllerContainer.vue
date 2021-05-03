@@ -1,7 +1,13 @@
 <template>
     <div id="controllercontainer">
-        <div id="controllerbtncontainer">
-            <button id="controllerbtn" v-on:click="showContainer = !showContainer">⚙</button>
+        <div id="controllermainbtncontainer">
+            <button id="controllermainbtn" v-on:click="showContainer = !showContainer">⚙</button>
+        </div>
+        <div id="controllerlayersbtncontainer">
+            <button id="controllerlayersbtn" v-on:click="showContainer = !showContainer">🗐</button>
+        </div>
+        <div id="controllersummarybtncontainer">
+            <button id="controllersummarybtn" v-on:click="showContainer = !showContainer">⎙</button>
         </div>
         <Controller v-show="showContainer"/>
     </div>

@@ -6,6 +6,7 @@ import { fromLonLat } from 'ol/proj';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
+import OSM from 'ol/source/OSM';
 
 import mapStyler from './mapStyler';
 
@@ -14,7 +15,7 @@ const mapLoader = () => {
 
     const baseMapLayer = new TileLayer({
         source: new XYZ({
-            url: 'http://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}'
+            url: 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
         })
     });
 
@@ -23,9 +24,9 @@ const mapLoader = () => {
             format: new GeoJSON(),
             url: function () {
                 return (
-                    'http://localhost:8080/geoserver/kgdc/ows?service=WFS&' +
+                    'http://user:password@localhost:8080/geoserver/kgdc/ows?service=WFS&' +
                     'version=2.0.0&request=GetFeature&typeName=kgdc:karndistbounds&' +
-                    'outputFormat=application/json'
+                    'outputFormat=application/json&srsname=EPSG:3857'
                 );
             },
         }),

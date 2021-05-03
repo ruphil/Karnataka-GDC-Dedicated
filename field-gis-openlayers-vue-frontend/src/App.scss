@@ -19,7 +19,7 @@ html, body {
     width: 100%;
 }
 
-#controllerbtncontainer {
+#controllermainbtncontainer {
     position: fixed;
     pointer-events: auto;
     top: .5em;
@@ -29,7 +29,69 @@ html, body {
     padding: 2px;
 }
 
-#controllerbtn {
+#controllermainbtn {
+    display: block;
+    margin: 1px;
+    padding: 0;
+    color: white;
+    font-size: 1.14em;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    height: 1.375em;
+    width: 1.375em;
+    line-height: .4em;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
+
+    &:hover {
+        background-color: rgba(0,60,136,0.7);
+    }
+}
+
+#controllerlayersbtncontainer {
+    position: fixed;
+    pointer-events: auto;
+    bottom: .5em;
+    right: .5em;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+#controllerlayersbtn {
+    display: block;
+    margin: 1px;
+    padding: 0;
+    color: white;
+    font-size: 1.14em;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    height: 1.375em;
+    width: 1.375em;
+    line-height: .4em;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
+
+    &:hover {
+        background-color: rgba(0,60,136,0.7);
+    }
+}
+
+#controllersummarybtncontainer {
+    position: fixed;
+    pointer-events: auto;
+    bottom: .5em;
+    left: .5em;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+#controllersummarybtn {
     display: block;
     margin: 1px;
     padding: 0;

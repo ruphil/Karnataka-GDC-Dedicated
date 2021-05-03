@@ -13,18 +13,17 @@
 <script lang="ts">
 import { useStore } from 'vuex';
 
-import { defineComponent, ref, computed, getCurrentInstance } from 'vue';
-import axios from 'axios';
+import { defineComponent, ref, computed } from 'vue';
 
+import authenticator from '../composables/authenticator';
 import mapLoader from '../composables/mapLoader';
 
 export default defineComponent({
     setup() {
-        const app = getCurrentInstance()!;
         const store = useStore();
+        const { doAuthentication } = authenticator();
         const { loadBaseMapNKarnBounds } = mapLoader();
-
-
+        
         const loggedIn = computed(() => store.getters.getLoggedInStatus);
 
         const username = ref('');
@@ -33,31 +32,22 @@ export default defineComponent({
 
         const doLogin = () => {
             
-            axios({
-                method: 'POST',
-                url: 'http://localhost:8080/geoserver/ows?service=wfs&version=2.0.0&request=GetCapabilities',
-                headers: {
-                    'Authorization': `Basic ${Buffer.from(`${username.value}:${password.value}`).toString('base64')}`
-                }
-            })
-            .then((res) => {
-                console.log(res.status);
-                if(res.status == 200){
-                    store.dispatch('setLoggedIn', true);
-                    
-                    const mapEl = store.getters.getMapElement;
-                    mapEl.innerText = '';
+            const url: string = 'http://localhost:8080/geoserver/ows?service=wfs&version=2.0.0&request=GetCapabilities';
+            doAuthentication(url, username.value, password.value)
+            .then((res)=>{
+                store.dispatch('setLoggedIn', true);
+                const mapEl = store.getters.getMapElement;
+                mapEl.innerText = '';
 
-                    loadBaseMapNKarnBounds(mapEl);
-                }
+                loadBaseMapNKarnBounds(mapEl);
             })
-            .catch((reason: any) => {
+            .catch((reason) => {
                 console.log(reason);
             })
             .finally(() => {
                 username.value = '';
                 password.value = '';
-            })
+            });
         }
 
         return { loggedIn, username, password, loginStatus, doLogin }
