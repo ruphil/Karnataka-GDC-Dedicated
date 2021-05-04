@@ -13,11 +13,12 @@ export default defineComponent({
     setup() {
         const store = useStore();
         const mapref = ref(null);
-        const { initBaseMap } = mapLoader();
+        const { initBaseMap, fetchNLoadDroneNumbers } = mapLoader();
 
         const initMap = () => {
             document.title = 'KGDC Flights Manager';
             initBaseMap(mapref.value);
+            fetchNLoadDroneNumbers();
         }
 
         onMounted(initMap);

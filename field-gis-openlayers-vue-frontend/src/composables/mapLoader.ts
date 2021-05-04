@@ -34,6 +34,10 @@ const mapLoader = () => {
         })
     });
 
+    const fetchNLoadDroneNumbers = () => {
+        
+    }
+
     const initBaseMap = (el: any) => {
         let map = app.appContext.config.globalProperties.$map;
 
@@ -129,13 +133,13 @@ const mapLoader = () => {
 
     const discardKMLIfany = () => {
         let map = app.appContext.config.globalProperties.$map;
-        
+
         if(app.appContext.config.globalProperties.$kmllayer != null){
             map.removeLayer(app.appContext.config.globalProperties.$kmllayer);
         }
     }
 
-    return { initBaseMap, loadKarnBounds, loadKML, discardKMLIfany }
+    return { initBaseMap, fetchNLoadDroneNumbers, loadKarnBounds, loadKML, discardKMLIfany }
 }
 
 export default mapLoader;
