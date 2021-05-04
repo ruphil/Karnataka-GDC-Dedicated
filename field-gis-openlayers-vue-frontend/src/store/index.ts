@@ -6,6 +6,7 @@ export default createStore({
     loggedIn: false,
     username: '',
     password: '',
+    karnboundsGeoJSON: {},
   },
   getters: {
     getLogInMsg(state){
@@ -19,6 +20,9 @@ export default createStore({
     },
     getPassWord(state){
       return state.password;
+    },
+    getKarnBoundsGJ(state){
+      return state.karnboundsGeoJSON;
     },
   },
   mutations: {
@@ -34,6 +38,9 @@ export default createStore({
     setPassWord(state, password){
       state.password = password;
     },
+    setKarnBoundsGJ(state, karnboundsgj){
+      state.karnboundsGeoJSON = karnboundsgj;
+    },
   },
   actions: {
     setLogInMsg(context, loginMsg){
@@ -47,6 +54,9 @@ export default createStore({
     },
     setPassWord(context, password){
       context.commit('setPassWord', password);
+    },
+    setKarnBoundsGJ(context, karnboundsgj){
+      context.commit('setKarnBoundsGJ', karnboundsgj);
     },
   },
   modules: {

@@ -24,6 +24,10 @@ const mapLoader = () => {
     const app = getCurrentInstance()!;
     app.appContext.config.globalProperties.$map = new Map({});
 
+    // let j = new Map({});
+    
+    app.appContext.config.globalProperties.$kmllayer = null;
+
     const baseMapLayer = new TileLayer({
         source: new XYZ({
             url: 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
@@ -48,12 +52,11 @@ const mapLoader = () => {
 
     const loadKarnBounds = (url: string, username: string, password: string) => {
         let karnGJ = store.getters.getKarnBoundsGJ;
-        console.log(Object.keys(karnGJ).length);
+        // console.log(Object.keys(karnGJ).length);
         if(Object.keys(karnGJ).length == 0){
             doAuthentication(url, username, password)
             .then((res: any)=>{
-                // el.innerText = '';
-                console.log(res.data);
+                // console.log(res.data);
 
                 let karnGJ = res.data;
 
@@ -97,6 +100,10 @@ const mapLoader = () => {
     const loadKML = (kmlstring: any) => {
         let map = app.appContext.config.globalProperties.$map;
 
+        // if(app.appContext.config.globalProperties.$kmllayer != null){
+        //     map.removeLayer(app.appContext.config.globalProperties.$kmllayer);
+        // }
+
         let kmlFeatures = new KML({
             extractStyles: false
         }).readFeatures(kmlstring, {
@@ -105,7 +112,7 @@ const mapLoader = () => {
         });
 
         let filteredkmlfeatures = kmlFeatures.filter((feat) => {
-            return feat.getGeometry()?.getType() == 'LineString'
+            return feat.getGeometry()?.getType() == 'LineString';
         });
 
         let kmllyr = new VectorLayer({
@@ -115,6 +122,7 @@ const mapLoader = () => {
         });
 
         map.addLayer(kmllyr);
+        app.appContext.config.globalProperties.$kmllayer = kmllyr;
 
         map.getView().fit(kmllyr.getSource().getExtent());
     }
