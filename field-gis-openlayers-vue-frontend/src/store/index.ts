@@ -3,7 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     showAttributesContainer: true,
-    dronenumbers: [2, 3, 4],
+    dronenumbersGJ: {},
     loginMsg: 'Press Enter To Continue...',
     loggedIn: false,
     username: '',
@@ -14,8 +14,8 @@ export default createStore({
     getAttributesContainerStatus(state){
       return state.showAttributesContainer;
     },
-    getDroneNumbers(state){
-      return state.dronenumbers;
+    getDroneNumbersGJ(state){
+      return state.dronenumbersGJ;
     },
     getLogInMsg(state){
       return state.loginMsg;
@@ -37,8 +37,8 @@ export default createStore({
     setAttributesContainerStatus(state, showAttributesContainer){
       state.showAttributesContainer = showAttributesContainer;
     },
-    setDroneNumbers(state, dronenumbers){
-      state.dronenumbers = dronenumbers;
+    setDroneNumbersGJ(state, dronenumbersGJ){
+      state.dronenumbersGJ = dronenumbersGJ;
     },
     setLogInMsg(state, loginMsg){
       state.loginMsg = loginMsg;
@@ -60,8 +60,8 @@ export default createStore({
     setAttributesContainerStatus(context, showAttributesContainer){
       context.commit('setAttributesContainerStatus', showAttributesContainer);
     },
-    setDroneNumbers(context, dronenumbers){
-      context.commit('setDroneNumbers', dronenumbers);
+    setDroneNumbersGJ(context, dronenumbersGJ){
+      context.commit('setDroneNumbersGJ', dronenumbersGJ);
     },
     setLogInMsg(context, loginMsg){
       context.commit('setLogInMsg', loginMsg);

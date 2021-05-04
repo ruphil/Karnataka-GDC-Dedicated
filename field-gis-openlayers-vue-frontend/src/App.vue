@@ -9,6 +9,7 @@
 import Map from './components/Map.vue';
 import ControllerContainer from './components/ControllerContainer.vue';
 
+import 'ol/ol.css';
 import './App.scss';
 
 import { defineComponent } from 'vue';

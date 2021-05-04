@@ -2,7 +2,7 @@
     <div id="attributescontainer">
         <div id="attributesbox">
             <select v-model="currentdronenumber">
-                <option v-for="(dronenumber, index) in dronenumbersList" v-bind:key="index">{{ dronenumber }}</option>
+                <option v-for="(dronenumberfeat, index) in dronenumbersGJ.features" v-bind:key="index">{{ dronenumberfeat.id.replace('tabledronenumbers.', '') }}</option>
             </select>
             <input type="text" placeholder="Unique Flight Number"/>
         </div>
@@ -18,9 +18,9 @@ export default defineComponent({
         const store = useStore();
         const currentdronenumber = ref();
         
-        const dronenumbersList = computed(() => store.getters.getDroneNumbers);
+        const dronenumbersGJ = computed(() => store.getters.getDroneNumbersGJ);
 
-        return { currentdronenumber, dronenumbersList }
+        return { currentdronenumber, dronenumbersGJ }
     },
 })
 </script>
