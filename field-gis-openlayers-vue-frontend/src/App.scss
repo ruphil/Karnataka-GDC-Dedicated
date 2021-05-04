@@ -189,14 +189,20 @@ html, body {
     float: right;
 }
 
-#attributesbox {
+#attributescontainer {
     position: absolute;
-    min-width: 20em;
-    min-height: 20em;
     left: 50%;
     top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 40em;
+
+    background-color: rgba(255,255,255,0.4);
 }
 
-#attributesinput {
+#attributesbox {
+    height: 25em;
+    background-color: rgba(0,60,136,0.5);
     color: white;
+    margin: 0.5em;
+    padding: 0.5em;
 }

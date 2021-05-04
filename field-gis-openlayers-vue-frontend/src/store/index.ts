@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
+    showAttributesContainer: true,
     loginMsg: 'Press Enter To Continue...',
     loggedIn: false,
     username: '',
@@ -9,6 +10,9 @@ export default createStore({
     karnboundsGeoJSON: {},
   },
   getters: {
+    getAttributesContainerStatus(state){
+      return state.showAttributesContainer;
+    },
     getLogInMsg(state){
       return state.loginMsg;
     },
@@ -26,6 +30,9 @@ export default createStore({
     },
   },
   mutations: {
+    setAttributesContainerStatus(state, showAttributesContainer){
+      state.showAttributesContainer = showAttributesContainer;
+    },
     setLogInMsg(state, loginMsg){
       state.loginMsg = loginMsg;
     },
@@ -43,6 +50,9 @@ export default createStore({
     },
   },
   actions: {
+    setAttributesContainerStatus(context, showAttributesContainer){
+      context.commit('setAttributesContainerStatus', showAttributesContainer);
+    },
     setLogInMsg(context, loginMsg){
       context.commit('setLogInMsg', loginMsg);
     },

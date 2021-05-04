@@ -26,11 +26,6 @@
                 </span>
             </div>
         </div>
-        <div id="attributesbox">
-            <div id="attributesinput">
-                J
-            </div>
-        </div>
     </div>
 </template>
 
