@@ -173,3 +173,14 @@ html, body {
         background-color: rgba(0,60,136,0.7);
     }
 }
+
+.filediscardbtns {
+    color:rgba(0,60,136,0.5);
+    background-color:white;
+    border:none;
+
+    &:hover {
+        color: white;
+        background-color: rgba(0,60,136,0.7);
+    }
+}

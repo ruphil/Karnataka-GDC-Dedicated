@@ -100,9 +100,9 @@ const mapLoader = () => {
     const loadKML = (kmlstring: any) => {
         let map = app.appContext.config.globalProperties.$map;
 
-        // if(app.appContext.config.globalProperties.$kmllayer != null){
-        //     map.removeLayer(app.appContext.config.globalProperties.$kmllayer);
-        // }
+        if(app.appContext.config.globalProperties.$kmllayer != null){
+            map.removeLayer(app.appContext.config.globalProperties.$kmllayer);
+        }
 
         let kmlFeatures = new KML({
             extractStyles: false
@@ -127,7 +127,15 @@ const mapLoader = () => {
         map.getView().fit(kmllyr.getSource().getExtent());
     }
 
-    return { initBaseMap, loadKarnBounds, loadKML }
+    const discardKMLIfany = () => {
+        let map = app.appContext.config.globalProperties.$map;
+        
+        if(app.appContext.config.globalProperties.$kmllayer != null){
+            map.removeLayer(app.appContext.config.globalProperties.$kmllayer);
+        }
+    }
+
+    return { initBaseMap, loadKarnBounds, loadKML, discardKMLIfany }
 }
 
 export default mapLoader;
