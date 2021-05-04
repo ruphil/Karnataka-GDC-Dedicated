@@ -1,5 +1,4 @@
 import WFS from 'ol/format/WFS';
-import GML from 'ol/format/GML';
 
 import { getCurrentInstance } from '@vue/runtime-core';
 import axios, { AxiosResponse } from 'axios';
