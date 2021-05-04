@@ -82,12 +82,13 @@ export default defineComponent({
                 attributesStatus.value = 'Successfully Updated Attributes...';
 
                 store.dispatch('setAttributesInfo', {
-                    'DRONENUMBER': currentdronenumber.value,
-                    'UNIQUEFLIGHTNUMBER': flightnumber.value,
-                    'FLIGHTID': flightid.value,
-                    'FLIGHTCOUNT': flightcount.value,
-                    'FLIGHTCATEGORY': flightcategory.value,
-                    'FLIGHTDATE': flightdate.value,
+                    'dronenumber': currentdronenumber.value,
+                    'uniqueflightnumber': flightnumber.value,
+                    'flightid': flightid.value,
+                    'flightcount': flightcount.value,
+                    'flightcategory': flightcategory.value,
+                    'flightdate': flightdate.value,
+                    "takeofftime":null,"landingtime":null,"duration":null,"trainingflight":null,"freshrefly":null,"area":null,"uavheight":null,"overlap":null,"temperature":null,"windspeed":null,"pilotname":null,"fieldassistant":null,"campingarea":null,"district":null,"taluk":null,"grampanchayat":null,"villages":null,"hamlets":null,"lgdcodes":null,"villagescount":null,"hamletscount":null,"softwareversion":null,"droneversion":null,"basegpsid":null,"rawimagescount":null,"geotagged":null,"avggsd":null,"batteryno":null,"flylogno":null,"totalfiles":null,"foldersizegb":null
                 });
             } else {
                 attributesStatus.value = 'Error in Attributes...';
