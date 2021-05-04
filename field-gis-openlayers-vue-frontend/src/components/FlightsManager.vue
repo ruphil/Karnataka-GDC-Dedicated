@@ -19,10 +19,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { useStore } from 'vuex';
+import { defineComponent, ref } from 'vue';
+import mapLoader from '../composables/mapLoader';
 
 export default defineComponent({
     setup() {
+        const store = useStore();
+        const { loadKML } = mapLoader();
+
         const kmlfile = ref(null);
         const shapefile = ref(null);
 
@@ -33,11 +38,11 @@ export default defineComponent({
 
                 let reader = new FileReader();
                 reader.onload = function () {
-
                     
+                    loadKML(reader.result);
 
                 }
-                reader.readAsDataURL(file);
+                reader.readAsText(file);
 
             }
         }
