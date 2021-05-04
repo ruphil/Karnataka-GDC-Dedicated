@@ -23,17 +23,12 @@ const featureUploader = () => {
             console.log(flightline);
 
             let formatWFS = new WFS();
-            // let formatGML = GML({
-            //     featureNS: 'http://www.opengis.net/cite',
-            //     // featureType: 'playa_sample',
-            //     featureType: 'NARAYANGARH',
-            //     srsName: 'EPSG:3857'
-            // });
 
             let formatGML = {
                 featureNS: 'https://surveyofindia.gov.in/',
                 featureType: 'flightlines',
                 srsName: 'EPSG:3857',
+                version: '2.0.0',
                 featurePrefix: '',
                 nativeElements: []
             };
