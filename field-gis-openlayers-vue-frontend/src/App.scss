@@ -142,3 +142,34 @@ html, body {
         padding: 10px;
     }
 }
+
+#fileslistholder {
+    min-width: 10em;
+    min-height: 10em;
+}
+
+#fileslist {
+    height: 8em;
+    color: white;
+    background-color: rgba(0,60,136,0.5);
+    margin-bottom: 0.5em;
+    padding: 0.5em;
+}
+
+#filesaddbtnscontainer {
+    float: right;
+}
+
+.olbtns{
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
+    margin-right: 0.5em;
+
+    &:hover {
+        background-color: rgba(0,60,136,0.7);
+    }
+}
