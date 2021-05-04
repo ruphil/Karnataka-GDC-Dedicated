@@ -48,7 +48,7 @@ const featureUploader = () => {
             axios({
                 method: 'POST',
                 // url: 'http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kgdc:flightlines',
-                url: 'http://localhost:8080/geoserver/kgdc/wfs',
+                url: 'http://localhost:8080/geoserver/ows?service=wfs&version=2.0.0&request=GetCapabilities',
                 headers: {
                     // 'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
                     'Content-Type': 'text/xml',
