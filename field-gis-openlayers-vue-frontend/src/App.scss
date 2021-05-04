@@ -184,3 +184,19 @@ html, body {
         background-color: rgba(0,60,136,0.7);
     }
 }
+
+#attributesuploadbtn {
+    float: right;
+}
+
+#attributesbox {
+    position: absolute;
+    min-width: 20em;
+    min-height: 20em;
+    left: 50%;
+    top: 50%;
+}
+
+#attributesinput {
+    color: white;
+}

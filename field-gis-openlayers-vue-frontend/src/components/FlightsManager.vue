@@ -18,6 +18,17 @@
                     <button class="olbtns" id="kmladdbtn" onclick="document.getElementById('flightlinekml').click();">+ KML</button>
                     <button class="olbtns" id="shapesaddbtn" onclick="document.getElementById('shapefiles').click();">+ Shape</button>
                 </span>
+            </div><br/><br/>
+            <div id="attributesuploadbtn">
+                <span>
+                    <button class="olbtns" id="addattributes">Toggle Atributes</button><br/><br/>
+                    <button class="olbtns" id="uploadkmlshp" v-on:click="uploadkmlshape">Upload</button><br/><br/>
+                </span>
+            </div>
+        </div>
+        <div id="attributesbox">
+            <div id="attributesinput">
+                J
             </div>
         </div>
     </div>
@@ -25,11 +36,17 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import { useStore } from 'vuex';
+
 import mapLoader from '../composables/mapLoader';
+import featureUploader from '../composables/featureUploader';
 
 export default defineComponent({
     setup() {
+        const store = useStore();
+
         const { loadKML, discardKMLIfany } = mapLoader();
+        const { uploadKMLFeature } = featureUploader();
 
         const kmlfileEl = ref();
         const shapefileEl = ref();
@@ -61,12 +78,21 @@ export default defineComponent({
         }
 
         const discardSHP = () => {
-            discardKMLIfany();
-            shapefilename.value = '';
-            shapefileEl.value.value = '';
+            // discardKMLIfany();
+            // shapefilename.value = '';
+            // shapefileEl.value.value = '';
         }
 
-        return { kmlfileEl, shapefileEl, kmlfilename, shapefilename, kmlchange, shpchange, discardKML, discardSHP }
+        const uploadkmlshape = () => {
+            console.log(2);
+            let username = store.getters.getUserName;
+            let password = store.getters.getPassWord;
+
+            let url = '';
+            uploadKMLFeature()
+        }
+
+        return { kmlfileEl, shapefileEl, kmlfilename, shapefilename, kmlchange, shpchange, discardKML, discardSHP, uploadkmlshape }
     },
 })
 </script>
