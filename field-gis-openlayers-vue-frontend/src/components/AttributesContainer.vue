@@ -65,7 +65,17 @@ export default defineComponent({
         const dronenumbersGJ = computed(() => store.getters.getDroneNumbersGJ);
 
         const consolelog = () => {
-            console.log(currentdronenumber.value, flightnumber.value, flightid.value, flightcount.value, flightdate.value);
+            let cond1 = currentdronenumber.value != 0;
+            let cond2 = flightnumber.value != undefined;
+            let cond3 = flightid.value != '';
+            let cond4 = flightcount.value != 0;
+            let cond5 = flightcategory.value != 0;
+            let cond6 = flightdate.value != undefined;
+
+            let condA = cond1 && cond2 && cond3 && cond4 && cond5 && cond6;
+            if(condA){
+                console.log(currentdronenumber.value, flightnumber.value, flightid.value, flightcount.value, flightcategory.value, flightdate.value);
+            }
         }
 
         return { ...variablerefs, dronenumbersGJ, consolelog }
