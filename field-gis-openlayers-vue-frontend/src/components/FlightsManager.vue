@@ -5,7 +5,7 @@
                 J
             </div>
             <div id="filesaddbtnscontainer">
-                <input id="flightlinekml" type="file" style="display:none;" />
+                <input id="flightlinekml" type="file" style="display:none;" v-on:change="kmlchange"/>
                 <input id="shapefiles" type="file" style="display:none;" />
                 <span>
                     <button class="olbtns" id="kmladdbtn" onclick="document.getElementById('flightlinekml').click();">+ KML</button>
@@ -19,11 +19,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
     setup() {
-        
+        const kmlfile = ref(null);
+        const shapefile = ref(null);
+
+        const kmlchange = (e: any) => {
+            console.log(e.target.files[0]);
+            let file = e.target.files[0];
+            if (file) {
+
+                let reader = new FileReader();
+                reader.onload = function () {
+
+                    
+
+                }
+                reader.readAsDataURL(file);
+
+            }
+        }
+
+        return { kmlchange }
     },
 })
 </script>

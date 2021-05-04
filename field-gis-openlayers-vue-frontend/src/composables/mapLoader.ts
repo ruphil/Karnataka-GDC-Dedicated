@@ -6,7 +6,6 @@ import { fromLonLat } from 'ol/proj';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
-import OSM from 'ol/source/OSM';
 
 import mapStyler from './mapStyler';
 import authenticator from '../composables/authenticator';
@@ -68,7 +67,19 @@ const mapLoader = () => {
         });
     }
 
-    return { loadBaseMap, loadBaseMapNKarnBounds }
+    const loadKML = (el: any) => {
+        new Map({
+            target: el,
+            layers: [ baseMapLayer ],
+            view: new View({
+                zoom: 0,
+                center: fromLonLat([0, 0]),
+                constrainResolution: true
+            }),
+        });
+    }
+
+    return { loadBaseMap, loadBaseMapNKarnBounds, loadKML }
 }
 
 export default mapLoader;
