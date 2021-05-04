@@ -83,13 +83,7 @@ const mapLoader = () => {
             style: districtStyleFunction
         });
 
-        // map.setTarget(el);
-
         map.addLayer(karndistbounds);
-
-        // map.setLayerGroup(new LayerGroup({
-        //     layers: [ baseMapLayer, karndistbounds ]
-        // }));
 
         map.setView(new View({
             zoom: 7,
@@ -102,9 +96,6 @@ const mapLoader = () => {
 
     const loadKML = (kmlstring: any) => {
         let map = app.appContext.config.globalProperties.$map;
-        // console.log(kmlstring);
-
-        // map.setTarget(el);
 
         let kmlFeatures = new KML({
             extractStyles: false
@@ -126,14 +117,6 @@ const mapLoader = () => {
         map.addLayer(kmllyr);
 
         map.getView().fit(kmllyr.getSource().getExtent());
-
-        // let lyrcentre = getCenter(kmllyr.getSource().getExtent());
-
-        // map.setView(new View({
-        //     zoom: 14,
-        //     center: lyrcentre,
-        //     constrainResolution: true
-        // }));
     }
 
     return { initBaseMap, loadKarnBounds, loadKML }
