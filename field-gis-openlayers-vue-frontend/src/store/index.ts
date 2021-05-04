@@ -4,7 +4,6 @@ export default createStore({
   state: {
     loginMsg: 'Press Enter To Continue...',
     loggedIn: false,
-    mapElement: null,
     username: '',
     password: '',
     karnboundsGeoJSON: {},
@@ -15,9 +14,6 @@ export default createStore({
     },
     getLoggedInStatus(state){
       return state.loggedIn;
-    },
-    getMapElement(state){
-      return state.mapElement;
     },
     getUserName(state){
       return state.username;
@@ -35,9 +31,6 @@ export default createStore({
     },
     setLoggedIn(state, loggedIn){
       state.loggedIn = loggedIn;
-    },
-    setMapElement(state, mapElement){
-      state.mapElement = mapElement;
     },
     setUserName(state, username){
       state.username = username;
