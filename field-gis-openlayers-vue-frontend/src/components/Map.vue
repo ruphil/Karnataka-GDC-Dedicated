@@ -3,8 +3,6 @@
 </template>
 
 <script lang="ts">
-
-
 import { defineComponent, ref, onMounted } from 'vue';
 import mapLoader from '../composables/mapLoader';
 

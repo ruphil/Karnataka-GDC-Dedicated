@@ -2,7 +2,7 @@
     <div id="attributescontainer">
         <div id="attributesbox">
             <select v-model="currentdronenumber">
-                <option disabled selected>Drone Number</option>
+                <option disabled value="0">Drone Number</option>
                 <option v-for="(dronenumberfeat, index) in dronenumbersGJ.features" v-bind:key="index">{{ dronenumberfeat.id.replace('tabledronenumbers.', '') }}</option>
             </select>&emsp;
             
@@ -11,7 +11,7 @@
             <input v-model="flightid" type="text" size="20"/>&emsp;
             
             <select v-model="flightcount">
-                <option disabled selected>Flight Count</option>
+                <option disabled value="0">Flight Count</option>
                 <option value="fly-1">FLY-1</option>
                 <option value="fly-2">FLY-2</option>
                 <option value="fly-3">FLY-3</option>
@@ -23,7 +23,7 @@
             </select>&emsp;
 
             <select v-model="flightcategory">
-                <option disabled selected>Flight Project / Category</option>
+                <option disabled value="0">Flight Project / Category</option>
                 <option>SVAMITVA</option>
                 <option>LSMK_SVAMITVA</option>
                 <option>LSMK</option>
@@ -47,15 +47,15 @@ import { useStore } from 'vuex';
 export default defineComponent({
     setup() {
         const store = useStore();
-        const currentdronenumber = ref();
+        const currentdronenumber = ref(0);
         const flightnumber = ref();
         
-        const flightcount = ref();
-        const flightcategory = ref();
+        const flightcount = ref(0);
+        const flightcategory = ref(0);
         const flightdate = ref();
 
         const flightid = computed(() => {
-            if(currentdronenumber.value != undefined && flightnumber.value != undefined){
+            if(currentdronenumber.value != 0 && flightnumber.value != undefined){
                 return currentdronenumber.value + '_' + flightnumber.value
             } else return '';
         });

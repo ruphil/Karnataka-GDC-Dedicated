@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    showAttributesContainer: true,
+    showAttributesContainer: false,
     dronenumbersGJ: {},
     loginMsg: 'Press Enter To Continue...',
     loggedIn: false,

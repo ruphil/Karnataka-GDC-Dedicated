@@ -21,7 +21,7 @@
             </div><br/><br/>
             <div id="attributesuploadbtn">
                 <span>
-                    <button class="olbtns" id="addattributes">Toggle Atributes</button><br/><br/>
+                    <button class="olbtns" id="addattributes" v-on:click="toggleAttributes">Toggle Atributes</button><br/><br/>
                     <button class="olbtns" id="uploadkmlshp" v-on:click="uploadkmlshape">Upload</button><br/><br/>
                 </span>
             </div>
@@ -78,6 +78,11 @@ export default defineComponent({
             // shapefileEl.value.value = '';
         }
 
+        const toggleAttributes = () => {
+            const showAttributesContainer = store.getters.getAttributesContainerStatus;
+            store.dispatch('setAttributesContainerStatus', !showAttributesContainer);
+        }
+
         const uploadkmlshape = () => {
             console.log(2);
             let username = store.getters.getUserName;
@@ -87,7 +92,7 @@ export default defineComponent({
             uploadKMLFeature()
         }
 
-        return { kmlfileEl, shapefileEl, kmlfilename, shapefilename, kmlchange, shpchange, discardKML, discardSHP, uploadkmlshape }
+        return { kmlfileEl, shapefileEl, kmlfilename, shapefilename, kmlchange, shpchange, discardKML, discardSHP, toggleAttributes, uploadkmlshape }
     },
 })
 </script>
