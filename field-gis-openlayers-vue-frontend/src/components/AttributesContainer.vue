@@ -66,7 +66,7 @@ export default defineComponent({
 
         const consolelog = () => {
             let cond1 = currentdronenumber.value != 0;
-            let cond2 = flightnumber.value != undefined;
+            let cond2 = flightnumber.value != undefined && flightnumber.value != '';
             let cond3 = flightid.value != '';
             let cond4 = flightcount.value != 0;
             let cond5 = flightcategory.value != 0;
