@@ -34,7 +34,7 @@ const featureUploader = () => {
             let formatGML = {
                 featureNS: 'https://surveyofindia.gov.in/',
                 featureType: 'kgdc:flightlines',
-                srsName: 'EPSG:3857',
+                // srsName: 'EPSG:3857',
                 featurePrefix: '',
                 nativeElements: []
             };
