@@ -2,6 +2,7 @@ import WFS from 'ol/format/WFS';
 import GML from 'ol/format/GML';
 
 import { getCurrentInstance } from '@vue/runtime-core';
+import axios, { AxiosResponse } from 'axios';
 
 const featureUploader = () => {
     const app = getCurrentInstance()!;
@@ -22,14 +23,45 @@ const featureUploader = () => {
             flightline.setProperties(attributesInfo);
             console.log(flightline);
 
-            // let formatWFS2 = new WFS();
-            // let pointGML = GML({
-            //     featureNS: 'https://surveyofindia.gov.in/',
-            //     featureType: 'chamber2',
+            let formatWFS = new WFS();
+            // let formatGML = GML({
+            //     featureNS: 'http://www.opengis.net/cite',
+            //     // featureType: 'playa_sample',
+            //     featureType: 'NARAYANGARH',
             //     srsName: 'EPSG:3857'
             // });
 
-            // let node = formatWFS2.writeTransaction([f],null,null,pointGML);
+            let formatGML = {
+                featureNS: 'https://surveyofindia.gov.in/',
+                featureType: 'kgdc:flightlines',
+                srsName: 'EPSG:3857',
+                featurePrefix: '',
+                nativeElements: []
+            };
+
+            let node = formatWFS.writeTransaction([flightline], [], [], formatGML);
+            let s = new XMLSerializer();
+            let str = s.serializeToString(node);
+            
+            console.log(str);
+
+            axios({
+                method: 'POST',
+                // url: 'http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kgdc:flightlines',
+                url: 'http://localhost:8080/geoserver/kgdc/wfs',
+                headers: {
+                    // 'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
+                    'Content-Type': 'text/xml',
+                },
+                data: str
+            })
+            .then((res: AxiosResponse) => {
+                console.log(res);
+                console.log(res.status);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
         }
     }
 
