@@ -37,6 +37,7 @@ export default defineComponent({
         const shapefilename = ref('');
 
         const kmlchange = () => {
+            
             let file = kmlfileEl.value.files[0];
             if (file) {
                 kmlfilename.value = file.name;
@@ -49,30 +50,20 @@ export default defineComponent({
             }
         }
 
-        const shpchange = (e: any) => {
-            console.log(e.target.files[0]);
-            let file = e.target.files[0];
+        const shpchange = () => {
             
-            if (file) {
-                kmlfilename.value = file.name;
-                let reader = new FileReader();
-                reader.onload = function () {
-                    loadKML(reader.result);
-                }
-                reader.readAsText(file);
-            }
         }
 
         const discardKML = () => {
             discardKMLIfany();
             kmlfilename.value = '';
-            kmlfileEl.value = null;
+            kmlfileEl.value.value = '';
         }
 
         const discardSHP = () => {
             discardKMLIfany();
             shapefilename.value = '';
-            shapefileEl.value = null;
+            shapefileEl.value.value = '';
         }
 
         return { kmlfileEl, shapefileEl, kmlfilename, shapefilename, kmlchange, shpchange, discardKML, discardSHP }
