@@ -12,14 +12,14 @@
             
             <select v-model="flightcount">
                 <option disabled value="0">Flight Count</option>
-                <option value="fly-1">FLY-1</option>
-                <option value="fly-2">FLY-2</option>
-                <option value="fly-3">FLY-3</option>
-                <option value="fly-4">FLY-4</option>
-                <option value="fly-5">FLY-5</option>
-                <option value="fly-6">FLY-6</option>
-                <option value="fly-7">FLY-7</option>
-                <option value="fly-8">FLY-8</option>
+                <option value="FLY-1">FLY-1</option>
+                <option value="FLY-2">FLY-2</option>
+                <option value="FLY-3">FLY-3</option>
+                <option value="FLY-4">FLY-4</option>
+                <option value="FLY-5">FLY-5</option>
+                <option value="FLY-6">FLY-6</option>
+                <option value="FLY-7">FLY-7</option>
+                <option value="FLY-8">FLY-8</option>
             </select>&emsp;
 
             <select v-model="flightcategory">
