@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     showAttributesContainer: false,
+    attributesInfo: {},
     dronenumbersGJ: {},
     loginMsg: 'Press Enter To Continue...',
     loggedIn: false,
@@ -13,6 +14,9 @@ export default createStore({
   getters: {
     getAttributesContainerStatus(state){
       return state.showAttributesContainer;
+    },
+    getAttributesInfo(state){
+      return state.attributesInfo;
     },
     getDroneNumbersGJ(state){
       return state.dronenumbersGJ;
@@ -37,6 +41,9 @@ export default createStore({
     setAttributesContainerStatus(state, showAttributesContainer){
       state.showAttributesContainer = showAttributesContainer;
     },
+    setAttributesInfo(state, attributesInfo){
+      state.attributesInfo = attributesInfo;
+    },
     setDroneNumbersGJ(state, dronenumbersGJ){
       state.dronenumbersGJ = dronenumbersGJ;
     },
@@ -59,6 +66,9 @@ export default createStore({
   actions: {
     setAttributesContainerStatus(context, showAttributesContainer){
       context.commit('setAttributesContainerStatus', showAttributesContainer);
+    },
+    setAttributesInfo(context, attributesInfo){
+      context.commit('setAttributesInfo', attributesInfo);
     },
     setDroneNumbersGJ(context, dronenumbersGJ){
       context.commit('setDroneNumbersGJ', dronenumbersGJ);

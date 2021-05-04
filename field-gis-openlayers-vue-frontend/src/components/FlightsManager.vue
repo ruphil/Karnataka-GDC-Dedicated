@@ -87,9 +87,12 @@ export default defineComponent({
             console.log(2);
             let username = store.getters.getUserName;
             let password = store.getters.getPassWord;
+            let attributesInfo = store.getters.getAttributesInfo;
 
-            let url = '';
-            uploadKMLFeature()
+            console.log(username, password, attributesInfo);
+
+            // let url = '';
+            uploadKMLFeature(username, password, attributesInfo)
         }
 
         return { kmlfileEl, shapefileEl, kmlfilename, shapefilename, kmlchange, shpchange, discardKML, discardSHP, toggleAttributes, uploadkmlshape }

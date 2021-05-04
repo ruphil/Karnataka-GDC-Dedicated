@@ -79,7 +79,16 @@ export default defineComponent({
             let condA = cond1 && cond2 && cond3 && cond4 && cond5 && cond6;
             if(condA){
                 console.log(currentdronenumber.value, flightnumber.value, flightid.value, flightcount.value, flightcategory.value, flightdate.value);
-                attributesStatus.value = 'Updated Attributes...';
+                attributesStatus.value = 'Successfully Updated Attributes...';
+
+                store.dispatch('setAttributesInfo', {
+                    'DRONENUMBER': currentdronenumber.value,
+                    'UNIQUEFLIGHTNUMBER': flightnumber.value,
+                    'FLIGHTID': flightid.value,
+                    'FLIGHTCOUNT': flightcount.value,
+                    'FLIGHTCATEGORY': flightcategory.value,
+                    'FLIGHTDATE': flightdate.value,
+                });
             } else {
                 attributesStatus.value = 'Error in Attributes...';
             }
