@@ -17,7 +17,7 @@ export default defineComponent({
 
         const initMap = () => {
             document.title = 'KGDC Flights Manager';
-            initBaseMap(store.getters.getMapElement);
+            initBaseMap(mapref.value);
         }
 
         onMounted(initMap);
