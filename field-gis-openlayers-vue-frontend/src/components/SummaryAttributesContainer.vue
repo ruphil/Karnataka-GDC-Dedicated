@@ -114,12 +114,19 @@
             <button class="olbtns" v-on:click="updateattributes">Update Attributes</button>
         </div>
         <div id="attributessummarybox" v-show="showSummaryContainer">
-            <div>Valid Flightline : {{ flightlinekmlValid }}</div>
-            <div>Valid Shapefile : {{ shapefileValid }}</div>
-            <div v-for="(value, name, index) in attributesInfoFromStore" v-bind:key="index">
-                {{ name }} : {{ value }}
-            </div>
-            <button class="olbtns">Confirm</button>
+            <b>Verify Attributes Once</b>
+            <table border="2" style="border: 1px solid white;border-collapse: collapse;">
+                <tr>
+                    <td>Valid Flightline</td><td>{{ flightlinekmlValid }}</td>
+                </tr>
+                <tr>
+                    <td>Valid Shapefile</td><td>{{ shapefileValid }}</td>
+                </tr>
+                <tr v-for="(value, name, index) in attributesInfoFromStore" v-bind:key="index">
+                    <td>{{ name }}</td><td>{{ value }}</td>
+                </tr>
+            </table><br/>
+            <button class="olbtnsgreen">Confirm All</button>
         </div>
     </div>
 </template>

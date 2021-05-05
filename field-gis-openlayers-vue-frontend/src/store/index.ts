@@ -12,8 +12,10 @@ export default createStore({
     password: '',
     karnboundsGeoJSON: {},
     attributesInfo: {},
+    attributesValid: false,
     flightlinekmlValid: false,
     shapefileValid: false,
+    uploadStatusMsg: '',
   },
   getters: {
     getAttributesContainerStatus(state){
@@ -46,11 +48,17 @@ export default createStore({
     getKarnBoundsGJ(state){
       return state.karnboundsGeoJSON;
     },
+    getAttributesValidity(state){
+      return state.attributesValid;
+    },
     getflightlinekmlValidity(state){
       return state.flightlinekmlValid;
     },
     getshapefileValidity(state){
       return state.shapefileValid;
+    },
+    getUploadStatusMsg(state){
+      return state.uploadStatusMsg;
     },
   },
   mutations: {
@@ -81,11 +89,17 @@ export default createStore({
     setKarnBoundsGJ(state, karnboundsgj){
       state.karnboundsGeoJSON = karnboundsgj;
     },
+    setAttributesValidity(state, attributesValid){
+      state.attributesValid = attributesValid;
+    },
     setflightlinekmlValidity(state, flightlinekmlValid){
       state.flightlinekmlValid = flightlinekmlValid;
     },
     setshapefileValidity(state, shapefileValid){
       state.shapefileValid = shapefileValid;
+    },
+    setUploadStatusMsg(state, uploadStatusMsg){
+      state.flightlinekmlValid = uploadStatusMsg;
     },
   },
   actions: {
@@ -116,11 +130,17 @@ export default createStore({
     setKarnBoundsGJ(context, karnboundsgj){
       context.commit('setKarnBoundsGJ', karnboundsgj);
     },
+    setAttributesValidity(context, attributesValid){
+      context.commit('setAttributesValidity', attributesValid);
+    },
     setflightlinekmlValidity(context, flightlinekmlValid){
       context.commit('setflightlinekmlValidity', flightlinekmlValid);
     },
     setshapefileValidity(context, shapefileValid){
       context.commit('setshapefileValidity', shapefileValid);
+    },
+    setUploadStatusMsg(context, uploadStatusMsg){
+      context.commit('setUploadStatusMsg', uploadStatusMsg);
     },
   },
   modules: {
