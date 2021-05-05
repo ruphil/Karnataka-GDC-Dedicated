@@ -5,6 +5,7 @@ export default createStore({
     showAttributesContainer: false,
     attributesInfo: {},
     dronenumbersGJ: {},
+    districtsList: ['Bagalkot', 'Ballari', 'Belagavi', 'Bengaluru (Rural)', 'Bengaluru (Urban)', 'Bidar', 'Chamarajanagara', 'Chikkaballapura', 'Chikkamagaluru', 'Chitradurga', 'Dakshina Kannada', 'Davanagere', 'Dharwad', 'Gadag', 'Hassan', 'Haveri', 'Kalburgi', 'Kodagu', 'Kolara', 'Koppal', 'Mandya', 'Mysuru', 'Raichur', 'Ramanagara', 'Shivamogga', 'Tumakuru', 'Udupi', 'Uttara Kannada', 'Vijayapura', 'Yadgir'],
     loginMsg: 'Press Enter To Continue...',
     loggedIn: false,
     username: '',
@@ -20,6 +21,9 @@ export default createStore({
     },
     getDroneNumbersGJ(state){
       return state.dronenumbersGJ;
+    },
+    getDistrictsList(state){
+      return state.districtsList;
     },
     getLogInMsg(state){
       return state.loginMsg;

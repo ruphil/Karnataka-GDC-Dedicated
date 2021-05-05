@@ -39,75 +39,74 @@
                 </select>
 
                 <div>
-                    <label for="flightdate">Flight Date *</label>
-                    <input type="date" />
+                    <label>Flight Date *</label>
+                    <input v-model="flightdate" type="date" />
                 </div>
 
                 <div style="display: inline-block;">
-                    <label for="takeofftime">Takeoff Time</label>
-                    <input type="time" />&emsp;
+                    <label>Takeoff Time</label>
+                    <input v-model="takeofftime" type="time" />&emsp;
                 </div>
 
                 <div style="display: inline-block;">
-                    <label for="landingtime">Landing Time</label>
-                    <input type="time" />&emsp;
+                    <label>Landing Time</label>
+                    <input v-model="landingtime" type="time" />&emsp;
                 </div>
 
                 <div style="display: inline-block;">
-                    <label for="duration">Duration</label>
-                    <input type="time" />&emsp;
+                    <label>Duration</label>
+                    <input v-model="duration" type="time" />&emsp;
                 </div>
 
-                <select>
+                <select v-model="trainingflight">
                     <option disabled value="0">Training Flight</option>
                     <option>No</option>
                     <option>Yes</option>
                 </select>
 
-                <select>
+                <select v-model="freshrefly">
                     <option disabled value="0">Fresh / Refly</option>
                     <option>Fresh</option>
                     <option>Refly</option>
                 </select>
 
-                <input type="number" placeholder="Area Covered (sq.km.)"/>
-                <input type="number" placeholder="Flying Height (m)"/>
-                <input type="text" placeholder="Overlap Used"/>
-                <input type="text" placeholder="Temperature °C"/>
-                <input type="text" placeholder="Windspeed (m/s)"/>
-                <input type="text" placeholder="Pilot Name"/>
-                <input type="text" placeholder="Field Assistant"/>
-                <input type="text" placeholder="Camping Area"/>
+                <input v-model="areacovered" type="number" placeholder="Area Covered (sq.km.)"/>
+                <input v-model="flyingheight" type="number" placeholder="Flying Height (m)"/>
+                <input v-model="overlap" type="text" placeholder="Overlap Used"/>
+                <input v-model="temperature" type="text" placeholder="Temperature °C"/>
+                <input v-model="windspeed" type="text" placeholder="Windspeed (m/s)"/>
+                <input v-model="pilotname" type="text" placeholder="Pilot Name"/>
+                <input v-model="fieldassistant" type="text" placeholder="Field Assistant"/>
+                <input v-model="campingarea" type="text" placeholder="Camping Area"/>
 
-                <select>
+                <select v-model="district">
                     <option disabled value="0">Select District</option>
-                    <option>Fresh</option>
-                    <option>Refly</option>
+                    <option v-for="(dronenumberfeat, index) in dronenumbersGJ.features" v-bind:key="index">{{ dronenumberfeat.id.replace('tabledronenumbers.', '') }}</option>
                 </select>
-            
             </div>
+
             <div v-show="!firstPage">
                 <button class="olbtns" v-on:click="firstPage = !firstPage">Go to Page 1</button><br/>
 
-                <input type="text" placeholder="Taluk"/>
-                <input type="text" placeholder="Gram Panchayat"/>
-                <textarea placeholder="Villages"></textarea>
-                <textarea placeholder="Hamlets"></textarea>
-                <textarea placeholder="LGD Codes (separated by commas)"></textarea>
-                <input type="number" placeholder="Village Count"/>
-                <input type="number" placeholder="Hamlets Count"/>
-                <input type="text" placeholder="Software Version"/>
-                <input type="text" placeholder="Base GPS ID"/>
-                <input type="number" placeholder="Raw Images"/>
-                <input type="number" placeholder="Geotagged"/>
-                <input type="text" placeholder="Avg. GSD. (cm)"/>
-                <input type="text" placeholder="Fly Log No"/>
-                <input type="number" placeholder="Total Files"/>
-                <input type="text" placeholder="Folder Size (GB)"/>
-                <textarea placeholder="Remarks"></textarea>
+                <input v-model="taluk" type="text" placeholder="Taluk"/>
+                <input v-model="grampanchayat" type="text" placeholder="Gram Panchayat"/>
+                <textarea v-model="villages" placeholder="Villages"></textarea>
+                <textarea v-model="hamlets" placeholder="Hamlets"></textarea>
+                <input v-model="lgdcodes" type="number" placeholder="LGD Codes (separated by commas)"/>
+                <input v-model="villagescount" type="number" placeholder="Village Count"/>
+                <input v-model="hamletscount" type="number" placeholder="Hamlets Count"/>
+                <input v-model="softwareversion" type="text" placeholder="Software Version"/>
+                <input v-model="basegpsid" type="text" placeholder="Base GPS ID"/>
+                <input v-model="rawimages" type="number" placeholder="Raw Images"/>
+                <input v-model="geotagged" type="number" placeholder="Geotagged"/>
+                <input v-model="avggsd" type="text" placeholder="Avg. GSD. (cm)"/>
+                <input v-model="flylogno" type="text" placeholder="Fly Log No"/>
+                <input v-model="totalfiles" type="number" placeholder="Total Files"/>
+                <input v-model="foldersize" type="text" placeholder="Folder Size (GB)"/>
+                <textarea v-model="remarks" placeholder="Remarks"></textarea>
 
             </div>
-            <button v-on:click="consolelog">Update Attributes</button>
+            <button class="olbtns" v-on:click="updateattributes">Update Attributes</button>
         </div>
     </div>
 </template>
@@ -127,6 +126,37 @@ export default defineComponent({
         const flightcategory = ref(0);
         const flightdate = ref();
 
+        const takeofftime       = ref('');
+        const landingtime       = ref('');
+        const duration          = ref('');
+        const trainingflight    = ref('');
+        const freshrefly        = ref('');
+        const areacovered       = ref('');
+        const flyingheight      = ref('');
+        const overlap           = ref('');
+        const temperature       = ref('');
+        const windspeed         = ref('');
+        const pilotname         = ref('');
+        const fieldassistant    = ref('');
+        const campingarea       = ref('');
+        const district          = ref('');
+        const taluk             = ref('');
+        const grampanchayat     = ref('');
+        const villages          = ref('');
+        const hamlets           = ref('');
+        const lgdcodes          = ref('');
+        const villagescount     = ref('');
+        const hamletscount      = ref('');
+        const softwareversion   = ref('');
+        const basegpsid         = ref('');
+        const rawimages         = ref('');
+        const geotagged         = ref('');
+        const avggsd            = ref('');
+        const flylogno          = ref('');
+        const totalfiles        = ref('');
+        const foldersize        = ref('');
+        const remarks           = ref('');
+
         const attributesStatus = ref('');
 
         const flightid = computed(() => {
@@ -136,11 +166,15 @@ export default defineComponent({
         });
 
         const variablerefs1 = { firstPage, currentdronenumber, flightnumber, flightid, flightcount, flightcategory, flightdate };
-        const variablerefs2 = { ...variablerefs1, attributesStatus };
+        const variablerefs2 = { ...variablerefs1, takeofftime, landingtime, duration, trainingflight, freshrefly, areacovered, flyingheight }
+        const variablerefs3 = { ...variablerefs2, overlap, temperature, windspeed, pilotname, fieldassistant, campingarea, district, taluk }
+        const variablerefs4 = { ...variablerefs3, grampanchayat, villages, hamlets, lgdcodes, villagescount, hamletscount, softwareversion }
+        const variablerefs5 = { ...variablerefs4, basegpsid, rawimages, geotagged, avggsd, flylogno, totalfiles, foldersize, remarks }
+        const variablerefs6 = { ...variablerefs5, attributesStatus };
         
         const dronenumbersGJ = computed(() => store.getters.getDroneNumbersGJ);
 
-        const consolelog = () => {
+        const updateattributes = () => {
             let cond1 = currentdronenumber.value != 0;
             let cond2 = flightnumber.value != undefined && flightnumber.value != '';
             let cond3 = flightid.value != '';
@@ -164,10 +198,13 @@ export default defineComponent({
                 });
             } else {
                 attributesStatus.value = 'Error in Attributes...';
+                setTimeout(() => {
+                    attributesStatus.value = '';
+                }, 2000);
             }
         }
 
-        return { ...variablerefs2, dronenumbersGJ, consolelog }
+        return { ...variablerefs6, dronenumbersGJ, updateattributes }
     },
 })
 </script>
