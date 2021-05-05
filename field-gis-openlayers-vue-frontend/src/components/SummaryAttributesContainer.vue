@@ -187,7 +187,9 @@ export default defineComponent({
 
                 hours = hours.toString().length < 2 ? '0' + hours : hours;
 
-                return hours + ":" + minutes;
+                return hours + ':' + minutes;
+            } else {
+                return '';
             }
         });
 
@@ -230,28 +232,6 @@ export default defineComponent({
         const variablerefs = { ...variablerefs5, attributesStatus };
 
         const updateattributes = () => {
-            // let attributesInfo = {
-            //     'DRONENUMBER': currentdronenumber.value,    'UNIQUEFLIGHTNUMBER': flightnumber.value,   'FLIGHTID': flightid.value,
-            //     'FLIGHTCOUNT': flightcount.value,           'FLIGHTCATEGORY': flightcategory.value,     'FLIGHTDATE': flightdate.value,
-            //     'TAKEOFFTIME': takeofftime.value,           'LANDINGTIME': landingtime.value,           'DURATION': duration.value,
-            //     'TRAININGFLIGHT': trainingflight.value,     'FRESHREFLY': freshrefly.value,             'AREA': areacovered.value,
-            //     'UAVHEIGHT': flyingheight.value,            'OVERLAP': overlap.value,                   'TEMPERATURE': temperature.value,
-            //     'WINDSPEED': windspeed.value,               'PILOTNAME': pilotname.value,               'FIELDASSISTANT': fieldassistant.value,
-            //     'CAMPINGAREA': campingarea.value,           'DISTRICT': district.value,                 'TALUK': taluk.value,
-            //     'GRAMPANCHAYAT': grampanchayat.value,       'VILLAGES': villages.value,                 'HAMLETS': hamlets.value,
-            //     'LGDCODES': lgdcodes.value,                 'VILLAGESCOUNT': villagescount.value,       'HAMLETSCOUNT': hamletscount.value,
-            //     'SOFTWAREVERSION': softwareversion.value,   'BASEGPSID': basegpsid.value,               'RAWIMAGESCOUNT': rawimages.value,
-            //     'GEOTAGGED': geotagged.value,               'AVGGSD': avggsd.value,                     'BATTERYNO': batteryno.value,
-            //     'FLYLOGNO': flylogno.value,                 'TOTALFILES': totalfiles.value,             'FOLDERSIZEGB': foldersize.value,
-            //     'REMARKS': remarks.value
-            // };
-            // let cond1 = attributesInfo['DRONENUMBER'] != '';
-            // let cond2 = attributesInfo['UNIQUEFLIGHTNUMBER'] != undefined && attributesInfo['UNIQUEFLIGHTNUMBER'] != '';
-            // let cond3 = attributesInfo['FLIGHTID'] != '';
-            // let cond4 = attributesInfo['FLIGHTCOUNT'] != '';
-            // let cond5 = attributesInfo['FLIGHTCATEGORY'] != '';
-            // let cond6 = attributesInfo['FLIGHTDATE'] != undefined && attributesInfo['FLIGHTDATE'] != '';
-
             let attributesInfo = {
                 'dronenumber': currentdronenumber.value,    'uniqueflightnumber': flightnumber.value,   'flightid': flightid.value,
                 'flightcount': flightcount.value,           'flightcategory': flightcategory.value,     'flightdate': flightdate.value,
