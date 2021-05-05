@@ -7,7 +7,7 @@
                 <button class="olbtns" v-on:click="firstPage = !firstPage">Go to Page 2</button><br/>
 
                 <select v-model="currentdronenumber">
-                    <option disabled value="0">Drone Number *</option>
+                    <option disabled value="">Drone Number *</option>
                     <option v-for="(dronenumberfeat, index) in dronenumbersGJ.features" v-bind:key="index">{{ dronenumberfeat.id.replace('tabledronenumbers.', '') }}</option>
                 </select>
                 
@@ -16,7 +16,7 @@
                 <input v-model="flightid" type="text" disabled/>
                 
                 <select v-model="flightcount">
-                    <option disabled value="0">Flight Count *</option>
+                    <option disabled value="">Flight Count *</option>
                     <option value="FLY-1">FLY-1</option>
                     <option value="FLY-2">FLY-2</option>
                     <option value="FLY-3">FLY-3</option>
@@ -28,7 +28,7 @@
                 </select>
 
                 <select v-model="flightcategory">
-                    <option disabled value="0">Flight Project / Category *</option>
+                    <option disabled value="">Flight Project / Category *</option>
                     <option>SVAMITVA</option>
                     <option>LSMK_SVAMITVA</option>
                     <option>LSMK</option>
@@ -59,13 +59,13 @@
                 </div>
 
                 <select v-model="trainingflight">
-                    <option disabled value="0">Training Flight</option>
+                    <option disabled value="">Training Flight</option>
                     <option>No</option>
                     <option>Yes</option>
                 </select>
 
                 <select v-model="freshrefly">
-                    <option disabled value="0">Fresh / Refly</option>
+                    <option disabled value="">Fresh / Refly</option>
                     <option>Fresh</option>
                     <option>Refly</option>
                 </select>
@@ -88,7 +88,7 @@
                 <input v-model="avggsd" type="text" placeholder="Avg. GSD. (cm)"/>
 
                 <select v-model="district">
-                    <option disabled value="0">Select District</option>
+                    <option disabled value="">Select District</option>
                     <option v-for="(district, index) in districtsList" v-bind:key="index">{{ district }}</option>
                 </select>
 
@@ -157,19 +157,20 @@ export default defineComponent({
         const computedrefs = { ...computedrefs1, flightlinekmlValid, shapefileValid, attributesInfoFromStore};
 
         const firstPage = ref(true);
-        const currentdronenumber = ref(0);
-        const flightnumber = ref();
         
-        const flightcount = ref(0);
-        const flightcategory = ref(0);
-        const flightdate = ref();
+        const currentdronenumber = ref('');
+        
+        const flightnumber      = ref('');
+        const flightcount       = ref('');
+        const flightcategory    = ref('');
+        
+        const flightdate        = ref('');
+        const takeofftime       = ref('');
+        const landingtime       = ref('');
+        const duration          = ref('');
 
-        const takeofftime       = ref(null);
-        const landingtime       = ref(null);
-        const duration          = ref(null);
-
-        const trainingflight    = ref(0);
-        const freshrefly        = ref(0);
+        const trainingflight    = ref('');
+        const freshrefly        = ref('');
         const areacovered       = ref('');
         const flyingheight      = ref('');
         const overlap           = ref('');
@@ -178,7 +179,7 @@ export default defineComponent({
         const pilotname         = ref('');
         const fieldassistant    = ref('');
         const campingarea       = ref('');
-        const district          = ref(0);
+        const district          = ref('');
         const taluk             = ref('');
         const grampanchayat     = ref('');
         const villages          = ref('');
@@ -191,7 +192,7 @@ export default defineComponent({
         const rawimages         = ref('');
         const geotagged         = ref('');
         const avggsd            = ref('');
-        const batteryno          = ref('');
+        const batteryno         = ref('');
         const flylogno          = ref('');
         const totalfiles        = ref('');
         const foldersize        = ref('');
@@ -200,7 +201,7 @@ export default defineComponent({
         const attributesStatus = ref('');
 
         const flightid = computed(() => {
-            if(currentdronenumber.value != 0 && flightnumber.value != undefined){
+            if(currentdronenumber.value != '' && flightnumber.value != undefined){
                 return currentdronenumber.value + '_' + flightnumber.value
             } else return '';
         });
@@ -229,16 +230,16 @@ export default defineComponent({
                 'REMARKS': remarks.value
             };
 
-            let cond1 = attributesInfo['DRONENUMBER'] != 0;
+            let cond1 = attributesInfo['DRONENUMBER'] != '';
             let cond2 = attributesInfo['UNIQUEFLIGHTNUMBER'] != undefined && attributesInfo['UNIQUEFLIGHTNUMBER'] != '';
             let cond3 = attributesInfo['FLIGHTID'] != '';
-            let cond4 = attributesInfo['FLIGHTCOUNT'] != 0;
-            let cond5 = attributesInfo['FLIGHTCATEGORY'] != 0;
+            let cond4 = attributesInfo['FLIGHTCOUNT'] != '';
+            let cond5 = attributesInfo['FLIGHTCATEGORY'] != '';
             let cond6 = attributesInfo['FLIGHTDATE'] != undefined;
 
             let condA = cond1 && cond2 && cond3 && cond4 && cond5 && cond6;
             if(condA){
-                console.log(currentdronenumber.value, flightnumber.value, flightid.value, flightcount.value, flightcategory.value, flightdate.value);
+                console.log(attributesInfo);
                 attributesStatus.value = 'Successfully Updated Attributes...';
 
                 store.dispatch('setAttributesInfo', attributesInfo);
