@@ -1,6 +1,8 @@
 <template>
     <div id="attributescontainer">
         <div id="attributesbox">
+            <button class="olbtns" style="float: left;">Attributes</button>
+            <span style="float: right;">{{ attributesStatus }}</span>
             <div v-show="firstPage">
                 <button class="olbtns" v-on:click="firstPage = !firstPage">Go to Page 2</button><br/>
 
@@ -66,7 +68,7 @@
                     <option disabled value="0">Fresh / Refly</option>
                     <option>Fresh</option>
                     <option>Refly</option>
-                </select>&emsp;
+                </select>
 
                 <input type="number" placeholder="Area Covered (sq.km.)"/>
                 <input type="number" placeholder="Flying Height (m)"/>
@@ -76,14 +78,17 @@
                 <input type="text" placeholder="Pilot Name"/>
                 <input type="text" placeholder="Field Assistant"/>
                 <input type="text" placeholder="Camping Area"/>
-                
-                <div>{{ attributesStatus }}</div>
-                <button v-on:click="consolelog">Update Attributes</button>
+
+                <select>
+                    <option disabled value="0">Select District</option>
+                    <option>Fresh</option>
+                    <option>Refly</option>
+                </select>
+            
             </div>
             <div v-show="!firstPage">
                 <button class="olbtns" v-on:click="firstPage = !firstPage">Go to Page 1</button><br/>
-                
-                <input type="text" placeholder="District"/>
+
                 <input type="text" placeholder="Taluk"/>
                 <input type="text" placeholder="Gram Panchayat"/>
                 <textarea placeholder="Villages"></textarea>
@@ -92,7 +97,6 @@
                 <input type="number" placeholder="Village Count"/>
                 <input type="number" placeholder="Hamlets Count"/>
                 <input type="text" placeholder="Software Version"/>
-                <input type="text" placeholder="Drone Version"/>
                 <input type="text" placeholder="Base GPS ID"/>
                 <input type="number" placeholder="Raw Images"/>
                 <input type="number" placeholder="Geotagged"/>
@@ -102,8 +106,8 @@
                 <input type="text" placeholder="Folder Size (GB)"/>
                 <textarea placeholder="Remarks"></textarea>
 
-
             </div>
+            <button v-on:click="consolelog">Update Attributes</button>
         </div>
     </div>
 </template>
