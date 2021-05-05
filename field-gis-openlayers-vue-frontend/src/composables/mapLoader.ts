@@ -157,6 +157,7 @@ const mapLoader = () => {
         if(app.appContext.config.globalProperties.$kmllayer != null){
             map.removeLayer(app.appContext.config.globalProperties.$kmllayer);
             app.appContext.config.globalProperties.$kmllayer = null;
+            store.dispatch('setflightlinekmlValidity', false);
         }
     }
 
