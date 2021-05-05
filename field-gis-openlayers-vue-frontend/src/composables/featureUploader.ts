@@ -14,12 +14,17 @@ const featureUploader = () => {
             let features = kmllayer.getSource().getFeatures();
             let flightline = features[0];
 
+            let geometry = flightline.getGeometry();
+
             let properties = flightline.getProperties();
             for (let prop in properties) {
-                if(prop != 'geometry') flightline.unset(prop);
+                flightline.unset(prop);
             }
             
             flightline.setProperties(attributesInfo);
+            flightline.set('geom', geometry);
+            flightline.setGeometryName('geom');
+            // flightline.setGeometryName('geometry');
             console.log(flightline);
 
             let formatWFS = new WFS();
