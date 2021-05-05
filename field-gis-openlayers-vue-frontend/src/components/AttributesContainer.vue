@@ -69,16 +69,40 @@
                 </select>&emsp;
 
                 <input type="number" placeholder="Area Covered (sq.km.)"/>
-
                 <input type="number" placeholder="Flying Height (m)"/>
-                
+                <input type="text" placeholder="Overlap Used"/>
+                <input type="text" placeholder="Temperature °C"/>
+                <input type="text" placeholder="Windspeed (m/s)"/>
+                <input type="text" placeholder="Pilot Name"/>
+                <input type="text" placeholder="Field Assistant"/>
+                <input type="text" placeholder="Camping Area"/>
                 
                 <div>{{ attributesStatus }}</div>
                 <button v-on:click="consolelog">Update Attributes</button>
             </div>
             <div v-show="!firstPage">
                 <button class="olbtns" v-on:click="firstPage = !firstPage">Go to Page 1</button><br/>
-                Second Page
+                
+                <input type="text" placeholder="District"/>
+                <input type="text" placeholder="Taluk"/>
+                <input type="text" placeholder="Gram Panchayat"/>
+                <input type="text" placeholder="Villages"/>
+                <input type="text" placeholder="Hamlets"/>
+                <input type="text" placeholder="LGD Codes"/>
+                <input type="number" placeholder="Village Count"/>
+                <input type="number" placeholder="Hamlets Count"/>
+                <input type="text" placeholder="Software Version"/>
+                <input type="text" placeholder="Drone Version"/>
+                <input type="text" placeholder="Base GPS ID"/>
+                <input type="number" placeholder="Raw Images"/>
+                <input type="number" placeholder="Geotagged"/>
+                <input type="text" placeholder="Avg. GSD. (cm)"/>
+                <input type="text" placeholder="Fly Log No"/>
+                <input type="number" placeholder="Total Files"/>
+                <input type="text" placeholder="Folder Size (GB)"/>
+                <textarea placeholder="Remarks"></textarea>
+
+
             </div>
         </div>
     </div>
