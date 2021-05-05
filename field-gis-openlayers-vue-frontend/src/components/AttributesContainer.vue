@@ -78,15 +78,17 @@
                 <input v-model="pilotname" type="text" placeholder="Pilot Name"/>
                 <input v-model="fieldassistant" type="text" placeholder="Field Assistant"/>
                 <input v-model="campingarea" type="text" placeholder="Camping Area"/>
-
-                <select v-model="district">
-                    <option disabled value="0">Select District</option>
-                    <option v-for="(dronenumberfeat, index) in dronenumbersGJ.features" v-bind:key="index">{{ dronenumberfeat.id.replace('tabledronenumbers.', '') }}</option>
-                </select>
+                <input v-model="softwareversion" type="text" placeholder="Software Version"/>
+                <input v-model="avggsd" type="text" placeholder="Avg. GSD. (cm)"/>
             </div>
 
             <div v-show="!firstPage">
                 <button class="olbtns" v-on:click="firstPage = !firstPage">Go to Page 1</button><br/>
+
+                <select v-model="district">
+                    <option disabled value="0">Select District</option>
+                    <option v-for="(district, index) in districtsList" v-bind:key="index">{{ district }}</option>
+                </select>
 
                 <input v-model="taluk" type="text" placeholder="Taluk"/>
                 <input v-model="grampanchayat" type="text" placeholder="Gram Panchayat"/>
@@ -95,11 +97,11 @@
                 <input v-model="lgdcodes" type="number" placeholder="LGD Codes (separated by commas)"/>
                 <input v-model="villagescount" type="number" placeholder="Village Count"/>
                 <input v-model="hamletscount" type="number" placeholder="Hamlets Count"/>
-                <input v-model="softwareversion" type="text" placeholder="Software Version"/>
+                
                 <input v-model="basegpsid" type="text" placeholder="Base GPS ID"/>
                 <input v-model="rawimages" type="number" placeholder="Raw Images"/>
                 <input v-model="geotagged" type="number" placeholder="Geotagged"/>
-                <input v-model="avggsd" type="text" placeholder="Avg. GSD. (cm)"/>
+                
                 <input v-model="flylogno" type="text" placeholder="Fly Log No"/>
                 <input v-model="totalfiles" type="number" placeholder="Total Files"/>
                 <input v-model="foldersize" type="text" placeholder="Folder Size (GB)"/>
@@ -129,8 +131,8 @@ export default defineComponent({
         const takeofftime       = ref('');
         const landingtime       = ref('');
         const duration          = ref('');
-        const trainingflight    = ref('');
-        const freshrefly        = ref('');
+        const trainingflight    = ref(0);
+        const freshrefly        = ref(0);
         const areacovered       = ref('');
         const flyingheight      = ref('');
         const overlap           = ref('');
@@ -139,7 +141,7 @@ export default defineComponent({
         const pilotname         = ref('');
         const fieldassistant    = ref('');
         const campingarea       = ref('');
-        const district          = ref('');
+        const district          = ref(0);
         const taluk             = ref('');
         const grampanchayat     = ref('');
         const villages          = ref('');
@@ -173,6 +175,7 @@ export default defineComponent({
         const variablerefs6 = { ...variablerefs5, attributesStatus };
         
         const dronenumbersGJ = computed(() => store.getters.getDroneNumbersGJ);
+        const districtsList = computed(() => store.getters.getDistrictsList);
 
         const updateattributes = () => {
             let cond1 = currentdronenumber.value != 0;
@@ -188,13 +191,9 @@ export default defineComponent({
                 attributesStatus.value = 'Successfully Updated Attributes...';
 
                 store.dispatch('setAttributesInfo', {
-                    'DRONENUMBER': currentdronenumber.value,
-                    'UNIQUEFLIGHTNUMBER': flightnumber.value,
-                    'FLIGHTID': flightid.value,
-                    'FLIGHTCOUNT': flightcount.value,
-                    'FLIGHTCATEGORY': flightcategory.value,
-                    'FLIGHTDATE': flightdate.value,
-                    "TAKEOFFTIME":null,"landingtime":null,"duration":null,"trainingflight":null,"freshrefly":null,"area":null,"uavheight":null,"overlap":null,"temperature":null,"windspeed":null,"pilotname":null,"fieldassistant":null,"campingarea":null,"district":null,"taluk":null,"grampanchayat":null,"villages":null,"hamlets":null,"lgdcodes":null,"villagescount":null,"hamletscount":null,"softwareversion":null,"droneversion":null,"basegpsid":null,"rawimagescount":null,"geotagged":null,"avggsd":null,"batteryno":null,"flylogno":null,"totalfiles":null,"foldersizegb":null
+                    'DRONENUMBER': currentdronenumber.value,    'UNIQUEFLIGHTNUMBER': flightnumber.value,   'FLIGHTID': flightid.value,
+                    'FLIGHTCOUNT': flightcount.value,           'FLIGHTCATEGORY': flightcategory.value,     'FLIGHTDATE': flightdate.value,
+                    'TAKEOFFTIME': null
                 });
             } else {
                 attributesStatus.value = 'Error in Attributes...';
@@ -204,7 +203,7 @@ export default defineComponent({
             }
         }
 
-        return { ...variablerefs6, dronenumbersGJ, updateattributes }
+        return { ...variablerefs6, dronenumbersGJ, districtsList, updateattributes }
     },
 })
 </script>
