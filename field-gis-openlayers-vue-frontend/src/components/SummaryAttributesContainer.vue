@@ -170,18 +170,20 @@ export default defineComponent({
         // const duration          = ref('');
 
         const duration = computed(() => {
-            let hours: any   = <any>landingtime.value.split(':')[0] - <any>takeofftime.value.split(':')[0];
-            let minutes: any = <any>landingtime.value.split(':')[1] - <any>takeofftime.value.split(':')[1];
+            if(takeofftime.value != '' && landingtime.value != ''){
+                let hours: any   = <any>landingtime.value.split(':')[0] - <any>takeofftime.value.split(':')[0];
+                let minutes: any = <any>landingtime.value.split(':')[1] - <any>takeofftime.value.split(':')[1];
 
-            minutes = minutes.toString().length < 2 ? '0' + minutes : minutes;
-            if(minutes < 0){ 
-                hours--;
-                minutes = 60 + minutes;
+                minutes = minutes.toString().length < 2 ? '0' + minutes : minutes;
+                if(minutes < 0){ 
+                    hours--;
+                    minutes = 60 + minutes;
+                }
+
+                hours = hours.toString().length < 2 ? '0' + hours : hours;
+
+                return hours + ":" + minutes;
             }
-
-            hours = hours.toString().length < 2 ? '0' + hours : hours;
-
-            return hours + ":" + minutes;
         });
 
         const trainingflight    = ref('');
@@ -229,28 +231,50 @@ export default defineComponent({
         const variablerefs = { ...variablerefs5, attributesStatus };
 
         const updateattributes = () => {
+            // let attributesInfo = {
+            //     'DRONENUMBER': currentdronenumber.value,    'UNIQUEFLIGHTNUMBER': flightnumber.value,   'FLIGHTID': flightid.value,
+            //     'FLIGHTCOUNT': flightcount.value,           'FLIGHTCATEGORY': flightcategory.value,     'FLIGHTDATE': flightdate.value,
+            //     'TAKEOFFTIME': takeofftime.value,           'LANDINGTIME': landingtime.value,           'DURATION': duration.value,
+            //     'TRAININGFLIGHT': trainingflight.value,     'FRESHREFLY': freshrefly.value,             'AREA': areacovered.value,
+            //     'UAVHEIGHT': flyingheight.value,            'OVERLAP': overlap.value,                   'TEMPERATURE': temperature.value,
+            //     'WINDSPEED': windspeed.value,               'PILOTNAME': pilotname.value,               'FIELDASSISTANT': fieldassistant.value,
+            //     'CAMPINGAREA': campingarea.value,           'DISTRICT': district.value,                 'TALUK': taluk.value,
+            //     'GRAMPANCHAYAT': grampanchayat.value,       'VILLAGES': villages.value,                 'HAMLETS': hamlets.value,
+            //     'LGDCODES': lgdcodes.value,                 'VILLAGESCOUNT': villagescount.value,       'HAMLETSCOUNT': hamletscount.value,
+            //     'SOFTWAREVERSION': softwareversion.value,   'BASEGPSID': basegpsid.value,               'RAWIMAGESCOUNT': rawimages.value,
+            //     'GEOTAGGED': geotagged.value,               'AVGGSD': avggsd.value,                     'BATTERYNO': batteryno.value,
+            //     'FLYLOGNO': flylogno.value,                 'TOTALFILES': totalfiles.value,             'FOLDERSIZEGB': foldersize.value,
+            //     'REMARKS': remarks.value
+            // };
+            // let cond1 = attributesInfo['DRONENUMBER'] != '';
+            // let cond2 = attributesInfo['UNIQUEFLIGHTNUMBER'] != undefined && attributesInfo['UNIQUEFLIGHTNUMBER'] != '';
+            // let cond3 = attributesInfo['FLIGHTID'] != '';
+            // let cond4 = attributesInfo['FLIGHTCOUNT'] != '';
+            // let cond5 = attributesInfo['FLIGHTCATEGORY'] != '';
+            // let cond6 = attributesInfo['FLIGHTDATE'] != undefined && attributesInfo['FLIGHTDATE'] != '';
+
             let attributesInfo = {
-                'DRONENUMBER': currentdronenumber.value,    'UNIQUEFLIGHTNUMBER': flightnumber.value,   'FLIGHTID': flightid.value,
-                'FLIGHTCOUNT': flightcount.value,           'FLIGHTCATEGORY': flightcategory.value,     'FLIGHTDATE': flightdate.value,
-                'TAKEOFFTIME': takeofftime.value,           'LANDINGTIME': landingtime.value,           'DURATION': duration.value,
-                'TRAININGFLIGHT': trainingflight.value,     'FRESHREFLY': freshrefly.value,             'AREA': areacovered.value,
-                'UAVHEIGHT': flyingheight.value,            'OVERLAP': overlap.value,                   'TEMPERATURE': temperature.value,
-                'WINDSPEED': windspeed.value,               'PILOTNAME': pilotname.value,               'FIELDASSISTANT': fieldassistant.value,
-                'CAMPINGAREA': campingarea.value,           'DISTRICT': district.value,                 'TALUK': taluk.value,
-                'GRAMPANCHAYAT': grampanchayat.value,       'VILLAGES': villages.value,                 'HAMLETS': hamlets.value,
-                'LGDCODES': lgdcodes.value,                 'VILLAGESCOUNT': villagescount.value,       'HAMLETSCOUNT': hamletscount.value,
-                'SOFTWAREVERSION': softwareversion.value,   'BASEGPSID': basegpsid.value,               'RAWIMAGESCOUNT': rawimages.value,
-                'GEOTAGGED': geotagged.value,               'AVGGSD': avggsd.value,                     'BATTERYNO': batteryno.value,
-                'FLYLOGNO': flylogno.value,                 'TOTALFILES': totalfiles.value,             'FOLDERSIZEGB': foldersize.value,
-                'REMARKS': remarks.value
+                'dronenumber': currentdronenumber.value,    'uniqueflightnumber': flightnumber.value,   'flightid': flightid.value,
+                'flightcount': flightcount.value,           'flightcategory': flightcategory.value,     'flightdate': flightdate.value,
+                'takeofftime': takeofftime.value,           'landingtime': landingtime.value,           'duration': duration.value,
+                'trainingflight': trainingflight.value,     'freshrefly': freshrefly.value,             'area': areacovered.value,
+                'uavheight': flyingheight.value,            'overlap': overlap.value,                   'temperature': temperature.value,
+                'windspeed': windspeed.value,               'pilotname': pilotname.value,               'fieldassistant': fieldassistant.value,
+                'campingarea': campingarea.value,           'district': district.value,                 'taluk': taluk.value,
+                'grampanchayat': grampanchayat.value,       'villages': villages.value,                 'hamlets': hamlets.value,
+                'lgdcodes': lgdcodes.value,                 'villagescount': villagescount.value,       'hamletscount': hamletscount.value,
+                'softwareversion': softwareversion.value,   'basegpsid': basegpsid.value,               'rawimagescount': rawimages.value,
+                'geotagged': geotagged.value,               'avggsd': avggsd.value,                     'batteryno': batteryno.value,
+                'flylogno': flylogno.value,                 'totalfiles': totalfiles.value,             'foldersizegb': foldersize.value,
+                'remarks': remarks.value
             };
 
-            let cond1 = attributesInfo['DRONENUMBER'] != '';
-            let cond2 = attributesInfo['UNIQUEFLIGHTNUMBER'] != undefined && attributesInfo['UNIQUEFLIGHTNUMBER'] != '';
-            let cond3 = attributesInfo['FLIGHTID'] != '';
-            let cond4 = attributesInfo['FLIGHTCOUNT'] != '';
-            let cond5 = attributesInfo['FLIGHTCATEGORY'] != '';
-            let cond6 = attributesInfo['FLIGHTDATE'] != undefined;
+            let cond1 = attributesInfo['dronenumber'] != '';
+            let cond2 = attributesInfo['uniqueflightnumber'] != undefined && attributesInfo['uniqueflightnumber'] != '';
+            let cond3 = attributesInfo['flightid'] != '';
+            let cond4 = attributesInfo['flightcount'] != '';
+            let cond5 = attributesInfo['flightcategory'] != '';
+            let cond6 = attributesInfo['flightdate'] != undefined && attributesInfo['flightdate'] != '';
 
             let condA = cond1 && cond2 && cond3 && cond4 && cond5 && cond6;
             if(condA){
@@ -271,10 +295,13 @@ export default defineComponent({
         const startUploading = () => {
             let validAttributes = store.getters.getAttributesValidity;
             if(validAttributes){
-                console.log('valid attributes to upload...');
+                console.log('Valid Attributes to Upload...');
                 uploadDataToWFS();
             } else {
-                store.dispatch('setUploadStatusMsg', 'Invalid Attributes... Check Again...')
+                store.dispatch('setUploadStatusMsg', 'Check Attributes...');
+                setTimeout(() => {
+                    store.dispatch('setUploadStatusMsg', '');
+                }, 2000);
             }
         }
 

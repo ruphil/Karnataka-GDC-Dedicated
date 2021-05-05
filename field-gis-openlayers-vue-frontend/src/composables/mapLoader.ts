@@ -139,10 +139,16 @@ const mapLoader = () => {
             })
         });
 
-        map.addLayer(kmllyr);
-        app.appContext.config.globalProperties.$kmllayer = kmllyr;
+        if(kmllyr.getSource().getFeatures().length > 0){
+            map.addLayer(kmllyr);
+            app.appContext.config.globalProperties.$kmllayer = kmllyr;
 
-        map.getView().fit(kmllyr.getSource().getExtent());
+            map.getView().fit(kmllyr.getSource().getExtent());
+            store.dispatch('setflightlinekmlValidity', true);
+        } else {
+            store.dispatch('setflightlinekmlValidity', false);
+            store.dispatch('setUploadStatusMsg', 'Invalid KML');
+        }
     }
 
     const discardKMLIfany = () => {
