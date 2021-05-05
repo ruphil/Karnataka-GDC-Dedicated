@@ -3,7 +3,7 @@ import { exec } from 'child_process';
 
 setInterval(() => {
     axios.get('https://www.google.com', {
-        timeout: 3000,
+        timeout: 10000,
         timeoutErrorMessage: 'nointernet'
     }).then((res) => {
         if(res.status == 200){
@@ -12,7 +12,7 @@ setInterval(() => {
     }).catch((err) => {
         makeDialUp();
     })
-}, 30000);
+}, 600000);
 
 const makeDialUp = async () => {
     let dialUpName = 'staticip';
