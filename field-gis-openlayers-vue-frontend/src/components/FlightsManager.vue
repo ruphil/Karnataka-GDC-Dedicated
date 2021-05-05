@@ -22,15 +22,16 @@
             <div id="attributesuploadbtn">
                 <span>
                     <button class="olbtns" id="addattributes" v-on:click="toggleAttributes">Toggle Atributes</button><br/><br/>
-                    <button class="olbtns" id="uploadkmlshp" v-on:click="showSummaryNConfirm">Upload</button><br/><br/>
+                    <button class="olbtns" id="uploadkmlshp" v-on:click="showSummaryNConfirm">Confirm and Upload</button><br/><br/>
                 </span>
             </div>
+            <div>{{ uploadStatusMsg }}</div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import { useStore } from 'vuex';
 
 import mapLoader from '../composables/mapLoader';
@@ -43,10 +44,14 @@ export default defineComponent({
         const { loadKML, discardKMLIfany } = mapLoader();
         const { uploadKMLFeature } = featureUploader();
 
+        const uploadStatusMsg = computed(() => store.getters.getUploadStatusMsg)
+
         const kmlfileEl = ref();
         const shapefileEl = ref();
         const kmlfilename = ref('');
         const shapefilename = ref('');
+
+        const variablerefs = { uploadStatusMsg, kmlfileEl, shapefileEl, kmlfilename, shapefilename, };
 
         const kmlchange = () => {
             
@@ -99,7 +104,9 @@ export default defineComponent({
             // uploadKMLFeature(username, password, attributesInfo)
         }
 
-        return { kmlfileEl, shapefileEl, kmlfilename, shapefilename, kmlchange, shpchange, discardKML, discardSHP, toggleAttributes, showSummaryNConfirm }
+        const functionrefs = { kmlchange, shpchange, discardKML, discardSHP, toggleAttributes, showSummaryNConfirm }
+
+        return { ...variablerefs, ...functionrefs }
     },
 })
 </script>
