@@ -55,7 +55,7 @@
 
                 <div style="display: inline-block;">
                     <label>Duration</label>
-                    <input v-model="duration" type="time" />&emsp;
+                    <input v-model="duration" type="time" disabled/>&emsp;
                 </div>
 
                 <select v-model="trainingflight">
@@ -102,6 +102,7 @@
                 <input v-model="rawimages" type="number" placeholder="Raw Images"/>
                 <input v-model="geotagged" type="number" placeholder="Geotagged"/>
                 
+                <input v-model="batteryno" type="text" placeholder="Battery Number"/>
                 <input v-model="flylogno" type="text" placeholder="Fly Log No"/>
                 <input v-model="totalfiles" type="number" placeholder="Total Files"/>
                 <input v-model="foldersize" type="text" placeholder="Folder Size (GB)"/>
@@ -111,7 +112,9 @@
             <button class="olbtns" v-on:click="updateattributes">Update Attributes</button>
         </div>
         <div id="attributessummarybox" v-show="showSummaryContainer">
-            <div>Flightline Available: {{  }}</div>
+            <div>{{ flightlinekmlValid }}</div>
+            <div>{{ shapefileValid }}</div>
+            <div v-for="(attribute, index) in attributesInfoFromStore" v-bind:key="index">{{ attribute }}</div>
         </div>
     </div>
 </template>
@@ -126,6 +129,16 @@ export default defineComponent({
         const showAttributesContainer = computed(() => store.getters.getAttributesContainerStatus);
         const showSummaryContainer = computed(() => store.getters.getSummaryContainerStatus);
 
+        const flightlinekmlValid = computed(() => store.getters.getflightlinekmlValidity);
+        const shapefileValid = computed(() => store.getters.getshapefileValidity);
+        const attributesInfoFromStore = computed(() => store.getters.getAttributesInfo);
+
+        const dronenumbersGJ = computed(() => store.getters.getDroneNumbersGJ);
+        const districtsList = computed(() => store.getters.getDistrictsList);
+
+        const computedrefs1 = { dronenumbersGJ, districtsList, showAttributesContainer, showSummaryContainer, };
+        const computedrefs = { ...computedrefs1, flightlinekmlValid, shapefileValid, attributesInfoFromStore};
+
         const firstPage = ref(true);
         const currentdronenumber = ref(0);
         const flightnumber = ref();
@@ -137,6 +150,7 @@ export default defineComponent({
         const takeofftime       = ref('');
         const landingtime       = ref('');
         const duration          = ref('');
+
         const trainingflight    = ref(0);
         const freshrefly        = ref(0);
         const areacovered       = ref('');
@@ -160,6 +174,7 @@ export default defineComponent({
         const rawimages         = ref('');
         const geotagged         = ref('');
         const avggsd            = ref('');
+        const batteryno          = ref('');
         const flylogno          = ref('');
         const totalfiles        = ref('');
         const foldersize        = ref('');
@@ -177,11 +192,8 @@ export default defineComponent({
         const variablerefs2 = { ...variablerefs1, takeofftime, landingtime, duration, trainingflight, freshrefly, areacovered, flyingheight }
         const variablerefs3 = { ...variablerefs2, overlap, temperature, windspeed, pilotname, fieldassistant, campingarea, district, taluk }
         const variablerefs4 = { ...variablerefs3, grampanchayat, villages, hamlets, lgdcodes, villagescount, hamletscount, softwareversion }
-        const variablerefs5 = { ...variablerefs4, basegpsid, rawimages, geotagged, avggsd, flylogno, totalfiles, foldersize, remarks }
-        const variablerefs6 = { ...variablerefs5, attributesStatus };
-        
-        const dronenumbersGJ = computed(() => store.getters.getDroneNumbersGJ);
-        const districtsList = computed(() => store.getters.getDistrictsList);
+        const variablerefs5 = { ...variablerefs4, basegpsid, rawimages, geotagged, avggsd, batteryno, flylogno, totalfiles, foldersize, remarks }
+        const variablerefs = { ...variablerefs5, attributesStatus };
 
         const updateattributes = () => {
             let cond1 = currentdronenumber.value != 0;
@@ -196,11 +208,23 @@ export default defineComponent({
                 console.log(currentdronenumber.value, flightnumber.value, flightid.value, flightcount.value, flightcategory.value, flightdate.value);
                 attributesStatus.value = 'Successfully Updated Attributes...';
 
-                store.dispatch('setAttributesInfo', {
+                let attributesInfo = {
                     'DRONENUMBER': currentdronenumber.value,    'UNIQUEFLIGHTNUMBER': flightnumber.value,   'FLIGHTID': flightid.value,
                     'FLIGHTCOUNT': flightcount.value,           'FLIGHTCATEGORY': flightcategory.value,     'FLIGHTDATE': flightdate.value,
-                    'TAKEOFFTIME': null
-                });
+                    'TAKEOFFTIME': takeofftime.value,           'LANDINGTIME': landingtime.value,           'DURATION': duration.value,
+                    'TRAININGFLIGHT': trainingflight.value,     'FRESHREFLY': freshrefly.value,             'AREA': areacovered.value,
+                    'UAVHEIGHT': flyingheight.value,            'OVERLAP': overlap.value,                   'TEMPERATURE': temperature.value,
+                    'WINDSPEED': windspeed.value,               'PILOTNAME': pilotname.value,               'FIELDASSISTANT': fieldassistant.value,
+                    'CAMPINGAREA': campingarea.value,           'DISTRICT': district.value,                 'TALUK': taluk.value,
+                    'GRAMPANCHAYAT': grampanchayat.value,       'VILLAGES': villages.value,                 'HAMLETS': hamlets.value,
+                    'LGDCODES': lgdcodes.value,                 'VILLAGESCOUNT': villagescount.value,       'HAMLETSCOUNT': hamletscount.value,
+                    'SOFTWAREVERSION': softwareversion.value,   'BASEGPSID': basegpsid.value,               'RAWIMAGESCOUNT': rawimages.value,
+                    'GEOTAGGED': geotagged.value,               'AVGGSD': avggsd.value,                     'BATTERYNO': batteryno.value,
+                    'FLYLOGNO': flylogno.value,                 'TOTALFILES': totalfiles.value,             'FOLDERSIZEGB': foldersize.value,
+                    'REMARKS': remarks.value
+                };
+
+                store.dispatch('setAttributesInfo', attributesInfo);
             } else {
                 attributesStatus.value = 'Error in Attributes...';
                 setTimeout(() => {
@@ -209,7 +233,7 @@ export default defineComponent({
             }
         }
 
-        return { ...variablerefs6, showAttributesContainer, showSummaryContainer, dronenumbersGJ, districtsList, updateattributes }
+        return { ...computedrefs, ...variablerefs, updateattributes }
     },
 })
 </script>

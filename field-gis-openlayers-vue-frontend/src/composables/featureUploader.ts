@@ -1,3 +1,5 @@
+import { useStore } from 'vuex';
+
 import WFS from 'ol/format/WFS';
 
 import { getCurrentInstance } from '@vue/runtime-core';
@@ -6,10 +8,11 @@ import axios, { AxiosResponse } from 'axios';
 const featureUploader = () => {
     const app = getCurrentInstance()!;
 
-    const uploadKMLFeature = (username: string, password: string, attributesInfo: Object) => {
+    const uploadKMLFeature = (username: string, password: string) => {
+        const store = useStore();
+        
+        let attributesInfo = store.getters.getAttributesInfo;
         if(Object.keys(attributesInfo).length > 0){
-            let attributes = Object.keys(attributesInfo);
-            
             let kmllayer = app.appContext.config.globalProperties.$kmllayer;
             let features = kmllayer.getSource().getFeatures();
             let flightline = features[0];
