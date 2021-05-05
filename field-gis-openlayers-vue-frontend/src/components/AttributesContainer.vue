@@ -1,43 +1,85 @@
 <template>
     <div id="attributescontainer">
         <div id="attributesbox">
-            <select v-model="currentdronenumber">
-                <option disabled value="0">Drone Number *</option>
-                <option v-for="(dronenumberfeat, index) in dronenumbersGJ.features" v-bind:key="index">{{ dronenumberfeat.id.replace('tabledronenumbers.', '') }}</option>
-            </select>&emsp;
-            
-            <input v-model="flightnumber" type="number" placeholder="Unique Flight No *" size="20"/>&emsp;
+            <div v-show="firstPage">
+                <button class="olbtns" v-on:click="firstPage = !firstPage">Go to Page 2</button><br/>
 
-            <input v-model="flightid" type="text" size="20" disabled/>&emsp;
-            
-            <select v-model="flightcount">
-                <option disabled value="0">Flight Count *</option>
-                <option value="FLY-1">FLY-1</option>
-                <option value="FLY-2">FLY-2</option>
-                <option value="FLY-3">FLY-3</option>
-                <option value="FLY-4">FLY-4</option>
-                <option value="FLY-5">FLY-5</option>
-                <option value="FLY-6">FLY-6</option>
-                <option value="FLY-7">FLY-7</option>
-                <option value="FLY-8">FLY-8</option>
-            </select>&emsp;
+                <select v-model="currentdronenumber">
+                    <option disabled value="0">Drone Number *</option>
+                    <option v-for="(dronenumberfeat, index) in dronenumbersGJ.features" v-bind:key="index">{{ dronenumberfeat.id.replace('tabledronenumbers.', '') }}</option>
+                </select>
+                
+                <input v-model="flightnumber" type="number" placeholder="Unique Flight No *"/>
 
-            <select v-model="flightcategory">
-                <option disabled value="0">Flight Project / Category *</option>
-                <option>SVAMITVA</option>
-                <option>LSMK_SVAMITVA</option>
-                <option>LSMK</option>
-                <option>Unsuccessful_Poor_Weather</option>
-                <option>Unsuccessful_Technical_Issue</option>
-                <option>Unsuccessful_High_WindSpeed</option>
-                <option>Unsuccessful_Geotagging</option>
-            </select>&emsp;
+                <input v-model="flightid" type="text" disabled/>
+                
+                <select v-model="flightcount">
+                    <option disabled value="0">Flight Count *</option>
+                    <option value="FLY-1">FLY-1</option>
+                    <option value="FLY-2">FLY-2</option>
+                    <option value="FLY-3">FLY-3</option>
+                    <option value="FLY-4">FLY-4</option>
+                    <option value="FLY-5">FLY-5</option>
+                    <option value="FLY-6">FLY-6</option>
+                    <option value="FLY-7">FLY-7</option>
+                    <option value="FLY-8">FLY-8</option>
+                </select>
 
-            <label for="flightdate">*</label>
-            <input v-model="flightdate" type="date" />&emsp;
-            
-            <div>{{ attributesStatus }}</div>
-            <button v-on:click="consolelog">Update Attributes</button>
+                <select v-model="flightcategory">
+                    <option disabled value="0">Flight Project / Category *</option>
+                    <option>SVAMITVA</option>
+                    <option>LSMK_SVAMITVA</option>
+                    <option>LSMK</option>
+                    <option>Unsuccessful_Poor_Weather</option>
+                    <option>Unsuccessful_Technical_Issue</option>
+                    <option>Unsuccessful_High_WindSpeed</option>
+                    <option>Unsuccessful_Geotagging</option>
+                </select>
+
+                <div>
+                    <label for="flightdate">Flight Date *</label>
+                    <input type="date" />
+                </div>
+
+                <div style="display: inline-block;">
+                    <label for="takeofftime">Takeoff Time</label>
+                    <input type="time" />&emsp;
+                </div>
+
+                <div style="display: inline-block;">
+                    <label for="landingtime">Landing Time</label>
+                    <input type="time" />&emsp;
+                </div>
+
+                <div style="display: inline-block;">
+                    <label for="duration">Duration</label>
+                    <input type="time" />&emsp;
+                </div>
+
+                <select>
+                    <option disabled value="0">Training Flight</option>
+                    <option>No</option>
+                    <option>Yes</option>
+                </select>
+
+                <select>
+                    <option disabled value="0">Fresh / Refly</option>
+                    <option>Fresh</option>
+                    <option>Refly</option>
+                </select>&emsp;
+
+                <input type="number" placeholder="Area Covered (sq.km.)"/>
+
+                <input type="number" placeholder="Flying Height (m)"/>
+                
+                
+                <div>{{ attributesStatus }}</div>
+                <button v-on:click="consolelog">Update Attributes</button>
+            </div>
+            <div v-show="!firstPage">
+                <button class="olbtns" v-on:click="firstPage = !firstPage">Go to Page 1</button><br/>
+                Second Page
+            </div>
         </div>
     </div>
 </template>
@@ -49,6 +91,7 @@ import { useStore } from 'vuex';
 export default defineComponent({
     setup() {
         const store = useStore();
+        const firstPage = ref(true);
         const currentdronenumber = ref(0);
         const flightnumber = ref();
         
@@ -64,7 +107,8 @@ export default defineComponent({
             } else return '';
         });
 
-        const variablerefs = { currentdronenumber, flightnumber, flightid, flightcount, flightcategory, flightdate, attributesStatus };
+        const variablerefs1 = { firstPage, currentdronenumber, flightnumber, flightid, flightcount, flightcategory, flightdate };
+        const variablerefs2 = { ...variablerefs1, attributesStatus };
         
         const dronenumbersGJ = computed(() => store.getters.getDroneNumbersGJ);
 
@@ -82,20 +126,20 @@ export default defineComponent({
                 attributesStatus.value = 'Successfully Updated Attributes...';
 
                 store.dispatch('setAttributesInfo', {
-                    'dronenumber': currentdronenumber.value,
-                    'uniqueflightnumber': flightnumber.value,
-                    'flightid': flightid.value,
-                    'flightcount': flightcount.value,
-                    'flightcategory': flightcategory.value,
-                    'flightdate': flightdate.value,
-                    "takeofftime":null,"landingtime":null,"duration":null,"trainingflight":null,"freshrefly":null,"area":null,"uavheight":null,"overlap":null,"temperature":null,"windspeed":null,"pilotname":null,"fieldassistant":null,"campingarea":null,"district":null,"taluk":null,"grampanchayat":null,"villages":null,"hamlets":null,"lgdcodes":null,"villagescount":null,"hamletscount":null,"softwareversion":null,"droneversion":null,"basegpsid":null,"rawimagescount":null,"geotagged":null,"avggsd":null,"batteryno":null,"flylogno":null,"totalfiles":null,"foldersizegb":null
+                    'DRONENUMBER': currentdronenumber.value,
+                    'UNIQUEFLIGHTNUMBER': flightnumber.value,
+                    'FLIGHTID': flightid.value,
+                    'FLIGHTCOUNT': flightcount.value,
+                    'FLIGHTCATEGORY': flightcategory.value,
+                    'FLIGHTDATE': flightdate.value,
+                    "TAKEOFFTIME":null,"landingtime":null,"duration":null,"trainingflight":null,"freshrefly":null,"area":null,"uavheight":null,"overlap":null,"temperature":null,"windspeed":null,"pilotname":null,"fieldassistant":null,"campingarea":null,"district":null,"taluk":null,"grampanchayat":null,"villages":null,"hamlets":null,"lgdcodes":null,"villagescount":null,"hamletscount":null,"softwareversion":null,"droneversion":null,"basegpsid":null,"rawimagescount":null,"geotagged":null,"avggsd":null,"batteryno":null,"flylogno":null,"totalfiles":null,"foldersizegb":null
                 });
             } else {
                 attributesStatus.value = 'Error in Attributes...';
             }
         }
 
-        return { ...variablerefs, dronenumbersGJ, consolelog }
+        return { ...variablerefs2, dronenumbersGJ, consolelog }
     },
 })
 </script>
