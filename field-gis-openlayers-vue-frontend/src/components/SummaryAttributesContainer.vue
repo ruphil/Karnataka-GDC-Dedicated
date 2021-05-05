@@ -123,7 +123,7 @@
                     <td>Valid Shapefile</td><td>{{ shapefileValid }}</td>
                 </tr>
                 <tr v-for="(value, name, index) in attributesInfoFromStore" v-bind:key="index">
-                    <td>{{ name }}</td><td>{{ value }}</td>
+                    <td>{{ name.toUpperCase() }}</td><td>{{ value }}</td>
                 </tr>
             </table><br/>
             <button class="olbtnsgreen" v-on:click="startUploading">Confirm All, Now Upload</button>
@@ -159,15 +159,20 @@ export default defineComponent({
         const firstPage = ref(true);
         
         const currentdronenumber = ref('');
-        
         const flightnumber      = ref('');
+
+        const flightid = computed(() => {
+            if(currentdronenumber.value != '' && flightnumber.value != ''){
+                return currentdronenumber.value + '_' + flightnumber.value;
+            } else return '';
+        });
+
         const flightcount       = ref('');
         const flightcategory    = ref('');
         
         const flightdate        = ref('');
         const takeofftime       = ref('');
         const landingtime       = ref('');
-        // const duration          = ref('');
 
         const duration = computed(() => {
             if(takeofftime.value != '' && landingtime.value != ''){
@@ -216,12 +221,6 @@ export default defineComponent({
         const remarks           = ref('');
 
         const attributesStatus = ref('');
-
-        const flightid = computed(() => {
-            if(currentdronenumber.value != '' && flightnumber.value != undefined){
-                return currentdronenumber.value + '_' + flightnumber.value
-            } else return '';
-        });
 
         const variablerefs1 = { firstPage, currentdronenumber, flightnumber, flightid, flightcount, flightcategory, flightdate };
         const variablerefs2 = { ...variablerefs1, takeofftime, landingtime, duration, trainingflight, freshrefly, areacovered, flyingheight }

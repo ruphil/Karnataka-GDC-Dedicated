@@ -6,6 +6,8 @@ import { getCurrentInstance } from '@vue/runtime-core';
 import axios, { AxiosResponse } from 'axios';
 import { Feature } from 'ol';
 import LineString from 'ol/geom/LineString';
+import Point from 'ol/geom/Point';
+import GeometryLayout from 'ol/geom/GeometryLayout';
 
 const featureUploader = () => {
     const app = getCurrentInstance()!;
@@ -19,14 +21,12 @@ const featureUploader = () => {
             let password = store.getters.getPassWord;
             let attributesInfo = store.getters.getAttributesInfo;
 
-            let flightline = new Feature({
-                geometry: new LineString([])
-            });
-            if(app.appContext.config.globalProperties.$kmllayer != null){
+            // let flightline = new Feature();
+            // if(app.appContext.config.globalProperties.$kmllayer != null){
                 let kmllayer = app.appContext.config.globalProperties.$kmllayer;
                 let features = kmllayer.getSource().getFeatures();
                 
-                flightline = features[0];
+                let flightline = features[0];
 
                 let geometry = flightline.getGeometry();
 
@@ -37,7 +37,7 @@ const featureUploader = () => {
                 
                 flightline.set('geom', geometry);
                 flightline.setGeometryName('geom');
-            }
+            // }
 
             flightline.setProperties(attributesInfo);
             console.log(flightline);
@@ -53,28 +53,30 @@ const featureUploader = () => {
                 nativeElements: []
             };
 
+            console.log('came hre 1')
             let node = formatWFS.writeTransaction([flightline], [], [], formatGML);
-            let s = new XMLSerializer();
-            let str = s.serializeToString(node);
+            console.log('came hre 2')
+            // let s = new XMLSerializer();
+            // let str = s.serializeToString(node);
             
-            console.log(str);
+            // console.log(str);
 
-            axios({
-                method: 'POST',
-                url: 'http://localhost:8080/geoserver/ows?service=wfs&version=2.0.0&request=GetCapabilities',
-                headers: {
-                    // 'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
-                    'Content-Type': 'text/xml',
-                },
-                data: str
-            })
-            .then((res: AxiosResponse) => {
-                console.log(res);
-                console.log(res.status);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+            // axios({
+            //     method: 'POST',
+            //     url: 'http://localhost:8080/geoserver/ows?service=wfs&version=2.0.0&request=GetCapabilities',
+            //     headers: {
+            //         // 'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`,
+            //         'Content-Type': 'text/xml',
+            //     },
+            //     data: str
+            // })
+            // .then((res: AxiosResponse) => {
+            //     console.log(res);
+            //     console.log(res.status);
+            // })
+            // .catch((error) => {
+            //     console.log(error);
+            // })
         }
     }
 
