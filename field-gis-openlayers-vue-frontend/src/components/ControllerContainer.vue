@@ -10,30 +10,26 @@
             <button id="controllersummarybtn" v-on:click="showSummaryContainer = !showSummaryContainer">⎙</button>
         </div>
         <MainController v-show="showMainContainer" />
-        <AttributesContainer v-show="showAttributesContainer" />
+        <SummaryAttributesContainer />
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue';
-import { useStore } from 'vuex';
 
 import MainController from './MainController.vue';
-import AttributesContainer from './AttributesContainer.vue';
+import SummaryAttributesContainer from './SummaryAttributesContainer.vue';
 
 export default defineComponent({
     components: {
-        MainController, AttributesContainer
+        MainController, SummaryAttributesContainer
     },
     setup() {
-        const store = useStore();
-
         const showMainContainer = ref(false);
         const showLayersContainer = ref(false);
-        const showSummaryContainer = ref(false);
-        const showAttributesContainer = computed(() => store.getters.getAttributesContainerStatus);
+        const showSummaryContainer = ref(false);       
 
-        return { showMainContainer, showLayersContainer, showSummaryContainer, showAttributesContainer };
+        return { showMainContainer, showLayersContainer, showSummaryContainer };
     }
 })
 </script>

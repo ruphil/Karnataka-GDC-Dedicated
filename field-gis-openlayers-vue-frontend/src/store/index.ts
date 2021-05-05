@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     showAttributesContainer: false,
+    showSummaryContainer: false,
     attributesInfo: {},
     dronenumbersGJ: {},
     districtsList: ['Bagalkot', 'Ballari', 'Belagavi', 'Bengaluru (Rural)', 'Bengaluru (Urban)', 'Bidar', 'Chamarajanagara', 'Chikkaballapura', 'Chikkamagaluru', 'Chitradurga', 'Dakshina Kannada', 'Davanagere', 'Dharwad', 'Gadag', 'Hassan', 'Haveri', 'Kalburgi', 'Kodagu', 'Kolara', 'Koppal', 'Mandya', 'Mysuru', 'Raichur', 'Ramanagara', 'Shivamogga', 'Tumakuru', 'Udupi', 'Uttara Kannada', 'Vijayapura', 'Yadgir'],
@@ -11,10 +12,15 @@ export default createStore({
     username: '',
     password: '',
     karnboundsGeoJSON: {},
+    flightlinekmlValid: false,
+    shapefileValid: false,
   },
   getters: {
     getAttributesContainerStatus(state){
       return state.showAttributesContainer;
+    },
+    getSummaryContainerStatus(state){
+      return state.showSummaryContainer;
     },
     getAttributesInfo(state){
       return state.attributesInfo;
@@ -40,10 +46,19 @@ export default createStore({
     getKarnBoundsGJ(state){
       return state.karnboundsGeoJSON;
     },
+    getflightlinekmlValidity(state){
+      return state.flightlinekmlValid;
+    },
+    getshapefileValidity(state){
+      return state.shapefileValid;
+    },
   },
   mutations: {
     setAttributesContainerStatus(state, showAttributesContainer){
       state.showAttributesContainer = showAttributesContainer;
+    },
+    setSummaryContainerStatus(state, showSummaryContainer){
+      state.showSummaryContainer = showSummaryContainer;
     },
     setAttributesInfo(state, attributesInfo){
       state.attributesInfo = attributesInfo;
@@ -66,10 +81,19 @@ export default createStore({
     setKarnBoundsGJ(state, karnboundsgj){
       state.karnboundsGeoJSON = karnboundsgj;
     },
+    setflightlinekmlValidity(state, flightlinekmlValid){
+      state.flightlinekmlValid = flightlinekmlValid;
+    },
+    setshapefileValidity(state, shapefileValid){
+      state.shapefileValid = shapefileValid;
+    },
   },
   actions: {
     setAttributesContainerStatus(context, showAttributesContainer){
       context.commit('setAttributesContainerStatus', showAttributesContainer);
+    },
+    setSummaryContainerStatus(context, showSummaryContainer){
+      context.commit('setSummaryContainerStatus', showSummaryContainer);
     },
     setAttributesInfo(context, attributesInfo){
       context.commit('setAttributesInfo', attributesInfo);
@@ -91,6 +115,12 @@ export default createStore({
     },
     setKarnBoundsGJ(context, karnboundsgj){
       context.commit('setKarnBoundsGJ', karnboundsgj);
+    },
+    setflightlinekmlValidity(context, flightlinekmlValid){
+      context.commit('setflightlinekmlValidity', flightlinekmlValid);
+    },
+    setshapefileValidity(context, shapefileValid){
+      context.commit('setshapefileValidity', shapefileValid);
     },
   },
   modules: {

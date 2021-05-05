@@ -1,6 +1,6 @@
 <template>
-    <div id="attributescontainer">
-        <div id="attributesbox">
+    <div id="summaryattributescontainer">
+        <div id="attributesbox" v-show="showAttributesContainer">
             <button class="olbtns" style="float: left;">Attributes</button>
             <span style="float: right;">{{ attributesStatus }}</span>
             <div v-show="firstPage">
@@ -110,6 +110,9 @@
             </div>
             <button class="olbtns" v-on:click="updateattributes">Update Attributes</button>
         </div>
+        <div id="attributessummarybox" v-show="showSummaryContainer">
+            <div>Flightline Available: {{  }}</div>
+        </div>
     </div>
 </template>
 
@@ -120,6 +123,9 @@ import { useStore } from 'vuex';
 export default defineComponent({
     setup() {
         const store = useStore();
+        const showAttributesContainer = computed(() => store.getters.getAttributesContainerStatus);
+        const showSummaryContainer = computed(() => store.getters.getSummaryContainerStatus);
+
         const firstPage = ref(true);
         const currentdronenumber = ref(0);
         const flightnumber = ref();
@@ -203,7 +209,7 @@ export default defineComponent({
             }
         }
 
-        return { ...variablerefs6, dronenumbersGJ, districtsList, updateattributes }
+        return { ...variablerefs6, showAttributesContainer, showSummaryContainer, dronenumbersGJ, districtsList, updateattributes }
     },
 })
 </script>

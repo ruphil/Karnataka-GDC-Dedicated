@@ -22,7 +22,7 @@
             <div id="attributesuploadbtn">
                 <span>
                     <button class="olbtns" id="addattributes" v-on:click="toggleAttributes">Toggle Atributes</button><br/><br/>
-                    <button class="olbtns" id="uploadkmlshp" v-on:click="uploadkmlshape">Upload</button><br/><br/>
+                    <button class="olbtns" id="uploadkmlshp" v-on:click="showSummaryNConfirm">Upload</button><br/><br/>
                 </span>
             </div>
         </div>
@@ -81,21 +81,25 @@ export default defineComponent({
         const toggleAttributes = () => {
             const showAttributesContainer = store.getters.getAttributesContainerStatus;
             store.dispatch('setAttributesContainerStatus', !showAttributesContainer);
+            store.dispatch('setSummaryContainerStatus', false);
         }
 
-        const uploadkmlshape = () => {
-            console.log(2);
-            let username = store.getters.getUserName;
-            let password = store.getters.getPassWord;
-            let attributesInfo = store.getters.getAttributesInfo;
+        const showSummaryNConfirm = () => {
+            console.log('camer here');
+            store.dispatch('setAttributesContainerStatus', false);
+            store.dispatch('setSummaryContainerStatus', true);
+            // console.log(2);
+            // let username = store.getters.getUserName;
+            // let password = store.getters.getPassWord;
+            // let attributesInfo = store.getters.getAttributesInfo;
 
-            console.log(username, password, attributesInfo);
+            // console.log(username, password, attributesInfo);
 
-            // let url = '';
-            uploadKMLFeature(username, password, attributesInfo)
+            // // let url = '';
+            // uploadKMLFeature(username, password, attributesInfo)
         }
 
-        return { kmlfileEl, shapefileEl, kmlfilename, shapefilename, kmlchange, shpchange, discardKML, discardSHP, toggleAttributes, uploadkmlshape }
+        return { kmlfileEl, shapefileEl, kmlfilename, shapefilename, kmlchange, shpchange, discardKML, discardSHP, toggleAttributes, showSummaryNConfirm }
     },
 })
 </script>
