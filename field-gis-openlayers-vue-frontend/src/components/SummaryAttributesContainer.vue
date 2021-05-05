@@ -126,7 +126,7 @@
                     <td>{{ name }}</td><td>{{ value }}</td>
                 </tr>
             </table><br/>
-            <button class="olbtnsgreen">Confirm All</button>
+            <button class="olbtnsgreen" v-on:click="startUploading">Confirm All, Now Upload</button>
         </div>
     </div>
 </template>
@@ -135,9 +135,14 @@
 import { defineComponent, ref, computed } from 'vue';
 import { useStore } from 'vuex';
 
+import featureUploader from '../composables/featureUploader';
+
 export default defineComponent({
     setup() {
         const store = useStore();
+
+        const { uploadDataToWFS } = featureUploader();
+        
         const showAttributesContainer = computed(() => store.getters.getAttributesContainerStatus);
         const showSummaryContainer = computed(() => store.getters.getSummaryContainerStatus);
 
@@ -159,9 +164,9 @@ export default defineComponent({
         const flightcategory = ref(0);
         const flightdate = ref();
 
-        const takeofftime       = ref('');
-        const landingtime       = ref('');
-        const duration          = ref('');
+        const takeofftime       = ref(null);
+        const landingtime       = ref(null);
+        const duration          = ref(null);
 
         const trainingflight    = ref(0);
         const freshrefly        = ref(0);
@@ -208,44 +213,56 @@ export default defineComponent({
         const variablerefs = { ...variablerefs5, attributesStatus };
 
         const updateattributes = () => {
-            let cond1 = currentdronenumber.value != 0;
-            let cond2 = flightnumber.value != undefined && flightnumber.value != '';
-            let cond3 = flightid.value != '';
-            let cond4 = flightcount.value != 0;
-            let cond5 = flightcategory.value != 0;
-            let cond6 = flightdate.value != undefined;
+            let attributesInfo = {
+                'DRONENUMBER': currentdronenumber.value,    'UNIQUEFLIGHTNUMBER': flightnumber.value,   'FLIGHTID': flightid.value,
+                'FLIGHTCOUNT': flightcount.value,           'FLIGHTCATEGORY': flightcategory.value,     'FLIGHTDATE': flightdate.value,
+                'TAKEOFFTIME': takeofftime.value,           'LANDINGTIME': landingtime.value,           'DURATION': duration.value,
+                'TRAININGFLIGHT': trainingflight.value,     'FRESHREFLY': freshrefly.value,             'AREA': areacovered.value,
+                'UAVHEIGHT': flyingheight.value,            'OVERLAP': overlap.value,                   'TEMPERATURE': temperature.value,
+                'WINDSPEED': windspeed.value,               'PILOTNAME': pilotname.value,               'FIELDASSISTANT': fieldassistant.value,
+                'CAMPINGAREA': campingarea.value,           'DISTRICT': district.value,                 'TALUK': taluk.value,
+                'GRAMPANCHAYAT': grampanchayat.value,       'VILLAGES': villages.value,                 'HAMLETS': hamlets.value,
+                'LGDCODES': lgdcodes.value,                 'VILLAGESCOUNT': villagescount.value,       'HAMLETSCOUNT': hamletscount.value,
+                'SOFTWAREVERSION': softwareversion.value,   'BASEGPSID': basegpsid.value,               'RAWIMAGESCOUNT': rawimages.value,
+                'GEOTAGGED': geotagged.value,               'AVGGSD': avggsd.value,                     'BATTERYNO': batteryno.value,
+                'FLYLOGNO': flylogno.value,                 'TOTALFILES': totalfiles.value,             'FOLDERSIZEGB': foldersize.value,
+                'REMARKS': remarks.value
+            };
+
+            let cond1 = attributesInfo['DRONENUMBER'] != 0;
+            let cond2 = attributesInfo['UNIQUEFLIGHTNUMBER'] != undefined && attributesInfo['UNIQUEFLIGHTNUMBER'] != '';
+            let cond3 = attributesInfo['FLIGHTID'] != '';
+            let cond4 = attributesInfo['FLIGHTCOUNT'] != 0;
+            let cond5 = attributesInfo['FLIGHTCATEGORY'] != 0;
+            let cond6 = attributesInfo['FLIGHTDATE'] != undefined;
 
             let condA = cond1 && cond2 && cond3 && cond4 && cond5 && cond6;
             if(condA){
                 console.log(currentdronenumber.value, flightnumber.value, flightid.value, flightcount.value, flightcategory.value, flightdate.value);
                 attributesStatus.value = 'Successfully Updated Attributes...';
 
-                let attributesInfo = {
-                    'DRONENUMBER': currentdronenumber.value,    'UNIQUEFLIGHTNUMBER': flightnumber.value,   'FLIGHTID': flightid.value,
-                    'FLIGHTCOUNT': flightcount.value,           'FLIGHTCATEGORY': flightcategory.value,     'FLIGHTDATE': flightdate.value,
-                    'TAKEOFFTIME': takeofftime.value,           'LANDINGTIME': landingtime.value,           'DURATION': duration.value,
-                    'TRAININGFLIGHT': trainingflight.value,     'FRESHREFLY': freshrefly.value,             'AREA': areacovered.value,
-                    'UAVHEIGHT': flyingheight.value,            'OVERLAP': overlap.value,                   'TEMPERATURE': temperature.value,
-                    'WINDSPEED': windspeed.value,               'PILOTNAME': pilotname.value,               'FIELDASSISTANT': fieldassistant.value,
-                    'CAMPINGAREA': campingarea.value,           'DISTRICT': district.value,                 'TALUK': taluk.value,
-                    'GRAMPANCHAYAT': grampanchayat.value,       'VILLAGES': villages.value,                 'HAMLETS': hamlets.value,
-                    'LGDCODES': lgdcodes.value,                 'VILLAGESCOUNT': villagescount.value,       'HAMLETSCOUNT': hamletscount.value,
-                    'SOFTWAREVERSION': softwareversion.value,   'BASEGPSID': basegpsid.value,               'RAWIMAGESCOUNT': rawimages.value,
-                    'GEOTAGGED': geotagged.value,               'AVGGSD': avggsd.value,                     'BATTERYNO': batteryno.value,
-                    'FLYLOGNO': flylogno.value,                 'TOTALFILES': totalfiles.value,             'FOLDERSIZEGB': foldersize.value,
-                    'REMARKS': remarks.value
-                };
-
                 store.dispatch('setAttributesInfo', attributesInfo);
+                store.dispatch('setAttributesValidity', true);
             } else {
                 attributesStatus.value = 'Error in Attributes...';
-                setTimeout(() => {
-                    attributesStatus.value = '';
-                }, 2000);
+            }
+
+            setTimeout(() => {
+                attributesStatus.value = '';
+            }, 2000);
+        }
+
+        const startUploading = () => {
+            let validAttributes = store.getters.getAttributesValidity;
+            if(validAttributes){
+                console.log('valid attributes to upload...');
+                uploadDataToWFS();
+            } else {
+                store.dispatch('setUploadStatusMsg', 'Invalid Attributes... Check Again...')
             }
         }
 
-        return { ...computedrefs, ...variablerefs, updateattributes }
+        return { ...computedrefs, ...variablerefs, updateattributes, startUploading }
     },
 })
 </script>

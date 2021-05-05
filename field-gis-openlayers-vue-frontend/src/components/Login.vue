@@ -27,6 +27,7 @@ export default defineComponent({
 
         const doLogin = () => {
             store.dispatch('setLogInMsg', 'Please Wait...');
+            store.dispatch('setUploadStatusMsg', '');
 
             let url: string = 'http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=kgdc:karndistbounds&srsname=EPSG:3857&outputFormat=application/json';
             loadKarnBounds(url, username.value, password.value);

@@ -25,7 +25,6 @@
                     <button class="olbtns" id="uploadkmlshp" v-on:click="showSummaryNConfirm">Confirm and Upload</button><br/><br/>
                 </span>
             </div>
-            <div>{{ uploadStatusMsg }}</div>
         </div>
     </div>
 </template>
@@ -35,23 +34,19 @@ import { defineComponent, ref, computed } from 'vue';
 import { useStore } from 'vuex';
 
 import mapLoader from '../composables/mapLoader';
-import featureUploader from '../composables/featureUploader';
 
 export default defineComponent({
     setup() {
         const store = useStore();
 
         const { loadKML, discardKMLIfany } = mapLoader();
-        const { uploadKMLFeature } = featureUploader();
-
-        const uploadStatusMsg = computed(() => store.getters.getUploadStatusMsg)
 
         const kmlfileEl = ref();
         const shapefileEl = ref();
         const kmlfilename = ref('');
         const shapefilename = ref('');
 
-        const variablerefs = { uploadStatusMsg, kmlfileEl, shapefileEl, kmlfilename, shapefilename, };
+        const variablerefs = { kmlfileEl, shapefileEl, kmlfilename, shapefilename};
 
         const kmlchange = () => {
             
@@ -90,18 +85,8 @@ export default defineComponent({
         }
 
         const showSummaryNConfirm = () => {
-            console.log('camer here');
             store.dispatch('setAttributesContainerStatus', false);
             store.dispatch('setSummaryContainerStatus', true);
-            // console.log(2);
-            // let username = store.getters.getUserName;
-            // let password = store.getters.getPassWord;
-            // let attributesInfo = store.getters.getAttributesInfo;
-
-            // console.log(username, password, attributesInfo);
-
-            // // let url = '';
-            // uploadKMLFeature(username, password, attributesInfo)
         }
 
         const functionrefs = { kmlchange, shpchange, discardKML, discardSHP, toggleAttributes, showSummaryNConfirm }

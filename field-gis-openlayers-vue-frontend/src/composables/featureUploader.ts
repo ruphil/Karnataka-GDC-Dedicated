@@ -4,30 +4,39 @@ import WFS from 'ol/format/WFS';
 
 import { getCurrentInstance } from '@vue/runtime-core';
 import axios, { AxiosResponse } from 'axios';
+import { Feature } from 'ol';
 
 const featureUploader = () => {
     const app = getCurrentInstance()!;
+    const store = useStore();
 
-    const uploadKMLFeature = (username: string, password: string) => {
-        const store = useStore();
-        
+    const uploadDataToWFS = () => {
         let attributesInfo = store.getters.getAttributesInfo;
-        if(Object.keys(attributesInfo).length > 0){
-            let kmllayer = app.appContext.config.globalProperties.$kmllayer;
-            let features = kmllayer.getSource().getFeatures();
-            let flightline = features[0];
+        let validAttributes = store.getters.getAttributesValidity;
+        if(Object.keys(attributesInfo).length > 0 && validAttributes){
+            let username = store.getters.getUserName;
+            let password = store.getters.getPassWord;
+            let attributesInfo = store.getters.getAttributesInfo;
 
-            let geometry = flightline.getGeometry();
+            let flightline = new Feature();
+            if(app.appContext.config.globalProperties.$kmllayer != null){
+                let kmllayer = app.appContext.config.globalProperties.$kmllayer;
+                let features = kmllayer.getSource().getFeatures();
+                
+                flightline = features[0];
 
-            let properties = flightline.getProperties();
-            for (let prop in properties) {
-                flightline.unset(prop);
+                let geometry = flightline.getGeometry();
+
+                let properties = flightline.getProperties();
+                for (let prop in properties) {
+                    flightline.unset(prop);
+                }
+                
+                flightline.set('geom', geometry);
+                flightline.setGeometryName('geom');
             }
-            
+
             flightline.setProperties(attributesInfo);
-            flightline.set('geom', geometry);
-            flightline.setGeometryName('geom');
-            // flightline.setGeometryName('geometry');
             console.log(flightline);
 
             let formatWFS = new WFS();
@@ -66,7 +75,7 @@ const featureUploader = () => {
         }
     }
 
-    return { uploadKMLFeature }
+    return { uploadDataToWFS }
 }
 
 export default featureUploader;

@@ -1,7 +1,8 @@
 <template>
     <div id="maincontrollerbox">
         <Login v-show="!loggedIn"/>
-        <FlightsManager v-show="loggedIn" />
+        <FlightsManager v-show="loggedIn" /><br/>
+        <div id="uploadstatusmsgdiv">{{ uploadStatusMsg }}</div>
     </div>
 </template>
 
@@ -19,8 +20,9 @@ export default defineComponent({
     setup(){
         const store = useStore();
         const loggedIn = computed(() => store.getters.getLoggedInStatus);
+        const uploadStatusMsg = computed(() => store.getters.getUploadStatusMsg);
 
-        return { loggedIn }
+        return { loggedIn, uploadStatusMsg }
     }
 })
 </script>

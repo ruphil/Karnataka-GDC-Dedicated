@@ -15,7 +15,7 @@ export default createStore({
     attributesValid: false,
     flightlinekmlValid: false,
     shapefileValid: false,
-    uploadStatusMsg: '',
+    uploadStatusMsg: 'GeoServer WFS 2.0',
   },
   getters: {
     getAttributesContainerStatus(state){
@@ -99,7 +99,7 @@ export default createStore({
       state.shapefileValid = shapefileValid;
     },
     setUploadStatusMsg(state, uploadStatusMsg){
-      state.flightlinekmlValid = uploadStatusMsg;
+      state.uploadStatusMsg = uploadStatusMsg;
     },
   },
   actions: {
