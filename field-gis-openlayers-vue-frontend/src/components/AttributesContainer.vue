@@ -86,9 +86,9 @@
                 <input type="text" placeholder="District"/>
                 <input type="text" placeholder="Taluk"/>
                 <input type="text" placeholder="Gram Panchayat"/>
-                <input type="text" placeholder="Villages"/>
-                <input type="text" placeholder="Hamlets"/>
-                <input type="text" placeholder="LGD Codes"/>
+                <textarea placeholder="Villages"></textarea>
+                <textarea placeholder="Hamlets"></textarea>
+                <textarea placeholder="LGD Codes"></textarea>
                 <input type="number" placeholder="Village Count"/>
                 <input type="number" placeholder="Hamlets Count"/>
                 <input type="text" placeholder="Software Version"/>
