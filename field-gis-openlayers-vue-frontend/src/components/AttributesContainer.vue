@@ -88,7 +88,7 @@
                 <input type="text" placeholder="Gram Panchayat"/>
                 <textarea placeholder="Villages"></textarea>
                 <textarea placeholder="Hamlets"></textarea>
-                <textarea placeholder="LGD Codes"></textarea>
+                <textarea placeholder="LGD Codes (separated by commas)"></textarea>
                 <input type="number" placeholder="Village Count"/>
                 <input type="number" placeholder="Hamlets Count"/>
                 <input type="text" placeholder="Software Version"/>
