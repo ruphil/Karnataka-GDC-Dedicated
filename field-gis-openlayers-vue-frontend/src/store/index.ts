@@ -4,7 +4,6 @@ export default createStore({
   state: {
     showAttributesContainer: false,
     showSummaryContainer: false,
-    attributesInfo: {},
     dronenumbersGJ: {},
     districtsList: ['Bagalkot', 'Ballari', 'Belagavi', 'Bengaluru (Rural)', 'Bengaluru (Urban)', 'Bidar', 'Chamarajanagara', 'Chikkaballapura', 'Chikkamagaluru', 'Chitradurga', 'Dakshina Kannada', 'Davanagere', 'Dharwad', 'Gadag', 'Hassan', 'Haveri', 'Kalburgi', 'Kodagu', 'Kolara', 'Koppal', 'Mandya', 'Mysuru', 'Raichur', 'Ramanagara', 'Shivamogga', 'Tumakuru', 'Udupi', 'Uttara Kannada', 'Vijayapura', 'Yadgir'],
     loginMsg: 'Press Enter To Continue...',
@@ -12,6 +11,7 @@ export default createStore({
     username: '',
     password: '',
     karnboundsGeoJSON: {},
+    attributesInfo: {},
     flightlinekmlValid: false,
     shapefileValid: false,
   },

@@ -78,12 +78,14 @@
                 <input v-model="pilotname" type="text" placeholder="Pilot Name"/>
                 <input v-model="fieldassistant" type="text" placeholder="Field Assistant"/>
                 <input v-model="campingarea" type="text" placeholder="Camping Area"/>
-                <input v-model="softwareversion" type="text" placeholder="Software Version"/>
-                <input v-model="avggsd" type="text" placeholder="Avg. GSD. (cm)"/>
+                
             </div>
 
             <div v-show="!firstPage">
                 <button class="olbtns" v-on:click="firstPage = !firstPage">Go to Page 1</button><br/>
+
+                <input v-model="softwareversion" type="text" placeholder="Software Version"/>
+                <input v-model="avggsd" type="text" placeholder="Avg. GSD. (cm)"/>
 
                 <select v-model="district">
                     <option disabled value="0">Select District</option>
@@ -91,9 +93,9 @@
                 </select>
 
                 <input v-model="taluk" type="text" placeholder="Taluk"/>
-                <input v-model="grampanchayat" type="text" placeholder="Gram Panchayat"/>
                 <textarea v-model="villages" placeholder="Villages"></textarea>
                 <textarea v-model="hamlets" placeholder="Hamlets"></textarea>
+                <input v-model="grampanchayat" type="text" placeholder="Gram Panchayat"/>
                 <input v-model="lgdcodes" type="number" placeholder="LGD Codes (separated by commas)"/>
                 <input v-model="villagescount" type="number" placeholder="Village Count"/>
                 <input v-model="hamletscount" type="number" placeholder="Hamlets Count"/>
@@ -106,15 +108,18 @@
                 <input v-model="flylogno" type="text" placeholder="Fly Log No"/>
                 <input v-model="totalfiles" type="number" placeholder="Total Files"/>
                 <input v-model="foldersize" type="text" placeholder="Folder Size (GB)"/>
-                <textarea v-model="remarks" placeholder="Remarks"></textarea>
+                <input v-model="remarks" type="text" placeholder="Remarks"/>
 
             </div>
             <button class="olbtns" v-on:click="updateattributes">Update Attributes</button>
         </div>
         <div id="attributessummarybox" v-show="showSummaryContainer">
-            <div>{{ flightlinekmlValid }}</div>
-            <div>{{ shapefileValid }}</div>
-            <div v-for="(attribute, index) in attributesInfoFromStore" v-bind:key="index">{{ attribute }}</div>
+            <div>Valid Flightline : {{ flightlinekmlValid }}</div>
+            <div>Valid Shapefile : {{ shapefileValid }}</div>
+            <div v-for="(value, name, index) in attributesInfoFromStore" v-bind:key="index">
+                {{ name }} : {{ value }}
+            </div>
+            <button class="olbtns">Confirm</button>
         </div>
     </div>
 </template>
