@@ -167,7 +167,22 @@ export default defineComponent({
         const flightdate        = ref('');
         const takeofftime       = ref('');
         const landingtime       = ref('');
-        const duration          = ref('');
+        // const duration          = ref('');
+
+        const duration = computed(() => {
+            let hours: any   = <any>landingtime.value.split(':')[0] - <any>takeofftime.value.split(':')[0];
+            let minutes: any = <any>landingtime.value.split(':')[1] - <any>takeofftime.value.split(':')[1];
+
+            minutes = minutes.toString().length < 2 ? '0' + minutes : minutes;
+            if(minutes < 0){ 
+                hours--;
+                minutes = 60 + minutes;
+            }
+
+            hours = hours.toString().length < 2 ? '0' + hours : hours;
+
+            return hours + ":" + minutes;
+        });
 
         const trainingflight    = ref('');
         const freshrefly        = ref('');
