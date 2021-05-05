@@ -5,6 +5,7 @@ import WFS from 'ol/format/WFS';
 import { getCurrentInstance } from '@vue/runtime-core';
 import axios, { AxiosResponse } from 'axios';
 import { Feature } from 'ol';
+import LineString from 'ol/geom/LineString';
 
 const featureUploader = () => {
     const app = getCurrentInstance()!;
@@ -18,7 +19,9 @@ const featureUploader = () => {
             let password = store.getters.getPassWord;
             let attributesInfo = store.getters.getAttributesInfo;
 
-            let flightline = new Feature();
+            let flightline = new Feature({
+                geometry: new LineString([])
+            });
             if(app.appContext.config.globalProperties.$kmllayer != null){
                 let kmllayer = app.appContext.config.globalProperties.$kmllayer;
                 let features = kmllayer.getSource().getFeatures();
