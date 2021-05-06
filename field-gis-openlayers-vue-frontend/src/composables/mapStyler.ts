@@ -25,14 +25,14 @@ const mapStyler = () => {
     return [
       new Style({
         stroke: new Stroke({
-          color: 'rgba(0,60,180)',
+          color: 'white',
           width: 1,
         }),
         text: new Text({
           font: '10px Calibri,sans-serif',
-          fill: new Fill({ color: 'rgba(0,60,136,0.5)' }),
+          fill: new Fill({ color: 'white' }),
           stroke: new Stroke({
-            color: 'white', width: 10
+            color: 'rgba(0,60,136,0.5)', width: 10
           }),
           text: feature.get('kgisvill_2')
         })
