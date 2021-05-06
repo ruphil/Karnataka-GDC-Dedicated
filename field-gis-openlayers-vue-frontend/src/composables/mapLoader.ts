@@ -27,6 +27,7 @@ const mapLoader = () => {
     // let j = new Map({});
     
     app.appContext.config.globalProperties.$kmllayer = null;
+    app.appContext.config.globalProperties.$shplayer = null;
 
     const baseMapLayer = new TileLayer({
         source: new XYZ({
@@ -50,7 +51,8 @@ const mapLoader = () => {
         }));
     }
 
-    const loadKarnBounds = (url: string, username: string, password: string) => {
+    const loadKarnBounds = (username: string, password: string) => {
+        let url: string = 'http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=kgdc:karndistbounds&srsname=EPSG:3857&outputFormat=application/json';
         let karnGJ = store.getters.getKarnBoundsGJ;
         // console.log(Object.keys(karnGJ).length);
         if(Object.keys(karnGJ).length == 0){
@@ -161,7 +163,45 @@ const mapLoader = () => {
         }
     }
 
-    return { initBaseMap, fetchNLoadDroneNumbers, loadKarnBounds, loadKML, discardKMLIfany }
+    const loadSHP = (geojson: any) => {
+        let map = app.appContext.config.globalProperties.$map;
+
+        if(app.appContext.config.globalProperties.$shplayer != null){
+            map.removeLayer(app.appContext.config.globalProperties.$shplayer);
+        }
+
+        let shplyr = new VectorLayer({
+            source: new VectorSource({
+                features: new GeoJSON({
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                }).readFeatures(geojson),
+            })
+        });
+
+        if(shplyr.getSource().getFeatures().length > 0){
+            map.addLayer(shplyr);
+            app.appContext.config.globalProperties.$shplayer = shplyr;
+
+            map.getView().fit(shplyr.getSource().getExtent());
+            store.dispatch('setshapefileValidity', true);
+        } else {
+            store.dispatch('setshapefileValidity', false);
+            store.dispatch('setUploadStatusMsg', 'Invalid Shapefile');
+        }
+    }
+
+    const discardSHPIfany = () => {
+        let map = app.appContext.config.globalProperties.$map;
+
+        if(app.appContext.config.globalProperties.$shplayer != null){
+            map.removeLayer(app.appContext.config.globalProperties.$shplayer);
+            app.appContext.config.globalProperties.$shplayer = null;
+            store.dispatch('setshapefileValidity', false);
+        }
+    }
+
+    return { initBaseMap, fetchNLoadDroneNumbers, loadKarnBounds, loadKML, discardKMLIfany, loadSHP, discardSHPIfany }
 }
 
 export default mapLoader;

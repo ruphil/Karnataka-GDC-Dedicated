@@ -33,13 +33,14 @@
 import { defineComponent, ref, computed } from 'vue';
 import { useStore } from 'vuex';
 
+import shp from 'shpjs';
 import mapLoader from '../composables/mapLoader';
 
 export default defineComponent({
     setup() {
         const store = useStore();
 
-        const { loadKML, discardKMLIfany } = mapLoader();
+        const { loadKML, loadSHP, discardKMLIfany, discardSHPIfany } = mapLoader();
 
         const kmlfileEl = ref();
         const shapefileEl = ref();
@@ -49,7 +50,6 @@ export default defineComponent({
         const variablerefs = { kmlfileEl, shapefileEl, kmlfilename, shapefilename};
 
         const kmlchange = () => {
-            
             let file = kmlfileEl.value.files[0];
             if (file) {
                 kmlfilename.value = file.name;
@@ -63,7 +63,22 @@ export default defineComponent({
         }
 
         const shpchange = () => {
-            
+            let file = shapefileEl.value.files[0];
+            if (file) {
+                shapefilename.value = file.name;
+                let reader = new FileReader();
+                reader.onload = function () {
+                    
+                    let shpBuffer = <ArrayBuffer>reader.result;
+                    shp(shpBuffer).then(function(geojson){
+                        console.log(geojson);
+                        loadSHP(geojson);
+                    });
+
+                    
+                }
+                reader.readAsArrayBuffer(file);
+            }
         }
 
         const discardKML = () => {
@@ -73,9 +88,9 @@ export default defineComponent({
         }
 
         const discardSHP = () => {
-            // discardKMLIfany();
-            // shapefilename.value = '';
-            // shapefileEl.value.value = '';
+            discardSHPIfany();
+            shapefilename.value = '';
+            shapefileEl.value.value = '';
         }
 
         const toggleAttributes = () => {
