@@ -5,7 +5,8 @@
                 <option disabled value="">Select District</option>
                 <option v-for="(district, index) in districtsList" v-bind:key="index">{{ district }}</option>
             </select>
-            <button class="olbtns" v-on:click="loadVillages">Load Villages</button>
+            <br/>
+            <button class="olbtns" v-on:click="loadVillages">Load Villages</button><br/>
             <button class="olbtns" v-on:click="loadFlights">Load Flights</button>
             <button class="olbtns" v-on:click="loadShapes">Load Shapes</button>
         </div>

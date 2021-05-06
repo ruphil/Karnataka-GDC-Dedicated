@@ -53,29 +53,21 @@ const mapLoader = () => {
 
     const loadKarnBounds = (username: string, password: string) => {
         let url: string = 'http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=kgdc:karndistbounds&srsname=EPSG:3857&outputFormat=application/json';
-        let karnGJ = store.getters.getKarnBoundsGJ;
-        // console.log(Object.keys(karnGJ).length);
-        if(Object.keys(karnGJ).length == 0){
-            doAuthentication(url, username, password)
-            .then((res: any)=>{
-                // console.log(res.data);
+        doAuthentication(url, username, password)
+        .then((res: any)=>{
+            // console.log(res.data);
 
-                let karnGJ = res.data;
-
-                store.dispatch('setUserName', username);
-                store.dispatch('setPassWord', password);
-                store.dispatch('setKarnBoundsGJ', karnGJ);
-                store.dispatch('setLoggedIn', true);
-                
-                setKarnBounds(karnGJ);
-            })
-            .catch((error) => {
-                console.log(error);
-                store.dispatch('setLogInMsg', 'Incorrect Credentials... Please Try Again...');
-            });
-        } else {
+            let karnGJ = res.data;
+            store.dispatch('setUserName', username);
+            store.dispatch('setPassWord', password);
+            store.dispatch('setLoggedIn', true);
+            
             setKarnBounds(karnGJ);
-        }
+        })
+        .catch((error) => {
+            console.log(error);
+            store.dispatch('setLogInMsg', 'Incorrect Credentials... Please Try Again...');
+        });
     }
 
     const setKarnBounds = (karnGJ: any) => {
@@ -221,11 +213,48 @@ const mapLoader = () => {
     const flightsmanagerfunctions = { initBaseMap, fetchNLoadDroneNumbers, loadKarnBounds, loadKML, discardKMLIfany, loadSHP, discardSHPIfany };
 
     const loadVillagesWFS = (districtname: any) => {
-        
+        let url = `http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kgdc:karnvillages&outputFormat=application/json&cql_filter=kgisdist_1='${districtname}'`;
+
+        let username = store.getters.getUserName;
+        let password = store.getters.getPassWord;
+        doAuthentication(url, username, password)
+        .then((res: any)=>{
+            // console.log(res.data);
+
+            let villagesGJ = res.data;
+            addVillagesBoundary(villagesGJ);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    const addVillagesBoundary = (karnGJ: any) => {
+        let map = app.appContext.config.globalProperties.$map;
+
+        let karndistbounds = new VectorLayer({
+            source: new VectorSource({
+                features: new GeoJSON().readFeatures(karnGJ)
+            }),
+            style: districtStyleFunction
+        });
+
+        map.addLayer(karndistbounds);
+
+        map.setView(new View({
+            zoom: 7,
+            center: fromLonLat([76.56, 14.85]),
+            constrainResolution: true
+        }));
+
+        store.dispatch('setLogInMsg', 'Success...');
+
+        fetchNLoadDroneNumbers();
     }
 
     const loadFlightsWFS = (districtname: any) => {
         
+        let url = 'http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kgdc:flightlines&maxFeatures=50&outputFormat=application/json';
     }
 
     const loadShapesWFS = (districtname: any) => {

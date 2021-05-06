@@ -10,7 +10,6 @@ export default createStore({
     loggedIn: false,
     username: '',
     password: '',
-    karnboundsGeoJSON: {},
     attributesInfo: {},
     attributesValid: false,
     flightlinekmlValid: false,
@@ -44,9 +43,6 @@ export default createStore({
     },
     getPassWord(state){
       return state.password;
-    },
-    getKarnBoundsGJ(state){
-      return state.karnboundsGeoJSON;
     },
     getAttributesValidity(state){
       return state.attributesValid;
@@ -86,9 +82,6 @@ export default createStore({
     setPassWord(state, password){
       state.password = password;
     },
-    setKarnBoundsGJ(state, karnboundsgj){
-      state.karnboundsGeoJSON = karnboundsgj;
-    },
     setAttributesValidity(state, attributesValid){
       state.attributesValid = attributesValid;
     },
@@ -126,9 +119,6 @@ export default createStore({
     },
     setPassWord(context, password){
       context.commit('setPassWord', password);
-    },
-    setKarnBoundsGJ(context, karnboundsgj){
-      context.commit('setKarnBoundsGJ', karnboundsgj);
     },
     setAttributesValidity(context, attributesValid){
       context.commit('setAttributesValidity', attributesValid);
