@@ -142,6 +142,8 @@ export default defineComponent({
         const store = useStore();
 
         const { uploadDataToWFS } = featureUploader();
+
+        const userName = computed(() => store.getters.getUserName);
         
         const showAttributesContainer = computed(() => store.getters.getAttributesContainerStatus);
         const showSummaryContainer = computed(() => store.getters.getSummaryContainerStatus);
@@ -245,7 +247,7 @@ export default defineComponent({
                 'softwareversion': softwareversion.value,   'basegpsid': basegpsid.value,               'rawimagescount': rawimages.value,
                 'geotagged': geotagged.value,               'avggsd': avggsd.value,                     'batteryno': batteryno.value,
                 'flylogno': flylogno.value,                 'totalfiles': totalfiles.value,             'foldersizegb': foldersize.value,
-                'remarks': remarks.value
+                'remarks': remarks.value,                   'username': userName.value
             };
 
             let cond1 = attributesInfo['dronenumber'] != '';
