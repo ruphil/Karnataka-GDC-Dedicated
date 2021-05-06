@@ -229,27 +229,19 @@ const mapLoader = () => {
         });
     }
 
-    const addVillagesBoundary = (karnGJ: any) => {
+    const addVillagesBoundary = (villagesGJ: any) => {
         let map = app.appContext.config.globalProperties.$map;
 
-        let karndistbounds = new VectorLayer({
+        let villagesLayer = new VectorLayer({
             source: new VectorSource({
-                features: new GeoJSON().readFeatures(karnGJ)
+                features: new GeoJSON().readFeatures(villagesGJ)
             }),
             style: districtStyleFunction
         });
 
-        map.addLayer(karndistbounds);
+        map.addLayer(villagesLayer);
 
-        map.setView(new View({
-            zoom: 7,
-            center: fromLonLat([76.56, 14.85]),
-            constrainResolution: true
-        }));
-
-        store.dispatch('setLogInMsg', 'Success...');
-
-        fetchNLoadDroneNumbers();
+        map.getView().fit(villagesLayer.getSource().getExtent());
     }
 
     const loadFlightsWFS = (districtname: any) => {
