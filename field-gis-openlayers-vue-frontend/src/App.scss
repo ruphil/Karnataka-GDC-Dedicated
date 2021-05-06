@@ -267,3 +267,30 @@ html, body {
         padding: 0.3em;
     }
 }
+
+#summarygeneratorcontainer {
+    position: absolute;
+    bottom: 3em;
+    left: 0.5em;
+    padding: 4px;
+    background-color: rgba(255,255,255,0.4);
+}
+
+#summarygenerator {
+    display: block;
+    margin: 1px;
+    padding: 1em;
+    color: white;
+    font-size: 1.14em;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    line-height: 2em;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
+
+    button {
+        padding: 0.3em;
+    }
+}
