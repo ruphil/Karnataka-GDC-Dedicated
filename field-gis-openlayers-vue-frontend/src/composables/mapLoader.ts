@@ -151,6 +151,10 @@ const mapLoader = () => {
             store.dispatch('setflightlinekmlValidity', false);
             store.dispatch('setUploadStatusMsg', 'Invalid KML');
         }
+
+        setTimeout(() => {
+            store.dispatch('setUploadStatusMsg', '');
+        }, 5000);
     }
 
     const discardKMLIfany = () => {
@@ -189,6 +193,10 @@ const mapLoader = () => {
             store.dispatch('setshapefileValidity', false);
             store.dispatch('setUploadStatusMsg', 'Invalid Shapefile');
         }
+
+        setTimeout(() => {
+            store.dispatch('setUploadStatusMsg', '');
+        }, 5000);
     }
 
     const discardSHPIfany = () => {

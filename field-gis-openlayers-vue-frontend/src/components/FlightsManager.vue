@@ -32,12 +32,14 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue';
 import { useStore } from 'vuex';
+import { getCurrentInstance } from '@vue/runtime-core';
 
 import shp from 'shpjs';
 import mapLoader from '../composables/mapLoader';
 
 export default defineComponent({
     setup() {
+        const app = getCurrentInstance()!;
         const store = useStore();
 
         const { loadKML, loadSHP, discardKMLIfany, discardSHPIfany } = mapLoader();
@@ -63,19 +65,26 @@ export default defineComponent({
         }
 
         const shpchange = () => {
-            let file = shapefileEl.value.files[0];
-            if (file) {
-                shapefilename.value = file.name;
-                let reader = new FileReader();
-                reader.onload = function () {
-                    
-                    let shpBuffer = <ArrayBuffer>reader.result;
-                    shp(shpBuffer).then(function(geojson){
-                        console.log(geojson);
-                        loadSHP(geojson);
-                    });
+            if(app.appContext.config.globalProperties.$kmllayer != null){
+                let file = shapefileEl.value.files[0];
+                if (file) {
+                    shapefilename.value = file.name;
+                    let reader = new FileReader();
+                    reader.onload = function () {
+                        
+                        let shpBuffer = <ArrayBuffer>reader.result;
+                        shp(shpBuffer).then(function(geojson){
+                            console.log(geojson);
+                            loadSHP(geojson);
+                        });
+                    }
+                    reader.readAsArrayBuffer(file);
                 }
-                reader.readAsArrayBuffer(file);
+            } else {
+                store.dispatch('setUploadStatusMsg', 'Load KML First');
+                setTimeout(() => {
+                    store.dispatch('setUploadStatusMsg', '');
+                }, 5000);
             }
         }
 
