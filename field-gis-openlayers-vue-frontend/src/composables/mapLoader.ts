@@ -192,7 +192,7 @@ const mapLoader = () => {
                     features: shapefeatures,
                 })
             });
-            
+
             map.addLayer(shplyr);
             app.appContext.config.globalProperties.$shplayer = shplyr;
 
@@ -200,7 +200,7 @@ const mapLoader = () => {
             store.dispatch('setshapefileValidity', true);
         } else {
             store.dispatch('setshapefileValidity', false);
-            store.dispatch('setUploadStatusMsg', 'Invalid Shapefile');
+            store.dispatch('setUploadStatusMsg', 'Invalid Shapefile for KML');
         }
 
         setTimeout(() => {
