@@ -30,7 +30,9 @@ export default defineComponent({
 
         const loadVillages = () => {
             let districtname = districtref.value;
-            loadVillagesWFS(districtname);
+            if(districtname != ''){
+                loadVillagesWFS(districtname);
+            }
         }
 
         const loadFlights = () => {

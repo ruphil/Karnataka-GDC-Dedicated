@@ -16,7 +16,7 @@ import LayerGroup from 'ol/layer/Group';
 import { getCurrentInstance } from '@vue/runtime-core';
 
 const mapLoader = () => {
-    const { districtStyleFunction } = mapStyler();
+    const { districtStyleFunction, villagesStyleFunction } = mapStyler();
     const { doAuthentication } = authenticator();
     
     const store = useStore();
@@ -28,6 +28,7 @@ const mapLoader = () => {
     
     app.appContext.config.globalProperties.$kmllayer = null;
     app.appContext.config.globalProperties.$shplayer = null;
+    app.appContext.config.globalProperties.$distvillageslyr = null;
 
     const baseMapLayer = new TileLayer({
         source: new XYZ({
@@ -213,7 +214,7 @@ const mapLoader = () => {
     const flightsmanagerfunctions = { initBaseMap, fetchNLoadDroneNumbers, loadKarnBounds, loadKML, discardKMLIfany, loadSHP, discardSHPIfany };
 
     const loadVillagesWFS = (districtname: any) => {
-        let url = `http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kgdc:karnvillages&outputFormat=application/json&cql_filter=kgisdist_1='${districtname}'`;
+        let url = `http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kgdc:karnvillages&srsname=EPSG:3857&outputFormat=application/json&cql_filter=kgisdist_1='${districtname}'`;
 
         let username = store.getters.getUserName;
         let password = store.getters.getPassWord;
@@ -236,7 +237,7 @@ const mapLoader = () => {
             source: new VectorSource({
                 features: new GeoJSON().readFeatures(villagesGJ)
             }),
-            style: districtStyleFunction
+            style: villagesStyleFunction
         });
 
         map.addLayer(villagesLayer);

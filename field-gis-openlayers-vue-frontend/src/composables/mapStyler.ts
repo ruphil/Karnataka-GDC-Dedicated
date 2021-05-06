@@ -20,8 +20,29 @@ const mapStyler = () => {
       })
     ];
   }
+
+  const villagesStyleFunction = (feature: any) => {
+    return [
+      new Style({
+        stroke: new Stroke({
+          color: 'blue',
+          width: 2,
+        }),
+        text: new Text({
+          font: '12px Calibri,sans-serif',
+          fill: new Fill({ color: 'white' }),
+          stroke: new Stroke({
+            color: 'white', width: 10
+          }),
+          text: feature.get('kgisvill_2')
+        })
+      })
+    ];
+  }
+
   
-  return { districtStyleFunction }
+  
+  return { districtStyleFunction, villagesStyleFunction }
 }
 
 export default mapStyler
