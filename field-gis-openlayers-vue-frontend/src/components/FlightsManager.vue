@@ -82,6 +82,7 @@ export default defineComponent({
                 }
             } else {
                 store.dispatch('setUploadStatusMsg', 'Load KML First');
+                discardSHP();
                 setTimeout(() => {
                     store.dispatch('setUploadStatusMsg', '');
                 }, 5000);

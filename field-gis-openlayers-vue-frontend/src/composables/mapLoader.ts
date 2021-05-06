@@ -174,16 +174,25 @@ const mapLoader = () => {
             map.removeLayer(app.appContext.config.globalProperties.$shplayer);
         }
 
-        let shplyr = new VectorLayer({
-            source: new VectorSource({
-                features: new GeoJSON({
-                    dataProjection: 'EPSG:4326',
-                    featureProjection: 'EPSG:3857'
-                }).readFeatures(geojson),
-            })
+        let kmllayer = app.appContext.config.globalProperties.$kmllayer;
+        let kmlextent = kmllayer.getSource().getExtent();
+
+        let shpvectorsource = new VectorSource({
+            features: new GeoJSON({
+                dataProjection: 'EPSG:4326',
+                featureProjection: 'EPSG:3857'
+            }).readFeatures(geojson),
         });
 
-        if(shplyr.getSource().getFeatures().length > 0){
+        let shapefeatures = shpvectorsource.getFeaturesInExtent(kmlextent);
+
+        if(shapefeatures.length > 0){
+            let shplyr = new VectorLayer({
+                source: new VectorSource({
+                    features: shapefeatures,
+                })
+            });
+            
             map.addLayer(shplyr);
             app.appContext.config.globalProperties.$shplayer = shplyr;
 
