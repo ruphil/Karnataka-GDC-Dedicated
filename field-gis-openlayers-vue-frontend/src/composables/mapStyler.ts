@@ -6,14 +6,14 @@ const mapStyler = () => {
     return [
       new Style({
         stroke: new Stroke({
-          color: 'black',
+          color: 'rgba(0,60,136,0.8)',
           width: 2,
         }),
         text: new Text({
           font: '12px Calibri,sans-serif',
           fill: new Fill({ color: 'white' }),
           stroke: new Stroke({
-            color: 'darkgreen', width: 10
+            color: 'rgba(0,60,136,0.5)', width: 10
           }),
           text: feature.get('kgisdist_1')
         })
@@ -25,12 +25,12 @@ const mapStyler = () => {
     return [
       new Style({
         stroke: new Stroke({
-          color: 'blue',
-          width: 2,
+          color: 'rgba(0,60,180)',
+          width: 1,
         }),
         text: new Text({
-          font: '12px Calibri,sans-serif',
-          fill: new Fill({ color: 'white' }),
+          font: '10px Calibri,sans-serif',
+          fill: new Fill({ color: 'rgba(0,60,136,0.5)' }),
           stroke: new Stroke({
             color: 'white', width: 10
           }),

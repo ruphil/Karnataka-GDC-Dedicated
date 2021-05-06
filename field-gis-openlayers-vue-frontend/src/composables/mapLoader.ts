@@ -246,12 +246,67 @@ const mapLoader = () => {
     }
 
     const loadFlightsWFS = (districtname: any) => {
-        
-        let url = 'http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kgdc:flightlines&maxFeatures=50&outputFormat=application/json';
+        let url = `http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kgdc:flightlines&srsname=EPSG:3857&outputFormat=application/json&cql_filter=district='${districtname}'`;
+
+        let username = store.getters.getUserName;
+        let password = store.getters.getPassWord;
+        doAuthentication(url, username, password)
+        .then((res: any)=>{
+            // console.log(res.data);
+
+            let fligthsGJ = res.data;
+            addFlights(fligthsGJ);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    const addFlights = (fligthsGJ: any) => {
+        let map = app.appContext.config.globalProperties.$map;
+
+        let flightsLayer = new VectorLayer({
+            source: new VectorSource({
+                features: new GeoJSON().readFeatures(fligthsGJ)
+            }),
+            style: villagesStyleFunction
+        });
+
+        map.addLayer(flightsLayer);
+
+        map.getView().fit(flightsLayer.getSource().getExtent());
     }
 
     const loadShapesWFS = (districtname: any) => {
-        
+        let url = `http://localhost:8080/geoserver/kgdc/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=kgdc:plannedshapes&srsname=EPSG:3857&outputFormat=application/json&cql_filter=district='${districtname}'`;
+
+        let username = store.getters.getUserName;
+        let password = store.getters.getPassWord;
+        doAuthentication(url, username, password)
+        .then((res: any)=>{
+            // console.log(res.data);
+
+            let shapesGJ = res.data;
+            addShapes(shapesGJ);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    const addShapes = (shapesGJ: any) => {
+        let map = app.appContext.config.globalProperties.$map;
+
+        let shapesLayer = new VectorLayer({
+            source: new VectorSource({
+                features: new GeoJSON().readFeatures(shapesGJ)
+            }),
+            style: villagesStyleFunction
+        });
+
+        map.addLayer(shapesLayer);
+
+        map.getView().fit(shapesLayer.getSource().getExtent());
     }
 
     const layermanagerfunction = { loadVillagesWFS, loadFlightsWFS, loadShapesWFS };
