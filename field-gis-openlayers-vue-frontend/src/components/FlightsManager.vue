@@ -74,8 +74,6 @@ export default defineComponent({
                         console.log(geojson);
                         loadSHP(geojson);
                     });
-
-                    
                 }
                 reader.readAsArrayBuffer(file);
             }
