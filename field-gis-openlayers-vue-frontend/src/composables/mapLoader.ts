@@ -28,7 +28,6 @@ const mapLoader = () => {
     
     app.appContext.config.globalProperties.$kmllayer = null;
     app.appContext.config.globalProperties.$shplayer = null;
-    app.appContext.config.globalProperties.$distvillageslyr = null;
 
     const baseMapLayer = new TileLayer({
         source: new XYZ({
@@ -233,6 +232,10 @@ const mapLoader = () => {
     const addVillagesBoundary = (villagesGJ: any) => {
         let map = app.appContext.config.globalProperties.$map;
 
+        if(app.appContext.config.globalProperties.$villagesLayer != null){
+            map.removeLayer(app.appContext.config.globalProperties.$villagesLayer);
+        }
+
         let villagesLayer = new VectorLayer({
             source: new VectorSource({
                 features: new GeoJSON().readFeatures(villagesGJ)
@@ -243,6 +246,8 @@ const mapLoader = () => {
         map.addLayer(villagesLayer);
 
         map.getView().fit(villagesLayer.getSource().getExtent());
+
+        app.appContext.config.globalProperties.$villagesLayer = villagesLayer;
     }
 
     const loadFlightsWFS = (districtname: any) => {
@@ -265,6 +270,10 @@ const mapLoader = () => {
     const addFlights = (fligthsGJ: any) => {
         let map = app.appContext.config.globalProperties.$map;
 
+        if(app.appContext.config.globalProperties.$flightsLayer != null){
+            map.removeLayer(app.appContext.config.globalProperties.$flightsLayer);
+        }
+
         let flightsLayer = new VectorLayer({
             source: new VectorSource({
                 features: new GeoJSON().readFeatures(fligthsGJ)
@@ -275,6 +284,8 @@ const mapLoader = () => {
         map.addLayer(flightsLayer);
 
         map.getView().fit(flightsLayer.getSource().getExtent());
+
+        app.appContext.config.globalProperties.$flightsLayer = flightsLayer;
     }
 
     const loadShapesWFS = (districtname: any) => {
@@ -297,6 +308,10 @@ const mapLoader = () => {
     const addShapes = (shapesGJ: any) => {
         let map = app.appContext.config.globalProperties.$map;
 
+        if(app.appContext.config.globalProperties.$shapesLayer != null){
+            map.removeLayer(app.appContext.config.globalProperties.$shapesLayer);
+        }
+
         let shapesLayer = new VectorLayer({
             source: new VectorSource({
                 features: new GeoJSON().readFeatures(shapesGJ)
@@ -307,6 +322,8 @@ const mapLoader = () => {
         map.addLayer(shapesLayer);
 
         map.getView().fit(shapesLayer.getSource().getExtent());
+
+        app.appContext.config.globalProperties.$shapesLayer = shapesLayer;
     }
 
     const layermanagerfunction = { loadVillagesWFS, loadFlightsWFS, loadShapesWFS };
