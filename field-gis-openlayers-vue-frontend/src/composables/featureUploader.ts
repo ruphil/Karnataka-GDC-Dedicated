@@ -45,7 +45,7 @@ const featureUploader = () => {
         .then((res: AxiosResponse) => {
             // console.log(res);
             console.log(res.status);
-            store.dispatch('setUploadStatusMsg', 'Flightline Uploaded Successfully...');
+            store.dispatch('setUploadStatusMsg', 'Uploaded Successfully...');
         })
         .catch((error) => {
             console.log(error);
@@ -119,7 +119,7 @@ const featureUploader = () => {
             // console.log(res);
             console.log(res.status);
             setTimeout(() => {
-                store.dispatch('setUploadStatusMsg', 'PlannedShape Uploaded Successfully...');
+                store.dispatch('setUploadStatusMsg', 'Uploaded Successfully...');
             }, 1000);
         })
         .catch((error) => {

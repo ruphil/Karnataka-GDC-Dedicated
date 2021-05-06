@@ -96,7 +96,7 @@
                 <textarea v-model="villages" placeholder="Villages"></textarea>
                 <textarea v-model="hamlets" placeholder="Hamlets"></textarea>
                 <input v-model="grampanchayat" type="text" placeholder="Gram Panchayat"/>
-                <input v-model="lgdcodes" type="number" placeholder="LGD Codes (separated by commas)"/>
+                <input v-model="lgdcodes" type="text" placeholder="LGD Codes (separated by commas)"/>
                 <input v-model="villagescount" type="number" placeholder="Village Count"/>
                 <input v-model="hamletscount" type="number" placeholder="Hamlets Count"/>
                 
