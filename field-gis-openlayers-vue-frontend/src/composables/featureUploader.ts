@@ -5,9 +5,6 @@ import WFS from 'ol/format/WFS';
 import { getCurrentInstance } from '@vue/runtime-core';
 import axios, { AxiosResponse } from 'axios';
 import { Feature } from 'ol';
-import LineString from 'ol/geom/LineString';
-import Point from 'ol/geom/Point';
-import GeometryLayout from 'ol/geom/GeometryLayout';
 
 const featureUploader = () => {
     const app = getCurrentInstance()!;
@@ -46,14 +43,17 @@ const featureUploader = () => {
         .then((res: AxiosResponse) => {
             // console.log(res);
             console.log(res.status);
+            store.dispatch('setUploadStatusMsg', 'Uploaded Successfully...');
         })
         .catch((error) => {
             console.log(error);
+            store.dispatch('setUploadStatusMsg', 'Error Uploading...');
+        })
+        .finally(() => {
             setTimeout(() => {
                 store.dispatch('setUploadStatusMsg', '');
             }, 5000);
-            store.dispatch('setUploadStatusMsg', 'Error Uploading...');
-        })
+        });
     }
 
     const uploadDataToWFS = () => {
@@ -84,11 +84,6 @@ const featureUploader = () => {
                 let flightline = new Feature();
                 buildNInsert(flightline, attributesInfo);
             }
-            
-            setTimeout(() => {
-                store.dispatch('setUploadStatusMsg', '');
-            }, 5000);
-            store.dispatch('setUploadStatusMsg', 'Uploaded Successfully...');
         } else {
             store.dispatch('setAttributesValidity', false);
         }
