@@ -257,7 +257,7 @@ export default defineComponent({
 
             let condA = cond1 && cond2 && cond3 && cond4 && cond5 && cond6;
             if(condA){
-                console.log(attributesInfo);
+                // console.log(attributesInfo);
                 attributesStatus.value = 'Successfully Updated Attributes...';
 
                 store.dispatch('setAttributesInfo', attributesInfo);
@@ -274,7 +274,7 @@ export default defineComponent({
         const startUploading = () => {
             let validAttributes = store.getters.getAttributesValidity;
             if(validAttributes){
-                console.log('Valid Attributes to Upload...');
+                // console.log('Valid Attributes to Upload...');
                 uploadDataToWFS();
             } else {
                 store.dispatch('setUploadStatusMsg', 'Check Attributes...');

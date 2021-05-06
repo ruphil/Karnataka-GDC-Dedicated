@@ -15,7 +15,7 @@ const featureUploader = () => {
 
     const buildNInsert = (flightline: any, attributesInfo: any) => {
         flightline.setProperties(attributesInfo);
-        console.log(flightline);
+        // console.log(flightline);
 
         let formatWFS = new WFS();
 
@@ -32,7 +32,7 @@ const featureUploader = () => {
         let s = new XMLSerializer();
         let str = s.serializeToString(node);
         
-        console.log(str);
+        // console.log(str);
 
         axios({
             method: 'POST',
@@ -44,11 +44,15 @@ const featureUploader = () => {
             data: str
         })
         .then((res: AxiosResponse) => {
-            console.log(res);
+            // console.log(res);
             console.log(res.status);
         })
         .catch((error) => {
             console.log(error);
+            setTimeout(() => {
+                store.dispatch('setUploadStatusMsg', '');
+            }, 5000);
+            store.dispatch('setUploadStatusMsg', 'Error Uploading...');
         })
     }
 
@@ -80,6 +84,11 @@ const featureUploader = () => {
                 let flightline = new Feature();
                 buildNInsert(flightline, attributesInfo);
             }
+            
+            setTimeout(() => {
+                store.dispatch('setUploadStatusMsg', '');
+            }, 5000);
+            store.dispatch('setUploadStatusMsg', 'Uploaded Successfully...');
         } else {
             store.dispatch('setAttributesValidity', false);
         }
