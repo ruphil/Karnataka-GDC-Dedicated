@@ -10,6 +10,7 @@
             <button id="controllersummarybtn" v-on:click="showSummaryContainer = !showSummaryContainer">⎙</button>
         </div>
         <MainController v-show="showMainContainer" />
+        <LayerController v-show="showLayersContainer" />
         <SummaryAttributesContainer />
     </div>
 </template>
@@ -21,9 +22,11 @@ import { useStore } from 'vuex';
 import MainController from './MainController.vue';
 import SummaryAttributesContainer from './SummaryAttributesContainer.vue';
 
+import LayerController from './LayerController.vue';
+
 export default defineComponent({
     components: {
-        MainController, SummaryAttributesContainer
+        MainController, SummaryAttributesContainer, LayerController
     },
     setup() {
         const store = useStore();

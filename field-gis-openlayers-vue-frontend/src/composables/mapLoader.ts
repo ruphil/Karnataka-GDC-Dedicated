@@ -218,7 +218,23 @@ const mapLoader = () => {
         }
     }
 
-    return { initBaseMap, fetchNLoadDroneNumbers, loadKarnBounds, loadKML, discardKMLIfany, loadSHP, discardSHPIfany }
+    const flightsmanagerfunctions = { initBaseMap, fetchNLoadDroneNumbers, loadKarnBounds, loadKML, discardKMLIfany, loadSHP, discardSHPIfany };
+
+    const loadVillagesWFS = (districtname: any) => {
+        
+    }
+
+    const loadFlightsWFS = (districtname: any) => {
+        
+    }
+
+    const loadShapesWFS = (districtname: any) => {
+        
+    }
+
+    const layermanagerfunction = { loadVillagesWFS, loadFlightsWFS, loadShapesWFS };
+
+    return { ...flightsmanagerfunctions, ...layermanagerfunction }
 }
 
 export default mapLoader;
