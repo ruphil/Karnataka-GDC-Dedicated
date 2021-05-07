@@ -160,7 +160,7 @@ const featureUploader = () => {
         let validAttributes = store.getters.getAttributesValidity;
         if(Object.keys(attributesInfo).length > 0 && validAttributes){
             handleKMLLayer(attributesInfo);
-            handleSHPLayer(attributesInfo);
+            // handleSHPLayer(attributesInfo);
         }
     }
 
