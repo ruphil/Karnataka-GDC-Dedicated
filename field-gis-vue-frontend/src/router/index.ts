@@ -3,11 +3,11 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    component: import('../views/BlankHome.vue')
+    component: () => import('../controllerviews/BlankHome.vue')
   },
   {
     path: '/flights',
-    component: () => import('../views/FlightsManager.vue')
+    component: () => import('../controllerviews/FlightsManager.vue')
   }
 ];
 
