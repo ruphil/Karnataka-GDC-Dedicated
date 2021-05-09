@@ -1,0 +1,43 @@
+.navbarcontainer {
+    position: fixed;
+    top: 0vh;
+    color: white;
+    background-color: rgba(0,60,136,1);
+    height: 6vh;
+    width: 100%;
+
+    > .navbar {
+        position: relative;
+        display: table;
+        left: 1%;
+        top: 50%;
+        width: 95%;
+        transform: translateY(-30%);
+
+        > .logo {
+            float: left;
+            transform: translateY(-15%);
+        }
+
+        > .title {
+            float: right;
+        }
+
+        > span > .loginbtn {
+            float: right;
+            margin-left: 1em;
+            border: 1px solid blueviolet;
+            color: white;
+            background-color: rgba(0,60,136,0.5);
+
+            &:hover {
+                background-color: rgba(100,60,136,0.8);
+            }
+
+            &:active {
+                color: rgba(100,60,136,0.8);
+                background-color: white;
+            }
+        }
+    }
+}
