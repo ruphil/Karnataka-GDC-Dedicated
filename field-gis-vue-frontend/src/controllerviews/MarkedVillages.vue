@@ -1,10 +1,17 @@
 <template>
     <div id="markedvillages">
         <div class="toolcontainer">
-            <button class="togglebtn" v-on:click="showToolBox = !showToolBox"><span class="material-icons-outlined">handyman</span></button>
+            <button class="toggletoolbox" v-on:click="showToolBox = !showToolBox"><span class="material-icons-outlined">handyman</span></button>
             <div class="toolbox" v-show="showToolBox">
                 <span class="material-icons-outlined tool">file_upload</span>
                 <span class="material-icons-outlined tool">file_download</span>
+            </div>
+        </div>
+
+        <div class="layerscontainer">
+            <button class="togglelayers" v-on:click="showLayers = !showLayers"><span class="material-icons-outlined">layers</span></button>
+            <div class="layers">
+
             </div>
         </div>
     </div>
@@ -19,12 +26,13 @@ import './MarkedVillages.scss';
 export default defineComponent({
     setup() {
         const showToolBox = ref(false);
+        const showLayers = ref(false);
 
         onMounted(() => {
             store.dispatch('setCategoryInfo', 'Add Marked Villages');
         });
 
-        return { showToolBox }
+        return { showToolBox, showLayers }
     },
 })
 </script>
