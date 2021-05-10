@@ -5,15 +5,15 @@
             <span class="soi"></span>
         </div>
         <div class="categoryitems">
-            <div class="category" title="Add Marked Villages">
+            <div class="category" title="Add Marked Villages" v-on:click="store.dispatch('setCategoryInfo', 'Add Marked Villages')">
                 <span class="icon"><span class="material-icons-outlined">add_location</span></span>
                 <span class="label" v-show="expanded">Add Marked Villages</span>
             </div>
-            <div class="category" title="Make Mission Plan">
+            <div class="category" title="Make Mission Plan" v-on:click="store.dispatch('setCategoryInfo', 'Make Mission Plan')">
                 <span class="icon"><span class="material-icons-outlined">highlight_alt</span></span>
                 <span class="label" v-show="expanded">Make Mission Plan</span>
             </div>
-            <div class="category" title="Flights Manager">
+            <div class="category" title="Flights Manager" v-on:click="router.push({path: '/flights'});store.dispatch('setCategoryInfo', 'Flights Manager')">
                 <span class="icon"><span class="material-icons-outlined">flight_takeoff</span></span>
                 <span class="label" v-show="expanded">Flights Manager</span>
             </div>
@@ -26,6 +26,8 @@
 </template>
 
 <script lang="ts">
+import router from '@/router';
+import store from '@/store';
 import { defineComponent, ref } from 'vue'
 
 import './LeftSideBar.scss';
@@ -48,8 +50,12 @@ export default defineComponent({
 
             expanded.value = !expanded.value;
         }
+
+        const clicktest = () => {
+            console.log(23);
+        }
         
-        return { leftsidebar, expanded, toggleExpansion }
+        return { leftsidebar, expanded, toggleExpansion, router, store }
     },
 })
 </script>

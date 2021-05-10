@@ -5,7 +5,7 @@
         <img src="../assets/logo.png" width="20"/>
       </span>
       <span class="functioncategory">
-        Flights Manager
+        {{ categoryInfo }}
       </span>
       <span class="notLoggedInSpan" v-show="!isLoggedIn">
         <button class="loginbtn" v-on:click="loginBoxShow = !loginBoxShow">Login</button>
@@ -43,6 +43,7 @@ export default defineComponent({
     const { showGlobalToast } = globalToast();
     const { doAuthentication } = userLoginCheck();
 
+    const categoryInfo = computed(() => store.getters.getCategoryInfo);
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const globalusername = computed(() => store.getters.getUsername);
 
@@ -92,7 +93,7 @@ export default defineComponent({
       window.localStorage.removeItem('globalpassword');
     }
 
-    return { isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, loginMsg, doLogin, doLogout }
+    return { categoryInfo, isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, loginMsg, doLogin, doLogout }
   },
 })
 </script>

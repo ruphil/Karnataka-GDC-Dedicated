@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
+    categoryinfo: '',
     globaltoastmsg: '',
     globaltoastEl: null,
     isLoggedIn: false,
@@ -9,6 +10,9 @@ export default createStore({
     password: '',
   },
   getters: {
+    getCategoryInfo(state){
+      return state.categoryinfo;
+    },
     getGlobalToastMsg(state){
       return state.globaltoastmsg;
     },
@@ -26,6 +30,9 @@ export default createStore({
     },
   },
   mutations: {
+    setCategoryInfo(state, info){
+      state.categoryinfo = info;
+    },
     setGlobalToastEl(state, El){
       state.globaltoastEl = El;
     },
@@ -43,6 +50,9 @@ export default createStore({
     },
   },
   actions: {
+    setCategoryInfo(context, info){
+      context.commit('setCategoryInfo', info);
+    },
     setGlobalToastEl(context, El){
       context.commit('setGlobalToastEl', El);
     },

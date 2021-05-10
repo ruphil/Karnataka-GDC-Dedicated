@@ -1,5 +1,17 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div id="flightsmanager">
+    Flights Manager
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+import './FlightsManager.scss';
+
+export default defineComponent({
+  setup() {
+
+  },
+})
+</script>
