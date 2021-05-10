@@ -34,12 +34,14 @@ import store from '@/store';
 import { defineComponent, ref, computed } from 'vue';
 
 import globalToast from '../composables/globalToast';
+import userLoginCheck from '../composables/userLoginCheck';
 
 import './NavBar.scss';
 
 export default defineComponent({
   setup() {
     const { showGlobalToast } = globalToast();
+    const { doAuthentication } = userLoginCheck();
 
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const globalusername = computed(() => store.getters.getUsername);
@@ -48,8 +50,14 @@ export default defineComponent({
     const loginuser = ref('');
     const loginpassword = ref('');
 
-    const doLogin = () => {
-      showGlobalToast('logginin');
+    const doLogin = (): void => {
+      doAuthentication(loginuser.value, loginpassword.value)
+      .then(() => {
+        showGlobalToast('Login Successful...');
+      })
+      .catch(() => {
+        showGlobalToast('Invalid Username / Password...');
+      })
     }
 
     return { isLoggedIn, globalusername, loginBoxShow, loginuser, loginpassword, doLogin }
