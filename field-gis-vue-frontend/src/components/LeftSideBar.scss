@@ -3,12 +3,12 @@
     top: 6vh;
     bottom: 0vh;
     left: 0vw;
-    // min-width: 10vw;
+    min-width: 20vw;
 
     background-color: rgba(0,60,136,0.7);
 
     > .categoryitems {
-        position: relative;
+        position: absolute;
         top: 1em;
         left: 0;
         right: 0;
