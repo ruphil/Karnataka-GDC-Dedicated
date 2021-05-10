@@ -3,7 +3,7 @@
     top: 6vh;
     bottom: 0vh;
     left: 0vw;
-    min-width: 20vw;
+    min-width: 5vw;
 
     background-color: rgba(0,60,136,0.7);
 
@@ -17,7 +17,10 @@
         line-height: 5em;
 
         > .category {
-            display: block;
+            color: white;
+            border-radius: 0.25em;
+            overflow: hidden;
+            white-space: nowrap;
 
             &:hover {
                 cursor: pointer;
@@ -25,15 +28,12 @@
             }
 
             > .icon {
-                margin-left: 1em;
+                margin-left: 0.8em;
                 float: left;
             }
 
             > .label {
-                margin-right: 1em;
-                float: right;
-
-                font-size: 1em;
+                margin-left: 0.8em;
             }
         }
     }
