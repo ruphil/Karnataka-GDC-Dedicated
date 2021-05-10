@@ -3,9 +3,40 @@
     top: 6vh;
     bottom: 0vh;
     left: 0vw;
-    width: 5vw;
+    // min-width: 10vw;
 
     background-color: rgba(0,60,136,0.7);
+
+    > .categoryitems {
+        position: relative;
+        top: 1em;
+        left: 0;
+        right: 0;
+        text-align: center;
+
+        line-height: 5em;
+
+        > .category {
+            display: block;
+
+            &:hover {
+                cursor: pointer;
+                background-color: rgba(0,60,120,0.9);
+            }
+
+            > .icon {
+                margin-left: 1em;
+                float: left;
+            }
+
+            > .label {
+                margin-right: 1em;
+                float: right;
+
+                font-size: 1em;
+            }
+        }
+    }
 
     > .expandbtncontainer {
         position: absolute;
