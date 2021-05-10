@@ -5,15 +5,15 @@
             <span class="soi"></span>
         </div>
         <div class="categoryitems">
-            <div class="category">
+            <div class="category" title="Add Marked Villages">
                 <span class="icon"><span class="material-icons-outlined">add_location</span></span>
                 <span class="label" v-show="expanded">Add Marked Villages</span>
             </div>
-            <div class="category">
+            <div class="category" title="Make Mission Plan">
                 <span class="icon"><span class="material-icons-outlined">highlight_alt</span></span>
                 <span class="label" v-show="expanded">Make Mission Plan</span>
             </div>
-            <div class="category">
+            <div class="category" title="Flights Manager">
                 <span class="icon"><span class="material-icons-outlined">flight_takeoff</span></span>
                 <span class="label" v-show="expanded">Flights Manager</span>
             </div>
