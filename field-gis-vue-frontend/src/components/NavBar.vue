@@ -13,7 +13,7 @@
           <span class="logincomponents">
             <input class="mobilenumber" type="text" size="20" placeholder="Username" v-model="loginusername"/><br/><br/>
             <input class="password" type="password" size="20" placeholder="Password" v-model="loginpassword" v-on:keyup.enter="doLogin"/><br/><br/>
-            <div style="font-size:12px;">Press Enter To Continue...</div>
+            <div style="font-size:12px;">{{ loginMsg }}</div>
           </span>
         </span>
       </span>
@@ -49,6 +49,7 @@ export default defineComponent({
     const loginBoxShow = ref(false);
     const loginusername = ref('');
     const loginpassword = ref('');
+    const loginMsg = ref('Press Enter To Continue...');
 
     const doLoggedInTasks = () => {
       store.dispatch('setLoggedIn', true);
@@ -60,13 +61,20 @@ export default defineComponent({
     }
 
     const doLogin = (): void => {
+      loginMsg.value = 'Please Wait...';
+
       doAuthentication(loginusername.value, loginpassword.value)
       .then(() => {
         doLoggedInTasks();
         showGlobalToast('Login Successful...');
       })
       .catch(() => {
+        loginpassword.value = '';
+
         showGlobalToast('Invalid Username / Password...');
+      })
+      .finally(() => {
+        loginMsg.value = 'Press Enter To Continue...';
       })
     }
 
@@ -82,7 +90,7 @@ export default defineComponent({
       window.localStorage.removeItem('globalpassword');
     }
 
-    return { isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, doLogin, doLogout }
+    return { isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, loginMsg, doLogin, doLogout }
   },
 })
 </script>
