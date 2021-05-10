@@ -38,12 +38,12 @@ export default defineComponent({
         const toggleExpansion = () => {
             let el = leftsidebar.value;
             
-            if(el.classList.contains('grow')){
-                el.classList.remove('grow');
-                el.classList.add('shrink');
+            if(el.classList.contains('grown')){
+                el.classList.remove('grown');
+                el.classList.add('shrunk');
             } else {
-                el.classList.remove('shrink');
-                el.classList.add('grow');
+                el.classList.remove('shrunk');
+                el.classList.add('grown');
             }
 
             expanded.value = !expanded.value;
