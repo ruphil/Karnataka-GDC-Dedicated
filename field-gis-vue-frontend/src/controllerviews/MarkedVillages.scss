@@ -106,5 +106,35 @@
                 background-color: white;
             }
         }
+
+        > .layers {
+            position: fixed;
+            bottom: 2vh;
+            right: 8vw;
+            background-color: rgba(255,255,255,0.4);
+            width: 30vw;
+            height: 20vh;
+            padding: 0.2em;
+            border-radius: 0.2em;
+
+            > .display-table {
+                display: table;
+                background-color: rgba(0,60,136,0.1);
+                text-align: center;
+                height: 100%;
+                border-collapse: collapse;
+
+                > div {
+                    display: table-row;
+                    border: 1px solid #000;
+
+                    > div {
+                        display: table-cell;
+                        vertical-align: middle;
+                        padding: 0.2em;
+                    }
+                }
+            }
+        }
     }
 }

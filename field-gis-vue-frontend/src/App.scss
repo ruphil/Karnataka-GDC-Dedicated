@@ -43,3 +43,22 @@ html, body {
     to {bottom: 0; opacity: 0;}
   }
 }
+
+.olbtns{
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  background-color: rgba(0,60,136,0.4);
+  border: none;
+  border-radius: 2px;
+  margin-right: 0.5em;
+
+  &:hover {
+      background-color: rgba(0,60,136,0.8);
+  }
+
+  &:active {
+    color: rgba(0,60,136,0.8);
+    background-color: white;
+}
+}
