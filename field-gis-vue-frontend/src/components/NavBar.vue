@@ -1,5 +1,5 @@
 <template>
-  <div class="navbarcontainer">
+  <div id="navbarcontainer">
     <div class="navbar">
       <span class="logo">
         <img src="../assets/logo.png" width="20"/>

@@ -1,15 +1,16 @@
-.navbarcontainer {
+#navbarcontainer {
     position: fixed;
     top: 0vh;
+    left: 0vw;
+    right: 0vw;
+    height: 6vh;
     color: white;
     background-color: rgba(0,60,136,1);
-    height: 6vh;
-    width: 100%;
 
     > .navbar {
         position: relative;
         display: table;
-        left: 1%;
+        left: 1.5%;
         top: 50%;
         width: 95%;
         transform: translateY(-30%);

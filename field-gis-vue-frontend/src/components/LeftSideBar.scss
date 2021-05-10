@@ -1,0 +1,44 @@
+#leftsidebar {
+    position: fixed;
+    top: 6vh;
+    bottom: 0vh;
+    left: 0vw;
+    width: 5vw;
+
+    background-color: rgba(0,60,136,0.7);
+
+    > .expandbtncontainer {
+        position: absolute;
+        bottom: 1em;
+        left: 0;
+        right: 0;
+
+        text-align: center;
+
+        > .expandbtn {
+            margin: 1px;
+            padding: 0;
+            color: white;
+            font-size: 1.14em;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            height: 1.375em;
+            width: 1.375em;
+            line-height: .4em;
+            background-color: rgba(0,60,136,0.5);
+            border: none;
+            border-radius: 2px;
+
+            &:hover {
+                color: rgba(0,60,136,0.5);
+                background-color: white;
+            }
+
+            &:active {
+                color: rgba(0,60,136,0.5);
+                background-color: grey;
+            }
+        }
+    }
+}
