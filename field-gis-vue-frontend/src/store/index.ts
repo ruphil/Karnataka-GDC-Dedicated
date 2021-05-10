@@ -32,6 +32,15 @@ export default createStore({
     setGlobalToastMsg(state, msg){
       state.globaltoastmsg = msg;
     },
+    setLoggedIn(state, isLoggedIn){
+      state.isLoggedIn = isLoggedIn;
+    },
+    setGlobalUsename(state, username){
+      state.username = username;
+    },
+    setGlobalPassword(state, password){
+      state.password = password;
+    },
   },
   actions: {
     setGlobalToastEl(context, El){
@@ -39,6 +48,15 @@ export default createStore({
     },
     setGlobalToastMsg(context, msg){
       context.commit('setGlobalToastMsg', msg);
+    },
+    setLoggedIn(context, isLoggedIn){
+      context.commit('setLoggedIn', isLoggedIn);
+    },
+    setGlobalUsename(context, username){
+      context.commit('setGlobalUsename', username);
+    },
+    setGlobalPassword(context, password){
+      context.commit('setGlobalPassword', password);
     },
   },
   modules: {

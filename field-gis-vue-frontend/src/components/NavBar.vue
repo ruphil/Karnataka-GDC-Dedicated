@@ -11,7 +11,7 @@
         <button class="loginbtn" v-on:click="loginBoxShow = !loginBoxShow">Login</button>
         <span class="loginbox" v-show="loginBoxShow">
           <span class="logincomponents">
-            <input class="mobilenumber" type="text" size="20" placeholder="Username" v-model="loginuser"/><br/><br/>
+            <input class="mobilenumber" type="text" size="20" placeholder="Username" v-model="loginusername"/><br/><br/>
             <input class="password" type="password" size="20" placeholder="Password" v-model="loginpassword" v-on:keyup.enter="doLogin"/><br/><br/>
             <div style="font-size:12px;">Press Enter To Continue...</div>
           </span>
@@ -19,7 +19,7 @@
       </span>
       <span class="loggedInSpan" v-show="isLoggedIn">
         <span>Welcome {{ globalusername }}</span>
-        <button class="logoutbtn">Logout</button>
+        <button class="logoutbtn" v-on:click="doLogout">Logout</button>
       </span>
       <span class="title">Karnataka Geospatial Data Centre</span>
     </div>
@@ -47,12 +47,22 @@ export default defineComponent({
     const globalusername = computed(() => store.getters.getUsername);
 
     const loginBoxShow = ref(false);
-    const loginuser = ref('');
+    const loginusername = ref('');
     const loginpassword = ref('');
 
+    const doLoggedInTasks = () => {
+      store.dispatch('setLoggedIn', true);
+      store.dispatch('setGlobalUsename', loginusername.value);
+      store.dispatch('setGlobalPassword', loginpassword.value);
+
+      window.localStorage.setItem('globalusername', loginusername.value);
+      window.localStorage.setItem('globalpassword', loginpassword.value);
+    }
+
     const doLogin = (): void => {
-      doAuthentication(loginuser.value, loginpassword.value)
+      doAuthentication(loginusername.value, loginpassword.value)
       .then(() => {
+        doLoggedInTasks();
         showGlobalToast('Login Successful...');
       })
       .catch(() => {
@@ -60,7 +70,19 @@ export default defineComponent({
       })
     }
 
-    return { isLoggedIn, globalusername, loginBoxShow, loginuser, loginpassword, doLogin }
+    const doLogout = () => {
+      loginusername.value = '';
+      loginpassword.value = '';
+
+      store.dispatch('setLoggedIn', false);
+      store.dispatch('setGlobalUsename', '');
+      store.dispatch('setGlobalPassword', '');
+
+      window.localStorage.removeItem('globalusername');
+      window.localStorage.removeItem('globalpassword');
+    }
+
+    return { isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, doLogin, doLogout }
   },
 })
 </script>
