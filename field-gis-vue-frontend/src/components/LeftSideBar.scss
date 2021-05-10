@@ -1,9 +1,12 @@
+$shrunk-width: 3em;
+$grown-width: 14em;
+
 #leftsidebar {
     position: fixed;
     top: 6vh;
     bottom: 0vh;
     left: 0vw;
-    width: 5vw;
+    min-width: $shrunk-width;
 
     background-color: rgba(0,60,136,0.7);
 
@@ -82,12 +85,12 @@
     }
 
     @keyframes grow {
-        from { width: 5vw; }
-        to { width: 22vw; }
+        from { width: $shrunk-width; }
+        to { width: $grown-width; }
     }
 
     @keyframes shrink {
-        from { width: 22vw; }
-        to { width: 5vw; }
+        from { width: $grown-width; }
+        to { width: $shrunk-width; }
     }
 }
