@@ -36,13 +36,15 @@ export default defineComponent({
         const expanded = ref(false);
         
         const toggleExpansion = () => {
-            console.log(leftsidebar.value);
-
-            // if(expanded.value){
-            //     leftsidebar.value.style.width = 'auto';
-            // } else {
-            //     leftsidebar.value.style.width = '5vw';
-            // }
+            let el = leftsidebar.value;
+            
+            if(el.classList.contains('grow')){
+                el.classList.remove('grow');
+                el.classList.add('shrink');
+            } else {
+                el.classList.remove('shrink');
+                el.classList.add('grow');
+            }
 
             expanded.value = !expanded.value;
         }

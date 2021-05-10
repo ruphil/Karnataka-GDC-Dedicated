@@ -3,7 +3,7 @@
     top: 6vh;
     bottom: 0vh;
     left: 0vw;
-    min-width: 5vw;
+    width: 5vw;
 
     background-color: rgba(0,60,136,0.7);
 
@@ -71,5 +71,23 @@
                 background-color: grey;
             }
         }
+    }
+
+    &.grow {
+        animation: grow 0.2s forwards;
+    }
+
+    &.shrink {
+        animation: shrink 0.2s forwards;
+    }
+
+    @keyframes grow {
+        from { width: 5vw; }
+        to { width: 22vw; }
+    }
+
+    @keyframes shrink {
+        from { width: 22vw; }
+        to { width: 5vw; }
     }
 }
