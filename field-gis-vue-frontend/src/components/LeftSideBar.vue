@@ -5,11 +5,11 @@
             <span class="soi"></span>
         </div>
         <div class="categoryitems">
-            <div class="category" title="Add Marked Villages" v-on:click="store.dispatch('setCategoryInfo', 'Add Marked Villages')">
+            <div class="category" title="Add Marked Villages" v-on:click="router.push({path: '/markedvillages'});store.dispatch('setCategoryInfo', 'Add Marked Villages')">
                 <span class="icon"><span class="material-icons-outlined">add_location</span></span>
                 <span class="label" v-show="expanded">Add Marked Villages</span>
             </div>
-            <div class="category" title="Make Mission Plan" v-on:click="store.dispatch('setCategoryInfo', 'Make Mission Plan')">
+            <div class="category" title="Make Mission Plan" v-on:click="router.push({path: '/missionplan'});store.dispatch('setCategoryInfo', 'Make Mission Plan')">
                 <span class="icon"><span class="material-icons-outlined">highlight_alt</span></span>
                 <span class="label" v-show="expanded">Make Mission Plan</span>
             </div>

@@ -6,6 +6,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../controllerviews/BlankHome.vue')
   },
   {
+    path: '/markedvillages',
+    component: () => import('../controllerviews/MarkedVillages.vue')
+  },
+  {
+    path: '/missionplan',
+    component: () => import('../controllerviews/MissionPlanner.vue')
+  },
+  {
     path: '/flights',
     component: () => import('../controllerviews/FlightsManager.vue')
   }
