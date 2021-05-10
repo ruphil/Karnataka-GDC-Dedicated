@@ -49,7 +49,6 @@ export default defineComponent({
       let globalpassword = window.localStorage.getItem('globalpassword');
 
       if(globalusername != undefined && globalpassword != undefined){
-        console.log('came hre');
         doAuthentication(globalusername, globalpassword)
         .then(() => {
           doLoggedInTasks();
@@ -57,7 +56,7 @@ export default defineComponent({
         })
         .catch(() => {
           showGlobalToast('Invalid Username / Password...');
-          
+
           window.localStorage.removeItem('globalusername');
           window.localStorage.removeItem('globalpassword');
         })
