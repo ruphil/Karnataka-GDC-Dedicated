@@ -79,6 +79,8 @@ export default defineComponent({
     }
 
     const doLogout = () => {
+      showGlobalToast('Logged Out...');
+
       loginusername.value = '';
       loginpassword.value = '';
 
