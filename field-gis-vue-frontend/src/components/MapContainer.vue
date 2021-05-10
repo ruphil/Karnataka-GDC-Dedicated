@@ -6,12 +6,15 @@
 import { defineComponent, getCurrentInstance, onMounted, ref } from 'vue';
 import { Map } from 'ol';
 
-import mapLoader from '../composables/mapLoader';
+import baseMapLoader from '../composables/baseMapLoader';
+
+import 'ol/ol.css';
+import './MapContainer.scss';
 
 export default defineComponent({
     setup() {
         const app = getCurrentInstance()!;
-        const { initBaseMap } = mapLoader();
+        const { initBaseMap } = baseMapLoader();
 
         const mapref = ref();
 

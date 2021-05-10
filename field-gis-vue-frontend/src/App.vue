@@ -1,8 +1,8 @@
 <template>
   <div id="approot">
+    <MapContainer />
     <NavBar />
     <LeftSideBar />
-    <MapContainer />
     <ControlsContainer />
     <div class="latlon"></div>
     <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>

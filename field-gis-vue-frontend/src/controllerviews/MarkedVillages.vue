@@ -11,13 +11,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import store from '@/store';
+import { defineComponent, onMounted, ref } from 'vue'
 
 import './MarkedVillages.scss';
 
 export default defineComponent({
     setup() {
         const showToolBox = ref(false);
+
+        onMounted(() => {
+            store.dispatch('setCategoryInfo', 'Add Marked Villages');
+        });
 
         return { showToolBox }
     },
