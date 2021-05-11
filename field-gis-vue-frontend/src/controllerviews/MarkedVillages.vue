@@ -13,12 +13,12 @@
             <div class="bounds" v-show="showbounds">
                 <div class="display-table">
                     <div>
-                        <div><button class="olbtns" v-on:click="loadkarnbounds">Load Karnataka Boundary</button></div>
+                        <div><button class="olbtns" v-on:click="loadKarnBounds">Load Karnataka Boundary</button></div>
                         <div><button class="olbtns">Load District Villages</button></div>
                         <div><button class="olbtns">Load Marked Villages By District</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns">Unload Karnataka Boundary</button></div>
+                        <div><button class="olbtns" v-on:click="unloadKarnBounds">Unload Karnataka Boundary</button></div>
                         <div><button class="olbtns">Load District Villages In View</button></div>
                         <div><button class="olbtns">Load Marked Villages In View</button></div>
                     </div>
@@ -43,7 +43,7 @@ import mapBoundsLoader from '../composables/mapBoundsLoader';
 
 export default defineComponent({
     setup() {
-        const { loadKarnBounds } = mapBoundsLoader();
+        const { loadKarnBounds, unloadKarnBounds } = mapBoundsLoader();
 
         const showToolBox = ref(false);
         const showbounds = ref(false);
@@ -52,12 +52,7 @@ export default defineComponent({
             store.dispatch('setCategoryInfo', 'Add Marked Villages');
         });
 
-        const loadkarnbounds = () => {
-            console.log(2);
-            loadKarnBounds();
-        }
-
-        return { showToolBox, showbounds, loadkarnbounds }
+        return { showToolBox, showbounds, loadKarnBounds, unloadKarnBounds }
     },
 })
 </script>
