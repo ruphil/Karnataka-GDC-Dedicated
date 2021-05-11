@@ -34,6 +34,10 @@ export default defineComponent({
     const globaltoastmsg = computed(() => store.getters.getGlobalToastMsg);
     const globalToastEl = ref();
 
+    const setTitle = () => {
+      document.title = 'KGDC GIS';
+    }
+
     const setGlobalToastEl = () => {
       store.dispatch('setGlobalToastEl', globalToastEl);
     }
@@ -64,6 +68,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      setTitle();
       setGlobalToastEl(); 
       loadCredentials();
     });
