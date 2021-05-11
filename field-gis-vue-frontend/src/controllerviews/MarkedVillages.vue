@@ -39,11 +39,11 @@ import { defineComponent, onMounted, ref } from 'vue'
 
 import './MarkedVillages.scss';
 
-import mapBoundsLoader from '../composables/mapBoundsLoader';
+import karnBoundsLoader from '../composables/karnBoundsLoader';
 
 export default defineComponent({
     setup() {
-        const { loadKarnBounds, unloadKarnBounds } = mapBoundsLoader();
+        const { loadKarnBounds, unloadKarnBounds } = karnBoundsLoader();
 
         const showToolBox = ref(false);
         const showbounds = ref(false);

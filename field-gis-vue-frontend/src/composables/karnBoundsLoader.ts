@@ -8,8 +8,8 @@ import mapStyler from './mapStyler';
 import dataService from './dataService';
 import { getCurrentInstance } from '@vue/runtime-core';
 
-const mapLoader = () => {
-    const { districtStyleFunction, villagesStyleFunction } = mapStyler();
+const karnBoundsLoader = () => {
+    const { districtStyleFunction } = mapStyler();
     const { getJSONFeatures } = dataService();
 
     const app = getCurrentInstance()!;
@@ -61,4 +61,4 @@ const mapLoader = () => {
     return { loadKarnBounds, unloadKarnBounds }
 }
 
-export default mapLoader;
+export default karnBoundsLoader;
