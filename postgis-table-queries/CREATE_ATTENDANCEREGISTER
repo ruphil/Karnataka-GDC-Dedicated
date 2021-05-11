@@ -1,0 +1,14 @@
+CREATE TABLE FIELDATTENDANCEREGISTER(
+    ID                  SERIAL PRIMARY KEY,
+    CLIENTDATE          DATE NOT NULL,   
+    CLIENTTIME          TEXT NOT NULL,       
+    NAME                TEXT NOT NULL,         
+    ATTENDANCETYPE      TEXT NOT NULL,
+    REMARKS             TEXT NOT NULL,      
+    UUID                TEXT,                      
+    LATITUDE            TEXT NOT NULL,     
+    LONGITUDE           TEXT NOT NULL,        
+    ACCURACY            TEXT NOT NULL,     
+    USERNAME            TEXT NOT NULL,
+    GEOM                GEOMETRY(POINT, 3857) NOT NULL
+);
