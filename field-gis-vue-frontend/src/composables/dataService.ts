@@ -2,7 +2,7 @@ import store from '@/store';
 import axios, { AxiosResponse } from 'axios';
 
 const dataService = () => {
-    const getJSONFeatures = (typeName: string) => {
+    const getJSONFeatures = (typeName: string, cql_filter?: string) => {
         const urlBase = store.getters.getURLBase;
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
@@ -14,6 +14,10 @@ const dataService = () => {
         url.searchParams.append('typeName', typeName);
         url.searchParams.append('srsname', 'EPSG:3857');
         url.searchParams.append('outputFormat', 'application/json');
+
+        if(cql_filter != undefined){
+            url.searchParams.append('cql_filter', cql_filter);
+        }
         // console.log(url);
 
         return new Promise((resolve, reject) => {

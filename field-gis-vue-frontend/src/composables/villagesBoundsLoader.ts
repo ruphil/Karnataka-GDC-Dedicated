@@ -8,19 +8,19 @@ import mapStyler from './mapStyler';
 import dataService from './dataService';
 import { getCurrentInstance } from '@vue/runtime-core';
 
-const karnBoundsLoader = () => {
+const villagesBoundsLoader = () => {
     const { districtStyleFunction } = mapStyler();
     const { getJSONFeatures } = dataService();
 
     const app = getCurrentInstance()!;
 
-    const loadKarnBounds = () => {
-        if(app.appContext.config.globalProperties.$karndistbounds == null){
-            getJSONFeatures('kgdc:karndistbounds')
+    const loadVillagesBounds = (districtname: string) => {
+        if(app.appContext.config.globalProperties.$villagesBounds == null){
+            getJSONFeatures('kgdc:karnvillages', `kgisdist_1='${districtname}'`)
             .then((jsonResponse: any)=>{
                 // console.log(jsonResponse.data);
-                let karnGJ = jsonResponse.data;
-                setKarnBounds(karnGJ);
+                let villagesGJ = jsonResponse.data;
+                setVillagesBounds(villagesGJ);
             })
             .catch((error) => {
                 console.log(error);
@@ -28,17 +28,17 @@ const karnBoundsLoader = () => {
         }
     }
 
-    const setKarnBounds = (gj: any) => {
+    const setVillagesBounds = (gj: any) => {
         let map = app.appContext.config.globalProperties.$map;
 
-        let karndistbounds = new VectorLayer({
+        let villagesBounds = new VectorLayer({
             source: new VectorSource({
                 features: new GeoJSON().readFeatures(gj)
             }),
             style: districtStyleFunction
         });
 
-        map.addLayer(karndistbounds);
+        map.addLayer(villagesBounds);
 
         map.setView(new View({
             zoom: 7,
@@ -46,19 +46,19 @@ const karnBoundsLoader = () => {
             constrainResolution: true
         }));
 
-        app.appContext.config.globalProperties.$karndistbounds = karndistbounds;
+        app.appContext.config.globalProperties.$villagesBounds = villagesBounds;
     }
 
-    const unloadKarnBounds = () => {
+    const unloadVillagesBounds = () => {
         let map = app.appContext.config.globalProperties.$map;
 
-        if(app.appContext.config.globalProperties.$karndistbounds != null){
-            map.removeLayer(app.appContext.config.globalProperties.$karndistbounds);
-            app.appContext.config.globalProperties.$karndistbounds = null;
+        if(app.appContext.config.globalProperties.$villagesBounds != null){
+            map.removeLayer(app.appContext.config.globalProperties.$villagesBounds);
+            app.appContext.config.globalProperties.$villagesBounds = null;
         }
     }
 
-    return { loadKarnBounds, unloadKarnBounds }
+    return { loadVillagesBounds, unloadVillagesBounds }
 }
 
-export default karnBoundsLoader;
+export default villagesBoundsLoader;
