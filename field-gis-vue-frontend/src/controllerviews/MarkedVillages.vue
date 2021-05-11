@@ -20,7 +20,7 @@
                             </select>
                         </div>
                         <div><button class="olbtns">Load District Villages</button></div>
-                        <div><button class="olbtns">Load Marked Villages By District</button></div>
+                        <div><button class="olbtns" v-on:click="loadVillagesBounds(districtref)">Load Marked Villages By District</button></div>
                     </div>
                     <div>
                         <div><button class="olbtns" v-on:click="loadKarnBounds">Load Karnataka Boundary</button></div>
@@ -29,7 +29,7 @@
                     </div>
                     <div>
                         <div><button class="olbtns" v-on:click="unloadKarnBounds">Unload Karnataka Boundary</button></div>
-                        <div><button class="olbtns">Unload District Villages</button></div>
+                        <div><button class="olbtns" v-on:click="unloadVillagesBounds">Unload District Villages</button></div>
                         <div><button class="olbtns">Unload Marked Villages</button></div>
                     </div>
                 </div>
@@ -45,10 +45,14 @@ import { computed, defineComponent, onMounted, ref } from 'vue'
 import './MarkedVillages.scss';
 
 import karnBoundsLoader from '../composables/karnBoundsLoader';
+import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 
 export default defineComponent({
     setup() {
         const { loadKarnBounds, unloadKarnBounds } = karnBoundsLoader();
+        const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
+
+        const return0 = { loadKarnBounds, unloadKarnBounds, loadVillagesBounds, unloadVillagesBounds };
 
         const districtsList = computed(() => store.getters.getDistrictsList);
         const districtref = ref('');
@@ -56,13 +60,13 @@ export default defineComponent({
         const showToolBox = ref(false);
         const showbounds = ref(false);
 
-        const return1 = { loadKarnBounds, unloadKarnBounds, districtsList, districtref, showToolBox, showbounds }
+        const return1 = { districtsList, districtref, showToolBox, showbounds }
 
         onMounted(() => {
             store.dispatch('setCategoryInfo', 'Add Marked Villages');
         });
 
-        return { ...return1 }
+        return { ...return0, ...return1 }
     },
 })
 </script>
