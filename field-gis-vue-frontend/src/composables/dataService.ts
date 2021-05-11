@@ -18,7 +18,7 @@ const dataService = () => {
         if(cql_filter != undefined){
             url.searchParams.append('cql_filter', cql_filter);
         }
-        console.log(url);
+        // console.log(url);
 
         return new Promise((resolve, reject) => {
             axios({

@@ -4,7 +4,6 @@
     <NavBar />
     <LeftSideBar />
     <ControlsContainer />
-    <div class="latlon"></div>
     <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
   </div>
 </template>
