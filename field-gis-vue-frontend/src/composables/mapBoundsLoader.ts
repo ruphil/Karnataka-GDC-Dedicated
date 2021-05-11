@@ -5,12 +5,12 @@ import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 
 import mapStyler from './mapStyler';
-import featuresService from './featuresService';
+import dataService from './dataService';
 import { getCurrentInstance } from '@vue/runtime-core';
 
 const mapLoader = () => {
     const { districtStyleFunction, villagesStyleFunction } = mapStyler();
-    const { getJSONFeatures } = featuresService();
+    const { getJSONFeatures } = dataService();
 
     const app = getCurrentInstance()!;
 

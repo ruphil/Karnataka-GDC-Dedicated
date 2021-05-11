@@ -7,7 +7,7 @@ const mapStyler = () => {
       new Style({
         stroke: new Stroke({
           color: 'rgba(0,60,136,0.8)',
-          width: 4,
+          width: 3,
         }),
         text: new Text({
           font: '12px Calibri,sans-serif',
