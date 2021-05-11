@@ -9,7 +9,7 @@ import dataService from './dataService';
 import { getCurrentInstance } from '@vue/runtime-core';
 
 const villagesBoundsLoader = () => {
-    const { districtStyleFunction } = mapStyler();
+    const { villagesStyleFunction } = mapStyler();
     const { getJSONFeatures } = dataService();
 
     const app = getCurrentInstance()!;
@@ -35,7 +35,7 @@ const villagesBoundsLoader = () => {
             source: new VectorSource({
                 features: new GeoJSON().readFeatures(gj)
             }),
-            style: districtStyleFunction
+            style: villagesStyleFunction
         });
 
         map.addLayer(villagesBounds);

@@ -19,17 +19,17 @@
                                 <option v-for="(district, index) in districtsList" v-bind:key="index">{{ district }}</option>
                             </select>
                         </div>
-                        <div><button class="olbtns">Load District Villages</button></div>
-                        <div><button class="olbtns" v-on:click="loadVillagesBounds(districtref)">Load Marked Villages By District</button></div>
+                        <div><button class="olbtns" v-on:click="loadVillagesBoundsRef">Load Villages Boundary By District</button></div>
+                        <div><button class="olbtns">Load Marked Villages By District</button></div>
                     </div>
                     <div>
                         <div><button class="olbtns" v-on:click="loadKarnBounds">Load Karnataka Boundary</button></div>
-                        <div><button class="olbtns">Load District Villages In View</button></div>
+                        <div><button class="olbtns">Load Villages Boundary In View</button></div>
                         <div><button class="olbtns">Load Marked Villages In View</button></div>
                     </div>
                     <div>
                         <div><button class="olbtns" v-on:click="unloadKarnBounds">Unload Karnataka Boundary</button></div>
-                        <div><button class="olbtns" v-on:click="unloadVillagesBounds">Unload District Villages</button></div>
+                        <div><button class="olbtns" v-on:click="unloadVillagesBounds">Unload Villages Boundary</button></div>
                         <div><button class="olbtns">Unload Marked Villages</button></div>
                     </div>
                 </div>
@@ -49,10 +49,14 @@ import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 
 export default defineComponent({
     setup() {
+        onMounted(() => {
+            store.dispatch('setCategoryInfo', 'Add Marked Villages');
+        });
+
         const { loadKarnBounds, unloadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
 
-        const return0 = { loadKarnBounds, unloadKarnBounds, loadVillagesBounds, unloadVillagesBounds };
+        const return0 = { loadKarnBounds, unloadKarnBounds, unloadVillagesBounds };
 
         const districtsList = computed(() => store.getters.getDistrictsList);
         const districtref = ref('');
@@ -60,12 +64,14 @@ export default defineComponent({
         const showToolBox = ref(false);
         const showbounds = ref(false);
 
-        const return1 = { districtsList, districtref, showToolBox, showbounds }
+        const loadVillagesBoundsRef = () => {
+            if(districtref.value != ''){
+                loadVillagesBounds(districtref.value);
+            }
+        }
 
-        onMounted(() => {
-            store.dispatch('setCategoryInfo', 'Add Marked Villages');
-        });
-
+        const return1 = { loadVillagesBoundsRef, districtsList, districtref, showToolBox, showbounds }
+        
         return { ...return0, ...return1 }
     },
 })
