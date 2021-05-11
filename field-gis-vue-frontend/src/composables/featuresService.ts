@@ -1,15 +1,21 @@
 import store from '@/store';
 import axios, { AxiosResponse } from 'axios';
 
-const userLoginCheck = () => {
-    const doAuthentication = (username: string, password: string) => {
+const featuresService = () => {
+    const getJSONFeatures = (typeName: string) => {
         const urlBase = store.getters.getURLBase;
+        const username = store.getters.getUsername;
+        const password = store.getters.getPassword;
 
         const url = new URL('/geoserver/kgdc/ows', urlBase);
         url.searchParams.append('service', 'WFS');
         url.searchParams.append('version', '2.0.0');
-        url.searchParams.append('request', 'GetCapabilities');
-        
+        url.searchParams.append('request', 'GetFeature');
+        url.searchParams.append('typeName', typeName);
+        url.searchParams.append('srsname', 'EPSG:3857');
+        url.searchParams.append('outputFormat', 'application/json');
+        // console.log(url);
+
         return new Promise((resolve, reject) => {
             axios({
                 method: 'POST',
@@ -18,12 +24,12 @@ const userLoginCheck = () => {
                     'Authorization': `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}`
                 }
             })
-            .then((res: AxiosResponse) => {
+            .then((jsonResponse: AxiosResponse) => {
                 // console.log(res.status);
-                if(res.status == 200){
-                    resolve(res);
+                if(jsonResponse.status == 200){
+                    resolve(jsonResponse);
                 } else {
-                    reject(res);
+                    reject(jsonResponse);
                 }
             })
             .catch((error) => {
@@ -33,7 +39,7 @@ const userLoginCheck = () => {
         });
     }
 
-    return { doAuthentication }
+    return { getJSONFeatures }
 }
 
-export default userLoginCheck;
+export default featuresService;

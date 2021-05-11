@@ -1,6 +1,6 @@
 import { getCurrentInstance } from '@vue/runtime-core';
 
-import { Map, View } from 'ol';
+import { View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import { fromLonLat } from 'ol/proj';

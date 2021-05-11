@@ -39,8 +39,12 @@ import { defineComponent, onMounted, ref } from 'vue'
 
 import './MarkedVillages.scss';
 
+import mapBoundsLoader from '../composables/mapBoundsLoader';
+
 export default defineComponent({
     setup() {
+        const { loadKarnBounds } = mapBoundsLoader();
+
         const showToolBox = ref(false);
         const showbounds = ref(false);
 
@@ -49,10 +53,11 @@ export default defineComponent({
         });
 
         const loadkarnbounds = () => {
-
+            console.log(2);
+            loadKarnBounds();
         }
 
-        return { showToolBox, showbounds }
+        return { showToolBox, showbounds, loadkarnbounds }
     },
 })
 </script>

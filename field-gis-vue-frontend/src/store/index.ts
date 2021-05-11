@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
+    urlBase: 'http://localhost:8080',
     categoryinfo: '',
     globaltoastmsg: '',
     globaltoastEl: null,
@@ -10,6 +11,9 @@ export default createStore({
     password: '',
   },
   getters: {
+    getURLBase(state){
+      return state.urlBase;
+    },
     getCategoryInfo(state){
       return state.categoryinfo;
     },
