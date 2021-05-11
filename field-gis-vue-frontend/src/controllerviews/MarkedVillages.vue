@@ -8,18 +8,24 @@
             </div>
         </div>
 
-        <div class="layerscontainer">
-            <button class="togglelayers" v-on:click="showLayers = !showLayers"><span class="material-icons-outlined" title="Manage Layers">layers</span></button>
-            <div class="layers" v-show="showLayers">
+        <div class="boundscontainer">
+            <button class="togglebounds" v-on:click="showbounds = !showbounds"><span class="material-icons-outlined" title="Load Bounds">layers</span></button>
+            <div class="bounds" v-show="showbounds">
                 <div class="display-table">
                     <div>
-                        <div><button class="olbtns" title="Load Karnataka Boundary"><span class="material-icons-outlined">border_clear</span></button></div>
-                        <div>Load Karnataka Bounds</div>
-                        <div>Load Karnataka Bounds</div>
+                        <div><button class="olbtns" v-on:click="loadkarnbounds">Load Karnataka Boundary</button></div>
+                        <div><button class="olbtns">Load District Villages</button></div>
+                        <div><button class="olbtns">Load Marked Villages By District</button></div>
                     </div>
                     <div>
-                        <div>a</div>
-                        <div>b</div>
+                        <div><button class="olbtns">Unload Karnataka Boundary</button></div>
+                        <div><button class="olbtns">Load District Villages In View</button></div>
+                        <div><button class="olbtns">Load Marked Villages In View</button></div>
+                    </div>
+                    <div>
+                        <div>Select District</div>
+                        <div><button class="olbtns">Unload District Villages</button></div>
+                        <div><button class="olbtns">Unload Marked Villages</button></div>
                     </div>
                 </div>
             </div>
@@ -36,13 +42,17 @@ import './MarkedVillages.scss';
 export default defineComponent({
     setup() {
         const showToolBox = ref(false);
-        const showLayers = ref(false);
+        const showbounds = ref(false);
 
         onMounted(() => {
             store.dispatch('setCategoryInfo', 'Add Marked Villages');
         });
 
-        return { showToolBox, showLayers }
+        const loadkarnbounds = () => {
+
+        }
+
+        return { showToolBox, showbounds }
     },
 })
 </script>
