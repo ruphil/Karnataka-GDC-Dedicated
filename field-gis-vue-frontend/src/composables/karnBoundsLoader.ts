@@ -43,8 +43,6 @@ const karnBoundsLoader = () => {
             layers: [ karndistbounds ]
         }));
 
-        // map.addLayer(karndistbounds);
-
         map.setView(new View({
             zoom: 7,
             center: fromLonLat([76.56, 14.85]),

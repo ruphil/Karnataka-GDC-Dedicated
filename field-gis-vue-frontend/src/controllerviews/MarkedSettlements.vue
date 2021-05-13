@@ -13,25 +13,21 @@
             <div class="bounds" v-show="showbounds">
                 <div class="display-table">
                     <div>
+                        <div><button class="olbtns" v-on:click="loadBaseMapToExtent">Load Basemap To Extent</button></div>
                         <div>
                             <select v-model="districtref" style="font-size:0.5em;">
                                 <option disabled value="">Select District</option>
                                 <option v-for="(district, index) in districtsList" v-bind:key="index">{{ district }}</option>
                             </select>
                         </div>
-                        <div>
-                            <button class="olbtns">Load Villages In View N By District</button><br/>
-                        </div>
-                        <div>
-                            <button class="olbtns" v-on:click="unloadVillagesBounds">Unload Villages</button>
-                        </div>
+                        <div><button class="olbtns">Load Villages In View N By District</button></div>
+                        <div><button class="olbtns" v-on:click="unloadVillagesBounds">Unload Villages</button></div>
                     </div>
                     <div>
+                        <div><button class="olbtns" v-on:click="unloadBaseMap">Unload BaseMap</button></div>
                         <div><button class="olbtns" v-on:click="loadVillagesBoundsRef">Load Villages By District</button></div>
                         <div><button class="olbtns">Load Marked Settlements In View N By District</button></div>
-                        <div>
-                            <button class="olbtns">Unload Marked Settlements</button>
-                        </div>
+                        <div><button class="olbtns">Unload Marked Settlements</button></div>
                     </div>
                 </div>
             </div>
@@ -47,6 +43,7 @@ import './MarkedSettlements.scss';
 
 import karnBoundsLoader from '../composables/karnBoundsLoader';
 import villagesBoundsLoader from '../composables/villagesBoundsLoader';
+import baseMapLoader from '../composables/baseMapLoader';
 
 export default defineComponent({
     setup() {
@@ -54,10 +51,11 @@ export default defineComponent({
             store.dispatch('setCategoryInfo', 'Add Marked Villages');
         });
 
-        const { loadKarnBounds, unloadKarnBounds } = karnBoundsLoader();
+        const { loadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
+        const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
 
-        const return0 = { loadKarnBounds, unloadKarnBounds, unloadVillagesBounds };
+        const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
 
         const districtsList = computed(() => store.getters.getDistrictsList);
         const districtref = ref('');

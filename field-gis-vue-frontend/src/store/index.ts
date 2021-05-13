@@ -9,7 +9,7 @@ export default createStore({
     globaltoastEl: null,
     isLoggedIn: false,
     username: '',
-    password: '',
+    password: ''
   },
   getters: {
     getURLBase(state){

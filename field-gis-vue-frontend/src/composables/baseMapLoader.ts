@@ -10,7 +10,9 @@ import {transformExtent} from 'ol/proj';
 const mapLoader = () => {
     const app = getCurrentInstance()!;
 
-    const loadBaseMap = () => {
+    const loadBaseMapToExtent = () => {
+        unloadBaseMap();
+
         const map = app.appContext.config.globalProperties.$map;
 
         const baseMapLayer = new TileLayer({
@@ -20,18 +22,21 @@ const mapLoader = () => {
             })
         });
 
-        map.setLayerGroup(new LayerGroup({
-            layers: [ baseMapLayer ]
-        }));
+        map.addLayer(baseMapLayer);
 
-        map.setView(new View({
-            zoom: 6,
-            center: fromLonLat([76.56, 14.85]),
-            constrainResolution: true
-        }));
+        app.appContext.config.globalProperties.$villagesBounds = baseMapLayer;
     }
 
-    return { loadBaseMap }
+    const unloadBaseMap = () => {
+        const map = app.appContext.config.globalProperties.$map;
+
+        if(app.appContext.config.globalProperties.$baseMapLayer != null){
+            map.removeLayer(app.appContext.config.globalProperties.$baseMapLayer);
+            app.appContext.config.globalProperties.$baseMapLayer = null;
+        }
+    }
+
+    return { loadBaseMapToExtent, unloadBaseMap }
 }
 
 export default mapLoader;

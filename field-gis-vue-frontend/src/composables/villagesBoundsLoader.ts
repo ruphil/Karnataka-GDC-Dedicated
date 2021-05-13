@@ -29,7 +29,7 @@ const villagesBoundsLoader = () => {
     }
 
     const setVillagesBounds = (gj: any) => {
-        let map = app.appContext.config.globalProperties.$map;
+        const map = app.appContext.config.globalProperties.$map;
 
         let villagesBounds = new VectorLayer({
             source: new VectorSource({
@@ -44,7 +44,7 @@ const villagesBoundsLoader = () => {
     }
 
     const unloadVillagesBounds = () => {
-        let map = app.appContext.config.globalProperties.$map;
+        const map = app.appContext.config.globalProperties.$map;
 
         if(app.appContext.config.globalProperties.$villagesBounds != null){
             map.removeLayer(app.appContext.config.globalProperties.$villagesBounds);
