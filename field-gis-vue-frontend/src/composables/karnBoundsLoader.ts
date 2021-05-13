@@ -19,7 +19,7 @@ const karnBoundsLoader = () => {
         if(app.appContext.config.globalProperties.$karndistbounds == null){
             getJSONFeatures('kgdc:karndistbounds')
             .then((jsonResponse: any)=>{
-                console.log(jsonResponse.data);
+                // console.log(jsonResponse.data);
                 let karnGJ = jsonResponse.data;
                 setKarnBounds(karnGJ);
             })

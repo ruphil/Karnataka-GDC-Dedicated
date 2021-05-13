@@ -54,7 +54,7 @@ export default defineComponent({
     const loadCredentials = () => {
       let globalusername = window.localStorage.getItem('globalusername');
       let globalpassword = window.localStorage.getItem('globalpassword');
-      console.log(globalusername, globalpassword);
+      // console.log(globalusername, globalpassword);
 
       if(globalusername != undefined && globalpassword != undefined){
         doAuthentication(globalusername, globalpassword)

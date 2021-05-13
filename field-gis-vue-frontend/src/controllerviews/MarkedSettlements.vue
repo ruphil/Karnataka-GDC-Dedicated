@@ -13,25 +13,23 @@
             <div class="bounds" v-show="showbounds">
                 <div class="display-table">
                     <div>
-                        <div>jack</div>
                         <div>
                             <select v-model="districtref" style="font-size:0.5em;">
                                 <option disabled value="">Select District</option>
                                 <option v-for="(district, index) in districtsList" v-bind:key="index">{{ district }}</option>
                             </select>
                         </div>
-                        <div><button class="olbtns">Load Marked Villages By District</button></div>
-                    </div>
-                    <div>
-                        <div><button class="olbtns" v-on:click="loadKarnBounds">Load Karnataka Boundary</button></div>
-                        <div><button class="olbtns" v-on:click="loadVillagesBoundsRef">Load Villages Boundary By District</button></div>
-                        <div><button class="olbtns">Load Marked Settlements In View</button></div>
-                    </div>
-                    <div>
-                        <div><button class="olbtns" v-on:click="unloadKarnBounds">Unload Karnataka Boundary</button></div>
-                        <div></div>
                         <div>
-                            <button class="olbtns" v-on:click="unloadVillagesBounds">Unload Villages Boundary</button>
+                            <button class="olbtns">Load Villages In View N By District</button><br/>
+                        </div>
+                        <div>
+                            <button class="olbtns" v-on:click="unloadVillagesBounds">Unload Villages</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div><button class="olbtns" v-on:click="loadVillagesBoundsRef">Load Villages By District</button></div>
+                        <div><button class="olbtns">Load Marked Settlements In View N By District</button></div>
+                        <div>
                             <button class="olbtns">Unload Marked Settlements</button>
                         </div>
                     </div>
@@ -63,13 +61,15 @@ export default defineComponent({
 
         const districtsList = computed(() => store.getters.getDistrictsList);
         const districtref = ref('');
+        const loadedDistrict = ref('');
 
         const showToolBox = ref(false);
         const showbounds = ref(false);
 
         const loadVillagesBoundsRef = () => {
-            if(districtref.value != ''){
+            if(districtref.value != '' && loadedDistrict.value != districtref.value){
                 loadVillagesBounds(districtref.value);
+                loadedDistrict.value = districtref.value;
             }
         }
 

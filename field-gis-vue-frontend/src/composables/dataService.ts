@@ -6,7 +6,7 @@ const dataService = () => {
         const urlBase = store.getters.getURLBase;
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
-        console.log(urlBase, username, password);
+        // console.log(urlBase, username, password);
 
         const url = new URL('/geoserver/kgdc/ows', urlBase);
         url.searchParams.append('service', 'WFS');

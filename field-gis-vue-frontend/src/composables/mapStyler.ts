@@ -25,7 +25,7 @@ const mapStyler = () => {
     return [
       new Style({
         stroke: new Stroke({
-          color: 'white',
+          color: 'rgba(0,60,136,0.8)',
           width: 1,
         }),
         text: new Text({

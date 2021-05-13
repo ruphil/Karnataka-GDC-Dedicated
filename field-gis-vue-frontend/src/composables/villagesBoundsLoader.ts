@@ -15,17 +15,17 @@ const villagesBoundsLoader = () => {
     const app = getCurrentInstance()!;
 
     const loadVillagesBounds = (districtname: string) => {
-        if(app.appContext.config.globalProperties.$villagesBounds == null){
-            getJSONFeatures('kgdc:karnvillages', `kgisdist_1='${districtname}'`)
-            .then((jsonResponse: any)=>{
-                // console.log(jsonResponse.data);
-                let villagesGJ = jsonResponse.data;
-                setVillagesBounds(villagesGJ);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        }
+        unloadVillagesBounds();
+        
+        getJSONFeatures('kgdc:karnvillages', `kgisdist_1='${districtname}'`)
+        .then((jsonResponse: any)=>{
+            // console.log(jsonResponse.data);
+            let villagesGJ = jsonResponse.data;
+            setVillagesBounds(villagesGJ);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     const setVillagesBounds = (gj: any) => {
@@ -39,12 +39,6 @@ const villagesBoundsLoader = () => {
         });
 
         map.addLayer(villagesBounds);
-
-        map.setView(new View({
-            zoom: 7,
-            center: fromLonLat([76.56, 14.85]),
-            constrainResolution: true
-        }));
 
         app.appContext.config.globalProperties.$villagesBounds = villagesBounds;
     }
