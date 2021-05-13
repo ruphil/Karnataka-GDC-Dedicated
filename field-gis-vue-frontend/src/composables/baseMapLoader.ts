@@ -10,19 +10,8 @@ import {transformExtent} from 'ol/proj';
 const mapLoader = () => {
     const app = getCurrentInstance()!;
 
-    function transform(extent: any) {
-        return transformExtent(extent, 'EPSG:4326', 'EPSG:3857');
-    }
-
-    var extents = {
-        India: transform([68.17665, 7.96553, 97.40256, 35.49401]),
-        Argentina: transform([-73.41544, -55.25, -53.62835, -21.83231]),
-        Nigeria: transform([2.6917, 4.24059, 14.57718, 13.86592]),
-        Sweden: transform([11.02737, 55.36174, 23.90338, 69.10625]),
-    };
-
     const baseMapLayer = new TileLayer({
-        extent: extents.India,
+        extent: transformExtent([73.50, 11.00, 79, 19.00], 'EPSG:4326', 'EPSG:3857'),
         source: new XYZ({
             url: 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
         })
@@ -36,8 +25,8 @@ const mapLoader = () => {
         }));
 
         map.setView(new View({
-            zoom: 0,
-            center: fromLonLat([0, 0]),
+            zoom: 6,
+            center: fromLonLat([76.56, 14.85]),
             constrainResolution: true
         }));
     }

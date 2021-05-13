@@ -40,12 +40,6 @@ const karnBoundsLoader = () => {
 
         map.addLayer(karndistbounds);
 
-        map.setView(new View({
-            zoom: 7,
-            center: fromLonLat([76.56, 14.85]),
-            constrainResolution: true
-        }));
-
         app.appContext.config.globalProperties.$karndistbounds = karndistbounds;
     }
 
