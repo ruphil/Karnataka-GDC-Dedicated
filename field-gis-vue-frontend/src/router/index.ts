@@ -7,7 +7,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/markedsettlements',
-    component: () => import('../controllerviews/MarkedVillages.vue')
+    component: () => import('../controllerviews/MarkedSettlements.vue')
   },
   {
     path: '/missionplan',

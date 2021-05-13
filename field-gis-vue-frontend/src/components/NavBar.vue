@@ -1,7 +1,7 @@
 <template>
   <div id="navbarcontainer">
     <div class="navbar">
-      <span class="logo">
+      <span class="logo" v-on:click="router.push({path: '/'})">
         <img src="../assets/logo.png" width="20"/>
       </span>
       <span class="functioncategory">
@@ -30,6 +30,7 @@
 </template>
 
 <script lang="ts">
+import router from '@/router';
 import store from '@/store';
 import { defineComponent, ref, computed } from 'vue';
 
@@ -93,7 +94,7 @@ export default defineComponent({
       window.localStorage.removeItem('globalpassword');
     }
 
-    return { categoryInfo, isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, loginMsg, doLogin, doLogout }
+    return { router, categoryInfo, isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, loginMsg, doLogin, doLogout }
   },
 })
 </script>

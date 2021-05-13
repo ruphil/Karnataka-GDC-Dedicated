@@ -1,17 +1,18 @@
 <template>
-  <div id="blankhome">
-    Blank Home
-  </div>
+  <div id="blankhome"></div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import store from '@/store';
+import { defineComponent, onMounted } from 'vue'
 
 import './BlankHome.scss';
 
 export default defineComponent({
   setup() {
-    
+    onMounted(() => {
+      store.dispatch('setCategoryInfo', 'Home');
+    });
   },
 })
 </script>

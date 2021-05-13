@@ -45,7 +45,7 @@
 import store from '@/store';
 import { computed, defineComponent, onMounted, ref } from 'vue'
 
-import './MarkedVillages.scss';
+import './MarkedSettlements.scss';
 
 import karnBoundsLoader from '../composables/karnBoundsLoader';
 import villagesBoundsLoader from '../composables/villagesBoundsLoader';
