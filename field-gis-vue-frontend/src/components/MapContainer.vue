@@ -60,6 +60,8 @@ export default defineComponent({
                 controls: defaultControls().extend([mousePositionControl]),
             });
 
+            // map
+
             map.on('singleclick', function(event: any) {
                 let coordinate = event.coordinate;
                 map.forEachFeatureAtPixel(event.pixel, function(feature: any, layer: any) {

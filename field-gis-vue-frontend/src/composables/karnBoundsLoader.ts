@@ -36,7 +36,8 @@ const karnBoundsLoader = () => {
             source: new VectorSource({
                 features: new GeoJSON().readFeatures(gj)
             }),
-            style: districtStyleFunction
+            style: districtStyleFunction,
+            zIndex: 1
         });
 
         map.setLayerGroup(new LayerGroup({
