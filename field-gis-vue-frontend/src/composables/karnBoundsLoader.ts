@@ -30,7 +30,7 @@ const karnBoundsLoader = () => {
     }
 
     const setKarnBounds = (gj: any) => {
-        let map = app.appContext.config.globalProperties.$map;
+        const map = app.appContext.config.globalProperties.$map;
 
         let karndistbounds = new VectorLayer({
             source: new VectorSource({
@@ -53,7 +53,7 @@ const karnBoundsLoader = () => {
     }
 
     const unloadKarnBounds = () => {
-        let map = app.appContext.config.globalProperties.$map;
+        const map = app.appContext.config.globalProperties.$map;
 
         if(app.appContext.config.globalProperties.$karndistbounds != null){
             map.removeLayer(app.appContext.config.globalProperties.$karndistbounds);
