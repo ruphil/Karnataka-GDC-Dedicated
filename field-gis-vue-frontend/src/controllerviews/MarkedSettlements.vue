@@ -3,7 +3,7 @@
         <div class="toolcontainer">
             <button class="toggletoolbox" v-on:click="showToolBox = !showToolBox"><span class="material-icons-outlined" title="ToolBox">handyman</span></button>
             <div class="toolbox" v-show="showToolBox">
-                <span class="material-icons-outlined tool">file_upload</span>
+                <span class="material-icons-outlined tool" v-on:click="loadkml">file_upload</span>
                 <span class="material-icons-outlined tool">file_download</span>
             </div>
         </div>
@@ -71,7 +71,11 @@ export default defineComponent({
             }
         }
 
-        const return1 = { loadVillagesBoundsRef, districtsList, districtref, showToolBox, showbounds }
+        const loadkml = () => {
+            console.log(2);
+        }
+
+        const return1 = { loadVillagesBoundsRef, districtsList, districtref, showToolBox, showbounds, loadkml }
         
         return { ...return0, ...return1 }
     },
