@@ -10,15 +10,15 @@ import {transformExtent} from 'ol/proj';
 const mapLoader = () => {
     const app = getCurrentInstance()!;
 
-    const baseMapLayer = new TileLayer({
-        extent: transformExtent([73.50, 11.00, 79, 19.00], 'EPSG:4326', 'EPSG:3857'),
-        source: new XYZ({
-            url: 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
-        })
-    });
+    const loadBaseMap = () => {
+        const map = app.appContext.config.globalProperties.$map;
 
-    const initBaseMap = () => {
-        let map = app.appContext.config.globalProperties.$map;
+        const baseMapLayer = new TileLayer({
+            extent: transformExtent([73.50, 11.00, 79, 19.00], 'EPSG:4326', 'EPSG:3857'),
+            source: new XYZ({
+                url: 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
+            })
+        });
 
         map.setLayerGroup(new LayerGroup({
             layers: [ baseMapLayer ]
@@ -31,7 +31,7 @@ const mapLoader = () => {
         }));
     }
 
-    return { initBaseMap }
+    return { loadBaseMap }
 }
 
 export default mapLoader;

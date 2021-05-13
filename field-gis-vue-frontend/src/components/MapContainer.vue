@@ -18,7 +18,7 @@ import { createStringXY, toStringHDMS } from 'ol/coordinate';
 import MousePosition from 'ol/control/MousePosition';
 import {defaults as defaultControls} from 'ol/control';
 
-import baseMapLoader from '../composables/baseMapLoader';
+import karnBoundsLoader from '../composables/karnBoundsLoader';
 
 import 'ol/ol.css';
 import './MapContainer.scss';
@@ -27,7 +27,7 @@ import './MapContainer.scss';
 export default defineComponent({
     setup() {
         const app = getCurrentInstance()!;
-        const { initBaseMap } = baseMapLoader();
+        const { loadKarnBounds } = karnBoundsLoader();
 
         const mapref = ref();
         const popup = ref();
@@ -35,11 +35,10 @@ export default defineComponent({
         const latlon = ref();
 
         const resetMapLayers = () => {
-            app.appContext.config.globalProperties.$karndistbounds = null;
             app.appContext.config.globalProperties.$villagesBounds = null;
         }
 
-        const initBaseMapAfterElementLoaded = () => {
+        const loadKarnBoundaryAfterElementLoaded = () => {
             const overlay = new Overlay({
                 element: popup.value,
                 autoPan: true,
@@ -66,8 +65,6 @@ export default defineComponent({
                 map.forEachFeatureAtPixel(event.pixel, function(feature: any, layer: any) {
                     let attributes = feature.getProperties();
                     console.log(attributes);
-
-                    
                 });
 
                 overlay.setPosition(coordinate);
@@ -75,12 +72,12 @@ export default defineComponent({
 
             app.appContext.config.globalProperties.$map = map;
 
-            initBaseMap();
+            loadKarnBounds();
             resetMapLayers();
         }
 
         onMounted(() => {
-            initBaseMapAfterElementLoaded();
+            loadKarnBoundaryAfterElementLoaded();
         });
 
         return { mapref, popup, attributes, latlon }

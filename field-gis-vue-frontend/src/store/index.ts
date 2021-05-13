@@ -8,7 +8,7 @@ export default createStore({
     globaltoastmsg: '',
     globaltoastEl: null,
     isLoggedIn: false,
-    username: 'jack',
+    username: '',
     password: '',
   },
   getters: {

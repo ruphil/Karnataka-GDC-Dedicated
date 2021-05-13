@@ -7,6 +7,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import mapStyler from './mapStyler';
 import dataService from './dataService';
 import { getCurrentInstance } from '@vue/runtime-core';
+import LayerGroup from 'ol/layer/Group';
 
 const karnBoundsLoader = () => {
     const { districtStyleFunction } = mapStyler();
@@ -18,7 +19,7 @@ const karnBoundsLoader = () => {
         if(app.appContext.config.globalProperties.$karndistbounds == null){
             getJSONFeatures('kgdc:karndistbounds')
             .then((jsonResponse: any)=>{
-                // console.log(jsonResponse.data);
+                console.log(jsonResponse.data);
                 let karnGJ = jsonResponse.data;
                 setKarnBounds(karnGJ);
             })
@@ -38,7 +39,17 @@ const karnBoundsLoader = () => {
             style: districtStyleFunction
         });
 
-        map.addLayer(karndistbounds);
+        map.setLayerGroup(new LayerGroup({
+            layers: [ karndistbounds ]
+        }));
+
+        // map.addLayer(karndistbounds);
+
+        map.setView(new View({
+            zoom: 7,
+            center: fromLonLat([76.56, 14.85]),
+            constrainResolution: true
+        }));
 
         app.appContext.config.globalProperties.$karndistbounds = karndistbounds;
     }

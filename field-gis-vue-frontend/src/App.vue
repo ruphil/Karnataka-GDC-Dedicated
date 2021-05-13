@@ -1,6 +1,6 @@
 <template>
   <div id="approot">
-    <MapContainer />
+    <MapContainer v-if="userCredentialsLoaded"/>
     <NavBar />
     <LeftSideBar />
     <ControlsContainer />
@@ -30,6 +30,8 @@ export default defineComponent({
     const { showGlobalToast } = globalToast();
     const { doAuthentication } = userLoginCheck();
 
+    const userCredentialsLoaded = ref(false);
+
     const globaltoastmsg = computed(() => store.getters.getGlobalToastMsg);
     const globalToastEl = ref();
 
@@ -45,11 +47,14 @@ export default defineComponent({
       store.dispatch('setLoggedIn', true);
       store.dispatch('setGlobalUsename', window.localStorage.getItem('globalusername'));
       store.dispatch('setGlobalPassword', window.localStorage.getItem('globalpassword'));
+
+      userCredentialsLoaded.value = true;
     }
 
     const loadCredentials = () => {
       let globalusername = window.localStorage.getItem('globalusername');
       let globalpassword = window.localStorage.getItem('globalpassword');
+      console.log(globalusername, globalpassword);
 
       if(globalusername != undefined && globalpassword != undefined){
         doAuthentication(globalusername, globalpassword)
@@ -72,7 +77,7 @@ export default defineComponent({
       loadCredentials();
     });
 
-    return { globaltoastmsg, globalToastEl }
+    return { userCredentialsLoaded, globaltoastmsg, globalToastEl }
   },
 })
 </script>
