@@ -5,7 +5,7 @@
             <span class="soi"></span>
         </div>
         <div class="categoryitems">
-            <div class="category" title="Add Marked Villages" v-on:click="router.push({path: '/markedvillages'})">
+            <div class="category" title="Add Marked Settlements" v-on:click="router.push({path: '/markedsettlements'})">
                 <span class="icon"><span class="material-icons-outlined">add_location</span></span>
                 <span class="label" v-show="expanded">Add Marked Villages</span>
             </div>
