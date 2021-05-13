@@ -6,7 +6,7 @@
         </div>
         <div class="categoryitems">
             <div class="category" title="Add Marked Settlements" v-on:click="router.push({path: '/markedsettlements'})">
-                <span class="icon"><span class="material-icons-outlined">add_location</span></span>
+                <span class="icon"><span class="material-icons-outlined">draw</span></span>
                 <span class="label" v-show="expanded">Add Marked Villages</span>
             </div>
             <div class="category" title="Make Mission Plan" v-on:click="router.push({path: '/missionplan'});store.dispatch('setCategoryInfo', 'Make Mission Plan')">

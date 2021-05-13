@@ -9,7 +9,7 @@
         </div>
 
         <div class="boundscontainer">
-            <button class="togglebounds" v-on:click="showbounds = !showbounds"><span class="material-icons-outlined" title="Load Bounds">layers</span></button>
+            <button class="togglebounds" v-on:click="showbounds = !showbounds"><span class="material-icons-outlined" title="Manage Boundaries">fence</span></button>
             <div class="bounds" v-show="showbounds">
                 <div class="display-table">
                     <div>
