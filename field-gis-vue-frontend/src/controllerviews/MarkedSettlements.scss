@@ -83,11 +83,14 @@
 
                     > div {
                         display: table-cell;
+                        border: 1px solid #000;
                         vertical-align: middle;
                         padding: 0.2em;
                         
                         > button {
-                            font-size: 0.5em;
+                            > span {
+                                font-size: 0.8em;
+                            }
                         }
                     }
                 }

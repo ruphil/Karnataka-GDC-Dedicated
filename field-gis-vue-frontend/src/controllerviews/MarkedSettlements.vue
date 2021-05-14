@@ -33,24 +33,24 @@
                 </div><br>
                 <div class="display-table-features">
                     <div>
-                        <div>No</div>
-                        <div>Filename</div>
-                        <div>Geometry</div>
-                        <div>Attributes</div>
-                        <div>Edit Layer</div>
-                        <div>Edit Attributes</div>
-                        <div>Upload</div>
-                        <div>Discard</div>
+                        <div><b>No</b></div>
+                        <div><b>Filename</b></div>
+                        <div><b>Geometry</b></div>
+                        <div><b>Attributes</b></div>
+                        <div><b>Edit Layer</b></div>
+                        <div><b>Edit Attributes</b></div>
+                        <div><b>Upload</b></div>
+                        <div><b>Discard</b></div>
                     </div>
                     <div v-for="(lyr, index) in layers" v-bind:key="index">
-                        <div>{{ index }}</div>
+                        <div>{{ index + 1 }}</div>
                         <div>{{ lyr.filename }}</div>
                         <div>{{ lyr.validgeometry }}</div>
                         <div>{{ lyr.validattributes }}</div>
-                        <div><button>edit lyr</button></div>
-                        <div><button>edit atr</button></div>
-                        <div><button>Upload</button></div>
-                        <div><button>X</button></div>
+                        <div><button v-bind:lyrid="lyr.id" class="olbtns"><span class="material-icons-outlined">edit</span></button></div>
+                        <div><button v-bind:lyrid="lyr.id" class="olbtns"><span class="material-icons-outlined">edit_note</span></button></div>
+                        <div><button v-bind:lyrid="lyr.id" class="olbtns"><span class="material-icons-outlined">file_upload</span></button></div>
+                        <div><button v-bind:lyrid="lyr.id" class="olbtns"><span class="material-icons-outlined">delete_outline</span></button></div>
                     </div>
                 </div>
             </div>
