@@ -17,10 +17,7 @@ const kmlshpHanlder = () => {
     const loadkml = (file: any) => {
         const map = app.appContext.config.globalProperties.$map;
 
-        let fileFullname = file.name;
-        let lastDot = fileFullname.lastIndexOf('.');
-        let fileName = fileFullname.substring(0, lastDot);
-        let extension = fileFullname.substring(lastDot + 1);
+        let filename = file.name;
 
         let reader = new FileReader();
         reader.onload = function () {
@@ -49,6 +46,14 @@ const kmlshpHanlder = () => {
                 map.addLayer(kmllyr);
     
                 map.getView().fit(kmllyr.getSource().getExtent());
+
+                return {
+                    validgeometry: true,
+                    filename,
+                    validattributes: false,
+                    layer: kmllyr,
+                    attributes: {}
+                }
             }
         }
         reader.readAsText(file);
