@@ -30,14 +30,14 @@
                         <div><button class="olbtns">Add Layer</button><br><span>KML / Shapefile (*.zip)</span></div>
                     </div>
                 </div><br>
-                <div class="display-table-layers">
+                <div class="display-table-features">
                     <div>
                         <div>No</div>
                         <div>Filename</div>
-                        <div>Geometry Valid</div>
-                        <div>Attributes Valid</div>
+                        <div>Geometry</div>
+                        <div>Attributes</div>
                         <div>Edit Layer</div>
-                        <div>Add Attributes</div>
+                        <div>Edit Attributes</div>
                         <div>Upload</div>
                         <div>Discard</div>
                     </div>
@@ -74,7 +74,14 @@ export default defineComponent({
         const loadedDistrict = ref('');
 
         const showtools = ref(false);
+        
+        const currentid = ref(0);
         const layers = ref([{}]);
+        /* {
+            id,         filename, validgeometry,    validattributes,    layer,      attributes
+            generated,  returned, returned,         computed,           returned,   entered
+        }
+        */
 
         const loadVillagesBoundsRef = () => {
             if(districtref.value != '' && loadedDistrict.value != districtref.value){
