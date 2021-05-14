@@ -1,13 +1,72 @@
+import { getCurrentInstance } from '@vue/runtime-core';
+import globalToast from '../composables/globalToast';
+
+import KML from 'ol/format/KML';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+
 const kmlshpHanlder = () => {
-    const loadFile = (file: any) => {
-        let filename = file.name;
-        let type = file.type;
+    const app = getCurrentInstance()!;
+    const { showGlobalToast } = globalToast();
+
+    const loadshp = (file: any) => {
+        const map = app.appContext.config.globalProperties.$map;
+
+    }
+
+    const loadkml = (file: any) => {
+        const map = app.appContext.config.globalProperties.$map;
+
+        let fileFullname = file.name;
+        let lastDot = fileFullname.lastIndexOf('.');
+        let fileName = fileFullname.substring(0, lastDot);
+        let extension = fileFullname.substring(lastDot + 1);
+
         let reader = new FileReader();
         reader.onload = function () {
-            console.log(reader.result);
-            console.log(filename);
+            // console.log(reader.result);
+            // console.log(fileFullname, extension);
+
+            let kmlstring = reader.result!;
+            let kmlFeatures = new KML({
+                extractStyles: false
+            }).readFeatures(kmlstring, {
+                dataProjection: 'EPSG:4326',
+                featureProjection: 'EPSG:3857'
+            });
+    
+            let filteredkmlfeatures = kmlFeatures.filter((feat) => {
+                return feat.getGeometry()?.getType() == 'LineString';
+            });
+    
+            let kmllyr = new VectorLayer({
+                source: new VectorSource({
+                    features: filteredkmlfeatures
+                })
+            });
+    
+            if(kmllyr.getSource().getFeatures().length > 0){
+                map.addLayer(kmllyr);
+    
+                map.getView().fit(kmllyr.getSource().getExtent());
+            }
         }
-        reader.readAsText(file, type);
+        reader.readAsText(file);
+    }
+
+    const loadFile = (file: any) => {
+        let fileFullname = file.name;
+        let lastDot = fileFullname.lastIndexOf('.');
+        let extension = fileFullname.substring(lastDot + 1);
+
+        if (extension != 'kml' && extension != 'zip'){
+            showGlobalToast('Invalid File Selected...');
+            return { validgeometry: false }
+        } else if (extension == 'kml') {
+            loadkml(file);
+        } else if (extension == 'zip') {
+            loadshp(file);
+        }
     }
 
     return { loadFile }

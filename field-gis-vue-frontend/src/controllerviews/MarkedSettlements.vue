@@ -54,6 +54,7 @@ import { computed, defineComponent, onMounted, ref } from 'vue'
 
 import './MarkedSettlements.scss';
 
+import globalToast from '../composables/globalToast';
 import karnBoundsLoader from '../composables/karnBoundsLoader';
 import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
@@ -61,7 +62,7 @@ import kmlshpHanlder from '../composables/kmlshpHandler';
 
 export default defineComponent({
     setup() {
-
+        const { showGlobalToast } = globalToast();
         const { loadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
@@ -95,7 +96,10 @@ export default defineComponent({
 
         const sendFileElementToLoad = () => {
             let file = fileEl.value.files[0];
-            loadFile(file);
+            const data = loadFile(file);
+            if(data?.validgeometry == true){
+                console.log('got something');
+            }
         }
 
         onMounted(() => {
