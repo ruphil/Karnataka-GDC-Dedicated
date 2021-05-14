@@ -1,4 +1,21 @@
-    // const loadKML = (kmlstring: any) => {
+const kmlshpHanlder = () => {
+    const loadFile = (file: any) => {
+        let filename = file.name;
+        let type = file.type;
+        let reader = new FileReader();
+        reader.onload = function () {
+            console.log(reader.result);
+            console.log(filename);
+        }
+        reader.readAsText(file, type);
+    }
+
+    return { loadFile }
+}
+
+export default kmlshpHanlder;
+
+// const loadKML = (kmlstring: any) => {
     //     let map = app.appContext.config.globalProperties.$map;
 
     //     if(app.appContext.config.globalProperties.$kmllayer != null){

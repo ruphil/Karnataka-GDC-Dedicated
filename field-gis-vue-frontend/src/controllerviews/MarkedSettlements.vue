@@ -27,7 +27,8 @@
                     </div>
                     <div>
                         <div><button class="olbtns">Draw Layer</button></div>
-                        <div><button class="olbtns">Add Layer</button><br><span>KML / Shapefile (*.zip)</span></div>
+                        <div><button class="olbtns" onclick="document.getElementById('fileinput').click();">Add Layer</button><br><span>*.kml / *.zip (shapefile)</span></div>
+                        <input id="fileinput" type="file" style="display:none;" ref="fileEl"/>
                     </div>
                 </div><br>
                 <div class="display-table-features">
@@ -56,16 +57,15 @@ import './MarkedSettlements.scss';
 import karnBoundsLoader from '../composables/karnBoundsLoader';
 import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
+import kmlshpHanlder from '../composables/kmlshpHandler';
 
 export default defineComponent({
     setup() {
-        onMounted(() => {
-            store.dispatch('setCategoryInfo', 'Add Marked Villages');
-        });
 
         const { loadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
+        const { loadFile } = kmlshpHanlder();
 
         const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
 
@@ -75,6 +75,7 @@ export default defineComponent({
 
         const showtools = ref(false);
         
+        const fileEl = ref();
         const currentid = ref(0);
         const layers = ref([{}]);
         /* {
@@ -90,11 +91,17 @@ export default defineComponent({
             }
         }
 
-        const addlayer = () => {
-            console.log(2);
+        const return1 = { districtsList, districtref, fileEl, layers, loadVillagesBoundsRef, showtools }
+
+        const sendFileElementToLoad = () => {
+            let file = fileEl.value.files[0];
+            loadFile(file);
         }
 
-        const return1 = { loadVillagesBoundsRef, districtsList, districtref, showtools, addlayer }
+        onMounted(() => {
+            fileEl.value.addEventListener('change', sendFileElementToLoad);
+            store.dispatch('setCategoryInfo', 'Add Marked Villages');
+        });
         
         return { ...return0, ...return1 }
     },
