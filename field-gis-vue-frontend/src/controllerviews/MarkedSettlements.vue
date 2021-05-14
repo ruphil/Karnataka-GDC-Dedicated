@@ -48,7 +48,7 @@
                         <div>{{ lyr.filename }}</div>
                         <div>{{ lyr.validgeometry }}</div>
                         <div>{{ lyr.validattributes }}</div>
-                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">center_focus_weak</span></button></div>
+                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="invokeZoomToLayer">center_focus_weak</span></button></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit</span></button></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit_note</span></button></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
@@ -78,7 +78,7 @@ export default defineComponent({
         const { loadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
-        const { loadFilePromise, discardLayerFromMap } = kmlshpHanlder();
+        const { loadFilePromise, zoomToLayer, discardLayerFromMap } = kmlshpHanlder();
 
         const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
 
@@ -92,20 +92,19 @@ export default defineComponent({
         const currentID = ref(0);
         const layers = ref([]);
 
-        // interface layer {
-        //     id: string,
-        //     validgeometry: boolean,
-        //     filename: string,
-        //     validattributes: false,
-        //     layer: VectorLayer,
-        //     attributes: Object
-        // };
-
         const loadVillagesBoundsRef = () => {
             if(districtref.value != '' && loadedDistrict.value != districtref.value){
                 loadVillagesBounds(districtref.value);
                 loadedDistrict.value = districtref.value;
             }
+        }
+
+        const return1 = { districtsList, districtref, showtools, fileEl, layers, loadVillagesBoundsRef }
+
+        const invokeZoomToLayer = (e: any) => {
+            let lyrid = e.target.getAttribute('lyrid');
+
+            zoomToLayer(lyrid);
         }
 
         const discardLayer = (e: any) => {
@@ -123,7 +122,7 @@ export default defineComponent({
             });
         }
 
-        const return1 = { districtsList, districtref, fileEl, layers, loadVillagesBoundsRef, showtools, discardLayer }
+        const return2 = { invokeZoomToLayer, discardLayer }
 
         const sendFileElementToLoad = () => {
             let file = fileEl.value.files[0];
@@ -141,7 +140,7 @@ export default defineComponent({
             store.dispatch('setCategoryInfo', 'Add Marked Villages');
         });
         
-        return { ...return0, ...return1 }
+        return { ...return0, ...return1, ...return2 }
     },
 })
 </script>

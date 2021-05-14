@@ -50,8 +50,6 @@ const kmlshpHanlder = () => {
                     kmllyr.set('lyrid', uniqueID);
 
                     map.addLayer(kmllyr);
-        
-                    map.getView().fit(kmllyr.getSource().getExtent());
 
                     resolve({
                         id: uniqueID,
@@ -89,8 +87,19 @@ const kmlshpHanlder = () => {
         });
     }
 
+    const zoomToLayer = (lyrid: any) => {
+        const map = app.appContext.config.globalProperties.$map;
+        
+        try{
+            map.getLayers().forEach((lyr: any) => {
+                if (lyr.get('lyrid') == lyrid) {
+                    map.getView().fit(lyr.getSource().getExtent());
+                }
+            });
+        } catch (e) {}
+    }
+    
     const discardLayerFromMap = (lyrid: any) => {
-        console.log('camer hre');
         const map = app.appContext.config.globalProperties.$map;
         
         try{
@@ -102,7 +111,7 @@ const kmlshpHanlder = () => {
         } catch (e) {}
     }
 
-    return { loadFilePromise, discardLayerFromMap }
+    return { loadFilePromise, zoomToLayer, discardLayerFromMap }
 }
 
 export default kmlshpHanlder;
