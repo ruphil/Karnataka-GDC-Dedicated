@@ -142,7 +142,9 @@ const kmlshpHanlder = () => {
                     map.getView().fit(lyr.getSource().getExtent());
                 }
             });
-        } catch (e) {}
+        } catch (e) {
+            showGlobalToast('Processing Layer in Background... Please Try Again in Seconds...');
+        }
     }
 
     const discardLayerFromMap = (lyrid: any) => {
@@ -154,7 +156,9 @@ const kmlshpHanlder = () => {
                     map.removeLayer(lyr);
                 }
             });
-        } catch (e) {}
+        } catch (e) {
+            showGlobalToast('Processing Layer in Background... Please Try Again in Seconds...');
+        }
     }
 
     return { loadFilePromise, zoomToLayer, discardLayerFromMap }
