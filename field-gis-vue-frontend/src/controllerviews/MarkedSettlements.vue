@@ -37,6 +37,7 @@
                         <div><b>Filename</b></div>
                         <div><b>Geometry</b></div>
                         <div><b>Attributes</b></div>
+                        <div><b>Zoom</b></div>
                         <div><b>Edit Layer</b></div>
                         <div><b>Edit Attributes</b></div>
                         <div><b>Upload</b></div>
@@ -47,10 +48,11 @@
                         <div>{{ lyr.filename }}</div>
                         <div>{{ lyr.validgeometry }}</div>
                         <div>{{ lyr.validattributes }}</div>
-                        <div><button v-bind:lyrid="lyr.id" class="olbtns"><span class="material-icons-outlined">edit</span></button></div>
-                        <div><button v-bind:lyrid="lyr.id" class="olbtns"><span class="material-icons-outlined">edit_note</span></button></div>
-                        <div><button v-bind:lyrid="lyr.id" class="olbtns"><span class="material-icons-outlined">file_upload</span></button></div>
-                        <div><button v-bind:lyrid="lyr.id" class="olbtns"><span class="material-icons-outlined">delete_outline</span></button></div>
+                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">center_focus_weak</span></button></div>
+                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit</span></button></div>
+                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit_note</span></button></div>
+                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
+                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="discardLayer">delete_outline</span></button></div>
                     </div>
                 </div>
             </div>
@@ -76,7 +78,7 @@ export default defineComponent({
         const { loadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
-        const { loadFilePromise } = kmlshpHanlder();
+        const { loadFilePromise, discardLayerFromMap } = kmlshpHanlder();
 
         const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
 
@@ -87,6 +89,7 @@ export default defineComponent({
         const showtools = ref(false);
         
         const fileEl = ref();
+        const currentID = ref(0);
         const layers = ref([]);
 
         // interface layer {
@@ -105,21 +108,33 @@ export default defineComponent({
             }
         }
 
+        const discardLayer = (e: any) => {
+            let lyrid = e.target.getAttribute('lyrid');
+            // console.log(lyrid);
+
+            // let index = layers.value.findIndex(lyr => lyr['id'] == lyrid);
+            // let lyr = layers.value[index]['layer'];
+            // console.log(lyr);
+
+            discardLayerFromMap(lyrid);
+            
+            layers.value = layers.value.filter((lyr) => {
+                return lyr['id'] != lyrid;
+            });
+        }
+
+        const return1 = { districtsList, districtref, fileEl, layers, loadVillagesBoundsRef, showtools, discardLayer }
+
         const sendFileElementToLoad = () => {
             let file = fileEl.value.files[0];
             loadFilePromise(file)
             .then((data: any) => {
-                console.log(data);
+                // console.log(data);
                 if(data.validgeometry == true){
-                    console.log('got something');
                     layers.value = <never>[...layers.value, data];
                 }
             });
-            
-            console.log(layers.value);
         }
-
-        const return1 = { districtsList, districtref, fileEl, layers, loadVillagesBoundsRef, showtools }
 
         onMounted(() => {
             fileEl.value.addEventListener('change', sendFileElementToLoad);

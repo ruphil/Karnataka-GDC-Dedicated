@@ -46,12 +46,15 @@ const kmlshpHanlder = () => {
                 });
         
                 if(kmllyr.getSource().getFeatures().length > 0){
+                    let uniqueID = uuidv4();
+                    kmllyr.set('lyrid', uniqueID);
+
                     map.addLayer(kmllyr);
         
                     map.getView().fit(kmllyr.getSource().getExtent());
 
                     resolve({
-                        id: uuidv4(),
+                        id: uniqueID,
                         validgeometry: true,
                         filename,
                         validattributes: false,
@@ -86,7 +89,20 @@ const kmlshpHanlder = () => {
         });
     }
 
-     return { loadFilePromise }
+    const discardLayerFromMap = (lyrid: any) => {
+        console.log('camer hre');
+        const map = app.appContext.config.globalProperties.$map;
+        
+        try{
+            map.getLayers().forEach((lyr: any) => {
+                if (lyr.get('lyrid') == lyrid) {
+                    map.removeLayer(lyr);
+                }
+            });
+        } catch (e) {}
+    }
+
+    return { loadFilePromise, discardLayerFromMap }
 }
 
 export default kmlshpHanlder;
