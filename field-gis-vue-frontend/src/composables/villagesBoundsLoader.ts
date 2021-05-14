@@ -35,7 +35,8 @@ const villagesBoundsLoader = () => {
             source: new VectorSource({
                 features: new GeoJSON().readFeatures(gj)
             }),
-            style: villagesStyleFunction
+            style: villagesStyleFunction,
+            zIndex: 2
         });
 
         map.addLayer(villagesBounds);

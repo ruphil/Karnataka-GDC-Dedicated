@@ -1,7 +1,7 @@
 #markedvillages {
-    > .toolcontainer {
+    > .toolscontainer {
         position: fixed;
-        top: 9vh;
+        top: 8vh;
         right: 1em;
 
         pointer-events: auto;
@@ -9,7 +9,7 @@
         border-radius: 0.5em;
         padding: 0.2em;
 
-        > .toggletoolbox {
+        > .toggletools {
             display: block;
             margin: 1px;
             padding: 0;
@@ -36,81 +36,10 @@
             }
         }
 
-        > .toolbox {
+        > .tools {
             position: fixed;
-            top: 16vh;
-            right: 2vw;
-            background-color: rgba(200,200,200,0.5);
-            border-radius: 0.5em;
-
-            > .tool {
-                display: inline-block;
-                margin: 0.5em;
-                padding: 0.2em;
-                color: white;
-                font-size: 1.14em;
-                font-weight: bold;
-                text-decoration: none;
-                text-align: center;
-                line-height: 1em;
-                background-color: rgba(0,60,136,0.4);
-                border: none;
-                border-radius: 0.5em;
-                cursor: pointer;
-            
-                &:hover {
-                    background-color: rgba(225,60,136,0.7);
-                }
-    
-                &:active {
-                    color: rgba(0,60,136,0.7);
-                    background-color: white;
-                }
-            }
-        }
-    }
-
-    > .boundscontainer {
-        position: fixed;
-        bottom: 2vh;
-        right: 1em;
-
-        pointer-events: auto;
-        background-color: rgba(255,255,255,0.4);
-        border-radius: 0.5em;
-        padding: 0.2em;
-
-        > .togglebounds {
-            display: block;
-            margin: 1px;
-            padding: 0;
-            color: white;
-            font-size: 1.14em;
-            font-weight: bold;
-            text-decoration: none;
-            text-align: center;
-            height: 1.375em;
-            width: 1.375em;
-            line-height: .4em;
-            background-color: rgba(0,60,136,0.5);
-            border: none;
-            border-radius: 2px;
-            cursor: pointer;
-
-            &:hover {
-                background-color: rgba(0,60,136,0.7);
-            }
-
-            &:active {
-                color: rgba(0,60,136,0.7);
-                background-color: white;
-            }
-        }
-
-        > .bounds {
-            position: fixed;
-            bottom: 2vh;
-            right: 4em;
+            top: 15vh;
+            right: 1em;
             background-color: rgba(255,255,255,0.4);
             // width: 50vw;
             // height: 30vh;
