@@ -42,6 +42,16 @@
                         <div>Upload</div>
                         <div>Discard</div>
                     </div>
+                    <div v-for="(lyr, index) in layers" v-bind:key="index">
+                        <div>{{ index }}</div>
+                        <div>{{ lyr.filename }}</div>
+                        <div>{{ lyr.validgeometry }}</div>
+                        <div>{{ lyr.validattributes }}</div>
+                        <div><button>edit lyr</button></div>
+                        <div><button>edit atr</button></div>
+                        <div><button>Upload</button></div>
+                        <div><button>X</button></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -66,7 +76,7 @@ export default defineComponent({
         const { loadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
-        const { loadFile } = kmlshpHanlder();
+        const { loadFilePromise } = kmlshpHanlder();
 
         const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
 
@@ -77,13 +87,16 @@ export default defineComponent({
         const showtools = ref(false);
         
         const fileEl = ref();
-        const currentid = ref(0);
-        const layers = ref([{}]);
-        /* {
-            id,         filename, validgeometry,    validattributes,    layer,      attributes
-            generated,  returned, returned,         computed,           returned,   entered
-        }
-        */
+        const layers = ref([]);
+
+        // interface layer {
+        //     id: string,
+        //     validgeometry: boolean,
+        //     filename: string,
+        //     validattributes: false,
+        //     layer: VectorLayer,
+        //     attributes: Object
+        // };
 
         const loadVillagesBoundsRef = () => {
             if(districtref.value != '' && loadedDistrict.value != districtref.value){
@@ -92,15 +105,21 @@ export default defineComponent({
             }
         }
 
-        const return1 = { districtsList, districtref, fileEl, layers, loadVillagesBoundsRef, showtools }
-
         const sendFileElementToLoad = () => {
             let file = fileEl.value.files[0];
-            const data = loadFile(file);
-            if(data?.validgeometry == true){
-                console.log('got something');
-            }
+            loadFilePromise(file)
+            .then((data: any) => {
+                console.log(data);
+                if(data.validgeometry == true){
+                    console.log('got something');
+                    layers.value = <never>[...layers.value, data];
+                }
+            });
+            
+            console.log(layers.value);
         }
+
+        const return1 = { districtsList, districtref, fileEl, layers, loadVillagesBoundsRef, showtools }
 
         onMounted(() => {
             fileEl.value.addEventListener('change', sendFileElementToLoad);
