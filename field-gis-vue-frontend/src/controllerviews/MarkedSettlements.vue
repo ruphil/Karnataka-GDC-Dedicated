@@ -26,7 +26,7 @@
                         <div><button class="olbtns">Unload Marked Settlements</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns">Draw Layer</button></div>
+                        <div><button class="olbtns" v-on:click="drawALayer">Draw Layer</button></div>
                         <div><button class="olbtns" onclick="document.getElementById('fileinput').click();">Add Layer</button><br><span>*.kml / *.zip (shapefile)</span></div>
                         <input id="fileinput" type="file" style="display:none;" ref="fileEl"/>
                     </div>
@@ -71,6 +71,7 @@ import karnBoundsLoader from '../composables/karnBoundsLoader';
 import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
 import kmlshpHanlder from '../composables/kmlshpHandler';
+import drawingLayerManager from '../composables/drawingLayerManager';
 
 export default defineComponent({
     setup() {
@@ -79,6 +80,7 @@ export default defineComponent({
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
         const { loadFilePromise, zoomToLayer, discardLayerFromMap } = kmlshpHanlder();
+        const { drawNewLayer } = drawingLayerManager();
 
         const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
 
@@ -89,7 +91,7 @@ export default defineComponent({
         const showtools = ref(false);
         
         const fileEl = ref();
-        const currentID = ref(0);
+        const currentID = ref(1);
         const layers = ref([]);
 
         const loadVillagesBoundsRef = () => {
@@ -122,7 +124,12 @@ export default defineComponent({
             });
         }
 
-        const return2 = { invokeZoomToLayer, discardLayer }
+        const drawALayer = () => {
+            drawNewLayer(currentID.value);
+            currentID.value++;
+        }
+
+        const return2 = { invokeZoomToLayer, discardLayer, drawALayer }
 
         const sendFileElementToLoad = () => {
             let file = fileEl.value.files[0];
