@@ -3,7 +3,7 @@
         <div class="toolscontainer">
             <button class="toggletools" v-on:click="showtools = !showtools"><span class="material-icons-outlined" title="Tools">handyman</span></button>
             <div class="tools" v-show="showtools">
-                <div class="display-table">
+                <div class="display-table-tools">
                     <div>
                         <div><button class="olbtns" v-on:click="loadBaseMapToExtent">Load Basemap To Extent</button></div>
                         <div><button class="olbtns" v-on:click="unloadBaseMap">Unload BaseMap</button></div>  
@@ -23,8 +23,23 @@
                     </div>
                     <div>
                         <div><button class="olbtns">Load Marked Settlements In View N By District</button></div>
-                        
                         <div><button class="olbtns">Unload Marked Settlements</button></div>
+                    </div>
+                    <div>
+                        <div><button class="olbtns">Draw Layer</button></div>
+                        <div><button class="olbtns">Add Layer</button><br><span>KML / Shapefile (*.zip)</span></div>
+                    </div>
+                </div><br>
+                <div class="display-table-layers">
+                    <div>
+                        <div>No</div>
+                        <div>Filename</div>
+                        <div>Geometry Valid</div>
+                        <div>Attributes Valid</div>
+                        <div>Edit Layer</div>
+                        <div>Add Attributes</div>
+                        <div>Upload</div>
+                        <div>Discard</div>
                     </div>
                 </div>
             </div>
@@ -59,7 +74,7 @@ export default defineComponent({
         const loadedDistrict = ref('');
 
         const showtools = ref(false);
-        const showbounds = ref(false);
+        const layers = ref([{}]);
 
         const loadVillagesBoundsRef = () => {
             if(districtref.value != '' && loadedDistrict.value != districtref.value){
@@ -68,11 +83,11 @@ export default defineComponent({
             }
         }
 
-        const loadkml = () => {
+        const addlayer = () => {
             console.log(2);
         }
 
-        const return1 = { loadVillagesBoundsRef, districtsList, districtref, showtools, loadkml }
+        const return1 = { loadVillagesBoundsRef, districtsList, districtref, showtools, addlayer }
         
         return { ...return0, ...return1 }
     },

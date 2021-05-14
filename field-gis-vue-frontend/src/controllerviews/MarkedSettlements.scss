@@ -46,12 +46,36 @@
             padding: 0.2em;
             border-radius: 0.2em;
 
-            > .display-table {
+            > .display-table-tools {
+                display: table;
+                background-color: rgba(0,60,136,0.1);
+                text-align: center;
+                height: 100%;
+                float: right;
+
+                > div {
+                    display: table-row;
+
+                    > div {
+                        display: table-cell;
+                        vertical-align: middle;
+                        padding: 0.2em;
+                        // font-size: 0.8em;
+                        
+                        > button, span {
+                            font-size: 0.5em;
+                        }
+                    }
+                }
+            }
+
+            .display-table-layers {
                 display: table;
                 background-color: rgba(0,60,136,0.1);
                 text-align: center;
                 height: 100%;
                 border-collapse: collapse;
+                font-size: 0.5em;
 
                 > div {
                     display: table-row;
