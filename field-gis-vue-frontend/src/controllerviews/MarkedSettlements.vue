@@ -35,7 +35,7 @@
                     <div>
                         <div><b>No</b></div>
                         <div><b>Filename</b></div>
-                        <div><b>Geometry</b></div>
+                        <div><b>Valid Attributes</b></div>
                         <div><b>Zoom</b></div>
                         <div><b>Edit Attributes</b></div>
                         <div><b>Upload</b></div>
@@ -105,16 +105,12 @@ export default defineComponent({
 
         const discardLayer = (e: any) => {
             let lyrid = e.target.getAttribute('lyrid');
-            // console.log(lyrid);
 
-            // let index = layers.value.findIndex(lyr => lyr['id'] == lyrid);
-            // let lyr = layers.value[index]['layer'];
-            // console.log(lyr);
-
-            discardLayerFromMap(lyrid);
-            
-            layers.value = layers.value.filter((lyr) => {
-                return lyr['id'] != lyrid;
+            discardLayerFromMap(lyrid)
+            .then(() => {
+                layers.value = layers.value.filter((lyr) => {
+                    return lyr['id'] != lyrid;
+                });
             });
         }
 

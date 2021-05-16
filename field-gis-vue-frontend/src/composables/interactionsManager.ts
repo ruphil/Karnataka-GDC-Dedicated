@@ -49,7 +49,6 @@ const interactionsManager = () => {
           validgeometry: true,
           filename: lyrname,
           validattributes: false,
-          layer: vectorlyr,
           attributes: {}
         }
         
