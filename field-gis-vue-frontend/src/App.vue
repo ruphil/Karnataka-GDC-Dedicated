@@ -2,7 +2,7 @@
   <div id="approot">
     <MapContainer v-if="userCredentialsLoaded"/>
     <NavBar />
-    <LeftSideBar />
+    <LeftSideBar v-if="karnboundsLoaded"/>
     <ControlsContainer v-if="karnboundsLoaded"/>
     <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
   </div>

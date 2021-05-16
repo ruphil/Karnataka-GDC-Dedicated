@@ -12,6 +12,9 @@ const globalFunctions = () => {
             try{
                 map.getLayers().forEach((lyr: any) => {
                     if (lyr.get('lyrid') == lyrid) {
+                        let source = lyr.getSource();
+                        source.clear();
+                        
                         map.removeLayer(lyr);
                     }
                 });
