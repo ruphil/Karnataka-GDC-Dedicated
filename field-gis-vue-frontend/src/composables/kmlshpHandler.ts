@@ -149,6 +149,7 @@ const kmlshpHanlder = () => {
 
     const discardLayerFromMap = (lyrid: any) => {
         const map = app.appContext.config.globalProperties.$map;
+        console.log(map.getInteractions());
         
         try{
             map.getLayers().forEach((lyr: any) => {
@@ -165,32 +166,3 @@ const kmlshpHanlder = () => {
 }
 
 export default kmlshpHanlder;
-
-    // const loadSHP = (geojson: any) => {
-    //     let map = app.appContext.config.globalProperties.$map;
-
-    //     if(app.appContext.config.globalProperties.$shplayer != null){
-    //         map.removeLayer(app.appContext.config.globalProperties.$shplayer);
-    //     }
-
-    //     let kmllayer = app.appContext.config.globalProperties.$kmllayer;
-    //     let kmlextent = kmllayer.getSource().getExtent();
-
-    //     let shpvectorsource = new VectorSource({
-    //         features: new GeoJSON({
-    //             dataProjection: 'EPSG:4326',
-    //             featureProjection: 'EPSG:3857'
-    //         }).readFeatures(geojson),
-    //     });
-
-    //     let shapefeatures = shpvectorsource.getFeaturesInExtent(kmlextent);
-
-    //     if(shapefeatures.length > 0){
-    //         let shplyr = new VectorLayer({
-    //             source: new VectorSource({
-    //                 features: shapefeatures,
-    //             })
-    //         });
-
-    //         map.addLayer(shplyr);
-    //         app.appContext.config.globalProperties.$shplayer = shplyr;

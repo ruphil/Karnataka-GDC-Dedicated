@@ -71,7 +71,7 @@ import karnBoundsLoader from '../composables/karnBoundsLoader';
 import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
 import kmlshpHanlder from '../composables/kmlshpHandler';
-import drawingLayerManager from '../composables/drawingLayerManager';
+import interactionsManager from '../composables/interactionsManager';
 
 export default defineComponent({
     setup() {
@@ -80,7 +80,7 @@ export default defineComponent({
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
         const { loadFilePromise, zoomToLayer, discardLayerFromMap } = kmlshpHanlder();
-        const { drawNewLayer } = drawingLayerManager();
+        const { drawNewLayer } = interactionsManager();
 
         const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
 
@@ -125,7 +125,10 @@ export default defineComponent({
         }
 
         const drawALayer = () => {
-            drawNewLayer(currentID.value);
+            let data = drawNewLayer(currentID.value);
+            if(data.validgeometry == true){
+                layers.value = <never>[...layers.value, data];
+            }
             currentID.value++;
         }
 
