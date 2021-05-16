@@ -62,7 +62,6 @@ import { computed, defineComponent, onMounted, ref } from 'vue'
 
 import './MarkedSettlements.scss';
 
-import globalToast from '../composables/globalToast';
 import karnBoundsLoader from '../composables/karnBoundsLoader';
 import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
@@ -71,7 +70,6 @@ import interactionsManager from '../composables/interactionsManager';
 
 export default defineComponent({
     setup() {
-        const { showGlobalToast } = globalToast();
         const { loadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
