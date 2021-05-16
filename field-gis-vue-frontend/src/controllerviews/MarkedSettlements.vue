@@ -47,7 +47,7 @@
                         <div>{{ lyr.filename }}</div>
                         <div>{{ lyr.validattributes }}</div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="invokeZoomToLayer">center_focus_weak</span></button></div>
-                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit_note</span></button></div>
+                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="editAttributes">edit_note</span></button></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="discardLayer">delete_outline</span></button></div>
                         <div>-</div>
@@ -129,7 +129,7 @@ import karnBoundsLoader from '../composables/karnBoundsLoader';
 import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
 import kmlshpHanlder from '../composables/kmlshpHandler';
-import interactionsManager from '../composables/interactionsManager';
+import drawFeaturesManager from '../composables/drawFeaturesManager';
 import globalFunctions from '../composables/globalFunctions';
 
 export default defineComponent({
@@ -138,7 +138,7 @@ export default defineComponent({
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
         const { loadFilePromise, zoomToLayer } = kmlshpHanlder();
-        const { drawNewLayer } = interactionsManager();
+        const { drawNewLayer } = drawFeaturesManager();
         const { discardLayerFromMap } = globalFunctions();
 
         const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
@@ -192,10 +192,10 @@ export default defineComponent({
         const sendFileElementToLoad = () => {
             let file = fileEl.value.files[0];
             loadFilePromise(file)
-            .then((data: any) => {
+            .then((featuredata: any) => {
                 // console.log(data);
-                if(data.validgeometry == true){
-                    layers.value = <never>[...layers.value, data];
+                if(featuredata.validgeometry == true){
+                    layers.value = <never>[...layers.value, featuredata];
                 }
             });
         }
@@ -205,13 +205,15 @@ export default defineComponent({
             store.dispatch('setCategoryInfo', 'Add Marked Villages');
         });
 
+        const currentFeatureID = ref('');
+
         const lgdcode                     = ref('');
         const hamletname                  = ref('');
-        const noofproperties              = ref('');
-        const startdate                   = ref('');
-        const enddate                     = ref('');
+        const noofproperties              = ref(0);
+        const startdate                   = ref();
+        const enddate                     = ref();
         const villagename                 = ref('');
-        const pocketscount                = ref('');
+        const pocketscount                = ref(0);
         const grampanchayat               = ref('');
         const hobli                       = ref('');
         const taluk                       = ref('');
@@ -219,17 +221,55 @@ export default defineComponent({
 
         const return3 = { lgdcode, hamletname, noofproperties, startdate, enddate, villagename, pocketscount, grampanchayat, hobli, taluk, userattributedistrictref };
         
-        const showUserAttributesTable = ref(true);
+        const showUserAttributesTable = ref(false);
 
-        const return4 = { showUserAttributesTable };
-        
-        const editAttributes = () => {
+        const editAttributes = (e: any) => {
+            let lyrid = e.target.getAttribute('lyrid');
+            // console.log(lyrid);
+            currentFeatureID.value = lyrid;
+
+            let reqdlayer: any = layers.value.find((lyr) => {
+                return lyr['id'] == lyrid;
+            });
+
+            let attributes = reqdlayer.attributes;
+            // console.log(reqdlayer, attributes);
+
+            if (typeof attributes === 'object'){
+                if ('lgdcode'                   in attributes) lgdcode.value                    = attributes['lgdcode'];
+                if ('hamletname'                in attributes) hamletname.value                 = attributes['hamletname'];
+                if ('noofproperties'            in attributes) noofproperties.value             = attributes['noofproperties'];
+                if ('startdate'                 in attributes) startdate.value                  = attributes['startdate'];
+                if ('enddate'                   in attributes) enddate.value                    = attributes['enddate'];
+                if ('villagename'               in attributes) villagename.value                = attributes['villagename'];
+                if ('pocketscount'              in attributes) pocketscount.value               = attributes['pocketscount'];
+                if ('grampanchayat'             in attributes) grampanchayat.value              = attributes['grampanchayat'];
+                if ('hobli'                     in attributes) hobli.value                      = attributes['hobli'];
+                if ('taluk'                     in attributes) taluk.value                      = attributes['taluk'];
+                if ('userattributedistrictref'  in attributes) userattributedistrictref.value   = attributes['userattributedistrictref'];
             
+                showUserAttributesTable.value = true;
+            }
         }
 
         const updateAttributes = () => {
+            const attributes = {
+                'lgdcode'                   :   lgdcode.value                   ,   
+                'hamletname'                :   hamletname.value                ,
+                'noofproperties'            :   noofproperties.value            ,
+                'startdate'                 :   startdate.value                 ,
+                'enddate'                   :   enddate.value                   ,
+                'villagename'               :   villagename.value               , 
+                'pocketscount'              :   pocketscount.value              , 
+                'grampanchayat'             :   grampanchayat.value             , 
+                'hobli'                     :   hobli.value                     , 
+                'taluk'                     :   taluk.value                     , 
+                'userattributedistrictref'  :   userattributedistrictref.value
+            }
             
         }
+
+        const return4 = { showUserAttributesTable, editAttributes, updateAttributes };
 
         return { ...return0, ...return1, ...return2, ...return3, ...return4 }
     },
