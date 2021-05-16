@@ -45,9 +45,9 @@ export default defineComponent({
         const attributesData = computed(() => store.getters.getAttributesData);
         const showAttributesTable = ref(false);
 
-        const resetMapLayers = () => {
-            app.appContext.config.globalProperties.$villagesBounds = null;
-        }
+        // const resetMapLayers = () => {
+        //     app.appContext.config.globalProperties.$villagesBounds = null;
+        // }
 
         const loadKarnBoundaryAfterElementLoaded = () => {
             const overlay = new Overlay({
@@ -78,14 +78,18 @@ export default defineComponent({
                     let attributesData = { ...feature.getProperties() };
                     delete attributesData['geometry'];
 
-                    store.dispatch('setAttributesData', attributesData);
+                    try {
+                        if(layer.get('loadedfromgeoserver') == 'yes'){
+                            store.dispatch('setAttributesData', attributesData);
+                        }
+                    } catch (e) {}
                 });
             });
 
             app.appContext.config.globalProperties.$map = map;
 
             loadKarnBounds();
-            resetMapLayers();
+            // resetMapLayers();
         }
 
         onMounted(() => {

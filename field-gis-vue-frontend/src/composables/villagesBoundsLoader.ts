@@ -39,6 +39,8 @@ const villagesBoundsLoader = () => {
             zIndex: 2
         });
 
+        villagesBounds.set('loadedfromgeoserver', 'yes');
+
         map.addLayer(villagesBounds);
 
         app.appContext.config.globalProperties.$villagesBounds = villagesBounds;

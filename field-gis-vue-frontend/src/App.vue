@@ -3,7 +3,7 @@
     <MapContainer v-if="userCredentialsLoaded"/>
     <NavBar />
     <LeftSideBar />
-    <ControlsContainer />
+    <ControlsContainer v-if="karnboundsLoaded"/>
     <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
   </div>
 </template>
@@ -34,6 +34,8 @@ export default defineComponent({
 
     const globaltoastmsg = computed(() => store.getters.getGlobalToastMsg);
     const globalToastEl = ref();
+
+    const karnboundsLoaded = computed(() => store.getters.getKarnBoundsLoaded);
 
     const setTitle = () => {
       document.title = 'KGDC GIS';
@@ -77,7 +79,7 @@ export default defineComponent({
       loadCredentials();
     });
 
-    return { userCredentialsLoaded, globaltoastmsg, globalToastEl }
+    return { userCredentialsLoaded, globaltoastmsg, globalToastEl, karnboundsLoaded }
   },
 })
 </script>

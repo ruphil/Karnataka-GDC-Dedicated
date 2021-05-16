@@ -8,6 +8,7 @@ import mapStyler from './mapStyler';
 import dataService from './dataService';
 import { getCurrentInstance } from '@vue/runtime-core';
 import LayerGroup from 'ol/layer/Group';
+import store from '@/store';
 
 const karnBoundsLoader = () => {
     const { districtStyleFunction } = mapStyler();
@@ -40,6 +41,8 @@ const karnBoundsLoader = () => {
             zIndex: 1
         });
 
+        karndistbounds.set('loadedfromgeoserver', 'yes');
+
         map.setLayerGroup(new LayerGroup({
             layers: [ karndistbounds ]
         }));
@@ -51,6 +54,7 @@ const karnBoundsLoader = () => {
         }));
 
         app.appContext.config.globalProperties.$karndistbounds = karndistbounds;
+        store.dispatch('setKarnBoundsLoaded', true);
     }
 
     const unloadKarnBounds = () => {

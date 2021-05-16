@@ -10,7 +10,8 @@ export default createStore({
     isLoggedIn: false,
     username: '',
     password: '',
-    attributesData: []
+    attributesData: [],
+    karnboundsLoaded: false,
   },
   getters: {
     getURLBase(state){
@@ -39,6 +40,9 @@ export default createStore({
     },
     getAttributesData(state){
       return state.attributesData
+    },
+    getKarnBoundsLoaded(state){
+      return state.karnboundsLoaded
     }
   },
   mutations: {
@@ -63,6 +67,9 @@ export default createStore({
     setAttributesData(state, attributesData){
       state.attributesData = attributesData;
     },
+    setKarnBoundsLoaded(state, karnboundsLoaded){
+      state.karnboundsLoaded = karnboundsLoaded;
+    },
   },
   actions: {
     setCategoryInfo(context, info){
@@ -85,6 +92,9 @@ export default createStore({
     },
     setAttributesData(context, attributesData){
       context.commit('setAttributesData', attributesData);
+    },
+    setKarnBoundsLoaded(context, karnboundsLoaded){
+      context.commit('setKarnBoundsLoaded', karnboundsLoaded);
     },
   },
   modules: {
