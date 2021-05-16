@@ -59,40 +59,54 @@
             
             <div class="userattributestable">
                 <div>
-                    <div>jack</div>
-                    <div>pack</div>
+                    <div>LGD Code</div>
+                    <div><input type="text" ref="lgdcode"></div>
                 </div>
                 <div>
-                    <div>jack</div>
-                    <div>pack</div>
+                    <div>Hamlet Name</div>
+                    <div><input type="text" ref="hamletname"></div>
                 </div>
                 <div>
-                    <div>jack</div>
-                    <div>pack</div>
+                    <div>No. of Properties / Houses</div>
+                    <div><input type="text" ref="noofproperties"></div>
                 </div>
                 <div>
-                    <div>jack</div>
-                    <div>pack</div>
+                    <div>Date of Commencement of Marking</div>
+                    <div><input type="date" ref="startdate"></div>
                 </div>
                 <div>
-                    <div>jack</div>
-                    <div>pack</div>
+                    <div>Date of Completion of Marking</div>
+                    <div><input type="date" ref="enddate"></div>
                 </div>
                 <div>
-                    <div>jack</div>
-                    <div>pack</div>
+                    <div>Village Name</div>
+                    <div><input type="text" ref="villagename"></div>
                 </div>
                 <div>
-                    <div>jack</div>
-                    <div>pack</div>
+                    <div>
+                        <span>Total Number of Pockets in Village</span><br> 
+                        <span style="font-size:0.5em;">Hamlets + Main Village Settlements Count</span>
+                    </div>
+                    <div><input type="number" ref="pocketscount"></div>
                 </div>
                 <div>
-                    <div>jack</div>
-                    <div>pack</div>
+                    <div>Gram Panchayat</div>
+                    <div><input type="text" ref="grampanchayat"></div>
                 </div>
                 <div>
-                    <div>jack</div>
-                    <div>pack</div>
+                    <div>Hobli</div>
+                    <div><input type="text" ref="hobli"></div>
+                </div>
+                <div>
+                    <div>Taluk</div>
+                    <div><input type="text" ref="taluk"></div>
+                </div>
+                <div>
+                    <div>District</div>
+                    <select v-model="userattributedistrictref">
+                        <option disabled value="">Select District</option>
+                        <option v-for="(district, index) in districtsList" v-bind:key="index">{{ district }}</option>
+                    </select>
                 </div>
                 <div>
                     <div><button class="userattributesclose" v-on:click="updateUserAttributes">Update Attributes</button></div>
@@ -193,6 +207,17 @@ export default defineComponent({
 
         const showUserAttributesTable = ref(true);
 
+        const lgdcode                     = ref('')
+        const hamletname                  = ref('')
+        const noofproperties              = ref('')
+        const startdate                   = ref('')
+        const enddate                     = ref('')
+        const villagename                 = ref('')
+        const pocketscount                = ref('')
+        const grampanchayat               = ref('')
+        const hobli                       = ref('')
+        const taluk                       = ref('')
+        const userattributedistrictref    = ref('')
 
         const return3 = { showUserAttributesTable };
         
