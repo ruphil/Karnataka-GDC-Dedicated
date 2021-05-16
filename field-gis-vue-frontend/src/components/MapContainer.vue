@@ -1,18 +1,26 @@
 <template>
     <div id="mapcontainer">
         <div ref="mapref" class="mapview"></div>
-        <div class="attributespopup" ref="popup">
-            <button>X</button>
+        <div class="attributestogglecontainer" v-show="!showAttributesTable">
+            <button class="toggleattributes" v-on:click="showAttributesTable = !showAttributesTable">
+                <span class="material-icons-outlined">description</span>
+            </button>
+        </div>
+        <div class="attributeswindow" v-show="showAttributesTable">
             <div class="attributestable">
-                jack
+                <div class="attributesrow" v-for="(value, name, index) in attributesData" v-bind:key="index">
+                    <div class="key">{{ name }}</div>
+                    <div class="value">{{ value }}</div>
+                </div>
             </div>
+            <button class="closeattributeswindow" v-on:click="showAttributesTable = !showAttributesTable"><span class="material-icons-outlined">close</span></button>
         </div>
         <div class="latlon" ref="latlon"></div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, onMounted, ref } from 'vue';
+import { computed, defineComponent, getCurrentInstance, onMounted, ref } from 'vue';
 import { Map, Overlay } from 'ol';
 import { createStringXY, toStringHDMS } from 'ol/coordinate';
 import MousePosition from 'ol/control/MousePosition';
@@ -22,6 +30,7 @@ import karnBoundsLoader from '../composables/karnBoundsLoader';
 
 import 'ol/ol.css';
 import './MapContainer.scss';
+import store from '@/store';
 
 
 export default defineComponent({
@@ -31,8 +40,10 @@ export default defineComponent({
 
         const mapref = ref();
         const popup = ref();
-        const attributes = ref([]);
         const latlon = ref();
+
+        const attributesData = computed(() => store.getters.getAttributesData);
+        const showAttributesTable = ref(false);
 
         const resetMapLayers = () => {
             app.appContext.config.globalProperties.$villagesBounds = null;
@@ -62,14 +73,13 @@ export default defineComponent({
 
             // map
 
-            map.on('singleclick', function(event: any) {
-                let coordinate = event.coordinate;
+            map.on('click', function(event: any) {
                 map.forEachFeatureAtPixel(event.pixel, function(feature: any, layer: any) {
-                    let attributes = feature.getProperties();
-                    console.log(attributes);
-                });
+                    let attributesData = { 'layername': layer.get('name'), ...feature.getProperties() };
+                    delete attributesData['geometry'];
 
-                overlay.setPosition(coordinate);
+                    store.dispatch('setAttributesData', attributesData);
+                });
             });
 
             app.appContext.config.globalProperties.$map = map;
@@ -82,7 +92,7 @@ export default defineComponent({
             loadKarnBoundaryAfterElementLoaded();
         });
 
-        return { mapref, popup, attributes, latlon }
+        return { mapref, popup, attributesData, showAttributesTable, latlon }
     },
 })
 </script>

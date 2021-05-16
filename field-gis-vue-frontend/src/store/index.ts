@@ -9,7 +9,8 @@ export default createStore({
     globaltoastEl: null,
     isLoggedIn: false,
     username: '',
-    password: ''
+    password: '',
+    attributesData: []
   },
   getters: {
     getURLBase(state){
@@ -36,6 +37,9 @@ export default createStore({
     getPassword(state){
       return state.password;
     },
+    getAttributesData(state){
+      return state.attributesData
+    }
   },
   mutations: {
     setCategoryInfo(state, info){
@@ -56,6 +60,9 @@ export default createStore({
     setGlobalPassword(state, password){
       state.password = password;
     },
+    setAttributesData(state, attributesData){
+      state.attributesData = attributesData;
+    },
   },
   actions: {
     setCategoryInfo(context, info){
@@ -75,6 +82,9 @@ export default createStore({
     },
     setGlobalPassword(context, password){
       context.commit('setGlobalPassword', password);
+    },
+    setAttributesData(context, attributesData){
+      context.commit('setAttributesData', attributesData);
     },
   },
   modules: {

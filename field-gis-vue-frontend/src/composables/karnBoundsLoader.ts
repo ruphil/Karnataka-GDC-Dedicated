@@ -40,6 +40,8 @@ const karnBoundsLoader = () => {
             zIndex: 1
         });
 
+        karndistbounds.set('name', 'Karnataka District Boundary');
+
         map.setLayerGroup(new LayerGroup({
             layers: [ karndistbounds ]
         }));
