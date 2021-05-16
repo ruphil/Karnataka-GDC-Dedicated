@@ -34,6 +34,10 @@ const interactionsManager = () => {
         draw.on('drawstart', () => {
           source.clear();
         });
+
+        draw.on('drawend', () => {
+          map.removeInteraction(draw);
+        });
         
         map.addInteraction(draw);
 

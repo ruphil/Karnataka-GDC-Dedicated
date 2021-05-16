@@ -38,7 +38,7 @@
                         <div><b>Geometry</b></div>
                         <div><b>Attributes</b></div>
                         <div><b>Zoom</b></div>
-                        <div><b>Edit Layer</b></div>
+                        <!-- <div><b>Edit Layer</b></div> -->
                         <div><b>Edit Attributes</b></div>
                         <div><b>Upload</b></div>
                         <div><b>Discard</b></div>
@@ -49,7 +49,7 @@
                         <div>{{ lyr.validgeometry }}</div>
                         <div>{{ lyr.validattributes }}</div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="invokeZoomToLayer">center_focus_weak</span></button></div>
-                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit</span></button></div>
+                        <!-- <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit</span></button></div> -->
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit_note</span></button></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="discardLayer">delete_outline</span></button></div>
