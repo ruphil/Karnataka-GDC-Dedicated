@@ -45,7 +45,7 @@
                     <div v-for="(lyr, index) in layers" v-bind:key="index">
                         <div>{{ index + 1 }}</div>
                         <div>{{ lyr.filename }}</div>
-                        <div>{{ lyr.validattributes }}</div>
+                        <div v-html="whetherAttributesValidComputed(lyr.id)"></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="invokeZoomToLayer">center_focus_weak</span></button></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="editAttributes">edit_note</span></button></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
@@ -131,6 +131,7 @@ import baseMapLoader from '../composables/baseMapLoader';
 import kmlshpHanlder from '../composables/kmlshpHandler';
 import drawFeaturesManager from '../composables/drawFeaturesManager';
 import globalFunctions from '../composables/globalFunctions';
+import globalToast from '../composables/globalToast';
 
 export default defineComponent({
     setup() {
@@ -140,6 +141,7 @@ export default defineComponent({
         const { loadFilePromise, zoomToLayer } = kmlshpHanlder();
         const { drawNewLayer } = drawFeaturesManager();
         const { discardLayerFromMap } = globalFunctions();
+        const { showGlobalToast } = globalToast();
 
         const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
 
@@ -275,10 +277,45 @@ export default defineComponent({
             });
             
             reqdlayer.attributes = attributes;
-            console.log('updatd')
+
+            showGlobalToast('Attributes Updated...');
         }
 
-        const return4 = { showUserAttributesTable, editAttributes, updateUserAttributes };
+        const checkAttributesForLyrID = (lyrid: any) => {
+            let reqdlayer: any = layers.value.find((lyr) => {
+                    return lyr['id'] == lyrid;
+                });
+
+                let attributes = reqdlayer.attributes;
+
+                let conds = [];
+                conds.push( attributes['lgdcode']                   !=  ''  );
+                conds.push( attributes['hamletname']                !=  ''  );
+                conds.push( attributes['noofproperties']            !=  0   );
+                // conds.push( attributes['startdate']                 ==  ''  );
+                // conds.push( attributes['enddate']                   ==  ''  );
+                conds.push( attributes['villagename']               !=  ''  );
+                conds.push( attributes['pocketscount']              !=  0   );
+                conds.push( attributes['grampanchayat']             !=  ''  );
+                conds.push( attributes['hobli']                     !=  ''  );
+                conds.push( attributes['taluk']                     !=  ''  ); 
+                conds.push( attributes['userattributedistrictref']  !=  ''  ); 
+
+                return conds.every(Boolean);
+        }
+
+        const whetherAttributesValidComputed = computed(() => {
+            return (lyrid: any) => {
+                let whetherValid = checkAttributesForLyrID(lyrid);
+                if(whetherValid){
+                    return '<span style="color:green;">OK</span>';
+                } else {
+                    return '<span style="color:red;">Not OK</span>';
+                }
+            }
+        });
+
+        const return4 = { showUserAttributesTable, editAttributes, updateUserAttributes, whetherAttributesValidComputed };
 
         return { ...return0, ...return1, ...return2, ...return3, ...return4 }
     },
