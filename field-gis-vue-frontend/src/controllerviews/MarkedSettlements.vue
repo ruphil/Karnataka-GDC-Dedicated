@@ -67,14 +67,16 @@ import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
 import kmlshpHanlder from '../composables/kmlshpHandler';
 import interactionsManager from '../composables/interactionsManager';
+import globalFunctions from '../composables/globalFunctions';
 
 export default defineComponent({
     setup() {
         const { loadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
-        const { loadFilePromise, zoomToLayer, discardLayerFromMap } = kmlshpHanlder();
+        const { loadFilePromise, zoomToLayer } = kmlshpHanlder();
         const { drawNewLayer } = interactionsManager();
+        const { discardLayerFromMap } = globalFunctions();
 
         const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
 

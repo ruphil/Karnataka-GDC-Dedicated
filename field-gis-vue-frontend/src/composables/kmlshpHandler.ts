@@ -147,25 +147,7 @@ const kmlshpHanlder = () => {
         }
     }
 
-    const discardLayerFromMap = (lyrid: any) => {
-        return new Promise((resolve, reject) => {
-        const map = app.appContext.config.globalProperties.$map;
-        // console.log(map.getInteractions());
-            try{
-                map.getLayers().forEach((lyr: any) => {
-                    if (lyr.get('lyrid') == lyrid) {
-                        map.removeLayer(lyr);
-                    }
-                });
-                resolve(0);
-            } catch (e) {
-                showGlobalToast('Processing Layer in Background... Please Try Again in Seconds...');
-                reject(1);
-            }
-        });
-    }
-
-    return { loadFilePromise, zoomToLayer, discardLayerFromMap }
+    return { loadFilePromise, zoomToLayer }
 }
 
 export default kmlshpHanlder;
