@@ -205,23 +205,33 @@ export default defineComponent({
             store.dispatch('setCategoryInfo', 'Add Marked Villages');
         });
 
+        const lgdcode                     = ref('');
+        const hamletname                  = ref('');
+        const noofproperties              = ref('');
+        const startdate                   = ref('');
+        const enddate                     = ref('');
+        const villagename                 = ref('');
+        const pocketscount                = ref('');
+        const grampanchayat               = ref('');
+        const hobli                       = ref('');
+        const taluk                       = ref('');
+        const userattributedistrictref    = ref('');
+
+        const return3 = { lgdcode, hamletname, noofproperties, startdate, enddate, villagename, pocketscount, grampanchayat, hobli, taluk, userattributedistrictref };
+        
         const showUserAttributesTable = ref(true);
 
-        const lgdcode                     = ref('')
-        const hamletname                  = ref('')
-        const noofproperties              = ref('')
-        const startdate                   = ref('')
-        const enddate                     = ref('')
-        const villagename                 = ref('')
-        const pocketscount                = ref('')
-        const grampanchayat               = ref('')
-        const hobli                       = ref('')
-        const taluk                       = ref('')
-        const userattributedistrictref    = ref('')
-
-        const return3 = { showUserAttributesTable };
+        const return4 = { showUserAttributesTable };
         
-        return { ...return0, ...return1, ...return2, ...return3 }
+        const editAttributes = () => {
+            
+        }
+
+        const updateAttributes = () => {
+            
+        }
+
+        return { ...return0, ...return1, ...return2, ...return3, ...return4 }
     },
 })
 </script>
