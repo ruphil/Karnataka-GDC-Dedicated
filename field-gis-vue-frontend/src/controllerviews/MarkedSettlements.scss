@@ -98,4 +98,57 @@
             }
         }
     }
+
+    > .userattributescontainer {
+        pointer-events: auto;
+        background-color: rgba(255,255,255,0.4);
+        border-radius: 0.5em;
+        padding: 0.2em;
+
+        > .userattributestable {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: auto;
+            background-color: rgba(0,60,136,0.7);
+            padding: 0.2em;
+            color: white;
+            display: table;
+
+            > div {
+                display: table-row;
+
+                > div {
+                    display: table-cell;
+                    vertical-align: middle;
+                    padding: 0.2em;
+                    font-size: 0.5em;
+                    
+                    > button, span {
+                        font-size: 0.5em;
+                    }
+                }
+            }
+
+            > .userattributesclose {
+                display: block;
+                margin: 1px;
+                padding: 0;
+                color: white;
+                font-weight: bold;
+                text-decoration: none;
+                text-align: center;
+                line-height: .4em;
+                background-color: rgba(0,60,136,0.5);
+                border: none;
+                border-radius: 2px;
+                cursor: pointer;
+    
+                > span {
+                    font-size: 1em;
+                }
+            }
+        }
+    }
 }

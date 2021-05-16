@@ -13,7 +13,7 @@
                     <div class="value">{{ value }}</div>
                 </div>
             </div>
-            <button class="closeattributeswindow" v-on:click="showAttributesTable = !showAttributesTable"><span class="material-icons-outlined">close</span></button>
+            <button class="closeattributeswindow" v-on:click="showAttributesTable = false"><span class="material-icons-outlined">close</span></button>
         </div>
         <div class="latlon" ref="latlon"></div>
     </div>

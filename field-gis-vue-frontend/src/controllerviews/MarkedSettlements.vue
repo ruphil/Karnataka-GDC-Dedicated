@@ -34,12 +34,13 @@
                 <div class="display-table-features">
                     <div>
                         <div><b>No</b></div>
-                        <div><b>Filename</b></div>
+                        <div><b>Identifier</b></div>
                         <div><b>Valid Attributes</b></div>
                         <div><b>Zoom</b></div>
                         <div><b>Edit Attributes</b></div>
                         <div><b>Upload</b></div>
                         <div><b>Discard</b></div>
+                        <div><b>Uploaded</b></div>
                     </div>
                     <div v-for="(lyr, index) in layers" v-bind:key="index">
                         <div>{{ index + 1 }}</div>
@@ -49,8 +50,56 @@
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit_note</span></button></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="discardLayer">delete_outline</span></button></div>
+                        <div>-</div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="userattributescontainer" v-show="showUserAttributesTable">
+            
+            <div class="userattributestable">
+                <div>
+                    <div>jack</div>
+                    <div>pack</div>
+                </div>
+                <div>
+                    <div>jack</div>
+                    <div>pack</div>
+                </div>
+                <div>
+                    <div>jack</div>
+                    <div>pack</div>
+                </div>
+                <div>
+                    <div>jack</div>
+                    <div>pack</div>
+                </div>
+                <div>
+                    <div>jack</div>
+                    <div>pack</div>
+                </div>
+                <div>
+                    <div>jack</div>
+                    <div>pack</div>
+                </div>
+                <div>
+                    <div>jack</div>
+                    <div>pack</div>
+                </div>
+                <div>
+                    <div>jack</div>
+                    <div>pack</div>
+                </div>
+                <div>
+                    <div>jack</div>
+                    <div>pack</div>
+                </div>
+                <div>
+                    <div><button class="userattributesclose" v-on:click="updateUserAttributes">Update Attributes</button></div>
+                    <div><button class="userattributesclose" v-on:click="showUserAttributesTable = false">Close</button></div>
+                </div>
+
+                
             </div>
         </div>
     </div>
@@ -141,8 +190,13 @@ export default defineComponent({
             fileEl.value.addEventListener('change', sendFileElementToLoad);
             store.dispatch('setCategoryInfo', 'Add Marked Villages');
         });
+
+        const showUserAttributesTable = ref(true);
+
+
+        const return3 = { showUserAttributesTable };
         
-        return { ...return0, ...return1, ...return2 }
+        return { ...return0, ...return1, ...return2, ...return3 }
     },
 })
 </script>
