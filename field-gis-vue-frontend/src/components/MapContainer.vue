@@ -1,7 +1,7 @@
 <template>
     <div id="mapcontainer">
         <div ref="mapref" class="mapview"></div>
-        <div class="attributestogglecontainer" v-show="!showAttributesTable">
+        <div class="attributestogglecontainer" v-show="!showAttributesTable" title="Attributes Table">
             <button class="toggleattributes" v-on:click="showAttributesTable = !showAttributesTable">
                 <span class="material-icons-outlined">description</span>
             </button>
@@ -75,7 +75,7 @@ export default defineComponent({
 
             map.on('click', function(event: any) {
                 map.forEachFeatureAtPixel(event.pixel, function(feature: any, layer: any) {
-                    let attributesData = { 'layername': layer.get('name'), ...feature.getProperties() };
+                    let attributesData = { ...feature.getProperties() };
                     delete attributesData['geometry'];
 
                     store.dispatch('setAttributesData', attributesData);
