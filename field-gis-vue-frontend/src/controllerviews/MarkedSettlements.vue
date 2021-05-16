@@ -60,46 +60,46 @@
             <div class="userattributestable">
                 <div>
                     <div>LGD Code</div>
-                    <div><input type="text" ref="lgdcode"></div>
+                    <div><input type="text" v-model="lgdcode"></div>
                 </div>
                 <div>
                     <div>Hamlet Name</div>
-                    <div><input type="text" ref="hamletname"></div>
+                    <div><input type="text" v-model="hamletname"></div>
                 </div>
                 <div>
                     <div>No. of Properties / Houses</div>
-                    <div><input type="text" ref="noofproperties"></div>
+                    <div><input type="text" v-model="noofproperties"></div>
                 </div>
                 <div>
                     <div>Date of Commencement of Marking</div>
-                    <div><input type="date" ref="startdate"></div>
+                    <div><input type="date" v-model="startdate"></div>
                 </div>
                 <div>
                     <div>Date of Completion of Marking</div>
-                    <div><input type="date" ref="enddate"></div>
+                    <div><input type="date" v-model="enddate"></div>
                 </div>
                 <div>
                     <div>Village Name</div>
-                    <div><input type="text" ref="villagename"></div>
+                    <div><input type="text" v-model="villagename"></div>
                 </div>
                 <div>
                     <div>
                         <span>Total Number of Pockets in Village</span><br> 
                         <span style="font-size:0.5em;">Hamlets + Main Village Settlements Count</span>
                     </div>
-                    <div><input type="number" ref="pocketscount"></div>
+                    <div><input type="number" v-model="pocketscount"></div>
                 </div>
                 <div>
                     <div>Gram Panchayat</div>
-                    <div><input type="text" ref="grampanchayat"></div>
+                    <div><input type="text" v-model="grampanchayat"></div>
                 </div>
                 <div>
                     <div>Hobli</div>
-                    <div><input type="text" ref="hobli"></div>
+                    <div><input type="text" v-model="hobli"></div>
                 </div>
                 <div>
                     <div>Taluk</div>
-                    <div><input type="text" ref="taluk"></div>
+                    <div><input type="text" v-model="taluk"></div>
                 </div>
                 <div>
                     <div>District</div>
@@ -233,7 +233,7 @@ export default defineComponent({
             });
 
             let attributes = reqdlayer.attributes;
-            // console.log(reqdlayer, attributes);
+            console.log(reqdlayer, attributes);
 
             if (typeof attributes === 'object'){
                 if ('lgdcode'                   in attributes) lgdcode.value                    = attributes['lgdcode'];
@@ -252,7 +252,7 @@ export default defineComponent({
             }
         }
 
-        const updateAttributes = () => {
+        const updateUserAttributes = () => {
             const attributes = {
                 'lgdcode'                   :   lgdcode.value                   ,   
                 'hamletname'                :   hamletname.value                ,
@@ -266,10 +266,19 @@ export default defineComponent({
                 'taluk'                     :   taluk.value                     , 
                 'userattributedistrictref'  :   userattributedistrictref.value
             }
+
+            let lyrid = currentFeatureID.value;
+            // console.log(lyrid);
+
+            let reqdlayer: any = layers.value.find((lyr) => {
+                return lyr['id'] == lyrid;
+            });
             
+            reqdlayer.attributes = attributes;
+            console.log('updatd')
         }
 
-        const return4 = { showUserAttributesTable, editAttributes, updateAttributes };
+        const return4 = { showUserAttributesTable, editAttributes, updateUserAttributes };
 
         return { ...return0, ...return1, ...return2, ...return3, ...return4 }
     },
