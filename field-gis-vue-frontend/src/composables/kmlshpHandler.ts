@@ -149,7 +149,7 @@ const kmlshpHanlder = () => {
 
     const discardLayerFromMap = (lyrid: any) => {
         const map = app.appContext.config.globalProperties.$map;
-        console.log(map.getInteractions());
+        // console.log(map.getInteractions());
         
         try{
             map.getLayers().forEach((lyr: any) => {
