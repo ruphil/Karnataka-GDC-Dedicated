@@ -1,0 +1,75 @@
+#navbar {
+    > .navbarcontainer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 10vw;
+        // height: 8vh;
+        background-color: rgba(100, 202, 150, 0.8);
+
+        > img {
+            position: relative;
+            top: 1%;
+            left: 10%;
+            width: 8vw;
+        }
+
+        > .navbar {
+            text-align: center;
+            color: white;
+            
+            > .title {
+                > .gdc {
+                    margin-top: 1em;
+                    font-size: 1em;
+                }
+                
+                > .soi {
+                    margin-top: 1em;
+                    font-size: 0.7em;
+                }
+            }
+
+            > .login {
+                margin-top: 3em;
+                padding: 1em;
+                border: none;
+                color: white;
+                background-color: rgba(200, 202, 180, 0.8);
+                border-radius: 1em;
+                font-size: 1.1em;
+
+                &:hover {
+                    color: rgba(200, 202, 180, 0.8);
+                    background-color: white;
+                }
+
+                &:active {
+                    color: white;
+                    background-color: rgba(200, 202, 180, 0.8);
+                }
+            }
+        }
+    }
+
+    > .loginbox {
+        position: fixed;
+        left: 50%;
+        top: 25%;
+        height: 30vh;
+        background-color: rgba(100, 202, 150, 0.2);
+        width: 20vw;
+        text-align: center;
+        
+        > .inputcontainer {
+            margin-top: 2em;
+            > .logininput {
+                margin: 1em;
+                padding: 1em;
+            }
+        }
+
+        
+    }
+}
