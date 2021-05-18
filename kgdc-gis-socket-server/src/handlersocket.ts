@@ -5,6 +5,7 @@ import WebSocket from 'ws';
 // import { displayUsersTable, assignRole, deleteUser,  } from './handlerdb';
 
 import { getRoles } from './composables/rolesmanagement';
+import { getGeoJson } from './composables/postgis';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -14,6 +15,9 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
         switch(msgObj.requesttype){
             case 'getroles':
                 getRoles(ws, msgObj);
+                break;
+            case 'getgeojson':
+                getGeoJson(ws, msgObj);
                 break;
             // case 'checkuser':
             //     checkUser(ws, msgObj);

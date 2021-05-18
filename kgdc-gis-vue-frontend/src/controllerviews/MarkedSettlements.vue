@@ -126,7 +126,7 @@ import { computed, defineComponent, onMounted, ref } from 'vue'
 import './MarkedSettlements.scss';
 
 import karnBoundsLoader from '../composables/karnBoundsLoader';
-import villagesBoundsLoader from '../composables/villagesBoundsLoader';
+// import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
 import kmlshpHanlder from '../composables/kmlshpHandler';
 import drawFeaturesManager from '../composables/drawFeaturesManager';
@@ -136,14 +136,15 @@ import globalToast from '../composables/globalToast';
 export default defineComponent({
     setup() {
         const { loadKarnBounds } = karnBoundsLoader();
-        const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
+        // const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
         const { loadFilePromise, zoomToLayer } = kmlshpHanlder();
         const { drawNewLayer } = drawFeaturesManager();
         const { discardLayerFromMap } = globalFunctions();
         const { showGlobalToast } = globalToast();
 
-        const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
+        // const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
+        const return0 = { loadKarnBounds, loadBaseMapToExtent, unloadBaseMap };
 
         const districtsList = computed(() => store.getters.getDistrictsList);
         const districtref = ref('');
@@ -157,7 +158,7 @@ export default defineComponent({
 
         const loadVillagesBoundsRef = () => {
             if(districtref.value != '' && loadedDistrict.value != districtref.value){
-                loadVillagesBounds(districtref.value);
+                // loadVillagesBounds(districtref.value);
                 loadedDistrict.value = districtref.value;
             }
         }

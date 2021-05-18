@@ -38,7 +38,7 @@ export default defineComponent({
     const karnboundsLoaded = computed(() => store.getters.getKarnBoundsLoaded);
 
     const setTitle = () => {
-      document.title = 'KGDC GIS';
+      document.title = 'Karnataka GDC, SOI';
     }
 
     const setGlobalToastEl = () => {

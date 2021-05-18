@@ -5,27 +5,43 @@ import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 
 import mapStyler from './mapStyler';
-import dataService from './dataService';
 import { getCurrentInstance } from '@vue/runtime-core';
 import LayerGroup from 'ol/layer/Group';
 import store from '@/store';
 
 const karnBoundsLoader = () => {
     const { districtStyleFunction } = mapStyler();
-    const { getJSONFeatures } = dataService();
 
     const app = getCurrentInstance()!;
 
     const loadKarnBounds = () => {
         if(app.appContext.config.globalProperties.$karndistbounds == null){
-            getJSONFeatures('kgdc:karndistbounds')
-            .then((jsonResponse: any)=>{
-                // console.log(jsonResponse.data);
-                let karnGJ = jsonResponse.data;
-                setKarnBounds(karnGJ);
-            })
-            .catch((error) => {
-                console.log(error);
+            const wsurlBase = store.getters.getWSURLBase;
+            const username = store.getters.getUsername;
+            const password = store.getters.getPassword;
+            console.log(wsurlBase);
+
+            let ws = new WebSocket(wsurlBase);
+            ws.addEventListener('message', (event) => {
+                // console.log(event.data);
+                let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
+                console.log(responseObj);
+                if (responseObj.requestStatus == 'success'){
+                    let gj = responseObj.featureCollection;
+                    setKarnBounds(gj);
+                } else {
+                    console.log('Problem Loading Karnataka Boundary from Server...')
+                }
+                ws.close();
+            });
+            ws.addEventListener('open', (event) => {
+                let registrationObj = {
+                    requesttype: 'getgeojson',
+                    layer: 'karnatakaboundary',
+                    username,
+                    password
+                }
+                ws.send(Buffer.from(JSON.stringify(registrationObj)).toString('base64'));
             });
         }
     }
@@ -35,13 +51,16 @@ const karnBoundsLoader = () => {
 
         let karndistbounds = new VectorLayer({
             source: new VectorSource({
-                features: new GeoJSON().readFeatures(gj)
+                features: new GeoJSON({
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                }).readFeatures(gj)
             }),
             style: districtStyleFunction,
             zIndex: 1
         });
 
-        karndistbounds.set('loadedfromgeoserver', 'yes');
+        karndistbounds.set('loadedfromserver', 'yes');
 
         map.setLayerGroup(new LayerGroup({
             layers: [ karndistbounds ]

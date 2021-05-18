@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    urlBase: 'http://localhost:8080',
+    wsurlBase: 'ws://localhost:3010',
     districtsList: ['Bagalkot', 'Ballari', 'Belagavi', 'Bengaluru (Rural)', 'Bengaluru (Urban)', 'Bidar', 'Chamarajanagara', 'Chikkaballapura', 'Chikkamagaluru', 'Chitradurga', 'Dakshina Kannada', 'Davanagere', 'Dharwad', 'Gadag', 'Hassan', 'Haveri', 'Kalburgi', 'Kodagu', 'Kolara', 'Koppal', 'Mandya', 'Mysuru', 'Raichur', 'Ramanagara', 'Shivamogga', 'Tumakuru', 'Udupi', 'Uttara Kannada', 'Vijayapura', 'Yadgir'],
     categoryinfo: '',
     globaltoastmsg: '',
@@ -14,8 +14,8 @@ export default createStore({
     karnboundsLoaded: false,
   },
   getters: {
-    getURLBase(state){
-      return state.urlBase;
+    getWSURLBase(state){
+      return state.wsurlBase;
     },
     getDistrictsList(state){
       return state.districtsList;

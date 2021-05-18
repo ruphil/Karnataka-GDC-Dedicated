@@ -45,10 +45,6 @@ export default defineComponent({
         const attributesData = computed(() => store.getters.getAttributesData);
         const showAttributesTable = ref(false);
 
-        // const resetMapLayers = () => {
-        //     app.appContext.config.globalProperties.$villagesBounds = null;
-        // }
-
         const loadKarnBoundaryAfterElementLoaded = () => {
             const overlay = new Overlay({
                 element: popup.value,
@@ -89,7 +85,6 @@ export default defineComponent({
             app.appContext.config.globalProperties.$map = map;
 
             loadKarnBounds();
-            // resetMapLayers();
         }
 
         onMounted(() => {
