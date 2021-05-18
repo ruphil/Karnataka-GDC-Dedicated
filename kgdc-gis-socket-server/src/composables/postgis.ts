@@ -9,10 +9,13 @@ const respondWithFailureMsg = (ws: WebSocket) => {
 }
 
 export const getGeoJson = (ws: WebSocket, msgObj: any) => {
-    const client = new Client({ connectionString });
-    client.connect();
-
-    // let getQuery = `SELECT gid, objectid, kgisdistri, kgisdist_1, geom FROM district_boundary`;
+    let queryVariant = '';
+    if(msgObj.layer == 'karnatakaboundary'){
+        queryVariant = 'SELECT * FROM district_boundary';
+    } else if (msgObj.layer == 'karnvillages'){
+        let district = msgObj.district;
+        queryVariant = `SELECT * FROM karnvillages WHERE kgisdist_1='${district}'`;
+    }
 
     let getQuery = `SELECT jsonb_build_object(
         'type',     'FeatureCollection',
@@ -25,7 +28,10 @@ export const getGeoJson = (ws: WebSocket, msgObj: any) => {
         'geometry',   ST_AsGeoJSON(geom)::jsonb,
         'properties', to_jsonb(inputs) - 'gid' - 'geom'
       ) AS feature
-      FROM (SELECT * FROM district_boundary) inputs) features;`;
+    FROM (${queryVariant}) inputs) features;`;
+
+    const client = new Client({ connectionString });
+    client.connect();
 
     client.query(getQuery)
     .then((res) => {

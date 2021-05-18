@@ -75,7 +75,7 @@ export default defineComponent({
                     delete attributesData['geometry'];
 
                     try {
-                        if(layer.get('loadedfromgeoserver') == 'yes'){
+                        if(layer.get('loadedfromserver') == 'yes'){
                             store.dispatch('setAttributesData', attributesData);
                         }
                     } catch (e) {}

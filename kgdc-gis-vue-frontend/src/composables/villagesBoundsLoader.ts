@@ -1,61 +1,82 @@
-// import { View } from 'ol';
-// import { fromLonLat } from 'ol/proj';
-// import VectorLayer from 'ol/layer/Vector';
-// import VectorSource from 'ol/source/Vector';
-// import GeoJSON from 'ol/format/GeoJSON';
+import { View } from 'ol';
+import { fromLonLat } from 'ol/proj';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import GeoJSON from 'ol/format/GeoJSON';
 
-// import mapStyler from './mapStyler';
-// import dataService from './dataService';
-// import { getCurrentInstance } from '@vue/runtime-core';
+import mapStyler from './mapStyler';
+import { getCurrentInstance } from '@vue/runtime-core';
+import store from '@/store';
 
-// const villagesBoundsLoader = () => {
-//     const { villagesStyleFunction } = mapStyler();
-//     const { getJSONFeatures } = dataService();
+const villagesBoundsLoader = () => {
+    const { villagesStyleFunction } = mapStyler();
 
-//     const app = getCurrentInstance()!;
+    const app = getCurrentInstance()!;
 
-//     const loadVillagesBounds = (districtname: string) => {
-//         unloadVillagesBounds();
+    const loadVillagesBounds = (districtname: string) => {
+        unloadVillagesBounds();
         
-//         getJSONFeatures('kgdc:karnvillages', `kgisdist_1='${districtname}'`)
-//         .then((jsonResponse: any)=>{
-//             // console.log(jsonResponse.data);
-//             let villagesGJ = jsonResponse.data;
-//             setVillagesBounds(villagesGJ);
-//         })
-//         .catch((error) => {
-//             console.log(error);
-//         });
-//     }
+        const wsurlBase = store.getters.getWSURLBase;
+        const username = store.getters.getUsername;
+        const password = store.getters.getPassword;
+        console.log(wsurlBase);
 
-//     const setVillagesBounds = (gj: any) => {
-//         const map = app.appContext.config.globalProperties.$map;
+        let ws = new WebSocket(wsurlBase);
+        ws.addEventListener('message', (event) => {
+            // console.log(event.data);
+            let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
+            console.log(responseObj);
+            if (responseObj.requestStatus == 'success'){
+                let gj = responseObj.featureCollection;
+                setVillagesBounds(gj);
+            } else {
+                console.log('Problem Loading Karnataka Boundary from Server...')
+            }
+            ws.close();
+        });
+        ws.addEventListener('open', (event) => {
+            let registrationObj = {
+                requesttype: 'getgeojson',
+                layer: 'karnvillages',
+                district: districtname,
+                username,
+                password
+            }
+            ws.send(Buffer.from(JSON.stringify(registrationObj)).toString('base64'));
+        });
+    }
 
-//         let villagesBounds = new VectorLayer({
-//             source: new VectorSource({
-//                 features: new GeoJSON().readFeatures(gj)
-//             }),
-//             style: villagesStyleFunction,
-//             zIndex: 2
-//         });
+    const setVillagesBounds = (gj: any) => {
+        const map = app.appContext.config.globalProperties.$map;
 
-//         villagesBounds.set('loadedfromgeoserver', 'yes');
+        let villagesBounds = new VectorLayer({
+            source: new VectorSource({
+                features: new GeoJSON({
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                }).readFeatures(gj)
+            }),
+            style: villagesStyleFunction,
+            zIndex: 2
+        });
 
-//         map.addLayer(villagesBounds);
+        villagesBounds.set('loadedfromserver', 'yes');
 
-//         app.appContext.config.globalProperties.$villagesBounds = villagesBounds;
-//     }
+        map.addLayer(villagesBounds);
 
-//     const unloadVillagesBounds = () => {
-//         const map = app.appContext.config.globalProperties.$map;
+        app.appContext.config.globalProperties.$villagesBounds = villagesBounds;
+    }
 
-//         if(app.appContext.config.globalProperties.$villagesBounds != null){
-//             map.removeLayer(app.appContext.config.globalProperties.$villagesBounds);
-//             app.appContext.config.globalProperties.$villagesBounds = null;
-//         }
-//     }
+    const unloadVillagesBounds = () => {
+        const map = app.appContext.config.globalProperties.$map;
 
-//     return { loadVillagesBounds, unloadVillagesBounds }
-// }
+        if(app.appContext.config.globalProperties.$villagesBounds != null){
+            map.removeLayer(app.appContext.config.globalProperties.$villagesBounds);
+            app.appContext.config.globalProperties.$villagesBounds = null;
+        }
+    }
 
-// export default villagesBoundsLoader;
+    return { loadVillagesBounds, unloadVillagesBounds }
+}
+
+export default villagesBoundsLoader;
