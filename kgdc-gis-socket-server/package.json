@@ -1,5 +1,5 @@
 {
-  "name": "kgdc-dsp-socket-server",
+  "name": "kgdc-attendance-socket-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
