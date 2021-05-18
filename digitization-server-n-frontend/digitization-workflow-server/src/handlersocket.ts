@@ -1,5 +1,6 @@
 import WebSocket from 'ws';
 
+import { getuserrole } from './handlegeoserver';
 import { checkUser, newregistration, logAttendance } from './handlerdb';
 import { checkAdmin,  getAttendanceRegister } from './handlerdb';
 import { displayUsersTable, assignRole, deleteUser,  } from './handlerdb';
@@ -10,6 +11,9 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
         console.log(msgObj);
 
         switch(msgObj.requesttype){
+            case 'getuserrole':
+                getuserrole(ws, msgObj);
+                break;
             case 'checkuser':
                 checkUser(ws, msgObj);
                 break;
