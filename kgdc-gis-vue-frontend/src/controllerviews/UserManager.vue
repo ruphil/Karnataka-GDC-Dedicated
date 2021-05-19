@@ -2,19 +2,31 @@
     <div id="usersmanager">
         <div class="usersboxcontainer">
             <div class="usersbox">
-
+                <input type="text" v-model="user" placeholder="Username">
+                <input type="text" v-model="pass" placeholder="Password">
+                <button v-on:click="addUser(user, pass)">Add User</button>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import './UserManager.scss';
+
+import userFunctions from '@/composables/userFunctions';
 
 export default defineComponent({
     setup() {
-        
+        const user = ref('');
+        const pass = ref('');
+
+        const { addUser } = userFunctions();
+        // const addUser = () => {
+
+        // }
+
+        return { user, pass, addUser };
     },
 })
 </script>
