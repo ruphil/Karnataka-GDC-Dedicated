@@ -1,0 +1,6 @@
+CREATE TABLE USERSTABLE(
+    ID          SERIAL  PRIMARY KEY,
+    NAME        TEXT    NOT NULL,
+    PASSWORD    TEXT    NOT NULL,
+    ROLES       TEXT
+);

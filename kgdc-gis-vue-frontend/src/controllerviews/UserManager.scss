@@ -8,6 +8,21 @@
 
         background-color: rgba(60, 60, 60, 0.9);
 
+        > .usersbox {
+            position: relative;
+            top: 2vh;
+            left: 25%;
 
+            input[type=text]{
+                padding: 0.5em;
+                margin: 1em;
+            }
+
+            button {
+                padding: 0.5em;
+                border-radius: 1em;
+
+            }
+        }
     }
 }

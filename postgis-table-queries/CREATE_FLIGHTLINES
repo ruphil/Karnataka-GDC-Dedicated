@@ -38,5 +38,7 @@ CREATE TABLE FLIGHTLINES (
     FOLDERSIZEGB        TEXT,
     REMARKS             TEXT,                   
     USERNAME            TEXT,                      
-    GEOM                GEOMETRY(LINESTRING, 3857)
+    GEOM                GEOMETRY(LINESTRING, 3857),
+    SERVERDATE          DATE NOT NULL DEFAULT CURRENT_DATE,
+    SERVERTIME          TIME NOT NULL DEFAULT CURRENT_TIME
 );
