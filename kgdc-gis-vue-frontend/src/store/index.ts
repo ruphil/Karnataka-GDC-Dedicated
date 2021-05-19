@@ -68,6 +68,9 @@ export default createStore({
     setGlobalPassword(state, password){
       state.password = password;
     },
+    setUserRoles(state, roles){
+      state.roles = roles;
+    },
     setAttributesData(state, attributesData){
       state.attributesData = attributesData;
     },
@@ -93,6 +96,9 @@ export default createStore({
     },
     setGlobalPassword(context, password){
       context.commit('setGlobalPassword', password);
+    },
+    setUserRoles(context, roles){
+      context.commit('setUserRoles', roles);
     },
     setAttributesData(context, attributesData){
       context.commit('setAttributesData', attributesData);

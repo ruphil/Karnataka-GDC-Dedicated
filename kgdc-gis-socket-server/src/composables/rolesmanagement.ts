@@ -20,7 +20,7 @@ const isAdmin = (msgObj: any) => {
 
 export const getRoles = (ws: WebSocket, msgObj: any) => {
     if(isAdmin(msgObj)){
-        let responseObj = { requestStatus: 'success', isAdmin: true };
+        let responseObj = { requestStatus: 'success', isAdmin: true, roles: ['ALL'] };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     } else {
         console.log('Not Admin');

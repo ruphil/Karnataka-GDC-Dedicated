@@ -2,8 +2,8 @@
   <div id="approot">
     <MapContainer v-if="userCredentialsLoaded"/>
     <NavBar />
-    <LeftSideBar v-if="karnboundsLoaded"/>
-    <ControlsContainer v-if="karnboundsLoaded"/>
+    <LeftSideBar v-if="karnboundsLoaded && isLoggedIn"/>
+    <ControlsContainer v-if="karnboundsLoaded && isLoggedIn"/>
     <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
   </div>
 </template>
@@ -35,6 +35,7 @@ export default defineComponent({
     const globaltoastmsg = computed(() => store.getters.getGlobalToastMsg);
     const globalToastEl = ref();
 
+    const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const karnboundsLoaded = computed(() => store.getters.getKarnBoundsLoaded);
 
     const setTitle = () => {
@@ -79,7 +80,7 @@ export default defineComponent({
       loadCredentials();
     });
 
-    return { userCredentialsLoaded, globaltoastmsg, globalToastEl, karnboundsLoaded }
+    return { userCredentialsLoaded, globaltoastmsg, globalToastEl, isLoggedIn, karnboundsLoaded }
   },
 })
 </script>

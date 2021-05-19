@@ -66,7 +66,9 @@ export default defineComponent({
       loginMsg.value = 'Please Wait...';
 
       doAuthentication(loginusername.value, loginpassword.value)
-      .then(() => {
+      .then((responseObj: any) => {
+        let roles = responseObj.roles;
+        
         doLoggedInTasks();
         showGlobalToast('Login Successful...');
       })
