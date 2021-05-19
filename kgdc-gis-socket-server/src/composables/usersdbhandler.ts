@@ -10,6 +10,21 @@ const respondWithFailureMsg = (ws: WebSocket) => {
 
 // User Logics
 
+const isAdmin = (msgObj: any) => {
+    if(msgObj.username == 'gisadmin' && msgObj.password == 'kgdcgis'){
+        return true;
+    } else return false;
+}
+
+export const getRoles = (ws: WebSocket, msgObj: any) => {
+    if(isAdmin(msgObj)){
+        let responseObj = { requestStatus: 'success', isAdmin: true, roles: ['ALL'] };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    } else {
+        console.log('Not Admin');
+    }
+}
+
 const checkValidUser = (mobilenumber: string, password: string) => {
     return new Promise((resolve, reject) => {
         const client = new Client({ connectionString });

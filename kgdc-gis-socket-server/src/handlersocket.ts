@@ -1,11 +1,7 @@
 import WebSocket from 'ws';
 
-// import { checkUser, newregistration, logAttendance } from './handlerdb';
-// import { checkAdmin,  getAttendanceRegister } from './handlerdb';
-// import { displayUsersTable, assignRole, deleteUser,  } from './handlerdb';
-
-import { getRoles } from './composables/rolesmanagement';
-import { getGeoJson } from './composables/postgis';
+import { userManager } from './composables/usersmanager';
+import { getGeoJson } from './composables/postgisdriver';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -13,36 +9,12 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
         console.log(msgObj);
 
         switch(msgObj.requesttype){
-            case 'getroles':
-                getRoles(ws, msgObj);
-                break;
             case 'getgeojson':
                 getGeoJson(ws, msgObj);
                 break;
-            // case 'checkuser':
-            //     checkUser(ws, msgObj);
-            //     break;
-            // case 'newregistration':
-            //     newregistration(ws, msgObj);
-            //     break;
-            // case 'logattendance':
-            //     logAttendance(ws, msgObj);
-            //     break;
-            // case 'checkadmin':
-            //     checkAdmin(ws, msgObj);
-            //     break;
-            // case 'userstable':
-            //     displayUsersTable(ws, msgObj);
-            //     break;
-            // case 'attendanceregister':
-            //     getAttendanceRegister(ws, msgObj);
-            //     break;
-            // case 'assignrole':
-            //     assignRole(ws, msgObj);
-            //     break;
-            // case 'deleteuser':
-            //     deleteUser(ws, msgObj);
-            //     break;
+            case 'usermanagement':
+                userManager(ws, msgObj);
+                break;
             default:
                 // To clearly inform the Unanonymous Users Without Base64 String
                 ws.send('Invalid Request');
