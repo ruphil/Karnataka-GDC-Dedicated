@@ -5,7 +5,7 @@
             <span class="soi"></span>
         </div>
         <div class="categoryitems">
-            <div class="category" title="Add Marked Settlements" v-on:click="router.push({path: '/markedsettlements'})">
+            <div class="category" title="Add Marked Settlements" v-on:click="router.push({path: '/markedsettlements'});store.dispatch('setCategoryInfo', 'Update Marked Villages')" v-show="checkRoles(['MARKED_VILLAGES_UPLOADER', 'MARKED_VILLAGES_APPROVER'])">
                 <span class="icon"><span class="material-icons-outlined">draw</span></span>
                 <span class="label" v-show="expanded">Add Marked Villages</span>
             </div>
@@ -28,7 +28,7 @@
 <script lang="ts">
 import router from '@/router';
 import store from '@/store';
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 
 import './LeftSideBar.scss';
 
@@ -36,6 +36,8 @@ export default defineComponent({
     setup() {
         const leftsidebar = ref();
         const expanded = ref(false);
+
+        const userRoles = store.getters.getUserRoles;
         
         const toggleExpansion = () => {
             let el = leftsidebar.value;
@@ -51,11 +53,18 @@ export default defineComponent({
             expanded.value = !expanded.value;
         }
 
-        const clicktest = () => {
-            console.log(23);
-        }
+        const checkRoles = computed(() => {
+            return (rolesneeded: any) => {
+                const toBeShown = userRoles.some( (r: any) => rolesneeded.indexOf(r) >= 0);
+                if(userRoles.includes('ALL')){
+                    return true;
+                } else if (toBeShown) {
+                    return true;
+                } else return false;
+            }
+        })
         
-        return { leftsidebar, expanded, toggleExpansion, router, store }
+        return { leftsidebar, expanded, toggleExpansion, router, store, checkRoles }
     },
 })
 </script>

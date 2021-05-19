@@ -10,6 +10,7 @@ export default createStore({
     isLoggedIn: false,
     username: '',
     password: '',
+    roles: ['ALL'],
     attributesData: [],
     karnboundsLoaded: false,
   },
@@ -37,6 +38,9 @@ export default createStore({
     },
     getPassword(state){
       return state.password;
+    },
+    getUserRoles(state){
+      return state.roles;
     },
     getAttributesData(state){
       return state.attributesData
