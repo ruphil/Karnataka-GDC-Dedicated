@@ -1,6 +1,6 @@
 <template>
   <div id="approot">
-    <MapContainer v-if="userCredentialsLoaded"/>
+    <MapContainer v-if="isLoggedIn"/>
     <NavBar />
     <LeftSideBar v-if="karnboundsLoaded && isLoggedIn"/>
     <ControlsContainer v-if="karnboundsLoaded && isLoggedIn"/>
@@ -30,8 +30,6 @@ export default defineComponent({
     const { showGlobalToast } = globalToast();
     const { doAuthentication } = userLoginCheck();
 
-    const userCredentialsLoaded = ref(false);
-
     const globaltoastmsg = computed(() => store.getters.getGlobalToastMsg);
     const globalToastEl = ref();
 
@@ -50,8 +48,6 @@ export default defineComponent({
       store.dispatch('setLoggedIn', true);
       store.dispatch('setGlobalUsename', window.localStorage.getItem('globalusername'));
       store.dispatch('setGlobalPassword', window.localStorage.getItem('globalpassword'));
-
-      userCredentialsLoaded.value = true;
     }
 
     const loadCredentials = () => {
@@ -80,7 +76,7 @@ export default defineComponent({
       loadCredentials();
     });
 
-    return { userCredentialsLoaded, globaltoastmsg, globalToastEl, isLoggedIn, karnboundsLoaded }
+    return { globaltoastmsg, globalToastEl, isLoggedIn, karnboundsLoaded }
   },
 })
 </script>

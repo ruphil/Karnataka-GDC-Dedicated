@@ -5,13 +5,17 @@
             <span class="soi"></span>
         </div>
         <div class="categoryitems">
-            <div class="category" title="Add Marked Settlements" v-on:click="router.push({path: '/markedsettlements'});store.dispatch('setCategoryInfo', 'Update Marked Villages')" v-show="checkRoles(['MARKED_VILLAGES_UPLOADER', 'MARKED_VILLAGES_APPROVER'])">
+            <div class="category" title="Roles Manager" v-on:click="router.push({path: '/usersmanager'});store.dispatch('setCategoryInfo', 'Users Manager')" v-show="checkRoles(['ALL'])">
+                <span class="icon"><span class="material-icons-outlined">people</span></span>
+                <span class="label" v-show="expanded">Users Manager</span>
+            </div>
+            <div class="category" title="Marked Settlements" v-on:click="router.push({path: '/markedsettlements'});store.dispatch('setCategoryInfo', 'Update Marked Villages')" v-show="checkRoles(['MARKED_VILLAGES_UPLOADER', 'MARKED_VILLAGES_APPROVER'])">
                 <span class="icon"><span class="material-icons-outlined">draw</span></span>
-                <span class="label" v-show="expanded">Add Marked Villages</span>
+                <span class="label" v-show="expanded">Marked Villages</span>
             </div>
             <div class="category" title="Make Mission Plan" v-on:click="router.push({path: '/missionplan'});store.dispatch('setCategoryInfo', 'Make Mission Plan')">
                 <span class="icon"><span class="material-icons-outlined">highlight_alt</span></span>
-                <span class="label" v-show="expanded">Make Mission Plan</span>
+                <span class="label" v-show="expanded">Mission Planner</span>
             </div>
             <div class="category" title="Flights Manager" v-on:click="router.push({path: '/flights'});store.dispatch('setCategoryInfo', 'Flights Manager')">
                 <span class="icon"><span class="material-icons-outlined">flight_takeoff</span></span>
