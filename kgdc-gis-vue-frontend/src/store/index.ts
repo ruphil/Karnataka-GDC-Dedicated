@@ -13,6 +13,7 @@ export default createStore({
     roles: [],
     attributesData: [],
     karnboundsLoaded: false,
+    currentvillage: '',
   },
   getters: {
     getWSURLBase(state){
@@ -47,6 +48,9 @@ export default createStore({
     },
     getKarnBoundsLoaded(state){
       return state.karnboundsLoaded
+    },
+    getCurrentVillage(state){
+      return state.currentvillage
     }
   },
   mutations: {
@@ -77,6 +81,9 @@ export default createStore({
     setKarnBoundsLoaded(state, karnboundsLoaded){
       state.karnboundsLoaded = karnboundsLoaded;
     },
+    setCurrentVillage(state, currentvillage){
+      state.currentvillage = currentvillage;
+    }
   },
   actions: {
     setCategoryInfo(context, info){
@@ -105,6 +112,9 @@ export default createStore({
     },
     setKarnBoundsLoaded(context, karnboundsLoaded){
       context.commit('setKarnBoundsLoaded', karnboundsLoaded);
+    },
+    setCurrentVillage(context, currentvillage){
+      context.commit('setCurrentVillage', currentvillage);
     },
   },
   modules: {

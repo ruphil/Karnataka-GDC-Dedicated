@@ -21,7 +21,7 @@
                 <span class="icon"><span class="material-icons-outlined">flight_takeoff</span></span>
                 <span class="label" v-show="expanded">Flights Manager</span>
             </div>
-            <div class="category" title="Flights Manager" v-on:click="router.push({path: '/digitizedmaps'});store.dispatch('setCategoryInfo', 'Digitized Maps')" v-show="checkRoles(['CORRECTED_MAP_UPLOADER', 'CORRECTED_MAP_APPROVER'])">
+            <div class="category" title="Digitized Maps" v-on:click="router.push({path: '/digitizedmaps'});store.dispatch('setCategoryInfo', 'Digitized Maps')" v-show="checkRoles(['CORRECTED_MAP_UPLOADER', 'CORRECTED_MAP_APPROVER'])">
                 <span class="icon"><span class="material-icons-outlined">map</span></span>
                 <span class="label" v-show="expanded">Digitized Maps</span>
             </div>
