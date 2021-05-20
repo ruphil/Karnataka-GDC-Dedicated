@@ -45,7 +45,7 @@
                         <div>{{ file.identifier }}</div>
                         <div>{{ file.details }}</div>
                         <div>{{ file.serverdate }}</div>
-                        <div>{{ file.approved }}</div>
+                        <div v-html="getApproveRole(file.approved)"></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:fileid="file.id">file_download</span></button></div>
                     </div>
                 </div>
@@ -111,13 +111,11 @@ export default defineComponent({
         const filedetails = ref('');
         const uploadbtndisabled = ref(false);
 
-        const getcurrentmimetype = () => {
-            if(fileEl.value.files[0] == undefined){
-                return '';
-            } else {
+        const getApproveRole = computed(() => {
+            return (fileApproved: any) => {
                 
             }
-        }
+        });
 
         const mimetype = ref('');
 
