@@ -41,14 +41,12 @@
             top: 15vh;
             right: 1em;
             background-color: rgba(255,255,255,0.4);
-            // width: 50vw;
-            // height: 30vh;
             padding: 0.2em;
             border-radius: 0.2em;
 
             > .display-table-tools {
                 display: table;
-                background-color: rgba(0,60,136,0.1);
+                background-color: rgba(0,60,136,0.6);
                 text-align: center;
                 height: 100%;
                 float: right;
@@ -154,7 +152,7 @@
         left: 10em;
         // width: 20em;
         padding: 1em;
-        line-height: 5em;
+        line-height: 4em;
 
         background-color: rgba(0,60,136,0.9);
 

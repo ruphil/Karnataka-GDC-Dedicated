@@ -1,7 +1,9 @@
 CREATE TABLE filesattachment(
-    ID          SERIAL  PRIMARY KEY,
-    IDENTIFIER  TEXT    NOT NULL,
-    DETAILS     TEXT    NOT NULL,
-    VILLAGE     TEXT,
-    DATA        BYTEA
+    ID              SERIAL  PRIMARY KEY,
+    IDENTIFIER      TEXT    NOT NULL,
+    VILLAGENAME     TEXT    NOT NULL,
+    DETAILS         TEXT    NOT NULL,
+    APPROVED        BOOLEAN NOT NULL,
+    DATA            BYTEA   NOT NULL,
+    SERVERDATE      DATE    NOT NULL DEFAULT CURRENT_DATE
 );

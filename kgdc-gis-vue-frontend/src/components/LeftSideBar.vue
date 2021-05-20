@@ -9,7 +9,7 @@
                 <span class="icon"><span class="material-icons-outlined">people</span></span>
                 <span class="label" v-show="expanded">Users Manager</span>
             </div>
-            <div class="category" title="Marked Settlements" v-on:click="router.push({path: '/markedsettlements'});store.dispatch('setCategoryInfo', 'Update Marked Villages')" v-show="checkRoles(['MARKED_VILLAGES_UPLOADER', 'MARKED_VILLAGES_APPROVER'])">
+            <div class="category" title="Marked Settlements" v-on:click="router.push({path: '/markedsettlements'});store.dispatch('setCategoryInfo', 'Update Marked Villages')" v-show="checkRoles(['STATE_UPLOADER', 'STATE_UPLOADER'])">
                 <span class="icon"><span class="material-icons-outlined">draw</span></span>
                 <span class="label" v-show="expanded">Marked Villages</span>
             </div>
@@ -21,7 +21,7 @@
                 <span class="icon"><span class="material-icons-outlined">flight_takeoff</span></span>
                 <span class="label" v-show="expanded">Flights Manager</span>
             </div>
-            <div class="category" title="Digitized Maps" v-on:click="router.push({path: '/digitizedmaps'});store.dispatch('setCategoryInfo', 'Digitized Maps')" v-show="checkRoles(['CORRECTED_MAP_UPLOADER', 'CORRECTED_MAP_APPROVER'])">
+            <div class="category" title="Digitized Maps" v-on:click="router.push({path: '/digitizedmaps'});store.dispatch('setCategoryInfo', 'Digitized Maps')" v-show="checkRoles(['STATE_UPLOADER', 'STATE_UPLOADER', 'KGDC_UPLOADER', 'KGDC_APPROVER'])">
                 <span class="icon"><span class="material-icons-outlined">map</span></span>
                 <span class="label" v-show="expanded">Digitized Maps</span>
             </div>

@@ -34,9 +34,9 @@ export const getfilelist = (ws: WebSocket, msgObj: any) => {
 export const uploadfile = (ws: WebSocket, msgObj: any) => {
     const { filename, village, details, databytea } = msgObj;
 
-    let insertQuery = `INSERT INTO filesattachment (IDENTIFIER, VILLAGE, DETAILS, DATA) VALUES ($1, $2, $3, $4)`;
-    let insertData = [filename, village, details, databytea];
-    
+    let insertQuery = `INSERT INTO filesattachment (IDENTIFIER, VILLAGENAME, DETAILS, APPROVED, DATA) VALUES ($1, $2, $3, $4, $5)`;
+    let insertData = [filename, village, details, false, databytea];
+
     const client = new Client({ connectionString });
     client.connect();
 

@@ -59,7 +59,7 @@
             <div class="fileuploader">
                 <input class="file" type="file" ref="fileEl"><br>
                 <input class="description" type="text" v-model="filedetails" placeholder="description" size="40"><br>
-                <button class="uploadbtn" v-on:click="calluploadfile">Upload</button>
+                <button class="uploadbtn" v-on:click="calluploadfile" v-bind:disabled="uploadbtndisabled">Upload</button>
             </div>
         </div>
     </div>
@@ -108,12 +108,43 @@ export default defineComponent({
         const currentvillage = computed(() => store.getters.getCurrentVillage);
         const showFileUploader = ref(false);
         const filedetails = ref('');
+        const uploadbtndisabled = ref(false);
 
         const calluploadfile = () => {
             let file = fileEl.value.files[0];
+
+            if (file == undefined){
+                showGlobalToast('Select a File');
+                return 0;
+            }
+
             let details = filedetails.value;
+
+            if (details == ''){
+                showGlobalToast('Enter Some Description');
+                return 0;
+            }
+
             let village = currentvillage.value;
-            uploadfile(file, village, details);
+            if (village == ''){
+                showGlobalToast('Load Villages and Click on One...');
+                return 0;
+            }
+
+            uploadbtndisabled.value = true;
+
+            uploadfile(file, village, details)
+            .then(() => {
+                uploadbtndisabled.value = false;
+                showFileUploader.value = false;
+                filedetails.value = '';
+                fileEl.value.value = '';
+                showGlobalToast('Uploaded File...');
+            })
+            .catch(() => {
+                showGlobalToast('Error Uploading...');
+            })
+            
         }
 
         const filelist = ref();
@@ -129,7 +160,10 @@ export default defineComponent({
             })
         }
 
-        const return2 = { fileEl, currentvillage, showFileUploader, filedetails, calluploadfile, filelist, callgetfilelist };
+        const return2 = {
+            fileEl, currentvillage, showFileUploader, filedetails, 
+            uploadbtndisabled, calluploadfile, filelist, callgetfilelist
+        };
 
         return { ...return0, ...return1, ...return2 }
     },
