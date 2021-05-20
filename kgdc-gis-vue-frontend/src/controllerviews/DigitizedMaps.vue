@@ -1,6 +1,10 @@
 <template>
     <div id="digitizedmaps">
-        
+        <div class="digitizedmapscontainer">
+            <div class="digitizedmaps">
+                <input type="file" />
+            </div>
+        </div>
     </div>
 </template>
 
