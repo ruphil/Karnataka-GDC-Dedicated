@@ -43,10 +43,10 @@
                     <div v-for="(file, index) in filelist" v-bind:key="index">
                         <div>{{ index + 1 }}</div>
                         <div>{{ file.identifier }}</div>
-                        <div>{{ file.village }}</div>
                         <div>{{ file.details }}</div>
-                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_download</span></button></div>
-                        <div>-</div>
+                        <div>{{ file.serverdate }}</div>
+                        <div>{{ file.approved }}</div>
+                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:fileid="file.id">file_download</span></button></div>
                     </div>
                 </div>
             </div>
@@ -132,9 +132,9 @@ export default defineComponent({
                 let lastDot = fileFullname.lastIndexOf('.');
                 let extension = fileFullname.substring(lastDot + 1);
 
-                if(extension == '.pdf'){
+                if(extension == 'pdf'){
                     mimetype.value = 'application/pdf';
-                } else if (extension == '.zip'){
+                } else if (extension == 'zip'){
                     mimetype.value = 'application/zip';
                 } else {
                     fileEl.value.value = '';
@@ -154,14 +154,16 @@ export default defineComponent({
             }
 
             uploadbtndisabled.value = true;
+            showGlobalToast('Uploading file... Please Wait...');
 
-            uploadfile(file, currentvillage.value, filedetails.value, currentuniquevillagecode.value)
+            uploadfile(file, currentvillage.value, filedetails.value, currentuniquevillagecode.value, mimetype.value)
             .then(() => {
                 uploadbtndisabled.value = false;
                 showFileUploader.value = false;
                 filedetails.value = '';
                 fileEl.value.value = '';
                 showGlobalToast('Uploaded File...');
+                callgetfilelist();
             })
             .catch(() => {
                 uploadbtndisabled.value = false;
@@ -179,13 +181,13 @@ export default defineComponent({
                 return 0;
             }
 
-            getfilelist(village)
+            getfilelist(village, currentuniquevillagecode.value)
             .then((res) => {
                 console.log(res);
-                // filelist.value = res;
+                filelist.value = res;
             })
-            .catch((err: Error) => {
-                console.log('error', err.message);
+            .catch(() => {
+                showGlobalToast('Error Fetching Files...');
             })
         }
 

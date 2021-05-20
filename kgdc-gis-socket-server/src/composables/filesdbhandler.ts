@@ -13,17 +13,17 @@ export const downloadfile = (ws: WebSocket, msgObj: any) => {
 }
 
 export const getfilelist = (ws: WebSocket, msgObj: any) => {
-    const { village } = msgObj;
+    const { village, currentuniquevillagecode } = msgObj;
     const client = new Client({ connectionString });
     client.connect();
 
-    let getQuery = `SELECT IDENTIFIER, DETAILS, APPROVED, SERVERDATE FROM filesattachment WHERE VILLAGENAME = ${village}`;
+    let getQuery = `SELECT ID, IDENTIFIER, DETAILS, APPROVED, SERVERDATE FROM filesattachment WHERE VILLAGENAME = '${village}' AND UNIQUEVILLAGECODE = '${currentuniquevillagecode}'`;
     client.query(getQuery)
     .then((res) => {
         ws.send(Buffer.from(JSON.stringify(res.rows)).toString('base64'));
     })
     .catch((err) => {
-        // console.log(err);
+        console.log(err);
         respondWithFailureMsg(ws);
         return 0;
     })
@@ -33,10 +33,10 @@ export const getfilelist = (ws: WebSocket, msgObj: any) => {
 }
 
 export const uploadfile = (ws: WebSocket, msgObj: any) => {
-    const { filename, village, details, currentuniquevillagecode, databytea } = msgObj;
+    const { filename, village, details, currentuniquevillagecode, databytea, mimetype } = msgObj;
 
-    let insertQuery = `INSERT INTO filesattachment (IDENTIFIER, VILLAGENAME, UNIQUEVILLAGECODE, DETAILS, APPROVED, DATA) VALUES ($1, $2, $3, $4, $5, $6)`;
-    let insertData = [filename, village, currentuniquevillagecode, details, false, databytea];
+    let insertQuery = `INSERT INTO filesattachment (IDENTIFIER, VILLAGENAME, UNIQUEVILLAGECODE, DETAILS, APPROVED, DATA, MIMETYPE) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
+    let insertData = [filename, village, currentuniquevillagecode, details, false, databytea, mimetype];
 
     const client = new Client({ connectionString });
     client.connect();
