@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 
-import { getfiles, uploadfile } from './filesdbhandler';
+import { getfilelist, uploadfile } from './filesdbhandler';
 
 const respondWithFailureMsg = (ws: WebSocket) => {
     let responseObj = { requestStatus: 'failure' };
@@ -9,8 +9,8 @@ const respondWithFailureMsg = (ws: WebSocket) => {
 
 export const managefileattachments = (ws: WebSocket, msgObj: any) => {
     switch(msgObj.request){
-        case 'getfiles':
-            getfiles(ws, msgObj);
+        case 'getfilelist':
+            getfilelist(ws, msgObj);
             break;
         case 'uploadfile':
             uploadfile(ws, msgObj);

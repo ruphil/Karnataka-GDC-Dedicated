@@ -3,7 +3,6 @@ import socketClient from '../composables/socketClient';
     
 const userFunctions = () => {
     const { showGlobalToast } = globalToast();
-
     const { makeSocketRequestNClose } = socketClient();
 
     const addUser = (user: string, pass: string) => {

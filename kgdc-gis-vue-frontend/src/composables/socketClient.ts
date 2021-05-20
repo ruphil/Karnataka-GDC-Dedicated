@@ -16,7 +16,7 @@ const socketClient = () => {
             });
 
             ws.addEventListener('error', (event) => {
-                reject('error')
+                reject('error');
             });
 
             ws.addEventListener('open', (event) => {

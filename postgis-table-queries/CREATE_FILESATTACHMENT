@@ -1,6 +1,7 @@
 CREATE TABLE filesattachment(
     ID          SERIAL  PRIMARY KEY,
-    NAME        TEXT    NOT NULL UNIQUE,
-    PASSWORD    TEXT    NOT NULL,
-    ROLES       TEXT
+    IDENTIFIER  TEXT    NOT NULL,
+    DETAILS     TEXT    NOT NULL,
+    VILLAGE     TEXT,
+    DATA        BYTEA
 );
