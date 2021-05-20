@@ -20,6 +20,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/flights',
     component: () => import('@/controllerviews/FlightsManager.vue')
+  },
+  {
+    path: '/digitizedmaps',
+    component: () => import('@/controllerviews/DigitizedMaps.vue')
   }
 ];
 

@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 
 import { getRoles, newregistration } from './usersdbhandler';
-import { displayUsersTable, assignRole, deleteUser,  } from './usersdbhandler';
+import { getUsersTable, assignRole, deleteUser,  } from './usersdbhandler';
 
 const respondWithFailureMsg = (ws: WebSocket) => {
     let responseObj = { requestStatus: 'failure' };
@@ -17,7 +17,7 @@ export const userManager = (ws: WebSocket, msgObj: any) => {
             newregistration(ws, msgObj);
             break;
         case 'userstable':
-            displayUsersTable(ws, msgObj);
+            getUsersTable(ws, msgObj);
             break;
         case 'assignrole':
             assignRole(ws, msgObj);

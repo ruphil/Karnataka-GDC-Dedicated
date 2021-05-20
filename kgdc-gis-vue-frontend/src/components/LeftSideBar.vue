@@ -13,13 +13,17 @@
                 <span class="icon"><span class="material-icons-outlined">draw</span></span>
                 <span class="label" v-show="expanded">Marked Villages</span>
             </div>
-            <div class="category" title="Make Mission Plan" v-on:click="router.push({path: '/missionplan'});store.dispatch('setCategoryInfo', 'Make Mission Plan')">
+            <div class="category" title="Make Mission Plan" v-on:click="router.push({path: '/missionplan'});store.dispatch('setCategoryInfo', 'Make Mission Plan')" v-show="checkRoles(['DRONE_PILOT'])">
                 <span class="icon"><span class="material-icons-outlined">highlight_alt</span></span>
                 <span class="label" v-show="expanded">Mission Planner</span>
             </div>
-            <div class="category" title="Flights Manager" v-on:click="router.push({path: '/flights'});store.dispatch('setCategoryInfo', 'Flights Manager')">
+            <div class="category" title="Flights Manager" v-on:click="router.push({path: '/flights'});store.dispatch('setCategoryInfo', 'Flights Manager')" v-show="checkRoles(['DRONE_PILOT'])">
                 <span class="icon"><span class="material-icons-outlined">flight_takeoff</span></span>
                 <span class="label" v-show="expanded">Flights Manager</span>
+            </div>
+            <div class="category" title="Flights Manager" v-on:click="router.push({path: '/digitizedmaps'});store.dispatch('setCategoryInfo', 'Digitized Maps')" v-show="checkRoles(['CORRECTED_MAP_UPLOADER', 'CORRECTED_MAP_APPROVER'])">
+                <span class="icon"><span class="material-icons-outlined">map</span></span>
+                <span class="label" v-show="expanded">Digitized Maps</span>
             </div>
         </div>
         <div class="expandbtncontainer">
