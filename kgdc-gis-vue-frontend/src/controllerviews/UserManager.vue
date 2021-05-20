@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import './UserManager.scss';
 
 import userFunctions from '@/composables/userFunctions';
@@ -21,10 +21,11 @@ export default defineComponent({
         const user = ref('');
         const pass = ref('');
 
-        const { addUser } = userFunctions();
-        // const addUser = () => {
+        const { addUser, loadUsers } = userFunctions();
 
-        // }
+        onMounted(() => {
+            loadUsers();
+        });
 
         return { user, pass, addUser };
     },
