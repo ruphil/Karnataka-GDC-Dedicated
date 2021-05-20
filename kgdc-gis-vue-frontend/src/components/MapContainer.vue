@@ -77,6 +77,7 @@ export default defineComponent({
                     try {
                         if(layer.get('loadedfromserver') == 'yes'){
                             store.dispatch('setCurrentVillage', attributesData['kgisvill_2']);
+                            store.dispatch('setUniqueVillageCode', attributesData['uniquevill']);
                             store.dispatch('setAttributesData', attributesData);
                         }
                     } catch (e) {}

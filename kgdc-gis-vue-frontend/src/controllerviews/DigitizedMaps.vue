@@ -106,9 +106,20 @@ export default defineComponent({
 
         const fileEl = ref();
         const currentvillage = computed(() => store.getters.getCurrentVillage);
+        const currentuniquevillagecode = computed(() => store.getters.getCurrentUniqueVillageCode);
         const showFileUploader = ref(false);
         const filedetails = ref('');
         const uploadbtndisabled = ref(false);
+
+        const getcurrentmimetype = () => {
+            if(fileEl.value.files[0] == undefined){
+                return '';
+            } else {
+                
+            }
+        }
+
+        const mimetype = ref('');
 
         const calluploadfile = () => {
             let file = fileEl.value.files[0];
@@ -116,24 +127,35 @@ export default defineComponent({
             if (file == undefined){
                 showGlobalToast('Select a File');
                 return 0;
+            } else {
+                let fileFullname = file.name;
+                let lastDot = fileFullname.lastIndexOf('.');
+                let extension = fileFullname.substring(lastDot + 1);
+
+                if(extension == '.pdf'){
+                    mimetype.value = 'application/pdf';
+                } else if (extension == '.zip'){
+                    mimetype.value = 'application/zip';
+                } else {
+                    fileEl.value.value = '';
+                    showGlobalToast('Only PDF / Zip Files are Supported');
+                    return 0;
+                }
             }
 
-            let details = filedetails.value;
-
-            if (details == ''){
+            if (filedetails.value == ''){
                 showGlobalToast('Enter Some Description');
                 return 0;
             }
 
-            let village = currentvillage.value;
-            if (village == ''){
+            if (currentvillage.value == '' || currentuniquevillagecode.value == ''){
                 showGlobalToast('Load Villages and Click on One...');
                 return 0;
             }
 
             uploadbtndisabled.value = true;
 
-            uploadfile(file, village, details)
+            uploadfile(file, currentvillage.value, filedetails.value, currentuniquevillagecode.value)
             .then(() => {
                 uploadbtndisabled.value = false;
                 showFileUploader.value = false;
@@ -142,6 +164,7 @@ export default defineComponent({
                 showGlobalToast('Uploaded File...');
             })
             .catch(() => {
+                uploadbtndisabled.value = false;
                 showGlobalToast('Error Uploading...');
             })
             
@@ -150,7 +173,13 @@ export default defineComponent({
         const filelist = ref();
 
         const callgetfilelist = () => {
-            getfilelist()
+            let village = currentvillage.value;
+            if (village == ''){
+                showGlobalToast('Load Villages and Click on One...');
+                return 0;
+            }
+
+            getfilelist(village)
             .then((res) => {
                 console.log(res);
                 // filelist.value = res;

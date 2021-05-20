@@ -11,8 +11,8 @@ const socketClient = () => {
                 // console.log(event.data);
                 let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
                 console.log(responseObj);
-                ws.close();
                 resolve(responseObj);
+                ws.close();
             });
 
             ws.addEventListener('error', (event) => {

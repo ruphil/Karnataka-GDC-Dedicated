@@ -5,7 +5,7 @@ const fileuploader = () => {
     const { showGlobalToast } = globalToast();
     const { makeSocketRequestNClose } = socketClient();
 
-    const uploadfile = (file: any, village: any, details: any) => {
+    const uploadfile = (file: any, village: any, details: any, currentuniquevillagecode: any) => {
         return new Promise((resolve, reject) => {
             let filename = file.name;
 
@@ -14,7 +14,7 @@ const fileuploader = () => {
                 // console.log(reader.result);
                 let arrayBuffer = <ArrayBuffer>reader.result;
                 let bytes = new Uint8Array(arrayBuffer);
-                console.log(bytes);
+                // console.log(bytes);
                 
                 let registrationObj = {
                     requesttype: 'filesattachment',
@@ -22,6 +22,7 @@ const fileuploader = () => {
                     filename,
                     village,
                     details,
+                    currentuniquevillagecode,
                     databytea: bytes
                 };
         
@@ -41,11 +42,12 @@ const fileuploader = () => {
         });
     }
 
-    const getfilelist = () => {
+    const getfilelist = (village: any) => {
         return new Promise((resolve, reject) => {
             let registrationObj = {
                 requesttype: 'filesattachment',
-                request: 'getfilelist'
+                request: 'getfilelist',
+                village
             };
     
             makeSocketRequestNClose(registrationObj)

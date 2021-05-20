@@ -14,6 +14,7 @@ export default createStore({
     attributesData: [],
     karnboundsLoaded: false,
     currentvillage: '',
+    currentuniquevillagecode: '',
   },
   getters: {
     getWSURLBase(state){
@@ -51,6 +52,9 @@ export default createStore({
     },
     getCurrentVillage(state){
       return state.currentvillage
+    },
+    getCurrentUniqueVillageCode(state){
+      return state.currentuniquevillagecode
     }
   },
   mutations: {
@@ -83,6 +87,9 @@ export default createStore({
     },
     setCurrentVillage(state, currentvillage){
       state.currentvillage = currentvillage;
+    },
+    setUniqueVillageCode(state, currentuniquevillagecode){
+      state.currentuniquevillagecode = currentuniquevillagecode;
     }
   },
   actions: {
@@ -115,6 +122,9 @@ export default createStore({
     },
     setCurrentVillage(context, currentvillage){
       context.commit('setCurrentVillage', currentvillage);
+    },
+    setUniqueVillageCode(context, currentlgd){
+      context.commit('setUniqueVillageCode', currentlgd);
     },
   },
   modules: {
