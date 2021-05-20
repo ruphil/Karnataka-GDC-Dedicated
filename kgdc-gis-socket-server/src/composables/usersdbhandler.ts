@@ -13,31 +13,37 @@ const respondWithFailureMsg = (ws: WebSocket) => {
     password    kgdcgis
 */
 
-const isAdmin = (msgObj: any) => {
-    if(msgObj.username == 'gisadmin' && msgObj.password == 'kgdcgis'){
-        return true;
-    } else return false;
+const checkAdminUser = (msgObj: any) => {
+    return new Promise((resolve, reject) => {
+        if(msgObj.username == 'gisadmin' && msgObj.password == 'kgdcgis'){
+            resolve({ isAdmin: true });
+        } else {
+            reject({ isAdmin: false });
+        }
+    });
 }
 
 export const getRoles = (ws: WebSocket, msgObj: any) => {
-    if(isAdmin(msgObj)){
+    checkAdminUser(msgObj)
+    .then((res: any) => {
         let responseObj = { requestStatus: 'success', isAdmin: true, roles: ['ALL'] };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    } else {
+    })
+    .catch((res: any) => {
         console.log('Not Admin');
-        checkValidUser(msgObj.username, msgObj.password)
+        checkValidUserNGetRoles(msgObj.username, msgObj.password)
         .then((res: any) => {
             let responseObj = { requestStatus: 'success', validUser: true, roles: res.roles };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((res: any) => {
-            let responseObj = { requestStatus: 'success', validUser: false };
+            let responseObj = { requestStatus: 'failure', validUser: false };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         });
-    }
+    });
 }
 
-const checkValidUser = (username: string, password: string) => {
+const checkValidUserNGetRoles = (username: string, password: string) => {
     return new Promise((resolve, reject) => {
         const client = new Client({ connectionString });
         client.connect();
@@ -50,7 +56,8 @@ const checkValidUser = (username: string, password: string) => {
 
             if(rows.length == 1){
                 let row = rows[0];
-                resolve({ querySuccess: true, validUser: true, roles: row.roles });
+                let roles = row.roles.split(',');
+                resolve({ querySuccess: true, validUser: true, roles });
             } else {
                 reject({ querySuccess: true, validUser: false });
             }
@@ -67,9 +74,8 @@ const checkValidUser = (username: string, password: string) => {
 }
 
 export const newregistration = async (ws: WebSocket, msgObj: any) => {
-    let insertQuery = `INSERT INTO kgdcusers (Name, MobileNumber, Password, UUID, ROLES) VALUES ($1, $2, $3, $4, $5)`;
+    let insertQuery = `INSERT INTO userstable (NAME, PASSWORD, ROLES) VALUES ($1, $2, $3)`;
     let { name, mobilenumber, password, UUID } = msgObj;
-    let insertData = [name, mobilenumber, password, UUID, ''];
     
     const client = new Client({ connectionString });
     client.connect();
@@ -89,50 +95,10 @@ export const newregistration = async (ws: WebSocket, msgObj: any) => {
     });
 }
 
-export const logAttendance = (ws: WebSocket, msgObj: any) => {
-    let { mobilenumber, password } = msgObj;
-    
-    checkValidUser(mobilenumber, password)
-    .then((res: any) => {
-        let insertQuery = `INSERT INTO kgdcfieldattendanceregister (SERVERDATE, SERVERTIME, CLIENTDATE, CLIENTTIME, NAME, ATTENDANCETYPE, REMARKS, 
-            MOBILENUMBER, UUID, LATITUDE, LONGITUDE, ACCURACY) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;
-        
-        let dateNow = new Date();
-        let serverdate = dateNow.toLocaleDateString('en-GB');
-        let servertime = dateNow.toLocaleTimeString('en-GB');
-    
-        let { clientdate, clienttime, name, attendancetype, remarks, mobilenumber, UUID } = msgObj;
-        let { latitude, longitude, accuracy } = msgObj;
-    
-        let insertData = [serverdate, servertime, clientdate, clienttime, name, attendancetype, remarks, mobilenumber, UUID, latitude, longitude, accuracy];
-        
-        const client = new Client({ connectionString });
-        client.connect();
-    
-        client.query(insertQuery, insertData)
-        .then(() => {
-            let responseObj = { requestStatus: 'success', action: 'attendanceentered' };
-            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-        })
-        .catch((err) => {
-            // console.log(err);
-            respondWithFailureMsg(ws);
-            return 0;
-        })
-        .finally(() => {
-            client.end();
-        });
-    })
-    .catch((res: any) => {
-        let responseObj = { requestStatus: 'success', validUser: false };
-        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    });
-}
-
 // Admin Logics
 
 export const displayUsersTable = (ws: WebSocket, msgObj: any) => {
-    checkAdminUser(msgObj.user, msgObj.pass)
+    checkAdminUser(msgObj)
     .then((res: any) => {
         const client = new Client({ connectionString });
         client.connect();
@@ -155,12 +121,10 @@ export const displayUsersTable = (ws: WebSocket, msgObj: any) => {
         let responseObj = { requestStatus: 'success', ...res }
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
-
-    
 }
 
 export const assignRole = (ws: WebSocket, msgObj: any) => {
-    checkAdminUser(msgObj.user, msgObj.pass)
+    checkAdminUser(msgObj)
     .then((res: any) => {
         const client = new Client({ connectionString });
         client.connect();
@@ -190,7 +154,7 @@ export const assignRole = (ws: WebSocket, msgObj: any) => {
 }
 
 export const deleteUser = (ws: WebSocket, msgObj: any) => {
-    checkAdminUser(msgObj.user, msgObj.pass)
+    checkAdminUser(msgObj)
     .then((res: any) => {
         const client = new Client({ connectionString });
         client.connect();
@@ -211,59 +175,6 @@ export const deleteUser = (ws: WebSocket, msgObj: any) => {
         .finally(() => {
             client.end();
         });
-    })
-    .catch((res: any) => {
-        let responseObj = { requestStatus: 'success', ...res }
-        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    });
-}
-
-export const getAttendanceRegister = (ws: WebSocket, msgObj: any) => {
-    checkAdminUser(msgObj.user, msgObj.pass)
-    .then((res: any) => {
-        let rowscount = msgObj.rowscount;
-
-        const client = new Client({ connectionString });
-        client.connect();
-
-        let getQuery = `SELECT SERVERDATE, SERVERTIME, CLIENTDATE, CLIENTTIME, NAME, ATTENDANCETYPE, REMARKS, 
-        MOBILENUMBER, UUID, LATITUDE, LONGITUDE, ACCURACY FROM kgdcfieldattendanceregister ORDER BY ID DESC LIMIT ${rowscount};`;
-        
-        client.query(getQuery)
-        .then((res) => {
-            ws.send(Buffer.from(JSON.stringify(res.rows)).toString('base64'));
-        })
-        .catch((err) => {
-            // console.log(err);
-            respondWithFailureMsg(ws);
-            return 0;
-        })
-        .finally(() => {
-            client.end();
-        });
-    })
-    .catch((res: any) => {
-        let responseObj = { requestStatus: 'success', ...res }
-        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    });
-    
-}
-
-const checkAdminUser = (user: string, pass: string) => {
-    return new Promise((resolve, reject) => {
-        if(user == 'admin' && pass == 'dbadminkgdc'){
-            resolve({ isAdmin: true });
-        } else {
-            reject({ isAdmin: false });
-        }
-    });
-}
-
-export const checkAdmin = (ws: WebSocket, msgObj: any) => {
-    checkAdminUser(msgObj.user, msgObj.pass)
-    .then((res: any) => {
-        let responseObj = { requestStatus: 'success', ...res }
-        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((res: any) => {
         let responseObj = { requestStatus: 'success', ...res }

@@ -12,7 +12,7 @@ const userLoginCheck = () => {
             ws.addEventListener('message', (event) => {
                 // console.log(event.data);
                 let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
-                // console.log(responseObj);
+                console.log(responseObj);
                 if (responseObj.requestStatus == 'success'){
                     resolve(responseObj);
                 } else {
@@ -26,8 +26,7 @@ const userLoginCheck = () => {
                     requesttype: 'usermanagement',
                     request: 'getroles',
                     username,
-                    password,
-                    roleSingle: 'ALL'
+                    password
                 }
                 ws.send(Buffer.from(JSON.stringify(registrationObj)).toString('base64'));
             });

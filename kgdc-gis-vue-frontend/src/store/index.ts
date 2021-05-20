@@ -10,7 +10,7 @@ export default createStore({
     isLoggedIn: false,
     username: '',
     password: '',
-    roles: ['ALL'],
+    roles: [],
     attributesData: [],
     karnboundsLoaded: false,
   },

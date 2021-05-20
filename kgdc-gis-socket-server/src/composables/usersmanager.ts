@@ -1,11 +1,7 @@
 import WebSocket from 'ws';
-import { Client } from 'pg';
 
 import { getRoles, newregistration } from './usersdbhandler';
-import { checkAdmin,  getAttendanceRegister } from './usersdbhandler';
 import { displayUsersTable, assignRole, deleteUser,  } from './usersdbhandler';
-
-const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
 const respondWithFailureMsg = (ws: WebSocket) => {
     let responseObj = { requestStatus: 'failure' };
@@ -20,14 +16,8 @@ export const userManager = (ws: WebSocket, msgObj: any) => {
         case 'newregistration':
             newregistration(ws, msgObj);
             break;
-        case 'checkadmin':
-            checkAdmin(ws, msgObj);
-            break;
         case 'userstable':
             displayUsersTable(ws, msgObj);
-            break;
-        case 'attendanceregister':
-            getAttendanceRegister(ws, msgObj);
             break;
         case 'assignrole':
             assignRole(ws, msgObj);
@@ -35,5 +25,8 @@ export const userManager = (ws: WebSocket, msgObj: any) => {
         case 'deleteuser':
             deleteUser(ws, msgObj);
             break;
+        default:
+            // To clearly inform the Unanonymous Users Requesting Without Base64 String
+            respondWithFailureMsg(ws);
     }
 }

@@ -32,7 +32,7 @@
 <script lang="ts">
 import router from '@/router';
 import store from '@/store';
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, ref, computed, onMounted } from 'vue';
 
 import globalToast from '../composables/globalToast';
 import userLoginCheck from '../composables/userLoginCheck';
@@ -62,12 +62,27 @@ export default defineComponent({
       window.localStorage.setItem('globalpassword', loginpassword.value);
     }
 
-    const doLogin = (): void => {
-      loginMsg.value = 'Please Wait...';
+    const loadCredentials = () => {
+      let globalusername = window.localStorage.getItem('globalusername');
+      let globalpassword = window.localStorage.getItem('globalpassword');
+      // console.log(globalusername, globalpassword);
 
+      if(globalusername != undefined && globalpassword != undefined){
+        callAuthenticationPromiseFunction();
+      }
+    }
+
+    onMounted(() => {
+      loadCredentials();
+    });
+
+    const callAuthenticationPromiseFunction = () => {
       doAuthentication(loginusername.value, loginpassword.value)
       .then((responseObj: any) => {
         let roles = responseObj.roles;
+        console.log(roles);
+        
+        store.dispatch('setUserRoles', roles);
         
         doLoggedInTasks();
         showGlobalToast('Login Successful...');
@@ -76,10 +91,17 @@ export default defineComponent({
         loginpassword.value = '';
 
         showGlobalToast('Invalid Username / Password...');
+        window.localStorage.removeItem('globalusername');
+        window.localStorage.removeItem('globalpassword');
       })
       .finally(() => {
         loginMsg.value = 'Press Enter To Continue...';
-      })
+      });
+    }
+
+    const doLogin = (): void => {
+      loginMsg.value = 'Please Wait...';
+      callAuthenticationPromiseFunction();
     }
 
     const doLogout = () => {
