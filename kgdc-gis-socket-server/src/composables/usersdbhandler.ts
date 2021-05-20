@@ -74,25 +74,25 @@ const checkValidUserNGetRoles = (username: string, password: string) => {
 }
 
 export const newregistration = async (ws: WebSocket, msgObj: any) => {
-    let insertQuery = `INSERT INTO userstable (NAME, PASSWORD, ROLES) VALUES ($1, $2, $3)`;
-    let { name, mobilenumber, password, UUID } = msgObj;
+    // let insertQuery = `INSERT INTO userstable (NAME, PASSWORD, ROLES) VALUES ($1, $2, $3)`;
+    // let { name, mobilenumber, password, UUID } = msgObj;
     
-    const client = new Client({ connectionString });
-    client.connect();
+    // const client = new Client({ connectionString });
+    // client.connect();
 
-    client.query(insertQuery, insertData)
-    .then(() => {
-        let responseObj = { requestStatus: 'success', action: 'registered' };
-        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    })
-    .catch((err) => {
-        console.log(err);
-        respondWithFailureMsg(ws);
-        return 0;
-    })
-    .finally(() => {
-        client.end();
-    });
+    // client.query(insertQuery, insertData)
+    // .then(() => {
+    //     let responseObj = { requestStatus: 'success', action: 'registered' };
+    //     ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    // })
+    // .catch((err) => {
+    //     console.log(err);
+    //     respondWithFailureMsg(ws);
+    //     return 0;
+    // })
+    // .finally(() => {
+    //     client.end();
+    // });
 }
 
 // Admin Logics
