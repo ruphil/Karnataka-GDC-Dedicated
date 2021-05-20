@@ -56,14 +56,14 @@ export const checkValidUserNGetRoles = (ws: WebSocket, msgObj: any) => {
                 if(rows.length == 1){
                     let row = rows[0];
                     let roles = row.roles.split(',');
-                    resolve({ querySuccess: true, validUser: true, roles });
+                    resolve({ requestStatus: 'success', validUser: true, roles });
                 } else {
-                    reject({ querySuccess: true, validUser: false });
+                    reject({ requestStatus: 'failure', validUser: false });
                 }
             })
             .catch((err) => {
                 // console.log(err);
-                reject({ querySuccess: false, validUser: false });
+                reject({ requestStatus: 'failure', validUser: false });
                 return 0;
             })
             .finally(() => {
@@ -97,7 +97,7 @@ export const newregistration = async (ws: WebSocket, msgObj: any) => {
 
 // Admin Logics
 
-export const displayUsersTable = (ws: WebSocket, msgObj: any) => {
+export const getUsersTable = (ws: WebSocket, msgObj: any) => {
     checkAdminUser(msgObj)
     .then((res: any) => {
         const client = new Client({ connectionString });
