@@ -63,11 +63,15 @@ export default defineComponent({
     }
 
     const loadCredentials = () => {
-      let globalusername = window.localStorage.getItem('globalusername');
-      let globalpassword = window.localStorage.getItem('globalpassword');
+      let globalusername = window.localStorage.getItem('globalusername')!;
+      let globalpassword = window.localStorage.getItem('globalpassword')!;
       // console.log(globalusername, globalpassword);
 
+      loginusername.value = globalusername;
+      loginpassword.value = globalpassword;
+
       if(globalusername != undefined && globalpassword != undefined){
+        console.log('came here 2');
         callAuthenticationPromiseFunction();
       }
     }
@@ -80,6 +84,7 @@ export default defineComponent({
       doAuthentication(loginusername.value, loginpassword.value)
       .then((responseObj: any) => {
         let roles = responseObj.roles;
+        console.log('came here 1');
         console.log(roles);
         
         store.dispatch('setUserRoles', roles);
