@@ -1,14 +1,17 @@
 import WebSocket from 'ws';
 import { Client } from 'pg';
 
-const connectionString = 'postgres://postgres:philosopher@localhost:5432/kgdcdb';
+const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
 const respondWithFailureMsg = (ws: WebSocket) => {
     let responseObj = { requestStatus: 'failure' };
     ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
 }
 
-// User Logics
+/* Admin Credentials:
+    username    gisadmin
+    password    kgdcgis
+*/
 
 const isAdmin = (msgObj: any) => {
     if(msgObj.username == 'gisadmin' && msgObj.password == 'kgdcgis'){
@@ -22,40 +25,33 @@ export const getRoles = (ws: WebSocket, msgObj: any) => {
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     } else {
         console.log('Not Admin');
+        checkValidUser(msgObj.username, msgObj.password)
+        .then((res: any) => {
+            let responseObj = { requestStatus: 'success', validUser: true, roles: res.roles };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .catch((res: any) => {
+            let responseObj = { requestStatus: 'success', validUser: false };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        });
     }
 }
 
-const checkValidUser = (mobilenumber: string, password: string) => {
+const checkValidUser = (username: string, password: string) => {
     return new Promise((resolve, reject) => {
         const client = new Client({ connectionString });
         client.connect();
 
-        let getQuery = `SELECT NAME, MOBILENUMBER, PASSWORD, ROLES FROM kgdcusers`;
+        let getQuery = `SELECT NAME, PASSWORD, ROLES FROM userstable where NAME='${username}' and PASSWORD='${password}'`;
         client.query(getQuery)
         .then((res) => {
             let rows = res.rows;
+            console.log(rows);
 
-            let userFound = false;
-            for (let i = 0; i < rows.length; i++){
-                let row = rows[i];
-                
-                let hasRole = false;
-                let roles = row.roles;
-                if(roles != undefined && roles != ''){
-                    let rolesArry = roles.split(',');
-                    if(rolesArry.includes('attendance')){
-                        hasRole = true;
-                    }
-                }
-                
-                if(row.mobilenumber == mobilenumber && row.password == password && hasRole){
-                    userFound = true;
-                    resolve({ querySuccess: true, validUser: true, name: row.name });
-                    return 0;
-                }
-            }
-            
-            if(!userFound){
+            if(rows.length == 1){
+                let row = rows[0];
+                resolve({ querySuccess: true, validUser: true, roles: row.roles });
+            } else {
                 reject({ querySuccess: true, validUser: false });
             }
         })
@@ -67,20 +63,6 @@ const checkValidUser = (mobilenumber: string, password: string) => {
         .finally(() => {
             client.end();
         });
-    });
-}
-
-export const checkUser = (ws: WebSocket, msgObj: any) => {
-    let { mobilenumber, password } = msgObj;
-    
-    checkValidUser(mobilenumber, password)
-    .then((res: any) => {
-        let responseObj = { requestStatus: 'success', validUser: true, name: res.name };
-        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    })
-    .catch((res: any) => {
-        let responseObj = { requestStatus: 'success', validUser: false };
-        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }
 

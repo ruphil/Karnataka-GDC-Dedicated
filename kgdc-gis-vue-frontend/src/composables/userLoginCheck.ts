@@ -23,9 +23,11 @@ const userLoginCheck = () => {
             });
             ws.addEventListener('open', (event) => {
                 let registrationObj = {
-                    requesttype: 'getroles',
+                    requesttype: 'usermanagement',
+                    request: 'getroles',
                     username,
-                    password
+                    password,
+                    roleSingle: 'ALL'
                 }
                 ws.send(Buffer.from(JSON.stringify(registrationObj)).toString('base64'));
             });

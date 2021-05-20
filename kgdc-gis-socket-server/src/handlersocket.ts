@@ -16,7 +16,7 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
                 userManager(ws, msgObj);
                 break;
             default:
-                // To clearly inform the Unanonymous Users Without Base64 String
+                // To clearly inform the Unanonymous Users Requesting Without Base64 String
                 ws.send('Invalid Request');
         }
     });

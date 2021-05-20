@@ -12,11 +12,6 @@ const respondWithFailureMsg = (ws: WebSocket) => {
     ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
 }
 
-/* Admin Credentials:
-    username    gisadmin
-    password    kgdcgis
-*/
-
 export const userManager = (ws: WebSocket, msgObj: any) => {
     switch(msgObj.request){
         case 'getroles':

@@ -21,13 +21,15 @@ const userFunctions = () => {
             }
             ws.close();
         });
+        
         ws.addEventListener('open', (event) => {
             let registrationObj = {
                 requesttype: 'usermanagement',
                 request: 'adduser',
                 user,
                 pass
-            }
+            };
+            
             ws.send(Buffer.from(JSON.stringify(registrationObj)).toString('base64'));
         });
     }
