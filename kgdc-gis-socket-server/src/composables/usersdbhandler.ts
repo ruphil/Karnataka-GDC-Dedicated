@@ -24,51 +24,51 @@ const checkAdminUser = (msgObj: any) => {
 }
 
 export const getRoles = (ws: WebSocket, msgObj: any) => {
-    checkAdminUser(msgObj)
-    .then((res: any) => {
-        let responseObj = { requestStatus: 'success', isAdmin: true, roles: ['ALL'] };
+    checkValidUserNGetRoles(ws, msgObj)
+    .then((responseObj: any) => {
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((res: any) => {
-        console.log('Not Admin');
-        checkValidUserNGetRoles(msgObj.username, msgObj.password)
-        .then((res: any) => {
-            let responseObj = { requestStatus: 'success', validUser: true, roles: res.roles };
-            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-        })
-        .catch((res: any) => {
-            let responseObj = { requestStatus: 'failure', validUser: false };
-            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-        });
+        let responseObj = { requestStatus: 'failure', validUser: false };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }
 
-const checkValidUserNGetRoles = (username: string, password: string) => {
+export const checkValidUserNGetRoles = (ws: WebSocket, msgObj: any) => {
     return new Promise((resolve, reject) => {
-        const client = new Client({ connectionString });
-        client.connect();
-
-        let getQuery = `SELECT NAME, PASSWORD, ROLES FROM userstable where NAME='${username}' and PASSWORD='${password}'`;
-        client.query(getQuery)
-        .then((res) => {
-            let rows = res.rows;
-            console.log(rows);
-
-            if(rows.length == 1){
-                let row = rows[0];
-                let roles = row.roles.split(',');
-                resolve({ querySuccess: true, validUser: true, roles });
-            } else {
-                reject({ querySuccess: true, validUser: false });
-            }
+        checkAdminUser(msgObj)
+        .then((res: any) => {
+            let responseObj = { requestStatus: 'success', isAdmin: true, roles: ['ALL'] };
+            resolve(responseObj);
         })
-        .catch((err) => {
-            // console.log(err);
-            reject({ querySuccess: false, validUser: false });
-            return 0;
-        })
-        .finally(() => {
-            client.end();
+        .catch((res: any) => {
+            const { username, password } = msgObj;
+            
+            const client = new Client({ connectionString });
+            client.connect();
+
+            let getQuery = `SELECT NAME, PASSWORD, ROLES FROM userstable where NAME='${username}' and PASSWORD='${password}'`;
+            client.query(getQuery)
+            .then((res) => {
+                let rows = res.rows;
+                console.log(rows);
+
+                if(rows.length == 1){
+                    let row = rows[0];
+                    let roles = row.roles.split(',');
+                    resolve({ querySuccess: true, validUser: true, roles });
+                } else {
+                    reject({ querySuccess: true, validUser: false });
+                }
+            })
+            .catch((err) => {
+                // console.log(err);
+                reject({ querySuccess: false, validUser: false });
+                return 0;
+            })
+            .finally(() => {
+                client.end();
+            });
         });
     });
 }

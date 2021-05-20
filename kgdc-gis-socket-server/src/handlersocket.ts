@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 
 import { userManager } from './composables/usersmanager';
-import { getGeoJson } from './composables/postgisdriver';
+import { getGeoJson } from './composables/getgeojsons';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{

@@ -1,6 +1,8 @@
 import WebSocket from 'ws';
 import { Client } from 'pg';
 
+import { checkValidUserNGetRoles } from './usersdbhandler';
+
 const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
 const respondWithFailureMsg = (ws: WebSocket) => {
@@ -30,21 +32,28 @@ export const getGeoJson = (ws: WebSocket, msgObj: any) => {
       ) AS feature
     FROM (${queryVariant}) inputs) features;`;
 
-    const client = new Client({ connectionString });
-    client.connect();
+    checkValidUserNGetRoles(ws, msgObj)
+    .then((responseObj: any) => {
+        const client = new Client({ connectionString });
+        client.connect();
 
-    client.query(getQuery)
-    .then((res) => {
-        let featureCollection = res.rows[0].jsonb_build_object;
-        let responseObj = { requestStatus: 'success', isAdmin: true, featureCollection };
+        client.query(getQuery)
+        .then((res) => {
+            let featureCollection = res.rows[0].jsonb_build_object;
+            let responseObj = { requestStatus: 'success', isAdmin: true, featureCollection };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .catch((err) => {
+            console.log(err);
+            respondWithFailureMsg(ws);
+            return 0;
+        })
+        .finally(() => {
+            client.end();
+        });
+    })
+    .catch((res: any) => {
+        let responseObj = { requestStatus: 'failure', validUser: false };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    })
-    .catch((err) => {
-        console.log(err);
-        respondWithFailureMsg(ws);
-        return 0;
-    })
-    .finally(() => {
-        client.end();
     });
 }
