@@ -2,6 +2,7 @@ import WebSocket from 'ws';
 
 import { userManager } from './composables/usersmanager';
 import { getGeoJson } from './composables/getgeojsons';
+import { managefileattachments } from './composables/fileattachmentsmanager';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -14,6 +15,9 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
                 break;
             case 'usermanagement':
                 userManager(ws, msgObj);
+                break;
+            case 'filesattachment':
+                managefileattachments(ws, msgObj);
                 break;
             default:
                 // To clearly inform the Unanonymous Users Requesting Without Base64 String
