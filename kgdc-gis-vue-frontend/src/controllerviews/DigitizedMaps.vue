@@ -45,7 +45,7 @@
                         <div>{{ file.identifier }}</div>
                         <div>{{ file.details }}</div>
                         <div>{{ file.serverdate }}</div>
-                        <div v-html="getApproveRole(file.approved)"></div>
+                        <div v-html="getApproveRole(file.approved)" v-bind:fileid="file.id"></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:fileid="file.id">file_download</span></button></div>
                     </div>
                 </div>
@@ -115,7 +115,8 @@ export default defineComponent({
 
         const getApproveRole = computed(() => {
             return (fileApproved: any) => {
-                if(fileApproved == 'false'){
+                console.log(fileApproved);
+                if(fileApproved == false){
                     if(roles.value.includes('KGDC_APPROVER') || roles.value.includes('STATE_APPROVER')){
                         return '<button class="olbtns" v-on:click="approveFile">Approve</button>'
                     } else {
