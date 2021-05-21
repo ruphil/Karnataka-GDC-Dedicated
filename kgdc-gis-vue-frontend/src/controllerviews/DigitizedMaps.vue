@@ -45,7 +45,7 @@
                         <div>{{ file.identifier }}</div>
                         <div>{{ file.details }}</div>
                         <div>{{ file.serverdate }}</div>
-                        <div v-html="getApproveRole(file.approved)" v-bind:fileid="file.id"></div>
+                        <div v-html="getApproveRole(file.approved, file.id)" v-on:click="callapproveFile" v-bind:fileid="file.id"></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:fileid="file.id">file_download</span></button></div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@ export default defineComponent({
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
         const { showGlobalToast } = globalToast();
-        const { uploadfile, getfilelist } = filemanager();
+        const { uploadfile, getfilelist, approvefile, downloadfile } = filemanager();
 
         const return0 = { unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
 
@@ -118,7 +118,7 @@ export default defineComponent({
                 console.log(fileApproved);
                 if(fileApproved == false){
                     if(roles.value.includes('KGDC_APPROVER') || roles.value.includes('STATE_APPROVER')){
-                        return '<button class="olbtns" v-on:click="approveFile">Approve</button>'
+                        return '<button class="olbtns">Approve</button>'
                     } else {
                         return '<span style="color:red;">Not Approved</span>'
                     }
@@ -212,10 +212,16 @@ export default defineComponent({
             })
         }
 
+        const callapproveFile = (e: any) => {
+            let fileid = e.target.parentNode.getAttribute('fileid');
+
+            approvefile(fileid)
+        }
+
         const return2 = {
             fileEl, currentvillage, showFileUploader, filedetails, 
-            uploadbtndisabled, getApproveRole,
-            calluploadfile, filelist, callgetfilelist
+            uploadbtndisabled, getApproveRole, 
+            calluploadfile, filelist, callgetfilelist, callapproveFile
         };
 
         return { ...return0, ...return1, ...return2 }

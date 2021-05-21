@@ -16,7 +16,7 @@ const fileuploader = () => {
                 let bytes = new Uint8Array(arrayBuffer);
                 // console.log(bytes);
                 
-                let registrationObj = {
+                let requestObj = {
                     requesttype: 'filesattachment',
                     request: 'uploadfile',
                     filename,
@@ -28,7 +28,7 @@ const fileuploader = () => {
                     rolecalculated
                 };
         
-                makeSocketRequestNClose(registrationObj)
+                makeSocketRequestNClose(requestObj)
                 .then((responseObj: any) => {
                     if (responseObj.requestStatus == 'success'){
                         resolve(0);
@@ -46,14 +46,14 @@ const fileuploader = () => {
 
     const getfilelist = (village: any, currentuniquevillagecode: any) => {
         return new Promise((resolve, reject) => {
-            let registrationObj = {
+            let requestObj = {
                 requesttype: 'filesattachment',
                 request: 'getfilelist',
                 village,
                 currentuniquevillagecode
             };
     
-            makeSocketRequestNClose(registrationObj)
+            makeSocketRequestNClose(requestObj)
             .then((responseObj: any) => {
                 resolve(responseObj);
             })
@@ -63,7 +63,15 @@ const fileuploader = () => {
         });
     }
 
-    return { uploadfile, getfilelist }
+    const approvefile = (fileid: any) => {
+
+    }
+
+    const downloadfile = (fileid: any) => {
+
+    }
+
+    return { uploadfile, getfilelist, approvefile, downloadfile }
 }
 
 export default fileuploader;

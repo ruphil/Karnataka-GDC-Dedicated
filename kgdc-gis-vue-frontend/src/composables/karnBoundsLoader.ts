@@ -35,13 +35,13 @@ const karnBoundsLoader = () => {
                 ws.close();
             });
             ws.addEventListener('open', (event) => {
-                let registrationObj = {
+                let requestObj = {
                     requesttype: 'getgeojson',
                     layer: 'karnatakaboundary',
                     username,
                     password
                 }
-                ws.send(Buffer.from(JSON.stringify(registrationObj)).toString('base64'));
+                ws.send(Buffer.from(JSON.stringify(requestObj)).toString('base64'));
             });
         }
     }
