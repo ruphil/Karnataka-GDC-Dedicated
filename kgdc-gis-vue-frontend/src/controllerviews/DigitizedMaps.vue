@@ -111,15 +111,42 @@ export default defineComponent({
         const filedetails = ref('');
         const uploadbtndisabled = ref(false);
 
+        const roles = computed(() => store.getters.getUserRoles);
+
         const getApproveRole = computed(() => {
             return (fileApproved: any) => {
-                
+                if(fileApproved == 'false'){
+                    if(roles.value.includes('KGDC_APPROVER') || roles.value.includes('STATE_APPROVER')){
+                        return '<button class="olbtns" v-on:click="approveFile">Approve</button>'
+                    } else {
+                        return '<span style="color:red;">Not Approved</span>'
+                    }
+                } else {
+                    return '<span style="color:green;">Approved</span>';
+                }
             }
         });
 
         const mimetype = ref('');
 
+        const rolecalculated = computed(() => {
+            if(roles.value.includes('KGDC_APPROVER')){
+                return 'KGDC_APPROVER';
+            } else if (roles.value.includes('KGDC_UPLOADER')) {
+                return 'KGDC_UPLOADER';
+            } else if (roles.value.includes('STATE_APPROVED')) {
+                return 'STATE_APPROVED';
+            } else if (roles.value.includes('STATE_UPLOADER')) {
+                return 'STATE_UPLOADER';
+            }
+        });
+
         const calluploadfile = () => {
+            if (currentvillage.value == '' || currentuniquevillagecode.value == ''){
+                showGlobalToast('Load Villages and Click on One...');
+                return 0;
+            }
+
             let file = fileEl.value.files[0];
 
             if (file == undefined){
@@ -146,15 +173,10 @@ export default defineComponent({
                 return 0;
             }
 
-            if (currentvillage.value == '' || currentuniquevillagecode.value == ''){
-                showGlobalToast('Load Villages and Click on One...');
-                return 0;
-            }
-
             uploadbtndisabled.value = true;
             showGlobalToast('Uploading file... Please Wait...');
 
-            uploadfile(file, currentvillage.value, filedetails.value, currentuniquevillagecode.value, mimetype.value)
+            uploadfile(file, currentvillage.value, filedetails.value, currentuniquevillagecode.value, mimetype.value, rolecalculated.value)
             .then(() => {
                 uploadbtndisabled.value = false;
                 showFileUploader.value = false;
@@ -191,7 +213,8 @@ export default defineComponent({
 
         const return2 = {
             fileEl, currentvillage, showFileUploader, filedetails, 
-            uploadbtndisabled, calluploadfile, filelist, callgetfilelist
+            uploadbtndisabled, getApproveRole,
+            calluploadfile, filelist, callgetfilelist
         };
 
         return { ...return0, ...return1, ...return2 }

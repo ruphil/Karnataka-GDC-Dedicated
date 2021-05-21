@@ -7,5 +7,6 @@ CREATE TABLE filesattachment(
     APPROVED            BOOLEAN NOT NULL,
     DATA                BYTEA   NOT NULL,
     MIMETYPE            TEXT    NOT NULL,
+    UPLOADERROLE        TEXT    NOT NULL,
     SERVERDATE          DATE    NOT NULL DEFAULT CURRENT_DATE
 );

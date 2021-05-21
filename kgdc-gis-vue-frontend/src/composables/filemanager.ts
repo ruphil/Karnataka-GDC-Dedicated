@@ -5,7 +5,7 @@ const fileuploader = () => {
     const { showGlobalToast } = globalToast();
     const { makeSocketRequestNClose } = socketClient();
 
-    const uploadfile = (file: any, village: any, details: any, currentuniquevillagecode: any, mimetype: any) => {
+    const uploadfile = (file: any, village: any, details: any, currentuniquevillagecode: any, mimetype: any, rolecalculated: any) => {
         return new Promise((resolve, reject) => {
             let filename = file.name;
 
@@ -24,7 +24,8 @@ const fileuploader = () => {
                     details,
                     currentuniquevillagecode,
                     databytea: bytes,
-                    mimetype
+                    mimetype,
+                    rolecalculated
                 };
         
                 makeSocketRequestNClose(registrationObj)
