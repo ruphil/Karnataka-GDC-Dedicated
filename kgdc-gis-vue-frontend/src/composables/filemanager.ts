@@ -1,8 +1,6 @@
-import globalToast from './globalToast';
 import socketClient from './socketClient';
 
 const fileuploader = () => {
-    const { showGlobalToast } = globalToast();
     const { makeSocketRequestNClose } = socketClient();
 
     function b64EncodeUnicode(str: any) {
@@ -17,14 +15,12 @@ const fileuploader = () => {
 
             let reader = new FileReader();
             reader.onload = function () {
-                // console.log(reader.result);
-                // let arrayBuffer = <ArrayBuffer>reader.result;
-                // let bytes = new Uint8Array(arrayBuffer);
-                // console.log(bytes);
+                console.log(reader.result);
+                let arrayBuffer = <ArrayBuffer>reader.result;
+                let bytes = new Uint8Array(arrayBuffer);
+                console.log(bytes);
 
                 // let encodedbase64 = b64EncodeUnicode(reader.result);
-                let unencodedbase64 = reader.result;
-                console.log(unencodedbase64);
                 
                 let requestObj = {
                     requesttype: 'filesattachment',
@@ -33,7 +29,7 @@ const fileuploader = () => {
                     village,
                     details,
                     currentuniquevillagecode,
-                    databytea: unencodedbase64,
+                    databytea: bytes,
                     mimetype,
                     rolecalculated,
                     uploadedby
@@ -51,7 +47,7 @@ const fileuploader = () => {
                     reject(1);
                 });
             }
-            reader.readAsDataURL(file);
+            reader.readAsArrayBuffer(file);
         });
     }
 

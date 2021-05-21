@@ -281,10 +281,10 @@ export default defineComponent({
                 console.log(decodedbase64);
                 console.log(mimetype, identifier);
 
-                // let arraybufferDecoded = _base64ToArrayBuffer(encodeURI(decodedbase64));
-                // var blob = new Blob([arraybufferDecoded], {type: "application/pdf"});
-                // var objectUrl = URL.createObjectURL(blob);
-                // window.open(objectUrl);
+                let arraybufferDecoded = _base64ToArrayBuffer(encodeURI(decodedbase64));
+                var blob = new Blob([arraybufferDecoded], {type: "application/pdf"});
+                var objectUrl = URL.createObjectURL(blob);
+                window.open(objectUrl);
 
                 // const blob = dataURLtoBlob(linkSource);
 
@@ -299,7 +299,7 @@ export default defineComponent({
 
                 // base64toPDF(decoded);
 
-                window.open("data:application/zip;base64," + encodeURI(decodedbase64));
+                // window.open("data:application/zip;base64," + encodeURI(decodedbase64));
                 // console.log(encodeURI(decodedbase64));
 
                 // const linkSource = "data:application/pdf;base64," + encodeURI(decodedbase64);
