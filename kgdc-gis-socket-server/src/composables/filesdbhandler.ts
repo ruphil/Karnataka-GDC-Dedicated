@@ -9,7 +9,29 @@ const respondWithFailureMsg = (ws: WebSocket) => {
 }
 
 export const downloadfile = (ws: WebSocket, msgObj: any) => {
+    const { fileid } = msgObj;
+    const client = new Client({ connectionString });
+    client.connect();
+
+    let query = `SELECT IDENTIFIER, MIMETYPE, DATA FROM filesattachment WHERE ID = ${fileid}`;
     
+    client.query(query)
+    .then((res) => {
+        let row = res.rows[0];
+        let arrByte = Buffer.from(row.data).toJSON().data;
+        let uint8Array = new Uint8Array(arrByte);
+        let decoded = new TextDecoder().decode(uint8Array);
+        console.log(decoded);
+        ws.send(Buffer.from(JSON.stringify(row)).toString('base64'));
+    })
+    .catch((err) => {
+        console.log(err);
+        respondWithFailureMsg(ws);
+        return 0;
+    })
+    .finally(() => {
+        client.end();
+    });
 }
 
 export const getfilelist = (ws: WebSocket, msgObj: any) => {
@@ -61,7 +83,7 @@ export const approvefile = (ws: WebSocket, msgObj: any) => {
     const client = new Client({ connectionString });
     client.connect();
 
-    let query = `UPDATE filesattachment SET APPROVED = 'true'WHERE ID = '${fileid}'`;
+    let query = `UPDATE filesattachment SET APPROVED = 'true' WHERE ID = '${fileid}'`;
     client.query(query)
     .then((res) => {
         let responseObj = { requestStatus: 'success', action: 'approved' };

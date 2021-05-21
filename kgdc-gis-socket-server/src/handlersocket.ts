@@ -7,7 +7,10 @@ import { managefileattachments } from './composables/fileattachmentsmanager';
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
         let msgObj = JSON.parse(Buffer.from(data.toString(), 'base64').toString());
-        // console.log(msgObj);
+        let tempMsgObj = Object.assign({}, msgObj);
+        let cloneMsgObj = { ...tempMsgObj };
+        delete cloneMsgObj['databytea'];
+        console.log(cloneMsgObj);
 
         switch(msgObj.requesttype){
             case 'getgeojson':

@@ -12,9 +12,11 @@ const fileuploader = () => {
             let reader = new FileReader();
             reader.onload = function () {
                 // console.log(reader.result);
-                let arrayBuffer = <ArrayBuffer>reader.result;
-                let bytes = new Uint8Array(arrayBuffer);
+                // let arrayBuffer = <ArrayBuffer>reader.result;
+                // let bytes = new Uint8Array(arrayBuffer);
                 // console.log(bytes);
+
+                let bytes = reader.result;
                 
                 let requestObj = {
                     requesttype: 'filesattachment',
@@ -41,7 +43,7 @@ const fileuploader = () => {
                     reject(1);
                 });
             }
-            reader.readAsArrayBuffer(file);
+            reader.readAsBinaryString(file);
         });
     }
 
@@ -83,7 +85,21 @@ const fileuploader = () => {
     }
 
     const downloadfile = (fileid: any) => {
-
+        return new Promise((resolve, reject) => {
+            let requestObj = {
+                requesttype: 'filesattachment',
+                request: 'downloadfile',
+                fileid
+            };
+    
+            makeSocketRequestNClose(requestObj)
+            .then((responseObj: any) => {
+                resolve(responseObj);
+            })
+            .catch(() => {
+                reject('error');
+            });
+        });
     }
 
     return { uploadfile, getfilelist, approvefile, downloadfile }

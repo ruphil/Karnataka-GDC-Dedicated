@@ -48,7 +48,7 @@
                         <div>{{ file.serverdate }}</div>
                         <div>{{ file.uploadedby }}</div>
                         <div v-html="getApproveRole(file.approved, file.id)" v-on:click="callapproveFile" v-bind:fileid="file.id"></div>
-                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:fileid="file.id">file_download</span></button></div>
+                        <div><button class="olbtns" v-bind:fileid="file.id" v-on:click="calldownloadfile"><span class="material-icons-outlined" v-bind:fileid="file.id">file_download</span></button></div>
                     </div>
                 </div>
             </div>
@@ -249,10 +249,41 @@ export default defineComponent({
             });
         }
 
+        const calldownloadfile = (e: any) => {
+            let fileid = e.target.getAttribute('fileid');
+            console.log(fileid);
+
+            downloadfile(fileid)
+            .then((row: any) => {
+                console.log(row);
+                const mimetype = row.mimetype;
+                const identifier = row.identifier;
+                
+                const base64data = row.encode;
+                console.log(base64data);
+                console.log(mimetype, identifier);
+
+                // const linkSource = `data:${mimetype};base64,${base64data}`;
+                // const downloadLink = document.createElement("a");
+                // downloadLink.href = linkSource;
+                // downloadLink.download = identifier;
+                // downloadLink.click();
+
+                // let blob = new Blob([data], {type: mimetype});
+                // let link = document.createElement('a');
+                // link.href = window.URL.createObjectURL(blob);
+                // link.download = identifier;
+                // link.click();
+            })
+            .catch(() => {
+                showGlobalToast('Error Downloading File...');
+            });
+        }
+
         const return2 = {
             fileEl, currentvillage, showFileUploader, filedetails, 
             uploadbtndisabled, getApproveRole, 
-            calluploadfile, filelist, callgetfilelist, toShowFile, callapproveFile
+            calluploadfile, filelist, callgetfilelist, toShowFile, callapproveFile, calldownloadfile
         };
 
         return { ...return0, ...return1, ...return2 }

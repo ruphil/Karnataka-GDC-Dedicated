@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 
-import { getfilelist, uploadfile, approvefile } from './filesdbhandler';
+import { getfilelist, uploadfile, approvefile, downloadfile } from './filesdbhandler';
 
 const respondWithFailureMsg = (ws: WebSocket) => {
     let responseObj = { requestStatus: 'failure' };
@@ -17,6 +17,9 @@ export const managefileattachments = (ws: WebSocket, msgObj: any) => {
             break;
         case 'approvefile':
             approvefile(ws, msgObj);
+            break;
+        case 'downloadfile':
+            downloadfile(ws, msgObj);
             break;
         default:
             // To clearly inform the Unanonymous Users Requesting Without Base64 String
