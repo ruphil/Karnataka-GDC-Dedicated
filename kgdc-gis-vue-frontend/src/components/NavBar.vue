@@ -91,6 +91,7 @@ export default defineComponent({
         
         doLoggedInTasks();
         showGlobalToast('Login Successful...');
+        loginBoxShow.value = false;
       })
       .catch(() => {
         loginpassword.value = '';
@@ -121,6 +122,7 @@ export default defineComponent({
 
       window.localStorage.removeItem('globalusername');
       window.localStorage.removeItem('globalpassword');
+      location.reload();
     }
 
     return { router, categoryInfo, isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, loginMsg, doLogin, doLogout }

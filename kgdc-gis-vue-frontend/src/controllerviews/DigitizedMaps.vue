@@ -223,7 +223,7 @@ export default defineComponent({
                 } else {
                     let cond1 = uploaderrole == 'KGDC_UPLOADER' || uploaderrole == 'KGDC_APPROVER';
                     let cond2 = roles.value.includes('KGDC_UPLOADER') || roles.value.includes('KGDC_APPROVER');
-                    console.log(cond1, cond2);
+                    // console.log(cond1, cond2);
 
                     if (cond1 && cond2) return true;
 
