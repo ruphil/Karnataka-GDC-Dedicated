@@ -17,8 +17,8 @@ export const getfilelist = (ws: WebSocket, msgObj: any) => {
     const client = new Client({ connectionString });
     client.connect();
 
-    let getQuery = `SELECT ID, IDENTIFIER, DETAILS, APPROVED, SERVERDATE FROM filesattachment WHERE VILLAGENAME = '${village}' AND UNIQUEVILLAGECODE = '${currentuniquevillagecode}'`;
-    client.query(getQuery)
+    let query = `SELECT ID, IDENTIFIER, UNIQUEVILLAGECODE, DETAILS, APPROVED, DATA, MIMETYPE, UPLOADERROLE, UPLOADEDBY, SERVERDATE FROM filesattachment WHERE VILLAGENAME = '${village}' AND UNIQUEVILLAGECODE = '${currentuniquevillagecode}'`;
+    client.query(query)
     .then((res) => {
         ws.send(Buffer.from(JSON.stringify(res.rows)).toString('base64'));
     })
@@ -33,17 +33,38 @@ export const getfilelist = (ws: WebSocket, msgObj: any) => {
 }
 
 export const uploadfile = (ws: WebSocket, msgObj: any) => {
-    const { filename, village, details, currentuniquevillagecode, databytea, mimetype, rolecalculated } = msgObj;
+    const { filename, village, details, currentuniquevillagecode, databytea, mimetype, rolecalculated, uploadedby } = msgObj;
 
-    let insertQuery = `INSERT INTO filesattachment (IDENTIFIER, VILLAGENAME, UNIQUEVILLAGECODE, DETAILS, APPROVED, DATA, MIMETYPE, UPLOADERROLE) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
-    let insertData = [filename, village, currentuniquevillagecode, details, false, databytea, mimetype, rolecalculated];
+    let query = `INSERT INTO filesattachment (IDENTIFIER, VILLAGENAME, UNIQUEVILLAGECODE, DETAILS, APPROVED, DATA, MIMETYPE, UPLOADERROLE, UPLOADEDBY) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
+    let insertData = [filename, village, currentuniquevillagecode, details, false, databytea, mimetype, rolecalculated, uploadedby];
 
     const client = new Client({ connectionString });
     client.connect();
 
-    client.query(insertQuery, insertData)
+    client.query(query, insertData)
     .then(() => {
         let responseObj = { requestStatus: 'success', action: 'uploaded' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    })
+    .catch((err) => {
+        console.log(err);
+        respondWithFailureMsg(ws);
+        return 0;
+    })
+    .finally(() => {
+        client.end();
+    });
+}
+
+export const approvefile = (ws: WebSocket, msgObj: any) => {
+    const { fileid } = msgObj;
+    const client = new Client({ connectionString });
+    client.connect();
+
+    let query = `UPDATE filesattachment SET APPROVED = 'true'WHERE ID = '${fileid}'`;
+    client.query(query)
+    .then((res) => {
+        let responseObj = { requestStatus: 'success', action: 'approved' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((err) => {

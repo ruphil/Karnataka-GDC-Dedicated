@@ -31,20 +31,22 @@
                     </div>
                 </div>
                 <div style="font-size:18px;text-align:center">Current Village: {{ currentvillage }}</div>
-                <div class="display-table-features">
+                <div class="display-table-files">
                     <div>
                         <div><b>No</b></div>
                         <div><b>Identifier</b></div>
                         <div><b>Details</b></div>
                         <div><b>Upload Date</b></div>
+                        <div><b>Uploaded By</b></div>
                         <div><b>Approved</b></div>
                         <div><b>Download</b></div>
                     </div>
-                    <div v-for="(file, index) in filelist" v-bind:key="index">
+                    <div v-for="(file, index) in filelist" v-bind:key="index" v-show="toShowFile(file.approved, file.uploaderrole)">
                         <div>{{ index + 1 }}</div>
                         <div>{{ file.identifier }}</div>
                         <div>{{ file.details }}</div>
                         <div>{{ file.serverdate }}</div>
+                        <div>{{ file.uploadedby }}</div>
                         <div v-html="getApproveRole(file.approved, file.id)" v-on:click="callapproveFile" v-bind:fileid="file.id"></div>
                         <div><button class="olbtns"><span class="material-icons-outlined" v-bind:fileid="file.id">file_download</span></button></div>
                     </div>
@@ -177,7 +179,9 @@ export default defineComponent({
             uploadbtndisabled.value = true;
             showGlobalToast('Uploading file... Please Wait...');
 
-            uploadfile(file, currentvillage.value, filedetails.value, currentuniquevillagecode.value, mimetype.value, rolecalculated.value)
+            const uploadedby = store.getters.getUsername;
+
+            uploadfile(file, currentvillage.value, filedetails.value, currentuniquevillagecode.value, mimetype.value, rolecalculated.value, uploadedby)
             .then(() => {
                 uploadbtndisabled.value = false;
                 showFileUploader.value = false;
@@ -212,16 +216,43 @@ export default defineComponent({
             })
         }
 
+        const toShowFile = computed(() => {
+            return (approved: any, uploaderrole: any) => {
+                if(approved){
+                    return true;
+                } else {
+                    let cond1 = uploaderrole == 'KGDC_UPLOADER' || uploaderrole == 'KGDC_APPROVER';
+                    let cond2 = roles.value.includes('KGDC_UPLOADER') || roles.value.includes('KGDC_APPROVER');
+                    console.log(cond1, cond2);
+
+                    if (cond1 && cond2) return true;
+
+                    let cond3 = uploaderrole == 'STATE_UPLOADER' || uploaderrole ==  'STATE_APPROVER';
+                    let cond4 = roles.value.includes('STATE_UPLOADER') || roles.value.includes('STATE_APPROVER');
+
+                    if (cond3 && cond4) return true;
+
+                    return false;
+                }
+            }
+        });
+
         const callapproveFile = (e: any) => {
             let fileid = e.target.parentNode.getAttribute('fileid');
 
             approvefile(fileid)
+            .then(() => {
+                callgetfilelist();
+            })
+            .catch(() => {
+                showGlobalToast('Error Approving...');
+            });
         }
 
         const return2 = {
             fileEl, currentvillage, showFileUploader, filedetails, 
             uploadbtndisabled, getApproveRole, 
-            calluploadfile, filelist, callgetfilelist, callapproveFile
+            calluploadfile, filelist, callgetfilelist, toShowFile, callapproveFile
         };
 
         return { ...return0, ...return1, ...return2 }

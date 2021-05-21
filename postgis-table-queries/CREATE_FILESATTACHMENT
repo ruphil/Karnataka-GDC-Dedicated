@@ -8,5 +8,6 @@ CREATE TABLE filesattachment(
     DATA                BYTEA   NOT NULL,
     MIMETYPE            TEXT    NOT NULL,
     UPLOADERROLE        TEXT    NOT NULL,
+    UPLOADEDBY          TEXT    NOT NULL,
     SERVERDATE          DATE    NOT NULL DEFAULT CURRENT_DATE
 );
