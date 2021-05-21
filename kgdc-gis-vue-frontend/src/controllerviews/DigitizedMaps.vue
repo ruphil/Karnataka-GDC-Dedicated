@@ -249,6 +249,22 @@ export default defineComponent({
             });
         }
 
+        function b64DecodeUnicode(str: any) {
+            return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+            }).join(''))
+        }
+
+        function _base64ToArrayBuffer(base64: any) {
+            var binary_string = window.atob(base64);
+            var len = binary_string.length;
+            var bytes = new Uint8Array(len);
+            for (var i = 0; i < len; i++) {
+                bytes[i] = binary_string.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
         const calldownloadfile = (e: any) => {
             let fileid = e.target.getAttribute('fileid');
             console.log(fileid);
@@ -259,25 +275,42 @@ export default defineComponent({
                 const mimetype = row.mimetype;
                 const identifier = row.identifier;
                 
-                const base64data = row.encode;
-                console.log(base64data);
+                const arrayBuffer = Buffer.from(row.data.data);
+                let base64data = arrayBuffer.toString('base64');
+                let decodedbase64 = b64DecodeUnicode(base64data);
+                console.log(decodedbase64);
                 console.log(mimetype, identifier);
 
-                // const linkSource = `data:${mimetype};base64,${base64data}`;
+                // let arraybufferDecoded = _base64ToArrayBuffer(encodeURI(decodedbase64));
+                // var blob = new Blob([arraybufferDecoded], {type: "application/pdf"});
+                // var objectUrl = URL.createObjectURL(blob);
+                // window.open(objectUrl);
+
+                // const blob = dataURLtoBlob(linkSource);
+
+                // var link = document.createElement("a");
+                // var objurl = URL.createObjectURL(blob);
+
+                // link.download = identifier;
+
+                // link.href = objurl;
+
+                // link.click();
+
+                // base64toPDF(decoded);
+
+                window.open("data:application/zip;base64," + encodeURI(decodedbase64));
+                // console.log(encodeURI(decodedbase64));
+
+                // const linkSource = "data:application/pdf;base64," + encodeURI(decodedbase64);
                 // const downloadLink = document.createElement("a");
                 // downloadLink.href = linkSource;
                 // downloadLink.download = identifier;
                 // downloadLink.click();
-
-                // let blob = new Blob([data], {type: mimetype});
-                // let link = document.createElement('a');
-                // link.href = window.URL.createObjectURL(blob);
-                // link.download = identifier;
-                // link.click();
             })
-            .catch(() => {
-                showGlobalToast('Error Downloading File...');
-            });
+            // .catch(() => {
+            //     showGlobalToast('Error Downloading File...');
+            // });
         }
 
         const return2 = {

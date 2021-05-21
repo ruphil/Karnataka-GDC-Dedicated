@@ -18,10 +18,6 @@ export const downloadfile = (ws: WebSocket, msgObj: any) => {
     client.query(query)
     .then((res) => {
         let row = res.rows[0];
-        let arrByte = Buffer.from(row.data).toJSON().data;
-        let uint8Array = new Uint8Array(arrByte);
-        let decoded = new TextDecoder().decode(uint8Array);
-        console.log(decoded);
         ws.send(Buffer.from(JSON.stringify(row)).toString('base64'));
     })
     .catch((err) => {

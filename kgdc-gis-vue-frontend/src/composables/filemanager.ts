@@ -5,6 +5,12 @@ const fileuploader = () => {
     const { showGlobalToast } = globalToast();
     const { makeSocketRequestNClose } = socketClient();
 
+    function b64EncodeUnicode(str: any) {
+        return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+            return String.fromCharCode(parseInt(p1, 16))
+        }))
+    }
+
     const uploadfile = (file: any, village: any, details: any, currentuniquevillagecode: any, mimetype: any, rolecalculated: any, uploadedby: any) => {
         return new Promise((resolve, reject) => {
             let filename = file.name;
@@ -16,7 +22,9 @@ const fileuploader = () => {
                 // let bytes = new Uint8Array(arrayBuffer);
                 // console.log(bytes);
 
-                let bytes = reader.result;
+                // let encodedbase64 = b64EncodeUnicode(reader.result);
+                let unencodedbase64 = reader.result;
+                console.log(unencodedbase64);
                 
                 let requestObj = {
                     requesttype: 'filesattachment',
@@ -25,7 +33,7 @@ const fileuploader = () => {
                     village,
                     details,
                     currentuniquevillagecode,
-                    databytea: bytes,
+                    databytea: unencodedbase64,
                     mimetype,
                     rolecalculated,
                     uploadedby
@@ -43,7 +51,7 @@ const fileuploader = () => {
                     reject(1);
                 });
             }
-            reader.readAsBinaryString(file);
+            reader.readAsDataURL(file);
         });
     }
 
