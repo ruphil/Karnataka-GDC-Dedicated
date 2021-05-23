@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 
-export const handlews = (ws: WebSocket, request: any) => {
+export const getgeojson = (ws: WebSocket, request: any) => {
     const reqUrl = new URL(request.url, request.headers.origin);
 
     console.log('came here 4');
