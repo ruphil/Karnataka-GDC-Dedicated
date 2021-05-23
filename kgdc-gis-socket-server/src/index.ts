@@ -14,7 +14,7 @@ geojsonwsserver.on('connection', (ws: WebSocket, request: any) => {
 server.on('upgrade', (request, socket, head) => {
     const reqUrl = new URL(request.url, request.headers.origin);
     const searchParams = reqUrl.searchParams;
-    console.log(searchParams, reqUrl);
+    // console.log(searchParams, reqUrl);
 
     const { validuser, roles } = checkuser(searchParams);
     console.log(validuser, roles);
@@ -24,6 +24,7 @@ server.on('upgrade', (request, socket, head) => {
             case '/getgeojsons': 
                 geojsonwsserver.handleUpgrade(request, socket, head, (ws: WebSocket) => { geojsonwsserver.emit('connection', ws, request); });
                 break;
+            
         }
     } else {
         socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
