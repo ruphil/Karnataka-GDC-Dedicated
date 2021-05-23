@@ -1,14 +1,18 @@
 import http from 'http';
 import WebSocket, { Server } from 'ws';
-import { handlews } from './wshandle';
+import { handlegeojsons } from './handlegeojsons';
 import { checkuser } from './authenticator';
 
-const server = http.createServer();
+const server = http.createServer((req, res) => {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.write('WS Servers Running Fine!');
+    res.end();
+});
+
 const geojsonwsserver = new Server({ noServer: true });
 
 geojsonwsserver.on('connection', (ws: WebSocket, request: any) => {
-    console.log('came here 1');
-    handlews(ws, request);
+    handlegeojsons(ws, request);
 });
 
 server.on('upgrade', (request, socket, head) => {
