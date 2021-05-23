@@ -77,13 +77,15 @@ import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
 import globalToast from '../composables/globalToast';
 import filemanager from '../composables/filemanager';
+import filewsloadupdown from '../composables/filewsloadupdown';
 
 export default defineComponent({
     setup() {
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
         const { showGlobalToast } = globalToast();
-        const { uploadfile, getfilelist, approvefile, downloadfile } = filemanager();
+        const { getfilelist, approvefile } = filemanager();
+        const { uploadfile, downloadfile } = filewsloadupdown();
 
         const return0 = { unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
 
