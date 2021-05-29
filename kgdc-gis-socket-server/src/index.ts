@@ -6,7 +6,7 @@ import { checkuser } from './authenticator';
 
 const app = express();
 const server = new http.Server(app);
-app.use(express.static('static'));
+app.use('/files', express.static('static'));
 
 app.get('/', function(req, res){
     res.writeHead(200, {'Content-Type': 'text/plain'});
