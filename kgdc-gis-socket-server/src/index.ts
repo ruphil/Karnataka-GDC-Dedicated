@@ -1,9 +1,14 @@
 import http from 'http';
+import express from 'express';
 import WebSocket, { Server } from 'ws';
 import { handlegeojsons } from './handlegeojsons';
 import { checkuser } from './authenticator';
 
-const server = http.createServer((req, res) => {
+const app = express();
+const server = new http.Server(app);
+app.use(express.static('static'));
+
+app.get('/', function(req, res){
     res.writeHead(200, {'Content-Type': 'text/plain'});
     res.write('WS Servers Running Fine!');
     res.end();
