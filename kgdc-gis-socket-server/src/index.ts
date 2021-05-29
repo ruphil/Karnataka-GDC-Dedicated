@@ -6,7 +6,20 @@ import { checkuser } from './authenticator';
 
 const app = express();
 const server = new http.Server(app);
-app.use('/files', express.static('static'));
+
+const staticAuthentication = (req: any, res: any, next: any) => {
+    let searchParams = new URLSearchParams(req._parsedUrl.search)
+    const { validuser, roles } = checkuser(searchParams);
+    console.log(validuser, roles);
+
+    if(validuser){
+        next();
+    } else {
+        res.status(401).end();
+    }
+}
+
+app.use('/files', [ staticAuthentication, express.static('static') ]);
 
 app.get('/', function(req, res){
     res.writeHead(200, {'Content-Type': 'text/plain'});
