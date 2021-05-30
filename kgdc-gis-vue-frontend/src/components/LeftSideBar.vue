@@ -9,19 +9,19 @@
                 <span class="icon"><span class="material-icons-outlined">people</span></span>
                 <span class="label" v-show="expanded">Users Manager</span>
             </div>
-            <div class="category" title="Marked Settlements" v-on:click="router.push({path: '/markedsettlements'});store.dispatch('setCategoryInfo', 'Update Marked Villages')" v-show="checkRoles(['STATE_UPLOADER', 'STATE_UPLOADER'])">
+            <div class="category" title="Marked Settlements" v-on:click="router.push({path: '/markedsettlements'});store.dispatch('setCategoryInfo', 'Update Marked Villages')" v-show="checkRoles(['ADMIN', 'STATE_UPLOADER', 'STATE_UPLOADER'])">
                 <span class="icon"><span class="material-icons-outlined">draw</span></span>
                 <span class="label" v-show="expanded">Marked Villages</span>
             </div>
-            <div class="category" title="Make Mission Plan" v-on:click="router.push({path: '/missionplan'});store.dispatch('setCategoryInfo', 'Make Mission Plan')" v-show="checkRoles(['DRONE_PILOT'])">
+            <div class="category" title="Make Mission Plan" v-on:click="router.push({path: '/missionplan'});store.dispatch('setCategoryInfo', 'Make Mission Plan')" v-show="checkRoles(['ADMIN', 'DRONE_PILOT'])">
                 <span class="icon"><span class="material-icons-outlined">highlight_alt</span></span>
                 <span class="label" v-show="expanded">Mission Planner</span>
             </div>
-            <div class="category" title="Flights Manager" v-on:click="router.push({path: '/flights'});store.dispatch('setCategoryInfo', 'Flights Manager')" v-show="checkRoles(['DRONE_PILOT'])">
+            <div class="category" title="Flights Manager" v-on:click="router.push({path: '/flights'});store.dispatch('setCategoryInfo', 'Flights Manager')" v-show="checkRoles(['ADMIN', 'DRONE_PILOT'])">
                 <span class="icon"><span class="material-icons-outlined">flight_takeoff</span></span>
                 <span class="label" v-show="expanded">Flights Manager</span>
             </div>
-            <div class="category" title="Digitized Maps" v-on:click="router.push({path: '/digitizedmaps'});store.dispatch('setCategoryInfo', 'Digitized Maps')" v-show="checkRoles(['STATE_UPLOADER', 'STATE_UPLOADER', 'KGDC_UPLOADER', 'KGDC_APPROVER'])">
+            <div class="category" title="Digitized Maps" v-on:click="router.push({path: '/digitizedmaps'});store.dispatch('setCategoryInfo', 'Digitized Maps')" v-show="checkRoles(['ADMIN', 'STATE_UPLOADER', 'STATE_UPLOADER', 'KGDC_UPLOADER', 'KGDC_APPROVER'])">
                 <span class="icon"><span class="material-icons-outlined">map</span></span>
                 <span class="label" v-show="expanded">Digitized Maps</span>
             </div>
