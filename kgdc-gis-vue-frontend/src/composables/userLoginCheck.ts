@@ -1,24 +1,18 @@
-import socketClient from '../composables/socketClient';
+import { makeSocketRequest } from '../composables/wsClient';
 
 const userLoginCheck = () => {
-    const { makeSocketRequestNClose } = socketClient();
-
     const doAuthentication = (username: string, password: string) => {
         return new Promise((resolve, reject) => {
-            let registrationObj = {
+            let requestObj = {
                 requesttype: 'usermanagement',
                 request: 'getroles',
                 username,
                 password
             };
 
-            makeSocketRequestNClose(registrationObj)
-            .then((responseObj: any) => {
-                if (responseObj.requestStatus == 'success'){
-                    resolve(responseObj);
-                } else {
-                    reject(responseObj);
-                }
+            makeSocketRequest(requestObj)
+            .then(() => {
+                resolve('success');
             })
             .catch(() => {
                 reject('error');

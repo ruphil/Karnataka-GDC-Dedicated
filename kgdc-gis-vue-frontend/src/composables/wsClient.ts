@@ -1,35 +1,46 @@
 import store from "@/store";
 import { wsMsgHandler } from './wsClientMsgHandler';
 
-const webSocketClient = () => {
-    const openSocketClientIfNotExists = () => {
-        return new Promise((resolve, reject) => {
-            const wsClient = store.getters.getWSURLBase;
-            if(wsClient.readyState === WebSocket.CLOSED){
-                console.log('Socket Closed, Opening New...');
-                const wsurlBase = store.getters.getWSURLBase;
-                console.log(wsurlBase);
+export const openSocketClientIfNotExists = (username: any, password: any) => {
+    return new Promise((resolve, reject) => {
+        const wsClient = store.getters.getWSClient;
 
-                let ws = new WebSocket(wsurlBase);
-                ws.addEventListener('message', (event) => {
-                    wsMsgHandler(event);
-                });
+        if(wsClient.readyState === WebSocket.OPEN){
+            console.log('Socket Already Open...');
+            resolve('success');
+        } else {
+            console.log('Socket Closed, Opening New...');
+            const wsurlBase = store.getters.getWSURLBase;
+            console.log(wsurlBase);
 
-                ws.addEventListener('error', (event) => {
-                    reject('error');
-                });
+            let ws = new WebSocket(wsurlBase);
+            ws.addEventListener('message', (event) => {
+                wsMsgHandler(event);
+            });
 
-                ws.addEventListener('open', (event) => {
-                    resolve('success');
-                });
-            } else {
-                console.log('Socket Already Open...');
+            ws.addEventListener('error', (event) => {
+                reject('error');
+            });
+
+            ws.addEventListener('open', (event) => {
                 resolve('success');
-            }
-        });
-    }
-
-    return { openSocketClientIfNotExists }
+            });
+        }
+    });
 }
 
-export default webSocketClient;
+export const makeSocketRequest = (requestObj: any) => {
+    return new Promise((resolve, reject) => {
+        const { username, password } = requestObj();
+
+        openSocketClientIfNotExists(username, password)
+        .then(() => {
+            const wsClient = store.getters.getWSClient;
+            wsClient.send(Buffer.from(JSON.stringify(requestObj)).toString('base64'));
+            resolve('success');
+        })
+        .catch(() => {
+            reject('error');
+        })
+    });
+}

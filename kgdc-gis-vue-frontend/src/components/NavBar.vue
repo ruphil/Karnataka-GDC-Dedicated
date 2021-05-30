@@ -37,13 +37,11 @@ import { defineComponent, ref, computed, onMounted } from 'vue';
 import './NavBar.scss';
 
 import globalToast from '../composables/globalToast';
-import wsClient from '../composables/wsClient';
 import userLoginCheck from '../composables/userLoginCheck';
 
 export default defineComponent({
   setup() {
     const { showGlobalToast } = globalToast();
-    const { openSocketClientIfNotExists } = wsClient();
     const { doAuthentication } = userLoginCheck();
 
     const categoryInfo = computed(() => store.getters.getCategoryInfo);
@@ -79,7 +77,6 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      openSocketClientIfNotExists();
       loadCredentials();
     });
 

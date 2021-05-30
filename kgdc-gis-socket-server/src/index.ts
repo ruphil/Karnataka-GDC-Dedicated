@@ -1,8 +1,8 @@
 import http from 'http';
 import express from 'express';
 import WebSocket, { Server } from 'ws';
-import { handlegeojsons } from './handlegeojsons';
 import { checkuser } from './authenticator';
+import { handleWebSocketConnection } from './sockethandler';
 
 const app = express();
 const server = new http.Server(app);
@@ -27,10 +27,10 @@ app.get('/', function(req, res){
     res.end();
 });
 
-const geojsonwsserver = new Server({ noServer: true });
+const wsserver = new Server({ noServer: true });
 
-geojsonwsserver.on('connection', (ws: WebSocket, request: any) => {
-    handlegeojsons(ws, request);
+wsserver.on('connection', (ws: WebSocket, request: any) => {
+    handleWebSocketConnection(ws);
 });
 
 server.on('upgrade', (request, socket, head) => {
@@ -42,12 +42,7 @@ server.on('upgrade', (request, socket, head) => {
     console.log(validuser, roles);
 
     if(validuser){
-        switch (reqUrl.pathname){
-            case '/getgeojsons': 
-                geojsonwsserver.handleUpgrade(request, socket, head, (ws: WebSocket) => { geojsonwsserver.emit('connection', ws, request); });
-                break;
-            
-        }
+        wsserver.handleUpgrade(request, socket, head, (ws: WebSocket) => { wsserver.emit('connection', ws, request); });
     } else {
         socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
         socket.destroy();
