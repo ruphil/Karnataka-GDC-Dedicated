@@ -85,11 +85,10 @@ export default defineComponent({
             setMapObjectToVeux(map)
             .then(() => {
                 loadKarnBounds();
-                console.log('map may be set');
-                console.log(store.getters.getMapObj);
             })
-
-            
+            .catch(() => {
+                console.log('Error Setting Map Object');
+            })
         }
 
         onMounted(() => {

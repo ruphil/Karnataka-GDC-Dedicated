@@ -15,11 +15,7 @@ export const handlegeojson = (responseObj: any) => {
 }
 
 const loadkarnatakaboundary = (gj: any) => {
-    const { setKarnBounds } = karnBoundsLoader();
     console.log(gj);
-
-    const map = app.appContext.config.globalProperties.$map;
-    console.log(map);
-
+    const { setKarnBounds } = karnBoundsLoader();
     setKarnBounds(gj);
 }

@@ -6,7 +6,6 @@ import GeoJSON from 'ol/format/GeoJSON';
 import LayerGroup from 'ol/layer/Group';
 
 import store from '@/store';
-import { getCurrentInstance } from '@vue/runtime-core';
 
 import mapStyler from './mapStyler';
 import { makeSocketRequest } from '../composables/wsClient';
@@ -14,34 +13,31 @@ import { makeSocketRequest } from '../composables/wsClient';
 const karnBoundsLoader = () => {
     const { districtStyleFunction } = mapStyler();
 
-    const app = getCurrentInstance()!;
-
     const loadKarnBounds = () => {
-        if(app.appContext.config.globalProperties.$karndistbounds == null){
-            const username = store.getters.getUsername;
-            const password = store.getters.getPassword;
+        const username = store.getters.getUsername;
+        const password = store.getters.getPassword;
 
-            let requestObj = {
-                requesttype: 'getgeojson',
-                layer: 'karnatakaboundary',
-                username,
-                password
-            }
-
-            makeSocketRequest(requestObj)
-            .then(() => {
-                console.log('Karnataka Boundary Request Sent Successfully');
-            })
-            .catch(() => {
-                console.log('Problem in sending Karnataka Boundary Request');
-            })
+        let requestObj = {
+            requesttype: 'getgeojson',
+            layer: 'karnatakaboundary',
+            username,
+            password
         }
+
+        makeSocketRequest(requestObj)
+        .then(() => {
+            console.log('Karnataka Boundary Request Sent Successfully');
+        })
+        .catch(() => {
+            console.log('Problem in sending Karnataka Boundary Request');
+        })
     }
 
     // This Function is Called From wsClientMsgHandler.ts
 
     const setKarnBounds = (gj: any) => {
-        const map = app.appContext.config.globalProperties.$map;
+        const map = store.getters.getMapObj;
+        console.log(map);
 
         let karndistbounds = new VectorLayer({
             source: new VectorSource({
@@ -66,20 +62,10 @@ const karnBoundsLoader = () => {
             constrainResolution: true
         }));
 
-        app.appContext.config.globalProperties.$karndistbounds = karndistbounds;
         store.dispatch('setKarnBoundsLoaded', true);
     }
 
-    const unloadKarnBounds = () => {
-        const map = app.appContext.config.globalProperties.$map;
-
-        if(app.appContext.config.globalProperties.$karndistbounds != null){
-            map.removeLayer(app.appContext.config.globalProperties.$karndistbounds);
-            app.appContext.config.globalProperties.$karndistbounds = null;
-        }
-    }
-
-    return { loadKarnBounds, setKarnBounds, unloadKarnBounds }
+    return { loadKarnBounds, setKarnBounds }
 }
 
 export default karnBoundsLoader;
