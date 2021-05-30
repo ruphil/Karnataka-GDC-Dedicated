@@ -28,7 +28,6 @@ app.get('/', function(req, res){
 });
 
 const wsserver = new Server({ noServer: true });
-
 wsserver.on('connection', (ws: WebSocket, request: any) => {
     handleWebSocketConnection(ws);
 });
