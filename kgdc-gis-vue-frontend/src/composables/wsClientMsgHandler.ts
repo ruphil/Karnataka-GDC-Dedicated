@@ -1,5 +1,5 @@
-import store from "@/store";
 import { usermanager } from './wsClientMsgHandler/usermanagement';
+import { handlegeojson } from './wsClientMsgHandler/handlegeojons';
 
 export const wsMsgHandler = (event: any) => {
     // console.log(event.data);
@@ -9,6 +9,9 @@ export const wsMsgHandler = (event: any) => {
     switch(responseObj.requesttype){
         case 'usermanagement':
             usermanager(responseObj);
+            break;
+        case 'getgeojson':
+            handlegeojson(responseObj);
             break;
         default:
             console.log('Unexpected Response from WS Server');

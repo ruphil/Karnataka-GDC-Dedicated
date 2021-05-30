@@ -12,7 +12,8 @@ const respondWithFailureMsg = (ws: WebSocket) => {
 
 export const getGeoJson = (ws: WebSocket, msgObj: any) => {
     let queryVariant = '';
-    if(msgObj.layer == 'karnatakaboundary'){
+    let layer = msgObj.layer;
+    if(layer == 'karnatakaboundary'){
         queryVariant = 'SELECT * FROM district_boundary';
     } else if (msgObj.layer == 'karnvillages'){
         let district = msgObj.district;
@@ -40,7 +41,7 @@ export const getGeoJson = (ws: WebSocket, msgObj: any) => {
         client.query(getQuery)
         .then((res) => {
             let featureCollection = res.rows[0].jsonb_build_object;
-            let responseObj = { requestStatus: 'success', isAdmin: true, featureCollection };
+            let responseObj = { requesttype: 'getgeojson', layer, featureCollection };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {

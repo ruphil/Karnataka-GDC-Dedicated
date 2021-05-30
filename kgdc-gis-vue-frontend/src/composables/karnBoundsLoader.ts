@@ -9,6 +9,8 @@ import { getCurrentInstance } from '@vue/runtime-core';
 import LayerGroup from 'ol/layer/Group';
 import store from '@/store';
 
+import { makeSocketRequest } from '../composables/wsClient';
+
 const karnBoundsLoader = () => {
     const { districtStyleFunction } = mapStyler();
 
@@ -16,35 +18,27 @@ const karnBoundsLoader = () => {
 
     const loadKarnBounds = () => {
         if(app.appContext.config.globalProperties.$karndistbounds == null){
-            const wsurlBase = store.getters.getWSURLBase;
             const username = store.getters.getUsername;
             const password = store.getters.getPassword;
-            console.log(wsurlBase);
 
-            let ws = new WebSocket(wsurlBase);
-            ws.addEventListener('message', (event) => {
-                // console.log(event.data);
-                let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
-                console.log(responseObj);
-                if (responseObj.requestStatus == 'success'){
-                    let gj = responseObj.featureCollection;
-                    setKarnBounds(gj);
-                } else {
-                    console.log('Problem Loading Karnataka Boundary from Server...')
-                }
-                ws.close();
-            });
-            ws.addEventListener('open', (event) => {
-                let requestObj = {
-                    requesttype: 'getgeojson',
-                    layer: 'karnatakaboundary',
-                    username,
-                    password
-                }
-                ws.send(Buffer.from(JSON.stringify(requestObj)).toString('base64'));
-            });
+            let requestObj = {
+                requesttype: 'getgeojson',
+                layer: 'karnatakaboundary',
+                username,
+                password
+            }
+
+            makeSocketRequest(requestObj)
+            .then(() => {
+                console.log('Karnataka Boundary Request Sent Successfully');
+            })
+            .catch(() => {
+                console.log('Problem in sending Karnataka Boundary Request');
+            })
         }
     }
+
+    // This Function is Called From wsClientMsgHandler.ts
 
     const setKarnBounds = (gj: any) => {
         const map = app.appContext.config.globalProperties.$map;
