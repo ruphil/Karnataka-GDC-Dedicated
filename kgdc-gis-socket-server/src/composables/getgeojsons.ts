@@ -15,7 +15,7 @@ export const getGeoJson = (ws: WebSocket, msgObj: any) => {
     let layer = msgObj.layer;
     if(layer == 'karnatakaboundary'){
         queryVariant = 'SELECT * FROM district_boundary';
-    } else if (msgObj.layer == 'karnvillages'){
+    } else if (layer == 'karnvillages'){
         let district = msgObj.district;
         queryVariant = `SELECT * FROM karnvillages WHERE kgisdist_1='${district}'`;
     }

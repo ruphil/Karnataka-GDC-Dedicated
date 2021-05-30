@@ -3,12 +3,12 @@ import { fromLonLat } from 'ol/proj';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
+import LayerGroup from 'ol/layer/Group';
+
+import store from '@/store';
+import { getCurrentInstance } from '@vue/runtime-core';
 
 import mapStyler from './mapStyler';
-import { getCurrentInstance } from '@vue/runtime-core';
-import LayerGroup from 'ol/layer/Group';
-import store from '@/store';
-
 import { makeSocketRequest } from '../composables/wsClient';
 
 const karnBoundsLoader = () => {
@@ -79,7 +79,7 @@ const karnBoundsLoader = () => {
         }
     }
 
-    return { loadKarnBounds, unloadKarnBounds }
+    return { loadKarnBounds, setKarnBounds, unloadKarnBounds }
 }
 
 export default karnBoundsLoader;

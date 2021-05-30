@@ -82,12 +82,7 @@ export default defineComponent({
 
     const callAuthenticationPromiseFunction = () => {
       doAuthentication(loginusername.value, loginpassword.value)
-      .then((responseObj: any) => {
-        let roles = responseObj.roles;
-        console.log('came here 1');
-        console.log(roles);
-        
-        store.dispatch('setUserRoles', roles);
+      .then(() => {
         
         doLoggedInTasks();
         showGlobalToast('Login Successful...');

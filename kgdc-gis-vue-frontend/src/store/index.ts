@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
+    mapObj: {},
     wsurlBase: 'ws://localhost:3010',
     wsClient: null,
     districtsList: ['Bagalkot', 'Ballari', 'Belagavi', 'Bengaluru (Rural)', 'Bengaluru (Urban)', 'Bidar', 'Chamarajanagara', 'Chikkaballapura', 'Chikkamagaluru', 'Chitradurga', 'Dakshina Kannada', 'Davanagere', 'Dharwad', 'Gadag', 'Hassan', 'Haveri', 'Kalburgi', 'Kodagu', 'Kolara', 'Koppal', 'Mandya', 'Mysuru', 'Raichur', 'Ramanagara', 'Shivamogga', 'Tumakuru', 'Udupi', 'Uttara Kannada', 'Vijayapura', 'Yadgir'],
@@ -18,6 +19,9 @@ export default createStore({
     currentuniquevillagecode: '',
   },
   getters: {
+    getMapObj(state){
+      return state.mapObj;
+    },
     getWSURLBase(state){
       return state.wsurlBase;
     },
@@ -62,6 +66,9 @@ export default createStore({
     }
   },
   mutations: {
+    setMapObj(state, mapObj){
+      state.mapObj = mapObj;
+    },
     setSocketClient(state, wsClient){
       state.wsClient = wsClient;
     },
@@ -100,6 +107,9 @@ export default createStore({
     }
   },
   actions: {
+    setMapObj(context, mapObj){
+      context.commit('setMapObj', mapObj);
+    },
     setSocketClient(context, wsClient){
       context.commit('setSocketClient', wsClient);
     },

@@ -20,22 +20,22 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, getCurrentInstance, onMounted, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import { Map, Overlay } from 'ol';
 import { createStringXY, toStringHDMS } from 'ol/coordinate';
 import MousePosition from 'ol/control/MousePosition';
 import {defaults as defaultControls} from 'ol/control';
 
-import karnBoundsLoader from '../composables/karnBoundsLoader';
-
 import 'ol/ol.css';
 import './MapContainer.scss';
 import store from '@/store';
 
+import setMapToVuex from '../composables/setMapToVuex';
+import karnBoundsLoader from '../composables/karnBoundsLoader';
 
 export default defineComponent({
     setup() {
-        const app = getCurrentInstance()!;
+        const { setMapObjectToVeux } = setMapToVuex();
         const { loadKarnBounds } = karnBoundsLoader();
 
         const mapref = ref();
@@ -67,8 +67,6 @@ export default defineComponent({
                 controls: defaultControls().extend([mousePositionControl]),
             });
 
-            // map
-
             map.on('click', function(event: any) {
                 map.forEachFeatureAtPixel(event.pixel, function(feature: any, layer: any) {
                     let attributesData = { ...feature.getProperties() };
@@ -84,9 +82,14 @@ export default defineComponent({
                 });
             });
 
-            app.appContext.config.globalProperties.$map = map;
+            setMapObjectToVeux(map)
+            .then(() => {
+                loadKarnBounds();
+                console.log('map may be set');
+                console.log(store.getters.getMapObj);
+            })
 
-            loadKarnBounds();
+            
         }
 
         onMounted(() => {

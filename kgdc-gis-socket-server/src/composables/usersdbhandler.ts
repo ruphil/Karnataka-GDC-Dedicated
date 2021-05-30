@@ -10,7 +10,12 @@ const respondWithFailureMsg = (ws: WebSocket) => {
 
 export const getRoles = (ws: WebSocket, msgObj: any) => {
     checkValidUserNGetRoles(msgObj)
-    .then((responseObj: any) => {
+    .then((roles: any) => {
+        let responseObj = {
+            requesttype: 'usermanagement', request: 'getroles',
+            requestStatus: 'success', validUser: true, roles
+        };
+
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((res: any) => {
