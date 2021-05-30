@@ -40,7 +40,7 @@ export default defineComponent({
 
     onMounted(() => {
       setTitle();
-      setGlobalToastEl(); 
+      setGlobalToastEl();
     });
 
     return { globaltoastmsg, globalToastEl, isLoggedIn, karnboundsLoaded }

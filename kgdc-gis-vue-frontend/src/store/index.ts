@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     wsurlBase: 'ws://localhost:3010',
+    wsClient: null,
     districtsList: ['Bagalkot', 'Ballari', 'Belagavi', 'Bengaluru (Rural)', 'Bengaluru (Urban)', 'Bidar', 'Chamarajanagara', 'Chikkaballapura', 'Chikkamagaluru', 'Chitradurga', 'Dakshina Kannada', 'Davanagere', 'Dharwad', 'Gadag', 'Hassan', 'Haveri', 'Kalburgi', 'Kodagu', 'Kolara', 'Koppal', 'Mandya', 'Mysuru', 'Raichur', 'Ramanagara', 'Shivamogga', 'Tumakuru', 'Udupi', 'Uttara Kannada', 'Vijayapura', 'Yadgir'],
     categoryinfo: '',
     globaltoastmsg: '',
@@ -19,6 +20,9 @@ export default createStore({
   getters: {
     getWSURLBase(state){
       return state.wsurlBase;
+    },
+    getWSClient(state){
+      return state.wsClient;
     },
     getDistrictsList(state){
       return state.districtsList;
@@ -58,6 +62,9 @@ export default createStore({
     }
   },
   mutations: {
+    setSocketClient(state, wsClient){
+      state.wsClient = wsClient;
+    },
     setCategoryInfo(state, info){
       state.categoryinfo = info;
     },
@@ -93,6 +100,9 @@ export default createStore({
     }
   },
   actions: {
+    setSocketClient(context, wsClient){
+      context.commit('setSocketClient', wsClient);
+    },
     setCategoryInfo(context, info){
       context.commit('setCategoryInfo', info);
     },
