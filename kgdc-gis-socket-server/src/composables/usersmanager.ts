@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 
 import { getRoles, newregistration } from './usersdbhandler';
-import { getUsersTable, assignRole, deleteUser,  } from './usersdbhandler';
+// import { getUsersTable, assignRole, deleteUser,  } from './usersdbhandler';
 
 const respondWithFailureMsg = (ws: WebSocket) => {
     let responseObj = { requestStatus: 'failure' };
@@ -16,15 +16,15 @@ export const userManager = (ws: WebSocket, msgObj: any) => {
         case 'newregistration':
             newregistration(ws, msgObj);
             break;
-        case 'userstable':
-            getUsersTable(ws, msgObj);
-            break;
-        case 'assignrole':
-            assignRole(ws, msgObj);
-            break;
-        case 'deleteuser':
-            deleteUser(ws, msgObj);
-            break;
+        // case 'userstable':
+        //     getUsersTable(ws, msgObj);
+        //     break;
+        // case 'assignrole':
+        //     assignRole(ws, msgObj);
+        //     break;
+        // case 'deleteuser':
+        //     deleteUser(ws, msgObj);
+        //     break;
         default:
             // To clearly inform the Unanonymous Users Requesting Without Base64 String
             respondWithFailureMsg(ws);

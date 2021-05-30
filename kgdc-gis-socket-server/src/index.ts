@@ -28,7 +28,8 @@ app.get('/', function(req, res){
 });
 
 const wsserver = new Server({ noServer: true });
-wsserver.on('connection', (ws: WebSocket, request: any) => {
+wsserver.on('connection', (ws: WebSocket, roles: any) => {
+    console.log(roles);
     handleWebSocketConnection(ws);
 });
 
@@ -38,10 +39,11 @@ server.on('upgrade', (request, socket, head) => {
     // console.log(searchParams, reqUrl);
 
     checkuser(searchParams)
-    .then(() => {
-        wsserver.handleUpgrade(request, socket, head, (ws: WebSocket) => { wsserver.emit('connection', ws, request); });
+    .then((roles) => {
+        wsserver.handleUpgrade(request, socket, head, (ws: WebSocket) => { wsserver.emit('connection', ws, roles); });
     })
-    .catch(() => {
+    .catch((err) => {
+        console.log(err);
         socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
         socket.destroy();
         return;
