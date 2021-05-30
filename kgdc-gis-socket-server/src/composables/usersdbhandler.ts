@@ -24,7 +24,7 @@ const checkAdminUser = (msgObj: any) => {
 }
 
 export const getRoles = (ws: WebSocket, msgObj: any) => {
-    checkValidUserNGetRoles(ws, msgObj)
+    checkValidUserNGetRoles(msgObj)
     .then((responseObj: any) => {
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
@@ -34,7 +34,7 @@ export const getRoles = (ws: WebSocket, msgObj: any) => {
     });
 }
 
-export const checkValidUserNGetRoles = (ws: WebSocket, msgObj: any) => {
+export const checkValidUserNGetRoles = (msgObj: any) => {
     return new Promise((resolve, reject) => {
         checkAdminUser(msgObj)
         .then((res: any) => {
@@ -56,7 +56,10 @@ export const checkValidUserNGetRoles = (ws: WebSocket, msgObj: any) => {
                 if(rows.length == 1){
                     let row = rows[0];
                     let roles = row.roles.split(',');
-                    resolve({ requestStatus: 'success', validUser: true, roles });
+                    resolve({
+                        requesttype: 'usermanagement', request: 'getroles',
+                        requestStatus: 'success', validUser: true, roles
+                    });
                 } else {
                     reject({ requestStatus: 'failure', validUser: false });
                 }

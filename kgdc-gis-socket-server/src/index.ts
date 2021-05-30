@@ -9,14 +9,14 @@ const server = new http.Server(app);
 
 const staticAuthentication = (req: any, res: any, next: any) => {
     let searchParams = new URLSearchParams(req._parsedUrl.search)
-    const { validuser, roles } = checkuser(searchParams);
-    console.log(validuser, roles);
 
-    if(validuser){
+    checkuser(searchParams)
+    .then(() => {
         next();
-    } else {
+    })
+    .catch(() => {
         res.status(401).end();
-    }
+    })
 }
 
 app.use('/files', [ staticAuthentication, express.static('static') ]);
@@ -38,16 +38,15 @@ server.on('upgrade', (request, socket, head) => {
     const searchParams = reqUrl.searchParams;
     // console.log(searchParams, reqUrl);
 
-    const { validuser, roles } = checkuser(searchParams);
-    console.log(validuser, roles);
-
-    if(validuser){
+    checkuser(searchParams)
+    .then(() => {
         wsserver.handleUpgrade(request, socket, head, (ws: WebSocket) => { wsserver.emit('connection', ws, request); });
-    } else {
+    })
+    .catch(() => {
         socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
         socket.destroy();
         return;
-    }
+    })
 });
 
 const port = 3010;

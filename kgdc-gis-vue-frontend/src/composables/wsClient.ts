@@ -5,15 +5,17 @@ export const openSocketClientIfNotExists = (username: any, password: any) => {
     return new Promise((resolve, reject) => {
         const wsClient = store.getters.getWSClient;
 
-        if(wsClient.readyState === WebSocket.OPEN){
+        if(wsClient != null && wsClient.readyState === WebSocket.OPEN){
             console.log('Socket Already Open...');
             resolve('success');
         } else {
             console.log('Socket Closed, Opening New...');
             const wsurlBase = store.getters.getWSURLBase;
-            console.log(wsurlBase);
+            
+            let wsFullUrl = `${wsurlBase}?username=${username}&password=${password}`;
+            console.log(wsFullUrl);
 
-            let ws = new WebSocket(wsurlBase);
+            let ws = new WebSocket(wsFullUrl);
             ws.addEventListener('message', (event) => {
                 wsMsgHandler(event);
             });
@@ -25,13 +27,15 @@ export const openSocketClientIfNotExists = (username: any, password: any) => {
             ws.addEventListener('open', (event) => {
                 resolve('success');
             });
+
+            store.dispatch('setSocketClient', ws);
         }
     });
 }
 
 export const makeSocketRequest = (requestObj: any) => {
     return new Promise((resolve, reject) => {
-        const { username, password } = requestObj();
+        const { username, password } = requestObj;
 
         openSocketClientIfNotExists(username, password)
         .then(() => {

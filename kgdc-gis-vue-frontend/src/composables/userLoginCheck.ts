@@ -10,6 +10,8 @@ const userLoginCheck = () => {
                 password
             };
 
+            console.log(requestObj);
+
             makeSocketRequest(requestObj)
             .then(() => {
                 resolve('success');

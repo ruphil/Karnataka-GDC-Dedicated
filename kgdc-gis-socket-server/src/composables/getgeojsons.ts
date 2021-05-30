@@ -32,7 +32,7 @@ export const getGeoJson = (ws: WebSocket, msgObj: any) => {
       ) AS feature
     FROM (${queryVariant}) inputs) features;`;
 
-    checkValidUserNGetRoles(ws, msgObj)
+    checkValidUserNGetRoles(msgObj)
     .then((responseObj: any) => {
         const client = new Client({ connectionString });
         client.connect();
