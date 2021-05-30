@@ -1,9 +1,9 @@
 import store from "@/store";
 
 export const usermanager = (responseObj: any) => {
-    switch(responseObj.requesttype){
-        case 'usermanagement':
-            usermanager(responseObj);
+    switch(responseObj.request){
+        case 'getroles':
+            addUserRoles(responseObj.roles);
             break;
         default:
             console.log('Unexpected Response from WS Server');
