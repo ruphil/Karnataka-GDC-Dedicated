@@ -76,7 +76,7 @@ import './DigitizedMaps.scss';
 import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
 import globalToast from '../composables/globalToast';
-import filemanager from '../composables/filemanager';
+// import filemanager from '../composables/filemanager';
 import filewsloadupdown from '../composables/filewsloadupdown';
 
 export default defineComponent({
@@ -84,7 +84,7 @@ export default defineComponent({
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
         const { showGlobalToast } = globalToast();
-        const { getfilelist, approvefile } = filemanager();
+        // const { getfilelist, approvefile } = filemanager();
         const { uploadfile, downloadfile } = filewsloadupdown();
 
         const return0 = { unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
@@ -208,14 +208,14 @@ export default defineComponent({
                 return 0;
             }
 
-            getfilelist(village, currentuniquevillagecode.value)
-            .then((res) => {
-                console.log(res);
-                filelist.value = res;
-            })
-            .catch(() => {
-                showGlobalToast('Error Fetching Files...');
-            })
+            // getfilelist(village, currentuniquevillagecode.value)
+            // .then((res) => {
+            //     console.log(res);
+            //     filelist.value = res;
+            // })
+            // .catch(() => {
+            //     showGlobalToast('Error Fetching Files...');
+            // })
         }
 
         const toShowFile = computed(() => {
@@ -242,13 +242,13 @@ export default defineComponent({
         const callapproveFile = (e: any) => {
             let fileid = e.target.parentNode.getAttribute('fileid');
 
-            approvefile(fileid)
-            .then(() => {
-                callgetfilelist();
-            })
-            .catch(() => {
-                showGlobalToast('Error Approving...');
-            });
+            // approvefile(fileid)
+            // .then(() => {
+            //     callgetfilelist();
+            // })
+            // .catch(() => {
+            //     showGlobalToast('Error Approving...');
+            // });
         }
 
         function b64DecodeUnicode(str: any) {
