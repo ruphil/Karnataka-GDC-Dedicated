@@ -35,17 +35,14 @@ export const checkValidUserNGetRoles = (msgObj: any) => {
             if(rows.length == 1){
                 let row = rows[0];
                 let roles = row.roles.split(',');
-                resolve({
-                    requesttype: 'usermanagement', request: 'getroles',
-                    requestStatus: 'success', validUser: true, roles
-                });
+                resolve(roles);
             } else {
-                reject({ requestStatus: 'failure', validUser: false });
+                reject('error');
             }
         })
         .catch((err) => {
             // console.log(err);
-            reject({ requestStatus: 'failure', validUser: false });
+            reject('error');
             return 0;
         })
         .finally(() => {

@@ -8,8 +8,8 @@ export const checkuser = (params: any) => {
         }
     
         checkValidUserNGetRoles(proxyMsgObj)
-        .then((resObj: any) => {
-            resolve(resObj.roles);
+        .then((roles: any) => {
+            resolve(roles);
         })
         .catch(() => {
             reject(['NA']);

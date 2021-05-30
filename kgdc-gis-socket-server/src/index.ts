@@ -29,7 +29,13 @@ app.get('/', function(req, res){
 
 const wsserver = new Server({ noServer: true });
 wsserver.on('connection', (ws: WebSocket, roles: any) => {
-    console.log(roles);
+    let responseObj = {
+        requesttype: 'usermanagement', request: 'getroles',
+        requestStatus: 'success', validUser: true, roles
+    };
+
+    ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    
     handleWebSocketConnection(ws);
 });
 
@@ -43,7 +49,7 @@ server.on('upgrade', (request, socket, head) => {
         wsserver.handleUpgrade(request, socket, head, (ws: WebSocket) => { wsserver.emit('connection', ws, roles); });
     })
     .catch((err) => {
-        console.log(err);
+        console.log('Role Error', err);
         socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
         socket.destroy();
         return;

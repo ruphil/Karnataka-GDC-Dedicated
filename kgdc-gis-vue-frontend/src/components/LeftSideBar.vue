@@ -5,7 +5,7 @@
             <span class="soi"></span>
         </div>
         <div class="categoryitems">
-            <div class="category" title="Roles Manager" v-on:click="router.push({path: '/usersmanager'});store.dispatch('setCategoryInfo', 'Users Manager')" v-show="checkRoles(['ALL'])">
+            <div class="category" title="Roles Manager" v-on:click="router.push({path: '/usersmanager'});store.dispatch('setCategoryInfo', 'Users Manager')" v-show="checkRoles(['ADMIN'])">
                 <span class="icon"><span class="material-icons-outlined">people</span></span>
                 <span class="label" v-show="expanded">Users Manager</span>
             </div>
