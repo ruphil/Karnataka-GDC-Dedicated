@@ -6,7 +6,7 @@
         right: 0em;
         bottom: 0vh;
 
-        background-color: rgba(60, 60, 60, 0.9);
+        background-color: rgba(200, 180, 200, 1.0);
 
         > .usersbox {
             position: relative;
@@ -22,6 +22,13 @@
                 padding: 0.5em;
                 border-radius: 1em;
 
+            }
+        }
+
+        > .userstable {
+            > .tablecenter {
+                margin-left: auto;
+                margin-right: auto;
             }
         }
     }
