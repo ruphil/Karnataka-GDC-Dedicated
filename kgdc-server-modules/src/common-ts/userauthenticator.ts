@@ -12,7 +12,7 @@ export const checkuser = (params: any) => {
             resolve(roles);
         })
         .catch(() => {
-            reject(['NA']);
+            reject('NA');
         })
     })
 }
