@@ -11,14 +11,14 @@ ws.addEventListener('message',(j)=>{
 let requestObj = {
     request: 'getroles',
     validateusername: 'gisadmin',
-    validatepassword: 'kgdcgiss'
+    validatepassword: 'kgdcgis'
 };
-
-ws.send(btoa(JSON.stringify(requestObj)));
 
 ws.addEventListener('open', (event) => {
     ws.send(btoa(JSON.stringify(requestObj)));
 });
+
+ws.send(btoa(JSON.stringify(requestObj)));
 
 // Add User
 
