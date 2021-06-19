@@ -146,7 +146,7 @@ export const assignRole = (ws: WebSocket, msgObj: any) => {
         let sqlQuery = `UPDATE userstable SET ROLES = '${newrole}' WHERE USERNAME = '${usernametoupdate}'`;
         client.query(sqlQuery)
         .then(() => {
-            let responseObj = { requestStatus: 'success' };
+            let responseObj = { request: 'assignrole', requestStatus: 'success', action: 'updated' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
@@ -170,9 +170,9 @@ export const deleteUser = (ws: WebSocket, msgObj: any) => {
         const client = new Client({ connectionString });
         client.connect();
 
-        let mobileNumberToDel = msgObj.mobilenumber;
+        let usernametodelete = msgObj.usernametodelete;
 
-        let sqlQuery = `DELETE FROM userstable WHERE MobileNumber='${mobileNumberToDel}'`;
+        let sqlQuery = `DELETE FROM userstable WHERE USERNAME='${usernametodelete}'`;
         client.query(sqlQuery)
         .then(() => {
             let responseObj = { requestStatus: 'success', adminuser: true, action: 'deleted' };

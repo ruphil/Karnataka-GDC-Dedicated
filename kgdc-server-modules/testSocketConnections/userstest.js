@@ -74,7 +74,26 @@ let requestObj = {
     validateusername: 'gisadmin',
     validatepassword: 'kgdcgis',
     usernametoupdate: 'jack',
-    newrole: 'hero'
+    newrole: 'heroes'
+};
+
+ws.addEventListener('open', (event) => {
+    ws.send(btoa(JSON.stringify(requestObj)));
+});
+
+// Delete Role
+
+let ws = new WebSocket('ws://localhost:3010/');
+ws.addEventListener('message',(j)=>{
+    let responseObj = JSON.parse(atob(j.data));
+    console.log(responseObj);
+});
+
+let requestObj = {
+    request: 'deleteuser',
+    validateusername: 'gisadmin',
+    validatepassword: 'kgdcgis',
+    usernametodelete: 'jack',
 };
 
 ws.addEventListener('open', (event) => {
