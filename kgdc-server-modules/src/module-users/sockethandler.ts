@@ -1,12 +1,7 @@
 import WebSocket from 'ws';
 
 import { getRoles, newregistration } from '../common-ts/usersdbhandler';
-// import { getUsersTable, assignRole, deleteUser,  } from './usersdbhandler';
-
-const respondWithFailureMsg = (ws: WebSocket) => {
-    let responseObj = { requestStatus: 'invalidrequest' };
-    ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-}
+import { getUsersTable, assignRole, deleteUser  } from '../common-ts/usersdbhandler';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -20,18 +15,18 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
             case 'newregistration':
                 newregistration(ws, msgObj);
                 break;
-            // case 'userstable':
-            //     getUsersTable(ws, msgObj);
-            //     break;
-            // case 'assignrole':
-            //     assignRole(ws, msgObj);
-            //     break;
-            // case 'deleteuser':
-            //     deleteUser(ws, msgObj);
-            //     break;
+            case 'userstable':
+                getUsersTable(ws, msgObj);
+                break;
+            case 'assignrole':
+                assignRole(ws, msgObj);
+                break;
+            case 'deleteuser':
+                deleteUser(ws, msgObj);
+                break;
             default:
                 // To clearly inform the Unanonymous Users Requesting Without Base64 String
-                respondWithFailureMsg(ws);
+                ws.send('invalidrequest');
         }
     });
 }

@@ -98,95 +98,97 @@ export const newregistration = async (ws: WebSocket, msgObj: any) => {
         });
     })
     .catch((err) => {
-        console.log(err);
+        // console.log(err);
         let responseObj = { request: 'newregistration', requestStatus: 'failure', action: 'none' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
 }
 
+export const getUsersTable = (ws: WebSocket, msgObj: any) => {
+    checkAdminUser(msgObj)
+    .then((res: any) => {
+        const client = new Client({ connectionString });
+        client.connect();
 
+        let getQuery = `SELECT USERNAME, PASSWORD, MOBILENUMBER, DESCRIPTION, ROLES FROM userstable ORDER BY MOBILENUMBER DESC`;
+        client.query(getQuery)
+        .then((res) => {
+            let responseObj = {
+                request: 'userstable', requestStatus: 'success', validUser: true, userstable: res.rows
+            };
+    
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .catch((err) => {
+            // console.log(err);
+            let responseObj = { request: 'userstable', requestStatus: 'failure', action: 'none' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .finally(() => {
+            client.end();
+        });
+    })
+    .catch((res: any) => {
+        let responseObj = { request: 'userstable', requestStatus: 'failure', action: 'none' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    });
+}
 
-// export const getUsersTable = (ws: WebSocket, msgObj: any) => {
-//     checkAdminUser(msgObj)
-//     .then((res: any) => {
-//         const client = new Client({ connectionString });
-//         client.connect();
+export const assignRole = (ws: WebSocket, msgObj: any) => {
+    checkAdminUser(msgObj)
+    .then((res: any) => {
+        const client = new Client({ connectionString });
+        client.connect();
 
-//         let getQuery = `SELECT NAME, MOBILENUMBER, PASSWORD, UUID, ROLES FROM kgdcusers ORDER BY MOBILENUMBER`;
-//         client.query(getQuery)
-//         .then((res) => {
-//             ws.send(Buffer.from(JSON.stringify(res.rows)).toString('base64'));
-//         })
-//         .catch((err) => {
-//             // console.log(err);
-//             respondWithFailureMsg(ws);
-//             return 0;
-//         })
-//         .finally(() => {
-//             client.end();
-//         });
-//     })
-//     .catch((res: any) => {
-//         let responseObj = { requestStatus: 'success', ...res }
-//         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-//     });
-// }
+        let usernametoupdate = msgObj.usernametoupdate;
+        let newrole = msgObj.newrole;
 
-// export const assignRole = (ws: WebSocket, msgObj: any) => {
-//     checkAdminUser(msgObj)
-//     .then((res: any) => {
-//         const client = new Client({ connectionString });
-//         client.connect();
+        let sqlQuery = `UPDATE userstable SET ROLES = '${newrole}' WHERE USERNAME = '${usernametoupdate}'`;
+        client.query(sqlQuery)
+        .then(() => {
+            let responseObj = { requestStatus: 'success' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .catch((err) => {
+            // console.log(err);
+            let responseObj = { request: 'assignrole', requestStatus: 'failure', action: 'none' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .finally(() => {
+            client.end();
+        });
+    })
+    .catch((res: any) => {
+        let responseObj = { request: 'assignrole', requestStatus: 'failure', action: 'none' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    });
+}
 
-//         let mobileNumberToUpdate = msgObj.mobilenumber;
-//         let modifiedRole = msgObj.modifiedRole.toString();
+export const deleteUser = (ws: WebSocket, msgObj: any) => {
+    checkAdminUser(msgObj)
+    .then((res: any) => {
+        const client = new Client({ connectionString });
+        client.connect();
 
-//         let sqlQuery = `UPDATE kgdcusers SET ROLES = '${modifiedRole}' WHERE MOBILENUMBER = '${mobileNumberToUpdate}'`;
-//         client.query(sqlQuery)
-//         .then(() => {
-//             let responseObj = { requestStatus: 'success' };
-//             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-//         })
-//         .catch((err) => {
-//             // console.log(err);
-//             respondWithFailureMsg(ws);
-//             return 0;
-//         })
-//         .finally(() => {
-//             client.end();
-//         });
-//     })
-//     .catch((res: any) => {
-//         let responseObj = { requestStatus: 'success', ...res }
-//         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-//     });
-// }
+        let mobileNumberToDel = msgObj.mobilenumber;
 
-// export const deleteUser = (ws: WebSocket, msgObj: any) => {
-//     checkAdminUser(msgObj)
-//     .then((res: any) => {
-//         const client = new Client({ connectionString });
-//         client.connect();
-
-//         let mobileNumberToDel = msgObj.mobilenumber;
-
-//         let sqlQuery = `DELETE FROM kgdcusers WHERE MobileNumber='${mobileNumberToDel}'`;
-//         client.query(sqlQuery)
-//         .then(() => {
-//             let responseObj = { requestStatus: 'success', adminuser: true, action: 'deleted' };
-//             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-//         })
-//         .catch((err) => {
-//             // console.log(err);
-//             respondWithFailureMsg(ws);
-//             return 0;
-//         })
-//         .finally(() => {
-//             client.end();
-//         });
-//     })
-//     .catch((res: any) => {
-//         let responseObj = { requestStatus: 'success', ...res }
-//         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-//     });
-// }
+        let sqlQuery = `DELETE FROM userstable WHERE MobileNumber='${mobileNumberToDel}'`;
+        client.query(sqlQuery)
+        .then(() => {
+            let responseObj = { requestStatus: 'success', adminuser: true, action: 'deleted' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .catch((err) => {
+            // console.log(err);
+            let responseObj = { request: 'deleteuser', requestStatus: 'failure', action: 'none' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .finally(() => {
+            client.end();
+        });
+    })
+    .catch((res: any) => {
+        let responseObj = { request: 'deleteuser', requestStatus: 'failure', action: 'none' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    });
+}

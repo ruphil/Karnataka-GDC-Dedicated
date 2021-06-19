@@ -42,3 +42,41 @@ let requestObj = {
 ws.addEventListener('open', (event) => {
     ws.send(btoa(JSON.stringify(requestObj)));
 });
+
+// Get Users
+
+let ws = new WebSocket('ws://localhost:3010/');
+ws.addEventListener('message',(j)=>{
+    let responseObj = JSON.parse(atob(j.data));
+    console.log(responseObj);
+});
+
+let requestObj = {
+    request: 'userstable',
+    validateusername: 'gisadmin',
+    validatepassword: 'kgdcgis'
+};
+
+ws.addEventListener('open', (event) => {
+    ws.send(btoa(JSON.stringify(requestObj)));
+});
+
+// Assign Role
+
+let ws = new WebSocket('ws://localhost:3010/');
+ws.addEventListener('message',(j)=>{
+    let responseObj = JSON.parse(atob(j.data));
+    console.log(responseObj);
+});
+
+let requestObj = {
+    request: 'assignrole',
+    validateusername: 'gisadmin',
+    validatepassword: 'kgdcgis',
+    usernametoupdate: 'jack',
+    newrole: 'hero'
+};
+
+ws.addEventListener('open', (event) => {
+    ws.send(btoa(JSON.stringify(requestObj)));
+});
