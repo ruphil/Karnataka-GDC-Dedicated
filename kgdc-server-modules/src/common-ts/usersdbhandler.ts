@@ -3,44 +3,24 @@ import { Client } from 'pg';
 
 const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
-const respondWithFailureMsg = (ws: WebSocket) => {
-    let responseObj = { requestStatus: 'failure' };
-    ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-}
-
-export const getRoles = (ws: WebSocket, msgObj: any) => {
-    checkValidUserNGetRoles(msgObj)
-    .then((roles: any) => {
-        let responseObj = {
-            requesttype: 'usermanagement', request: 'getroles',
-            requestStatus: 'success', validUser: true, roles
-        };
-
-        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    })
-    .catch((res: any) => {
-        let responseObj = { requestStatus: 'failure', validUser: false };
-        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    });
-}
+// All User Logics    --------------------------------------------------------------------------------------------------
 
 export const checkValidUserNGetRoles = (msgObj: any) => {
     return new Promise((resolve, reject) => {
-        const { username, password } = msgObj;
+        const { validateusername, validatepassword } = msgObj;
         
         const client = new Client({ connectionString });
         client.connect();
 
-        let getQuery = `SELECT USERNAME, PASSWORD, ROLES FROM userstable where USERNAME='${username}' and PASSWORD='${password}'`;
+        let getQuery = `SELECT USERNAME, PASSWORD, ROLES FROM userstable where USERNAME='${validateusername}' and PASSWORD='${validatepassword}'`;
         client.query(getQuery)
         .then((res) => {
             let rows = res.rows;
-            console.log('User Rows', rows);
+            // console.log('User Rows', rows);
 
             if(rows.length == 1){
                 let row = rows[0];
-                let roles = row.roles.split(',');
-                resolve(roles);
+                resolve(row.roles);
             } else {
                 reject('error');
             }
@@ -48,7 +28,6 @@ export const checkValidUserNGetRoles = (msgObj: any) => {
         .catch((err) => {
             // console.log(err);
             reject('error');
-            return 0;
         })
         .finally(() => {
             client.end();
@@ -56,34 +35,76 @@ export const checkValidUserNGetRoles = (msgObj: any) => {
     });
 }
 
-export const newregistration = async (ws: WebSocket, msgObj: any) => {
-    let insertQuery = `INSERT INTO userstable (USERNAME, PASSWORD, MOBILENUMBER, ROLES) VALUES ($1, $2, $3)`;
-    let { username, password, mobilenumber } = msgObj;
-    let insertData = [username, password, mobilenumber, ''];
-    
-    const client = new Client({ connectionString });
-    client.connect();
-
-    client.query(insertQuery, insertData)
-    .then(() => {
+export const getRoles = (ws: WebSocket, msgObj: any) => {
+    checkValidUserNGetRoles(msgObj)
+    .then((roles: any) => {
         let responseObj = {
-            requesttype: 'usermanagement', request: 'newregistration',
-            requestStatus: 'success'
+            request: 'getroles', requestStatus: 'success', validUser: true, roles
         };
 
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
-    .catch((err) => {
-        console.log(err);
-        respondWithFailureMsg(ws);
-        return 0;
-    })
-    .finally(() => {
-        client.end();
+    .catch((res: any) => {
+        let responseObj = { request: 'getroles', requestStatus: 'success', validUser: false, roles: 'NA' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }
 
-// Admin Logics
+// Admin Only Logics    --------------------------------------------------------------------------------------------------
+
+const checkAdminUser = (msgObj: any) => {
+    return new Promise((resolve, reject) => {
+        checkValidUserNGetRoles(msgObj)
+        .then((roles: any) => {
+            let rolesArry = roles.split(',');
+            if(rolesArry.includes('ADMIN')){
+                resolve('success');
+            } else {
+                reject('error');
+            }
+        })
+        .catch((res: any) => {
+            reject('error');
+        });
+    });
+}
+
+export const newregistration = async (ws: WebSocket, msgObj: any) => {
+    let insertQuery = `INSERT INTO userstable (USERNAME, PASSWORD, MOBILENUMBER, DESCRIPTION, ROLES) VALUES ($1, $2, $3, $4, $5)`;
+    let { newusername, newpassword, mobilenumber, description, roles } = msgObj;
+    let insertData = [newusername, newpassword, mobilenumber, description, roles];
+
+    checkAdminUser(msgObj)
+    .then((res: any) => {
+    
+        const client = new Client({ connectionString });
+        client.connect();
+
+        client.query(insertQuery, insertData)
+        .then(() => {
+            let responseObj = {
+                request: 'newregistration', requestStatus: 'success', action: 'useradded'
+            };
+
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .catch((err) => {
+            // console.log(err);
+            let responseObj = { request: 'newregistration', requestStatus: 'failure', action: 'none' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .finally(() => {
+            client.end();
+        });
+    })
+    .catch((err) => {
+        console.log(err);
+        let responseObj = { request: 'newregistration', requestStatus: 'failure', action: 'none' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    })
+}
+
+
 
 // export const getUsersTable = (ws: WebSocket, msgObj: any) => {
 //     checkAdminUser(msgObj)
