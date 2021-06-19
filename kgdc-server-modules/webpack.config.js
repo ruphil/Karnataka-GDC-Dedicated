@@ -3,9 +3,9 @@ const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: {
-    users: './src/module-users/users.ts',
-    flights: './src/module-flights/flights.ts',
-    attendance: './src/module-attendance/attendance.ts'
+    users: './src/module-users/main.ts',
+    // flights: './src/module-flights/main.ts',
+    // attendance: './src/module-attendance/main.ts'
   },
   target: 'node',
   externals: [nodeExternals()],
