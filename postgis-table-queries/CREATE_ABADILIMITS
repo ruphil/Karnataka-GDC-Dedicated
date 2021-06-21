@@ -1,9 +1,16 @@
-
-
 CREATE TABLE ABADILIMITS(
-    ID          SERIAL  PRIMARY KEY,
-    FLIGHTID    TEXT    NOT NULL,
-    DISTRICT    TEXT,
-    USERNAME    TEXT,
-    GEOM        GEOMETRY(POLYGON, 3857)
+    ID                  SERIAL  PRIMARY KEY,
+    ABADILIMITNAME      TEXT,
+    NOOFPROPERTIES      TEXT,
+    MARKINGSTARTDATE    TEXT,
+    MARKINGENDDATE      TEXT,
+    VILLAGENAME         TEXT,
+    VILLAGELGDCODE      TEXT,
+    GRAMPANCHAYAT       TEXT,
+    HOBLI               TEXT,
+    TALUK               TEXT,
+    DISTRICT            TEXT,
+    CREATORINFO         TEXT,
+    APPROVERINFO        TEXT,
+    GEOM                GEOMETRY(POLYGON, 3857)
 );
