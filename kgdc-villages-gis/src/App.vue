@@ -1,7 +1,7 @@
 <template>
   <div id="approot">
-    <NavBar />
     <MapContainer v-if="isLoggedIn"/>
+    <NavBar />
     <ControlsContainer v-if="isLoggedIn"/>
     <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
   </div>

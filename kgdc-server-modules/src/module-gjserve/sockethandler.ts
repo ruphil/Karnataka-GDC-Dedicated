@@ -1,6 +1,7 @@
 import WebSocket from 'ws';
 
 import { checkValidUserNGetRoles } from '../common-ts/usersdbhandler';
+import { getGeoJson } from './getgeojsons';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -10,8 +11,7 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
         checkValidUserNGetRoles(msgObj)
         .then(() => {
             if(msgObj.request == 'getgeojson'){
-                let responseObj = { response: 'getgeojson', requestStatus: 'success', validUser: true, status: 'Valid Request' };
-                ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+                getGeoJson(ws, msgObj);
             } else {
                 let responseObj = { response: 'getgeojson', requestStatus: 'success', validUser: true, status: 'Invalid Request' };
                 ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));

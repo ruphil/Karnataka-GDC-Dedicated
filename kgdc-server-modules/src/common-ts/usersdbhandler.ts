@@ -193,7 +193,7 @@ export const deleteUser = (ws: WebSocket, msgObj: any) => {
         });
     })
     .catch((res: any) => {
-        let responseObj = { request: 'deleteuser', requestStatus: 'failure', action: 'none' };
+        let responseObj = { response: 'deleteuser', requestStatus: 'failure', action: 'none' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }

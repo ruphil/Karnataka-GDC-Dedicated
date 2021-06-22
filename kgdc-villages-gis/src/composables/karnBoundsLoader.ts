@@ -21,8 +21,8 @@ const karnBoundsLoader = () => {
         let requestObj = {
             request: 'getgeojson',
             layer: 'karnatakaboundary',
-            username,
-            password
+            validateusername: username,
+            validatepassword: password
         }
 
         console.log(requestObj);
@@ -34,10 +34,10 @@ const karnBoundsLoader = () => {
             let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
             console.log(responseObj);
 
-            if(responseObj.validUser){
-                
+            if(responseObj.requestStatus == 'success'){
+                setKarnBounds(responseObj.featureCollection)
             } else {
-                
+                console.log('Karn GJ Error');
             }
 
             ws.close();

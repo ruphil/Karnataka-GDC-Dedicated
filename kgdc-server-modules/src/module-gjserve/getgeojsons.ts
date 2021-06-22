@@ -38,9 +38,8 @@ export const getGeoJson = (ws: WebSocket, msgObj: any) => {
     })
     .catch((err) => {
         // console.log(err);
-        let responseObj = { response: 'getgeojson', requestStatus: 'success', validUser: true, status: 'Error in SQL' };
+        let responseObj = { response: 'getgeojson', requestStatus: 'failure', validUser: true, status: 'Error in SQL' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-        return 0;
     })
     .finally(() => {
         client.end();
