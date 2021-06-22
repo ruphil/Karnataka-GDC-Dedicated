@@ -116,7 +116,7 @@ export default {
     }
 
     const registerBtnClick = () => {
-      route.push({path: '/register'});
+      route.push({path: '/mainscreen'});
     }
 
     const showToast = async (msg) => {

@@ -19,6 +19,7 @@
     <div class="labelclass">Remarks, If Any</div><br/>
     <textarea class="remarks" v-model="remarksref"></textarea>
     <br/><br/>
+    <input type="checkbox">I certifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy thifiy that <br><br>
     <button class="logbutton" v-bind:disabled="isWorking" v-on:click="submitAttendance">Log Attendance With Location and Time</button>
     <br/><br/>
     <div class="positionalAccuracy">Positional Accuracy: {{ accuracy }} m</div>
