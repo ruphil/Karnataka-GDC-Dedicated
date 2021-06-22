@@ -52,7 +52,7 @@ const karnBoundsLoader = () => {
 
     const setKarnBounds = (gj: any) => {
         const map = store.getters.getMapObj;
-        console.log(map);
+        // console.log(map);
 
         let karndistbounds = new VectorLayer({
             source: new VectorSource({
