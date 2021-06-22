@@ -1,4 +1,32 @@
 #markedvillages {
+    > .measuretools {
+        > .linemeasure {
+            display: block;
+            margin: 1px;
+            padding: 0;
+            color: white;
+            font-size: 1.14em;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            height: 1.375em;
+            width: 1.375em;
+            line-height: .4em;
+            background-color: rgba(0,60,136,0.5);
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(0,60,136,0.7);
+            }
+
+            &:active {
+                color: rgba(0,60,136,0.7);
+                background-color: white;
+            }
+        }
+    }
     > .toolscontainer {
         position: fixed;
         top: 8vh;

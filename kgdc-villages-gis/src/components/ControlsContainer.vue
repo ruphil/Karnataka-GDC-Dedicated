@@ -1,5 +1,8 @@
 <template>
     <div id="markedvillages">
+        <div class="measuretools">
+            <button class="linemeasure" v-on:click="showtools = !showtools"><span class="material-icons-outlined" title="Tools">handyman</span></button>
+        </div>
         <div class="toolscontainer">
             <button class="toggletools" v-on:click="showtools = !showtools"><span class="material-icons-outlined" title="Tools">handyman</span></button>
             <div class="tools" v-show="showtools">
@@ -195,7 +198,6 @@ export default defineComponent({
 
         onMounted(() => {
             fileEl.value.addEventListener('change', sendFileElementToLoad);
-            store.dispatch('setCategoryInfo', 'Add Marked Villages');
         });
 
         const currentFeatureID = ref('');

@@ -8,9 +8,6 @@
       <span class="titlecontainer">
           <span class="titlesoi">Survey of India</span>
       </span>
-      <span class="functioncategory">
-        {{ categoryInfo }}
-      </span>
       <span class="notLoggedInSpan" v-show="!isLoggedIn">
         <button class="loginbtn" v-on:click="loginBoxShow = !loginBoxShow">Login</button>
         <span class="loginbox" v-show="loginBoxShow">
@@ -43,7 +40,6 @@ export default defineComponent({
     const { showGlobalToast } = globalToast();
     const { sendAuthenticationRequest } = userLoginCheck();
 
-    const categoryInfo = computed(() => store.getters.getCategoryInfo);
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const globalusername = computed(() => store.getters.getUsername);
     const loginBoxShow = ref(false);
@@ -83,7 +79,7 @@ export default defineComponent({
       location.reload();
     }
 
-    return { categoryInfo, isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, doLogin, doLogout }
+    return { isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, doLogin, doLogout }
   },
 })
 </script>
