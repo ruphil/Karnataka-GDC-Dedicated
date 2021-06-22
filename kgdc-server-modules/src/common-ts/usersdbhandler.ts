@@ -41,14 +41,14 @@ export const getRoles = (ws: WebSocket, msgObj: any) => {
     checkValidUserNGetRoles(msgObj)
     .then((roles: any) => {
         let responseObj = {
-            request: 'getroles', requestStatus: 'success', validUser: true, validateusername, validatepassword, roles
+            response: 'getroles', requestStatus: 'success', validUser: true, validateusername, validatepassword, roles
         };
 
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((res: any) => {
         let responseObj = {
-            request: 'getroles', requestStatus: 'success', validUser: false, validateusername, validatepassword, roles: 'NA'
+            response: 'getroles', requestStatus: 'success', validUser: false, validateusername, validatepassword, roles: 'NA'
         };
 
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
@@ -88,14 +88,14 @@ export const newregistration = async (ws: WebSocket, msgObj: any) => {
         client.query(insertQuery, insertData)
         .then(() => {
             let responseObj = {
-                request: 'newregistration', requestStatus: 'success', action: 'useradded'
+                response: 'newregistration', requestStatus: 'success', action: 'useradded'
             };
 
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
             // console.log(err);
-            let responseObj = { request: 'newregistration', requestStatus: 'failure', action: 'none' };
+            let responseObj = { response: 'newregistration', requestStatus: 'failure', action: 'none' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
@@ -104,7 +104,7 @@ export const newregistration = async (ws: WebSocket, msgObj: any) => {
     })
     .catch((err) => {
         // console.log(err);
-        let responseObj = { request: 'newregistration', requestStatus: 'failure', action: 'none' };
+        let responseObj = { response: 'newregistration', requestStatus: 'failure', action: 'none' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
 }
@@ -119,14 +119,14 @@ export const getUsersTable = (ws: WebSocket, msgObj: any) => {
         client.query(getQuery)
         .then((res) => {
             let responseObj = {
-                request: 'userstable', requestStatus: 'success', validUser: true, userstable: res.rows
+                response: 'userstable', requestStatus: 'success', validUser: true, userstable: res.rows
             };
     
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
             // console.log(err);
-            let responseObj = { request: 'userstable', requestStatus: 'failure', action: 'none' };
+            let responseObj = { response: 'userstable', requestStatus: 'failure', action: 'none' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
@@ -134,7 +134,7 @@ export const getUsersTable = (ws: WebSocket, msgObj: any) => {
         });
     })
     .catch((res: any) => {
-        let responseObj = { request: 'userstable', requestStatus: 'failure', action: 'none' };
+        let responseObj = { response: 'userstable', requestStatus: 'failure', action: 'none' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }
@@ -151,12 +151,12 @@ export const assignRole = (ws: WebSocket, msgObj: any) => {
         let sqlQuery = `UPDATE userstable SET ROLES = '${newrole}' WHERE USERNAME = '${usernametoupdate}'`;
         client.query(sqlQuery)
         .then(() => {
-            let responseObj = { request: 'assignrole', requestStatus: 'success', action: 'updated' };
+            let responseObj = { response: 'assignrole', requestStatus: 'success', action: 'updated' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
             // console.log(err);
-            let responseObj = { request: 'assignrole', requestStatus: 'failure', action: 'none' };
+            let responseObj = { response: 'assignrole', requestStatus: 'failure', action: 'none' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
@@ -164,7 +164,7 @@ export const assignRole = (ws: WebSocket, msgObj: any) => {
         });
     })
     .catch((res: any) => {
-        let responseObj = { request: 'assignrole', requestStatus: 'failure', action: 'none' };
+        let responseObj = { response: 'assignrole', requestStatus: 'failure', action: 'none' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }
@@ -180,12 +180,12 @@ export const deleteUser = (ws: WebSocket, msgObj: any) => {
         let sqlQuery = `DELETE FROM userstable WHERE USERNAME='${usernametodelete}'`;
         client.query(sqlQuery)
         .then(() => {
-            let responseObj = { requestStatus: 'success', adminuser: true, action: 'deleted' };
+            let responseObj = { response: 'deleteuser', requestStatus: 'success', adminuser: true, action: 'deleted' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
             // console.log(err);
-            let responseObj = { request: 'deleteuser', requestStatus: 'failure', action: 'none' };
+            let responseObj = { response: 'deleteuser', requestStatus: 'failure', action: 'none' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
