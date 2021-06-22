@@ -40,7 +40,6 @@ const userLoginCheck = () => {
             ws.addEventListener('open', (event) => {
                 ws.send(btoa(JSON.stringify(requestObj)));
             });
-
     }
 
     return { sendAuthenticationRequest }

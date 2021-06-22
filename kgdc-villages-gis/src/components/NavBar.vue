@@ -50,7 +50,6 @@ export default defineComponent({
     const loginusername = ref('');
     const loginpassword = ref('');
 
-    computed(() => store.getters.getLoggedIn)
     const loadCredentials = () => {
       let globalusername = window.localStorage.getItem('globalusername')!;
       let globalpassword = window.localStorage.getItem('globalpassword')!;

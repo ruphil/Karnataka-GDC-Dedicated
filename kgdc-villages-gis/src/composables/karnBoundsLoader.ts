@@ -8,29 +8,44 @@ import LayerGroup from 'ol/layer/Group';
 import store from '@/store';
 
 import mapStyler from './mapStyler';
-// import { makeSocketRequestNClose } from '../composables/wsClient';
+import globalToast from '../composables/globalToast';
 
 const karnBoundsLoader = () => {
     const { districtStyleFunction } = mapStyler();
+    const { showGlobalToast } = globalToast();
 
     const loadKarnBounds = () => {
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
 
         let requestObj = {
-            requesttype: 'getgeojson',
+            request: 'getgeojson',
             layer: 'karnatakaboundary',
             username,
             password
         }
 
-        // makeSocketRequestNClose(requestObj)
-        // .then(() => {
-        //     console.log('Karnataka Boundary Request Sent Successfully');
-        // })
-        // .catch(() => {
-        //     console.log('Problem in sending Karnataka Boundary Request');
-        // })
+        console.log(requestObj);
+
+        let wssURL = store.getters.getGJModuleWSS;
+        let ws = new WebSocket(wssURL);
+    
+        ws.addEventListener('message', (event) => {
+            let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
+            console.log(responseObj);
+
+            if(responseObj.validUser){
+                
+            } else {
+                
+            }
+
+            ws.close();
+        });
+
+        ws.addEventListener('open', (event) => {
+            ws.send(btoa(JSON.stringify(requestObj)));
+        });
     }
 
     // This Function is Called From wsClientMsgHandler.ts

@@ -4,6 +4,7 @@ export default createStore({
   state: {
     mapObj: {},
     usersModuleWSS: 'ws://localhost:3010',
+    gjModuleWSS: 'ws://localhost:3020',
     districtsList: ['Bagalkot', 'Ballari', 'Belagavi', 'Bengaluru (Rural)', 'Bengaluru (Urban)', 'Bidar', 'Chamarajanagara', 'Chikkaballapura', 'Chikkamagaluru', 'Chitradurga', 'Dakshina Kannada', 'Davanagere', 'Dharwad', 'Gadag', 'Hassan', 'Haveri', 'Kalburgi', 'Kodagu', 'Kolara', 'Koppal', 'Mandya', 'Mysuru', 'Raichur', 'Ramanagara', 'Shivamogga', 'Tumakuru', 'Udupi', 'Uttara Kannada', 'Vijayapura', 'Yadgir'],
     categoryinfo: '',
     globaltoastmsg: '',
@@ -23,6 +24,9 @@ export default createStore({
     },
     getUsersModuleWSS(state){
       return state.usersModuleWSS;
+    },
+    getGJModuleWSS(state){
+      return state.gjModuleWSS;
     },
     getDistrictsList(state){
       return state.districtsList;
