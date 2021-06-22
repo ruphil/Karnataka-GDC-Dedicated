@@ -8,7 +8,7 @@ import LayerGroup from 'ol/layer/Group';
 import store from '@/store';
 
 import mapStyler from './mapStyler';
-import { makeSocketRequestNClose } from '../composables/wsClient';
+// import { makeSocketRequestNClose } from '../composables/wsClient';
 
 const karnBoundsLoader = () => {
     const { districtStyleFunction } = mapStyler();
@@ -24,13 +24,13 @@ const karnBoundsLoader = () => {
             password
         }
 
-        makeSocketRequestNClose(requestObj)
-        .then(() => {
-            console.log('Karnataka Boundary Request Sent Successfully');
-        })
-        .catch(() => {
-            console.log('Problem in sending Karnataka Boundary Request');
-        })
+        // makeSocketRequestNClose(requestObj)
+        // .then(() => {
+        //     console.log('Karnataka Boundary Request Sent Successfully');
+        // })
+        // .catch(() => {
+        //     console.log('Problem in sending Karnataka Boundary Request');
+        // })
     }
 
     // This Function is Called From wsClientMsgHandler.ts

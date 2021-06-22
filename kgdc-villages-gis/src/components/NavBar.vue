@@ -41,8 +41,8 @@ import userLoginCheck from '../composables/userLoginCheck';
 export default defineComponent({
   setup() {
     const { showGlobalToast } = globalToast();
-    const { doAuthentication } = userLoginCheck();
-    
+    const { sendAuthenticationRequest } = userLoginCheck();
+
     const categoryInfo = computed(() => store.getters.getCategoryInfo);
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const globalusername = computed(() => store.getters.getUsername);
@@ -51,51 +51,45 @@ export default defineComponent({
     const loginpassword = ref('');
     const loginMsg = ref('Press Enter To Continue...');
 
-    const doLoggedInTasks = () => {
-      store.dispatch('setLoggedIn', true);
-      store.dispatch('setGlobalUsename', loginusername.value);
-      store.dispatch('setGlobalPassword', loginpassword.value);
-      window.localStorage.setItem('globalusername', loginusername.value);
-      window.localStorage.setItem('globalpassword', loginpassword.value);
-    }
+// computed(() => store.getters.getLoggedIn)
+    // const loadCredentials = () => {
+    //   let globalusername = window.localStorage.getItem('globalusername')!;
+    //   let globalpassword = window.localStorage.getItem('globalpassword')!;
+    //   // console.log(globalusername, globalpassword);
+    //   loginusername.value = globalusername;
+    //   loginpassword.value = globalpassword;
+      
+    //   if(globalusername != undefined && globalpassword != undefined){
+    //     console.log('came here 2');
+    //     sendAuthenticationRequest(loginusername.value, loginpassword.value);
+    //   }
+    // }
 
-    const loadCredentials = () => {
-      let globalusername = window.localStorage.getItem('globalusername')!;
-      let globalpassword = window.localStorage.getItem('globalpassword')!;
-      // console.log(globalusername, globalpassword);
-      loginusername.value = globalusername;
-      loginpassword.value = globalpassword;
-      if(globalusername != undefined && globalpassword != undefined){
-        console.log('came here 2');
-        callAuthenticationPromiseFunction();
-      }
-    }
+    // onMounted(() => {
+    //   loadCredentials();
+    // });
 
-    onMounted(() => {
-      loadCredentials();
-    });
-
-    const callAuthenticationPromiseFunction = () => {
-      doAuthentication(loginusername.value, loginpassword.value)
-      .then(() => {
-        doLoggedInTasks();
-        showGlobalToast('Login Successful...');
-        loginBoxShow.value = false;
-      })
-      .catch(() => {
-        loginpassword.value = '';
-        showGlobalToast('Invalid Username / Password...');
-        window.localStorage.removeItem('globalusername');
-        window.localStorage.removeItem('globalpassword');
-      })
-      .finally(() => {
-        loginMsg.value = 'Press Enter To Continue...';
-      });
-    }
+    // const callAuthenticationPromiseFunction = () => {
+    //   doAuthentication(loginusername.value, loginpassword.value)
+    //   .then(() => {
+    //     doLoggedInTasks();
+    //     showGlobalToast('Login Successful...');
+    //     loginBoxShow.value = false;
+    //   })
+    //   .catch(() => {
+    //     loginpassword.value = '';
+    //     showGlobalToast('Invalid Username / Password...');
+    //     window.localStorage.removeItem('globalusername');
+    //     window.localStorage.removeItem('globalpassword');
+    //   })
+    //   .finally(() => {
+    //     loginMsg.value = 'Press Enter To Continue...';
+    //   });
+    // }
 
     const doLogin = (): void => {
       loginMsg.value = 'Please Wait...';
-      callAuthenticationPromiseFunction();
+      sendAuthenticationRequest(loginusername.value, loginpassword.value);
     }
 
     const doLogout = () => {

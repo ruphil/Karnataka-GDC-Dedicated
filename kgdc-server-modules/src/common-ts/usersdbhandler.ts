@@ -36,16 +36,23 @@ export const checkValidUserNGetRoles = (msgObj: any) => {
 }
 
 export const getRoles = (ws: WebSocket, msgObj: any) => {
+    const { validateusername, validatepassword } = msgObj;
+
     checkValidUserNGetRoles(msgObj)
     .then((roles: any) => {
+        
+
         let responseObj = {
-            request: 'getroles', requestStatus: 'success', validUser: true, roles
+            request: 'getroles', requestStatus: 'success', validUser: true, validateusername, validatepassword, roles
         };
 
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((res: any) => {
-        let responseObj = { request: 'getroles', requestStatus: 'success', validUser: false, roles: 'NA' };
+        let responseObj = {
+            request: 'getroles', requestStatus: 'success', validUser: true, validateusername, validatepassword, roles: 'NA'
+        };
+        
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }

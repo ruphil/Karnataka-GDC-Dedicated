@@ -1,5 +1,5 @@
-import { handleUserRoles } from './wsClientMsgHandler/usermanagement';
-import { handlegeojson } from './wsClientMsgHandler/handlegeojsons';
+import { handleUserRoles } from './usermanagement';
+import { handlegeojson } from './handlegeojsons';
 
 export const wsMsgHandler = (event: any) => {
     // console.log(event.data);
