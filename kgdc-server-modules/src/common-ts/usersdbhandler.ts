@@ -40,8 +40,6 @@ export const getRoles = (ws: WebSocket, msgObj: any) => {
 
     checkValidUserNGetRoles(msgObj)
     .then((roles: any) => {
-        
-
         let responseObj = {
             request: 'getroles', requestStatus: 'success', validUser: true, validateusername, validatepassword, roles
         };
