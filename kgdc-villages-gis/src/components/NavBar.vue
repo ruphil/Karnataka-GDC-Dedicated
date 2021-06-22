@@ -3,9 +3,10 @@
     <div class="navbar">
       <span class="logo">
         <img src="../assets/logo.png" width="30" title="Survey of India"/>
-        <div class="titlecontainer">
-          <div class="title">Survey of India</div>
-        </div>
+      </span>
+      &emsp;&emsp;
+      <span class="titlecontainer">
+          <span class="titlesoi">Survey of India</span>
       </span>
       <span class="functioncategory">
         {{ categoryInfo }}
@@ -24,7 +25,7 @@
         <span>Welcome {{ globalusername }}</span>
         <button class="logoutbtn" v-on:click="doLogout">Logout</button>
       </span>
-      <span class="title">Karnataka Geospatial Data Centre</span>
+      <span class="titlekgdc">Karnataka Geospatial Data Centre</span>
     </div>
   </div>
 </template>
@@ -48,6 +49,7 @@ export default defineComponent({
     const loginusername = ref('');
     const loginpassword = ref('');
     const loginMsg = ref('Press Enter To Continue...');
+
     const doLoggedInTasks = () => {
       store.dispatch('setLoggedIn', true);
       store.dispatch('setGlobalUsename', loginusername.value);
@@ -55,6 +57,7 @@ export default defineComponent({
       window.localStorage.setItem('globalusername', loginusername.value);
       window.localStorage.setItem('globalpassword', loginpassword.value);
     }
+
     const loadCredentials = () => {
       let globalusername = window.localStorage.getItem('globalusername')!;
       let globalpassword = window.localStorage.getItem('globalpassword')!;
@@ -66,9 +69,11 @@ export default defineComponent({
         callAuthenticationPromiseFunction();
       }
     }
+
     onMounted(() => {
       loadCredentials();
     });
+
     const callAuthenticationPromiseFunction = () => {
       doAuthentication(loginusername.value, loginpassword.value)
       .then(() => {
@@ -87,10 +92,12 @@ export default defineComponent({
         loginMsg.value = 'Press Enter To Continue...';
       });
     }
+
     const doLogin = (): void => {
       loginMsg.value = 'Please Wait...';
       callAuthenticationPromiseFunction();
     }
+
     const doLogout = () => {
       showGlobalToast('Logged Out...');
       loginusername.value = '';
@@ -102,6 +109,7 @@ export default defineComponent({
       window.localStorage.removeItem('globalpassword');
       location.reload();
     }
+
     return { categoryInfo, isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, loginMsg, doLogin, doLogout }
   },
 })
