@@ -10,15 +10,15 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
         checkValidUserNGetRoles(msgObj)
         .then(() => {
             if(msgObj.request == 'getgeojson'){
-                let responseObj = { request: 'getgeojson', requestStatus: 'success', validUser: true, status: 'Valid Request' };
+                let responseObj = { response: 'getgeojson', requestStatus: 'success', validUser: true, status: 'Valid Request' };
                 ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
             } else {
-                let responseObj = { request: 'getgeojson', requestStatus: 'success', validUser: true, status: 'Invalid Request' };
+                let responseObj = { response: 'getgeojson', requestStatus: 'success', validUser: true, status: 'Invalid Request' };
                 ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
             }
         })
         .catch(() => {
-            let responseObj = { request: 'getgeojson', requestStatus: 'failure', validUser: false, status: 'Unauthorized Request' };
+            let responseObj = { response: 'getgeojson', requestStatus: 'failure', validUser: false, status: 'Unauthorized Request' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
     });
