@@ -50,9 +50,9 @@ export const getRoles = (ws: WebSocket, msgObj: any) => {
     })
     .catch((res: any) => {
         let responseObj = {
-            request: 'getroles', requestStatus: 'success', validUser: true, validateusername, validatepassword, roles: 'NA'
+            request: 'getroles', requestStatus: 'success', validUser: false, validateusername, validatepassword, roles: 'NA'
         };
-        
+
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }

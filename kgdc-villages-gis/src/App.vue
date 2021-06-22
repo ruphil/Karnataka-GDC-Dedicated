@@ -1,8 +1,10 @@
 <template>
-  <NavBar />
-  <MapContainer />
-  <ControlsContainer />
-  <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
+  <div id="approot">
+    <NavBar />
+    <MapContainer />
+    <ControlsContainer />
+    <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -26,8 +28,9 @@ export default defineComponent({
     const karnboundsLoaded = computed(() => store.getters.getKarnBoundsLoaded);
     
     const setTitle = () => {
-      document.title = 'Karnataka GDC, SOI';
+      document.title = 'Karnataka Villages';
     }
+
     const setGlobalToastEl = () => {
       store.dispatch('setGlobalToastEl', globalToastEl);
     }

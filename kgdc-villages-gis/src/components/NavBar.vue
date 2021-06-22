@@ -17,7 +17,7 @@
           <span class="logincomponents">
             <input class="mobilenumber" type="text" size="20" placeholder="Username" v-model="loginusername"/><br/><br/>
             <input class="password" type="password" size="20" placeholder="Password" v-model="loginpassword" v-on:keyup.enter="doLogin"/><br/><br/>
-            <div style="font-size:12px;">{{ loginMsg }}</div>
+            <div style="font-size:12px;">Press Enter To Continue...</div>
           </span>
         </span>
       </span>
@@ -49,46 +49,26 @@ export default defineComponent({
     const loginBoxShow = ref(false);
     const loginusername = ref('');
     const loginpassword = ref('');
-    const loginMsg = ref('Press Enter To Continue...');
 
-// computed(() => store.getters.getLoggedIn)
-    // const loadCredentials = () => {
-    //   let globalusername = window.localStorage.getItem('globalusername')!;
-    //   let globalpassword = window.localStorage.getItem('globalpassword')!;
-    //   // console.log(globalusername, globalpassword);
-    //   loginusername.value = globalusername;
-    //   loginpassword.value = globalpassword;
+    computed(() => store.getters.getLoggedIn)
+    const loadCredentials = () => {
+      let globalusername = window.localStorage.getItem('globalusername')!;
+      let globalpassword = window.localStorage.getItem('globalpassword')!;
+      // console.log(globalusername, globalpassword);
+      loginusername.value = globalusername;
+      loginpassword.value = globalpassword;
       
-    //   if(globalusername != undefined && globalpassword != undefined){
-    //     console.log('came here 2');
-    //     sendAuthenticationRequest(loginusername.value, loginpassword.value);
-    //   }
-    // }
+      if(globalusername != undefined && globalpassword != undefined){
+        console.log('came here 2');
+        sendAuthenticationRequest(loginusername.value, loginpassword.value);
+      }
+    }
 
-    // onMounted(() => {
-    //   loadCredentials();
-    // });
-
-    // const callAuthenticationPromiseFunction = () => {
-    //   doAuthentication(loginusername.value, loginpassword.value)
-    //   .then(() => {
-    //     doLoggedInTasks();
-    //     showGlobalToast('Login Successful...');
-    //     loginBoxShow.value = false;
-    //   })
-    //   .catch(() => {
-    //     loginpassword.value = '';
-    //     showGlobalToast('Invalid Username / Password...');
-    //     window.localStorage.removeItem('globalusername');
-    //     window.localStorage.removeItem('globalpassword');
-    //   })
-    //   .finally(() => {
-    //     loginMsg.value = 'Press Enter To Continue...';
-    //   });
-    // }
+    onMounted(() => {
+      loadCredentials();
+    });
 
     const doLogin = (): void => {
-      loginMsg.value = 'Please Wait...';
       sendAuthenticationRequest(loginusername.value, loginpassword.value);
     }
 
@@ -104,7 +84,7 @@ export default defineComponent({
       location.reload();
     }
 
-    return { categoryInfo, isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, loginMsg, doLogin, doLogout }
+    return { categoryInfo, isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, doLogin, doLogout }
   },
 })
 </script>

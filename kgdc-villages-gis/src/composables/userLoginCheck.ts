@@ -1,5 +1,4 @@
 import store from '@/store';
-// import { wsMsgHandler } from './wsResponseHandler/wsResponseHandler';
 import globalToast from '../composables/globalToast';
 
 const userLoginCheck = () => {
@@ -32,6 +31,7 @@ const userLoginCheck = () => {
                 } else {
                     window.localStorage.removeItem('globalusername');
                     window.localStorage.removeItem('globalpassword');
+                    showGlobalToast('Invalid Username / Password...');
                 }
 
                 ws.close();
