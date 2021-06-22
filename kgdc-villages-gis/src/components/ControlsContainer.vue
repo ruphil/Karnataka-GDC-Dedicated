@@ -1,7 +1,10 @@
 <template>
     <div id="markedvillages">
-        <div class="measuretools">
-            <button class="linemeasure" v-on:click="showtools = !showtools"><span class="material-icons-outlined" title="Tools">handyman</span></button>
+        <div class="linemeasurecontainer">
+            <button class="linemeasure"><span class="material-icons-outlined" title="Measure Line">straighten</span></button>
+        </div>
+        <div class="areameasurecontainer">
+            <button class="areameasure"><span class="material-icons-outlined" title="Measure Area">square_foot</span></button>
         </div>
         <div class="toolscontainer">
             <button class="toggletools" v-on:click="showtools = !showtools"><span class="material-icons-outlined" title="Tools">handyman</span></button>
