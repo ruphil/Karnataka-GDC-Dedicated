@@ -1,7 +1,7 @@
 <template>
     <div id="navbarcontainer">
     <div class="navbar">
-      <span class="logo" v-on:click="router.push({path: '/'})">
+      <span class="logo">
         <img src="../assets/logo.png" width="20"/>
       </span>
       <span class="functioncategory">
@@ -102,7 +102,7 @@ export default defineComponent({
       window.localStorage.removeItem('globalpassword');
       location.reload();
     }
-    return { router, categoryInfo, isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, loginMsg, doLogin, doLogout }
+    return { categoryInfo, isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, loginMsg, doLogin, doLogout }
   },
 })
 </script>
