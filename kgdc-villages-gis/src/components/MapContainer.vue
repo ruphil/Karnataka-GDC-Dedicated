@@ -47,6 +47,7 @@ export default defineComponent({
                     duration: 250,
                 },
             });
+            
             const mousePositionControl = new MousePosition({
                 coordinateFormat: createStringXY(6),
                 projection: 'EPSG:4326',
@@ -59,6 +60,7 @@ export default defineComponent({
                 overlays: [overlay],
                 controls: defaultControls().extend([mousePositionControl]),
             });
+
             map.on('click', function(event: any) {
                 map.forEachFeatureAtPixel(event.pixel, function(feature: any, layer: any) {
                     let attributesData = { ...feature.getProperties() };
@@ -79,11 +81,13 @@ export default defineComponent({
             })
             .catch(() => {
                 console.log('Error Setting Map Object');
-            })
+            });
         }
+
         onMounted(() => {
             loadKarnBoundaryAfterElementLoaded();
         });
+
         return { mapref, popup, attributesData, showAttributesTable, latlon }
     },
 })
