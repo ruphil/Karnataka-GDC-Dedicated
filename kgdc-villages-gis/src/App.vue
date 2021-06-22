@@ -1,16 +1,19 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <NavBar />
+  <MapContainer />
+  <ControlsContainer />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import NavBar from './components/NavBar.vue';
+import MapContainer from './components/NavBar.vue';
+import ControlsContainer from './components/NavBar.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
+    NavBar, MapContainer, ControlsContainer
   }
 });
 </script>
