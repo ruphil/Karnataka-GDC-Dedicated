@@ -2,6 +2,7 @@
   <NavBar />
   <MapContainer />
   <ControlsContainer />
+  <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
 </template>
 
 <script lang="ts">
@@ -23,12 +24,14 @@ export default defineComponent({
     const globalToastEl = ref();
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const karnboundsLoaded = computed(() => store.getters.getKarnBoundsLoaded);
+    
     const setTitle = () => {
       document.title = 'Karnataka GDC, SOI';
     }
     const setGlobalToastEl = () => {
       store.dispatch('setGlobalToastEl', globalToastEl);
     }
+
     onMounted(() => {
       setTitle();
       setGlobalToastEl();

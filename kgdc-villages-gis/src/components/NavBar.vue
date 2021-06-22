@@ -42,6 +42,7 @@ export default defineComponent({
   setup() {
     const { showGlobalToast } = globalToast();
     const { doAuthentication } = userLoginCheck();
+    
     const categoryInfo = computed(() => store.getters.getCategoryInfo);
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const globalusername = computed(() => store.getters.getUsername);
@@ -77,7 +78,6 @@ export default defineComponent({
     const callAuthenticationPromiseFunction = () => {
       doAuthentication(loginusername.value, loginpassword.value)
       .then(() => {
-        
         doLoggedInTasks();
         showGlobalToast('Login Successful...');
         loginBoxShow.value = false;

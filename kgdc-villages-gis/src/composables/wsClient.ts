@@ -1,50 +1,31 @@
 import store from "@/store";
-import { wsMsgHandler } from './wsClientMsgHandler';
+import { wsMsgHandler } from './wsMsgHandler';
 
-export const openSocketClientIfNotExists = (username: any, password: any) => {
+export const makeSocketRequestNClose = (requestObj: any) => {
     return new Promise((resolve, reject) => {
-        const wsClient = store.getters.getWSClient;
+        const { request } = requestObj;
 
-        if(wsClient != null && wsClient.readyState === WebSocket.OPEN){
-            console.log('Socket Already Open...');
-            resolve('success');
-        } else {
-            console.log('Socket Closed, Opening New...');
-            const wsurlBase = store.getters.getWSURLBase;
-            
-            let wsFullUrl = `${wsurlBase}?username=${username}&password=${password}`;
-            console.log(wsFullUrl);
-
-            let ws = new WebSocket(wsFullUrl);
-            ws.addEventListener('message', (event) => {
-                wsMsgHandler(event);
-            });
-
-            ws.addEventListener('error', (event) => {
-                reject('error');
-            });
-
-            ws.addEventListener('open', (event) => {
-                resolve('success');
-            });
-
-            store.dispatch('setSocketClient', ws);
+        let wssURL = '';
+        
+        if(request == 'getroles'){
+            wssURL = store.getters.usersModuleWSS;
+            console.log(wssURL);
         }
-    });
-}
 
-export const makeSocketRequest = (requestObj: any) => {
-    return new Promise((resolve, reject) => {
-        const { username, password } = requestObj;
+        let ws = new WebSocket(wssURL);
+        
+        ws.addEventListener('message', (event) => {
+            wsMsgHandler(event);
+            ws.close();
+        });
 
-        openSocketClientIfNotExists(username, password)
-        .then(() => {
-            const wsClient = store.getters.getWSClient;
-            wsClient.send(Buffer.from(JSON.stringify(requestObj)).toString('base64'));
-            resolve('success');
-        })
-        .catch(() => {
+        ws.addEventListener('error', (event) => {
             reject('error');
-        })
+        });
+
+        ws.addEventListener('open', (event) => {
+            console.log(ws);
+            ws.send(btoa(JSON.stringify(requestObj)));
+        });
     });
 }

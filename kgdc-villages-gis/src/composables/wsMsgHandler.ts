@@ -1,4 +1,4 @@
-import { usermanager } from './wsClientMsgHandler/usermanagement';
+import { handleUserRoles } from './wsClientMsgHandler/usermanagement';
 import { handlegeojson } from './wsClientMsgHandler/handlegeojsons';
 
 export const wsMsgHandler = (event: any) => {
@@ -6,9 +6,9 @@ export const wsMsgHandler = (event: any) => {
     let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
     console.log(responseObj);
 
-    switch(responseObj.requesttype){
-        case 'usermanagement':
-            usermanager(responseObj);
+    switch(responseObj.request){
+        case 'getroles':
+            handleUserRoles(responseObj);
             break;
         case 'getgeojson':
             handlegeojson(responseObj);

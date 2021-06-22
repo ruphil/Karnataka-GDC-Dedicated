@@ -8,7 +8,7 @@ import LayerGroup from 'ol/layer/Group';
 import store from '@/store';
 
 import mapStyler from './mapStyler';
-import { makeSocketRequest } from '../composables/wsClient';
+import { makeSocketRequestNClose } from '../composables/wsClient';
 
 const karnBoundsLoader = () => {
     const { districtStyleFunction } = mapStyler();
@@ -24,7 +24,7 @@ const karnBoundsLoader = () => {
             password
         }
 
-        makeSocketRequest(requestObj)
+        makeSocketRequestNClose(requestObj)
         .then(() => {
             console.log('Karnataka Boundary Request Sent Successfully');
         })
