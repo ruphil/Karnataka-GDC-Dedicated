@@ -2,7 +2,10 @@
     <div id="navbarcontainer">
     <div class="navbar">
       <span class="logo">
-        <img src="../assets/logo.png" width="20"/>
+        <img src="../assets/logo.png" width="30" title="Survey of India"/>
+        <div class="titlecontainer">
+          <div class="title">Survey of India</div>
+        </div>
       </span>
       <span class="functioncategory">
         {{ categoryInfo }}
@@ -22,9 +25,6 @@
         <button class="logoutbtn" v-on:click="doLogout">Logout</button>
       </span>
       <span class="title">Karnataka Geospatial Data Centre</span>
-    </div>
-    <div class="loginbox">
-      
     </div>
   </div>
 </template>
