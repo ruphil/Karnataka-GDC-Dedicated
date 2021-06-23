@@ -119,8 +119,10 @@ export const getUsersTable = (ws: WebSocket, msgObj: any) => {
         client.query(getQuery)
         .then((res) => {
             let responseObj = {
-                response: 'userstable', requestStatus: 'success', validUser: true, userstable: res.rows
+                response: 'userstable', requestStatus: 'success', userstable: res.rows
             };
+
+            // console.log(responseObj);
     
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })

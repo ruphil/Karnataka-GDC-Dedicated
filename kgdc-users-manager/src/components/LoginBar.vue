@@ -8,15 +8,13 @@
 
 <script lang="ts">
 import './LoginBar.scss';
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 
-import globalToast from '../composables/globalToast';
 import userLoginCheck from '../composables/userLoginCheck';
 import store from '@/store';
 
 export default defineComponent({
     setup() {
-        const { showGlobalToast } = globalToast();
         const { sendAuthenticationRequest } = userLoginCheck();
 
         const adminuser = ref('');
@@ -25,6 +23,23 @@ export default defineComponent({
         const doLogin = (): void => {
             sendAuthenticationRequest(adminuser.value, adminpass.value);
         }
+
+        const fetchUserCredFromDisk = () => {
+            let globalusername = window.localStorage.getItem('globalusername')!;
+            let globalpassword = window.localStorage.getItem('globalpassword')!;
+            // console.log(globalusername, globalpassword);
+            adminuser.value = globalusername;
+            adminpass.value = globalpassword;
+            
+            if(globalusername != undefined && globalpassword != undefined){
+                sendAuthenticationRequest(adminuser.value, adminpass.value);
+            }
+        }
+
+        onMounted(() => {
+            fetchUserCredFromDisk();
+
+        });
 
         return { adminuser, adminpass, doLogin };
     },

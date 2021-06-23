@@ -9,6 +9,7 @@ export default createStore({
     username: '',
     password: '',
     roles: '',
+    usersTable: [],
   },
   getters: {
     getUsersModuleWSS(state){
@@ -32,6 +33,9 @@ export default createStore({
     getUserRoles(state){
       return state.roles;
     },
+    getUsersTable(state){
+      return state.usersTable;
+    },
   },
   mutations: {
     setGlobalToastEl(state, El){
@@ -52,6 +56,9 @@ export default createStore({
     setUserRoles(state, roles){
       state.roles = roles;
     },
+    setUsersTable(state, usersTable){
+      state.roles = usersTable;
+    },
   },
   actions: {
     setGlobalToastEl(context, El){
@@ -71,6 +78,9 @@ export default createStore({
     },
     setUserRoles(context, roles){
       context.commit('setUserRoles', roles);
+    },
+    setUsersTable(context, usersTable){
+      context.commit('setUsersTable', usersTable);
     },
   }
 });

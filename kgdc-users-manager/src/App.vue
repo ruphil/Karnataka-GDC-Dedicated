@@ -13,7 +13,7 @@ import './App.scss';
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import NavBar from './components/NavBar.vue';
 import LoginBar from './components/LoginBar.vue';
-import UsersTable from './components/UsersTable.vue';
+import UsersTable from './components/UsersSection.vue';
 import store from './store';
 
 export default defineComponent({

@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import './NavBar.scss';
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, onMounted } from 'vue';
 import store from '@/store';
 import globalToast from '../composables/globalToast';
 
