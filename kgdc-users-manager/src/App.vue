@@ -2,6 +2,7 @@
     <div id="approot">
         <NavBar />
         <LoginBar v-show="!isLoggedIn"/>
+        <NewUser v-show="isLoggedIn"/>
         <UsersTable v-show="isLoggedIn"/>
         <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
     </div>
@@ -13,13 +14,14 @@ import './App.scss';
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import NavBar from './components/NavBar.vue';
 import LoginBar from './components/LoginBar.vue';
+import NewUser from './components/NewUser.vue';
 import UsersTable from './components/UsersSection.vue';
 import store from './store';
 
 export default defineComponent({
     name: 'App',
     components: {
-        NavBar, LoginBar, UsersTable
+        NavBar, LoginBar, UsersTable, NewUser
     },
   setup() {
     const globaltoastmsg = computed(() => store.getters.getGlobalToastMsg);
