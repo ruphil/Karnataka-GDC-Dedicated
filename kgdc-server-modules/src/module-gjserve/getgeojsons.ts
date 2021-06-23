@@ -10,7 +10,11 @@ export const getGeoJson = (ws: WebSocket, msgObj: any) => {
         queryVariant = 'SELECT * FROM district_boundary';
     } else if (layer == 'karnvillages'){
         let district = msgObj.district;
+        let mapextent = msgObj.mapextent;
+        
         queryVariant = `SELECT * FROM karnvillages WHERE kgisdist_1='${district}'`;
+        // queryVariant = `SELECT * FROM karnvillages WHERE kgisdist_1='${district}' && kgisdist_1.geom && ST_MakeEnvelope(${mapextent[0]}, ${mapextent[1]}, ${mapextent[2]}, ${mapextent[3]}, 32643)`;
+        console.log(queryVariant);
     }
 
     let getQuery = `SELECT jsonb_build_object(
@@ -37,7 +41,7 @@ export const getGeoJson = (ws: WebSocket, msgObj: any) => {
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((err) => {
-        // console.log(err);
+        console.log(err);
         let responseObj = { response: 'getgeojson', requestStatus: 'failure', validUser: true, status: 'Error in SQL' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })

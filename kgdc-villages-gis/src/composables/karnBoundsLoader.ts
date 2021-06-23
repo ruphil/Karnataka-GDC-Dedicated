@@ -8,11 +8,9 @@ import LayerGroup from 'ol/layer/Group';
 import store from '@/store';
 
 import mapStyler from './mapStyler';
-import globalToast from '../composables/globalToast';
 
 const karnBoundsLoader = () => {
     const { districtStyleFunction } = mapStyler();
-    const { showGlobalToast } = globalToast();
 
     const loadKarnBounds = () => {
         const username = store.getters.getUsername;

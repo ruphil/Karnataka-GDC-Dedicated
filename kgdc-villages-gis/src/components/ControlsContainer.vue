@@ -11,7 +11,7 @@
             <div class="tools" v-show="showtools">
                 <div class="display-table-tools">
                     <div>
-                        <div><button class="olbtns" v-on:click="loadBaseMapToExtent">Load Basemap To Extent</button></div>
+                        <div><button class="olbtns" v-on:click="loadBaseMapToExtent">Load Basemap To Map Extent</button></div>
                         <div><button class="olbtns" v-on:click="unloadBaseMap">Unload BaseMap</button></div>  
                     </div>
                     <div>
@@ -21,10 +21,10 @@
                                 <option v-for="(district, index) in districtsList" v-bind:key="index">{{ district }}</option>
                             </select>
                         </div>
-                        <div><button class="olbtns" v-on:click="loadVillagesBoundsRef">Load Villages By District</button></div>
+                        <div><button class="olbtns" v-on:click="loadVillagesBoundsRef">Load Villages In View N By District</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns">Load Villages In View N By District</button></div>
+                        <div><button class="olbtns">L</button></div>
                         <div><button class="olbtns" v-on:click="unloadVillagesBounds">Unload Villages</button></div>
                     </div>
                     <div>

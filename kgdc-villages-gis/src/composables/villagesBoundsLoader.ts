@@ -5,23 +5,37 @@ import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 
 import mapStyler from './mapStyler';
-import { getCurrentInstance } from '@vue/runtime-core';
 import store from '@/store';
+import globalToast from '../composables/globalToast';
 
 const villagesBoundsLoader = () => {
     const { villagesStyleFunction } = mapStyler();
-
-    const app = getCurrentInstance()!;
+    const { showGlobalToast } = globalToast();
 
     const loadVillagesBounds = (districtname: string) => {
         unloadVillagesBounds();
-        
-        const wsurlBase = store.getters.getWSURLBase;
+
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
-        console.log(wsurlBase);
+        const map = store.getters.getMapObj;
 
-        let ws = new WebSocket(wsurlBase);
+        let mapextent = map.getView().calculateExtent();
+        console.log(mapextent);
+
+        let requestObj = {
+            request: 'getgeojson',
+            layer: 'karnvillages',
+            district: districtname,
+            validateusername: username,
+            validatepassword: password,
+            mapextent
+        }
+
+        console.log(requestObj);
+
+        let wssURL = store.getters.getGJModuleWSS;
+        let ws = new WebSocket(wssURL);
+
         ws.addEventListener('message', (event) => {
             // console.log(event.data);
             let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
@@ -30,24 +44,18 @@ const villagesBoundsLoader = () => {
                 let gj = responseObj.featureCollection;
                 setVillagesBounds(gj);
             } else {
-                console.log('Problem Loading Karnataka Boundary from Server...')
+                console.log('Villages GJ Error...')
             }
             ws.close();
         });
+
         ws.addEventListener('open', (event) => {
-            let requestObj = {
-                requesttype: 'getgeojson',
-                layer: 'karnvillages',
-                district: districtname,
-                username,
-                password
-            }
             ws.send(Buffer.from(JSON.stringify(requestObj)).toString('base64'));
         });
     }
 
     const setVillagesBounds = (gj: any) => {
-        const map = app.appContext.config.globalProperties.$map;
+        const map = store.getters.getMapObj;
 
         let villagesBounds = new VectorLayer({
             source: new VectorSource({
@@ -61,19 +69,19 @@ const villagesBoundsLoader = () => {
         });
 
         villagesBounds.set('loadedfromserver', 'yes');
+        villagesBounds.set('name', 'villageslyr');
 
         map.addLayer(villagesBounds);
-
-        app.appContext.config.globalProperties.$villagesBounds = villagesBounds;
     }
 
     const unloadVillagesBounds = () => {
-        const map = app.appContext.config.globalProperties.$map;
+        const map = store.getters.getMapObj;
 
-        if(app.appContext.config.globalProperties.$villagesBounds != null){
-            map.removeLayer(app.appContext.config.globalProperties.$villagesBounds);
-            app.appContext.config.globalProperties.$villagesBounds = null;
-        }
+        map.getLayers().forEach(function (layer: any) {
+            if (layer.get('name') != undefined && layer.get('name') === 'villageslyr') {
+                map.removeLayer(layer);
+            }
+        });
     }
 
     return { loadVillagesBounds, unloadVillagesBounds }
