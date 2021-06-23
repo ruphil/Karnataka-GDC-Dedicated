@@ -15,12 +15,12 @@
                 <input type="text" /><button v-on:click="addRole">Add</button>
                 </td>
                 <td v-bind:username="user.username" v-bind:roles="user.roles">
-                <!-- <select>
+                <select>
                     <option selected></option>
                     <option v-for="(item, index) in renderRolesOptions(user.roles)" v-bind:key="index">
                     {{ item }}
                     </option>
-                </select> -->
+                </select>
                 <button v-on:click="removeRole">Remove</button>
                 </td>
                 <td><button v-bind:mobile="user.MobileNumber" v-on:click="deleteuser">Delete User</button></td>
