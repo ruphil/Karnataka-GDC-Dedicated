@@ -44,7 +44,7 @@ const villagesBoundsLoader = () => {
             console.log(responseObj);
             if (responseObj.requestStatus == 'success'){
                 let gj = responseObj.featureCollection;
-                // setVillagesBounds(gj);
+                setVillagesBounds(gj);
             } else {
                 console.log('Villages GJ Error...')
             }
