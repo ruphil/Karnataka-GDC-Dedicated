@@ -16,6 +16,8 @@ export default createStore({
     karnboundsLoaded: false,
     currentvillage: '',
     currentuniquevillagecode: '',
+    lineMeasureEnabled: false,
+    areaMeasureEnabled: false,
   },
   getters: {
     getMapObj(state){
@@ -59,6 +61,12 @@ export default createStore({
     },
     getCurrentUniqueVillageCode(state){
       return state.currentuniquevillagecode
+    },
+    getLineMeasureEnabled(state){
+      return state.lineMeasureEnabled
+    },
+    getAreaMeasureEnabled(state){
+      return state.areaMeasureEnabled
     }
   },
   mutations: {
@@ -94,6 +102,12 @@ export default createStore({
     },
     setUniqueVillageCode(state, currentuniquevillagecode){
       state.currentuniquevillagecode = currentuniquevillagecode;
+    },
+    setLineMeasureEnabled(state, enabled){
+      state.lineMeasureEnabled = enabled;
+    },
+    setAreaMeasureEnabled(state, enabled){
+      state.areaMeasureEnabled = enabled;
     }
   },
   actions: {
@@ -135,6 +149,12 @@ export default createStore({
     },
     setUniqueVillageCode(context, currentlgd){
       context.commit('setUniqueVillageCode', currentlgd);
+    },
+    setLineMeasureEnabled(context, enabled){
+      context.commit('setLineMeasureEnabled', enabled);
+    },
+    setAreaMeasureEnabled(context, enabled){
+      context.commit('setAreaMeasureEnabled', enabled);
     },
   },
   modules: {
