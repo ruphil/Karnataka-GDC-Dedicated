@@ -126,7 +126,7 @@ export const getUsersTable = (ws: WebSocket, msgObj: any) => {
                 } else {
                     return true;
                 }
-            })
+            });
 
             let responseObj = {
                 response: 'userstable', requestStatus: 'success', userstable

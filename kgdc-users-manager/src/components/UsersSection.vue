@@ -12,16 +12,17 @@
                 <td>{{ user.username }}</td><td>{{ user.password }}</td><td>{{ user.mobilenumber }}</td>
                 <td>{{ user.description }}</td><td>{{ user.roles }}</td>
                 <td v-bind:username="user.username" v-bind:roles="user.roles">
-                <input type="text" /><button v-on:click="addRole">Add</button>
+                    <input type="text" />
+                    <button v-on:click="callAddRole">Add</button>
                 </td>
                 <td v-bind:username="user.username" v-bind:roles="user.roles">
-                <select>
-                    <option selected></option>
-                    <option v-for="(item, index) in renderRolesOptions(user.roles)" v-bind:key="index">
-                    {{ item }}
-                    </option>
-                </select>
-                <button v-on:click="removeRole">Remove</button>
+                    <select>
+                        <option selected></option>
+                        <option v-for="(item, index) in renderRolesOptions(user.roles)" v-bind:key="index">
+                        {{ item }}
+                        </option>
+                    </select>
+                    <button v-on:click="removeRole">Remove</button>
                 </td>
                 <td><button v-bind:username="user.username" v-on:click="callDeleteUser">Delete User</button></td>
             </tr>
@@ -34,11 +35,13 @@ import './UsersSection.scss';
 import { computed, defineComponent } from 'vue'
 import store from '@/store';
 import usersTable from '../composables/fetchUserTable';
+import roleAddition from '../composables/roleAddition';
 import userDeletion from '../composables/userDeletion';
 
 export default defineComponent({
     setup() {
         const { getUsers } = usersTable();
+        const { addRole } = roleAddition();
         const { deleteUser } = userDeletion();
 
         const usersData = computed(() => store.getters.getUsersTable);
@@ -60,7 +63,24 @@ export default defineComponent({
             deleteUser(username);
         }
 
-        return { getUsers, usersData, renderRolesOptions, callDeleteUser }
+        const callAddRole = (e: any) => {
+            let parent = e.target.parentNode;
+            let username = parent.getAttribute('username');
+            let rolesPresent = parent.getAttribute('roles');
+            let roleInput = parent.querySelectorAll('input')[0];
+            let roleToAdd = roleInput.value;
+            let rolesArry = rolesPresent.split(',');
+            rolesArry.push(roleToAdd);
+            let modifiedRolesArry = [...new Set(rolesArry)];
+            console.log(modifiedRolesArry);
+
+            let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
+
+            addRole(username, modifiedRole);
+            roleInput.value = '';
+        }
+
+        return { getUsers, usersData, renderRolesOptions, callDeleteUser, callAddRole }
     },
 })
 </script>
