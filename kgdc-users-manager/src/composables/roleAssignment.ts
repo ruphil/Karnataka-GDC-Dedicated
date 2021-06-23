@@ -2,11 +2,11 @@ import store from "@/store";
 import globalToast from './globalToast';
 import usersTable from './fetchUserTable';
 
-const roleAddition = () => {
+const roleAssignment = () => {
     const { showGlobalToast } = globalToast();
     const { getUsers } = usersTable();
 
-    const addRole = (username: any, newrole: any) => {
+    const assignRole = (username: any, newrole: any) => {
         const adminuser = store.getters.getUsername;
         const adminpass = store.getters.getPassword;
         const wssURL = store.getters.getUsersModuleWSS;
@@ -17,10 +17,10 @@ const roleAddition = () => {
             console.log(responseObj);
             
             if(responseObj.requestStatus == 'success') {
-                showGlobalToast('Assigned Role Successfully...');
+                showGlobalToast('Modified Role Successfully...');
                 getUsers();
             } else {
-                showGlobalToast('Error Assigning Role...');
+                showGlobalToast('Error Modifying Role...');
             }
             
             ws.close();
@@ -40,7 +40,7 @@ const roleAddition = () => {
         });
     }
     
-    return { addRole };
+    return { assignRole };
 }
 
-export default roleAddition;
+export default roleAssignment;

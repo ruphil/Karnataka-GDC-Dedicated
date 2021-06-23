@@ -13,7 +13,7 @@
                 <td>{{ user.description }}</td><td>{{ user.roles }}</td>
                 <td v-bind:username="user.username" v-bind:roles="user.roles">
                     <input type="text" />
-                    <button v-on:click="callAddRole">Add</button>
+                    <button v-on:click="addRole">Add</button>
                 </td>
                 <td v-bind:username="user.username" v-bind:roles="user.roles">
                     <select>
@@ -35,13 +35,13 @@ import './UsersSection.scss';
 import { computed, defineComponent } from 'vue'
 import store from '@/store';
 import usersTable from '../composables/fetchUserTable';
-import roleAddition from '../composables/roleAddition';
+import roleAssignment from '../composables/roleAssignment';
 import userDeletion from '../composables/userDeletion';
 
 export default defineComponent({
     setup() {
         const { getUsers } = usersTable();
-        const { addRole } = roleAddition();
+        const { assignRole } = roleAssignment();
         const { deleteUser } = userDeletion();
 
         const usersData = computed(() => store.getters.getUsersTable);
@@ -63,7 +63,7 @@ export default defineComponent({
             deleteUser(username);
         }
 
-        const callAddRole = (e: any) => {
+        const addRole = (e: any) => {
             let parent = e.target.parentNode;
             let username = parent.getAttribute('username');
             let rolesPresent = parent.getAttribute('roles');
@@ -76,11 +76,24 @@ export default defineComponent({
 
             let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
 
-            addRole(username, modifiedRole);
             roleInput.value = '';
+            assignRole(username, modifiedRole);
         }
 
-        return { getUsers, usersData, renderRolesOptions, callDeleteUser, callAddRole }
+        const removeRole = (e: any) => {
+            let parent = e.target.parentNode;
+            let username = parent.getAttribute('username');
+            let rolesPresent = parent.getAttribute('roles');
+            let roleSelect = parent.querySelectorAll('select')[0];
+            let roleToRemove = roleSelect.options[roleSelect.selectedIndex].text;
+            let rolesArry = rolesPresent.split(',');
+            let modifiedRolesArry = rolesArry.filter((i: any) => i != roleToRemove);
+            let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
+
+            assignRole(username, modifiedRole);
+        }
+
+        return { getUsers, usersData, renderRolesOptions, callDeleteUser, addRole, removeRole }
     },
 })
 </script>
