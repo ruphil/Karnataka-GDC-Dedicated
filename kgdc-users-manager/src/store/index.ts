@@ -57,7 +57,7 @@ export default createStore({
       state.roles = roles;
     },
     setUsersTable(state, usersTable){
-      state.roles = usersTable;
+      state.usersTable = usersTable;
     },
   },
   actions: {

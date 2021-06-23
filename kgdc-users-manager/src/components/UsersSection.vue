@@ -8,23 +8,23 @@
             <tr>
                 <td>Username</td><td>Password</td><td>Mobilenumber</td><td>Description</td><td>Roles</td><td>Add Role</td><td>Remove Role</td><td>Delete</td>
             </tr>
-            <!-- <tr v-for="(user, index) in users" v-bind:key="index">
-                <td>{{ user.MobileNumber }}</td><td>{{ user.Name }}</td><td>{{ user.Password }}</td>
-                <td>{{ user.ROLES }}</td><td>{{ user.UUID }}</td>
-                <td v-bind:mobile="user.MobileNumber" v-bind:roles="user.ROLES">
+            <tr v-for="(user, index) in usersData" v-bind:key="index">
+                <td>{{ user.username }}</td><td>{{ user.password }}</td><td>{{ user.mobilenumber }}</td>
+                <td>{{ user.description }}</td><td>{{ user.roles }}</td>
+                <td v-bind:username="user.username" v-bind:roles="user.roles">
                 <input type="text" /><button v-on:click="addRole">Add</button>
                 </td>
-                <td v-bind:mobile="user.MobileNumber" v-bind:roles="user.ROLES">
-                <select>
+                <td v-bind:username="user.username" v-bind:roles="user.roles">
+                <!-- <select>
                     <option selected></option>
-                    <option v-for="(item, index) in renderRolesOptions(user.ROLES)" v-bind:key="index">
+                    <option v-for="(item, index) in renderRolesOptions(user.roles)" v-bind:key="index">
                     {{ item }}
                     </option>
-                </select>
+                </select> -->
                 <button v-on:click="removeRole">Remove</button>
                 </td>
                 <td><button v-bind:mobile="user.MobileNumber" v-on:click="deleteuser">Delete User</button></td>
-            </tr> -->
+            </tr>
         </table>
     </div>
 </template>
@@ -39,7 +39,9 @@ export default defineComponent({
     setup() {
         const { getUsers } = usersTable();
 
-        return { getUsers }
+        const usersData = computed(() => store.getters.getUsersTable);
+
+        return { getUsers, usersData }
     },
 })
 </script>

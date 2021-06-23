@@ -10,7 +10,7 @@ const usersTable = () => {
         ws.addEventListener('message', (event) => {
           let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
           console.log(responseObj);
-          
+
           if(responseObj.requestStatus == 'success'){
             store.dispatch('setUsersTable', responseObj.userstable);
           }
