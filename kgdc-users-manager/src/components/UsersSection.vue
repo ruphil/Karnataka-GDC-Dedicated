@@ -41,7 +41,17 @@ export default defineComponent({
 
         const usersData = computed(() => store.getters.getUsersTable);
 
-        return { getUsers, usersData }
+        const renderRolesOptions = computed(() => {
+            return (roles: any) => {
+                if(roles != ''){
+                    return [...new Set(roles.split(','))];
+                } else {
+                    return [];
+                }
+            }
+        });
+
+        return { getUsers, usersData, renderRolesOptions }
     },
 })
 </script>
