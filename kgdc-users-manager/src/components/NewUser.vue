@@ -23,6 +23,10 @@ export default defineComponent({
 
         const addUserWithInfo = () => {
             addUser(newusername.value, newpassword.value, newmobilenumber.value, newdescription.value);
+            newusername.value = '';
+            newpassword.value = '';
+            newmobilenumber.value = '';
+            newdescription.value = '';
         }
 
         return { addUserWithInfo, newusername, newpassword, newmobilenumber, newdescription };

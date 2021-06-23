@@ -118,8 +118,18 @@ export const getUsersTable = (ws: WebSocket, msgObj: any) => {
         let getQuery = `SELECT USERNAME, PASSWORD, MOBILENUMBER, DESCRIPTION, ROLES FROM userstable ORDER BY MOBILENUMBER DESC`;
         client.query(getQuery)
         .then((res) => {
+            let userstable = res.rows;
+            userstable = userstable.filter((user: any) => {
+                let roles = user.roles.split(',');
+                if(roles.includes('ADMIN')){
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+
             let responseObj = {
-                response: 'userstable', requestStatus: 'success', userstable: res.rows
+                response: 'userstable', requestStatus: 'success', userstable
             };
 
             // console.log(responseObj);

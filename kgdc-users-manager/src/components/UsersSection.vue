@@ -23,7 +23,7 @@
                 </select>
                 <button v-on:click="removeRole">Remove</button>
                 </td>
-                <td><button v-bind:mobile="user.MobileNumber" v-on:click="deleteuser">Delete User</button></td>
+                <td><button v-bind:username="user.username" v-on:click="callDeleteUser">Delete User</button></td>
             </tr>
         </table>
     </div>
@@ -34,10 +34,12 @@ import './UsersSection.scss';
 import { computed, defineComponent } from 'vue'
 import store from '@/store';
 import usersTable from '../composables/fetchUserTable';
+import userDeletion from '../composables/userDeletion';
 
 export default defineComponent({
     setup() {
         const { getUsers } = usersTable();
+        const { deleteUser } = userDeletion();
 
         const usersData = computed(() => store.getters.getUsersTable);
 
@@ -51,7 +53,14 @@ export default defineComponent({
             }
         });
 
-        return { getUsers, usersData, renderRolesOptions }
+        const callDeleteUser = (e: any) => {
+            let username = e.target.getAttribute('username');
+            console.log(username);
+
+            deleteUser(username);
+        }
+
+        return { getUsers, usersData, renderRolesOptions, callDeleteUser }
     },
 })
 </script>
