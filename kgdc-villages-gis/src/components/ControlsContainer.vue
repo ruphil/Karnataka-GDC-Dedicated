@@ -24,17 +24,22 @@
                         <div><button class="olbtns" v-on:click="loadVillagesBoundsRef">Load Villages In View N By District</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns">L</button></div>
+                        <div><button class="olbtns">Load Marked Settlements In View N By District</button></div>
                         <div><button class="olbtns" v-on:click="unloadVillagesBounds">Unload Villages</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns">Load Marked Settlements In View N By District</button></div>
                         <div><button class="olbtns">Unload Marked Settlements</button></div>
+                        <div><button class="olbtns" v-on:click="drawALayer">Draw Layer</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns" v-on:click="drawALayer">Draw Layer</button></div>
-                        <div><button class="olbtns" onclick="document.getElementById('fileinput').click();">Add Layer</button><br><span>*.kml / *.zip (shapefile)</span></div>
-                        <input id="fileinput" type="file" style="display:none;" ref="fileEl"/>
+                        <div>
+                            <button class="olbtns" onclick="document.getElementById('fileinput').click();">Add Layer</button>
+                            <br><span>*.kml / *.zip (shapefile)</span>
+                            <input id="fileinput" type="file" style="display:none;" ref="fileEl"/>
+                        </div>
+                        <div>
+                            <button class="olbtns">Upload Files</button>
+                        </div>
                     </div>
                 </div><br>
                 <div class="display-table-features">
