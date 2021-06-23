@@ -22,6 +22,8 @@ const villagesBoundsLoader = () => {
         let mapextent = map.getView().calculateExtent();
         console.log(mapextent);
 
+        console.log(map.getView().getProjection());
+
         let requestObj = {
             request: 'getgeojson',
             layer: 'karnvillages',
@@ -42,7 +44,7 @@ const villagesBoundsLoader = () => {
             console.log(responseObj);
             if (responseObj.requestStatus == 'success'){
                 let gj = responseObj.featureCollection;
-                setVillagesBounds(gj);
+                // setVillagesBounds(gj);
             } else {
                 console.log('Villages GJ Error...')
             }
