@@ -4,25 +4,27 @@ import Draw from 'ol/interaction/Draw';
 import Overlay from 'ol/Overlay';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 import {LineString, Polygon} from 'ol/geom';
-import {OSM, Vector as VectorSource} from 'ol/source';
-import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
 import {getArea, getLength} from 'ol/sphere';
 import {unByKey} from 'ol/Observable';
 import GeometryType from "ol/geom/GeometryType";
 import OverlayPositioning from "ol/OverlayPositioning";
 
 const measureTools = () => {
+    let draw: any; // global so we can remove it later
+    let source = new VectorSource();
 
-    const enableLineMeasureTool = () => {
+    const enableMeasureTool = (drawType: any) => {
         const map = store.getters.getMapObj;
+
         let measureTooltipElement: any;
-        let measureTooltip: any;
+        let measureTooltip: Overlay;
         let helpTooltipElement: any;
-        let helpTooltip: any;
+        let helpTooltip: Overlay;
         let sketch: any;
         let continuePolygonMsg = 'Click to continue drawing the polygon';
         let continueLineMsg = 'Click to continue drawing the line';
-        let source = new VectorSource();
 
         const createHelpTooltip = () => {
             if (helpTooltipElement) {
@@ -107,8 +109,6 @@ const measureTools = () => {
             helpTooltipElement.classList.add('hidden');
         });
           
-        let draw; // global so we can remove it later
-        
         let formatLength = (line: any) => {
             let length = getLength(line);
             let output;
@@ -134,7 +134,7 @@ const measureTools = () => {
         let addInteraction = () => {
             draw = new Draw({
                 source: source,
-                type: GeometryType.LINE_STRING,
+                type: drawType,
                 style: new Style({
                     fill: new Fill({
                         color: 'rgba(255, 255, 255, 0.2)',
@@ -195,18 +195,46 @@ const measureTools = () => {
         map.addLayer(vector);
         addInteraction();
     }
+
+    const disableMeasureTool = () => {
+        const map = store.getters.getMapObj;
+        map.getInteractions().pop();
+
+        source.clear();
+
+        map.getOverlays().clear();
+    }
     
-
     const toggleLineMeasure = () => {
-        console.log('Toggle Line Measure');
+        const lineMeasureEnabled = store.getters.getLineMeasureEnabled;
 
-        
-
-        
+        if(!lineMeasureEnabled){
+            disableMeasureTool();
+            console.log('Enabling Line Measure');
+            enableMeasureTool(GeometryType.LINE_STRING);
+            store.dispatch('setLineMeasureEnabled', true);
+            store.dispatch('setAreaMeasureEnabled', false);
+        } else {
+            console.log('Disabling Line Measure');
+            disableMeasureTool();
+            store.dispatch('setLineMeasureEnabled', false);
+        }
     }
 
     const toggleAreaMeasure = () => {
-        console.log('Toggle Area Measure');
+        const areaMeasureEnabled = store.getters.getAreaMeasureEnabled;
+
+        if(!areaMeasureEnabled){
+            disableMeasureTool();
+            console.log('Enabling Area Measure');
+            enableMeasureTool(GeometryType.POLYGON);
+            store.dispatch('setAreaMeasureEnabled', true);
+            store.dispatch('setLineMeasureEnabled', false);
+        } else {
+            console.log('Disabling Area Measure');
+            disableMeasureTool();
+            store.dispatch('setAreaMeasureEnabled', false);
+        }
     }
 
     return { toggleLineMeasure, toggleAreaMeasure }
