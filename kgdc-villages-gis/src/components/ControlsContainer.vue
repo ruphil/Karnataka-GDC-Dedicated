@@ -1,10 +1,10 @@
 <template>
     <div id="markedvillages">
         <div class="linemeasurecontainer">
-            <button class="linemeasure"><span class="material-icons-outlined" title="Measure Line">straighten</span></button>
+            <button class="linemeasure" v-on:click="toggleLineMeasure"><span class="material-icons-outlined" title="Measure Line">straighten</span></button>
         </div>
         <div class="areameasurecontainer">
-            <button class="areameasure"><span class="material-icons-outlined" title="Measure Area">square_foot</span></button>
+            <button class="areameasure" v-on:click="toggleAreaMeasure"><span class="material-icons-outlined" title="Measure Area">square_foot</span></button>
         </div>
         <div class="toolscontainer">
             <button class="toggletools" v-on:click="showtools = !showtools"><span class="material-icons-outlined" title="Tools">handyman</span></button>
@@ -137,6 +137,7 @@ import baseMapLoader from '../composables/baseMapLoader';
 import kmlshpHanlder from '../composables/kmlshpHandler';
 import drawFeaturesManager from '../composables/drawFeaturesManager';
 import globalToast from '../composables/globalToast';
+import measureTools from '../composables/measureTools';
 
 export default defineComponent({
     setup() {
@@ -146,6 +147,7 @@ export default defineComponent({
         const { loadFilePromise, zoomToLayer, discardLayerFromMap } = kmlshpHanlder();
         const { drawNewLayer } = drawFeaturesManager();
         const { showGlobalToast } = globalToast();
+        const { toggleLineMeasure, toggleAreaMeasure } = measureTools();
         
         const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
         const districtsList = computed(() => store.getters.getDistrictsList);
@@ -187,7 +189,8 @@ export default defineComponent({
             currentID.value++;
         }
 
-        const return2 = { invokeZoomToLayer, discardLayer, drawALayer }
+        const return2 = { invokeZoomToLayer, discardLayer, drawALayer };
+
         const sendFileElementToLoad = () => {
             let file = fileEl.value.files[0];
             loadFilePromise(file)
@@ -301,7 +304,9 @@ export default defineComponent({
 
         const return4 = { showUserAttributesTable, editAttributes, updateUserAttributes, whetherAttributesValidComputed };
 
-        return { ...return0, ...return1, ...return2, ...return3, ...return4 }
+        const return5 = { toggleLineMeasure, toggleAreaMeasure };
+
+        return { ...return0, ...return1, ...return2, ...return3, ...return4, ...return5 }
     },
 })
 </script>

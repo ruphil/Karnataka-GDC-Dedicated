@@ -1,4 +1,3 @@
-import { getCurrentInstance } from '@vue/runtime-core';
 import globalToast from '../composables/globalToast';
 
 import KML from 'ol/format/KML';
@@ -8,14 +7,14 @@ import GeoJSON from 'ol/format/GeoJSON';
 
 import shp from 'shpjs';
 import { v4 as uuidv4 } from 'uuid';
+import store from '@/store';
 
 const kmlshpHanlder = () => {
-    const app = getCurrentInstance()!;
     const { showGlobalToast } = globalToast();
 
     const loadshp = (file: any) => {
         return new Promise((resolve, reject) => {
-            const map = app.appContext.config.globalProperties.$map;
+            const map = store.getters.getMapObj;
 
             let filename = file.name;
 
@@ -62,7 +61,7 @@ const kmlshpHanlder = () => {
 
     const loadkml = (file: any) => {
         return new Promise((resolve, reject) => {
-            const map = app.appContext.config.globalProperties.$map;
+            const map = store.getters.getMapObj;
 
             let filename = file.name;
 
@@ -134,7 +133,7 @@ const kmlshpHanlder = () => {
     }
 
     const zoomToLayer = (lyrid: any) => {
-        const map = app.appContext.config.globalProperties.$map;
+        const map = store.getters.getMapObj;
         
         try{
             map.getLayers().forEach((lyr: any) => {
@@ -149,7 +148,7 @@ const kmlshpHanlder = () => {
 
     const discardLayerFromMap = (lyrid: any) => {
         return new Promise((resolve, reject) => {
-        const map = app.appContext.config.globalProperties.$map;
+        const map = store.getters.getMapObj;
         // console.log(map.getInteractions());
             try{
                 map.getLayers().forEach((lyr: any) => {
