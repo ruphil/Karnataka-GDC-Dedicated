@@ -54,7 +54,6 @@ export default defineComponent({
       loginpassword.value = globalpassword;
       
       if(globalusername != undefined && globalpassword != undefined){
-        console.log('came here 2');
         sendAuthenticationRequest(loginusername.value, loginpassword.value);
       }
     }
