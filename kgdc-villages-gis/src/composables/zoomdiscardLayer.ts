@@ -22,23 +22,18 @@ const zoomDiscardLayer = () => {
         return new Promise((resolve, reject) => {
             const map = store.getters.getMapObj;
 
-            try {
-                map.getLayers().forEach((lyr: any) => {
-                    if (lyr.get('lyrid') == lyrid) {
-                        console.log(`Layer to delete ${lyrid}`);
+            map.getLayers().forEach((lyr: any) => {
+                if (lyr.get('lyrid') == lyrid) {
+                    // console.log(`Layer to delete ${lyrid}`);
 
-                        let source = lyr.getSource();
-                        source.clear();
-                        
-                        map.removeLayer(lyr);
-                    }
-                });
-                
-                resolve(0);
-            } catch (e) {
-                showGlobalToast('Processing Layer in Background... Please Try Again in Seconds...');
-                reject(1);
-            }
+                    let source = lyr.getSource();
+                    source.clear();
+                    
+                    map.removeLayer(lyr);
+                }
+            });
+            
+            resolve(0);
         });
     }
 

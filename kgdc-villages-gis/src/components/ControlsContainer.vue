@@ -192,13 +192,15 @@ export default defineComponent({
 
         const discardLayer = (e: any) => {
             let lyrid = e.target.getAttribute('lyrid');
-            console.log('Trying to remove lyrid: ', lyrid);
+            // console.log('Trying to remove lyrid: ', lyrid);
             discardLayerFromMap(lyrid)
             .then(() => {
                 layers.value = layers.value.filter((lyr) => {
                     return lyr['id'] != lyrid;
                 });
-            }).catch();
+            }).catch(() => {
+                console.log('Removing Layer: Unknown Error');
+            });
         }
 
         const drawALayer = () => {
