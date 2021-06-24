@@ -63,6 +63,7 @@ const kmlshpHanlder = () => {
             const map = store.getters.getMapObj;
 
             let filename = file.name;
+            console.log(filename);
 
             let reader = new FileReader();
             reader.onload = function () {
@@ -102,7 +103,7 @@ const kmlshpHanlder = () => {
                         attributes: {}
                     });
                 } else {
-                    reject({ validgeometry: false })
+                    // reject({ validgeometry: false })
                 }
             }
             reader.readAsText(file);
@@ -114,6 +115,7 @@ const kmlshpHanlder = () => {
             let fileFullname = file.name;
             let lastDot = fileFullname.lastIndexOf('.');
             let extension = fileFullname.substring(lastDot + 1);
+            console.log(fileFullname, extension);
 
             if (extension != 'kml' && extension != 'zip'){
                 showGlobalToast('Invalid File Selected...');
