@@ -69,8 +69,11 @@
             </div>
         </div>
         <div class="userattributescontainer" v-show="showUserAttributesTable">
-            
             <div class="userattributestable">
+                <div>
+                    <div>Feature Name</div>
+                    <div>{{ currentFeatureName }}</div>
+                </div>
                 <div>
                     <div>LGD Code</div>
                     <div><input type="text" v-model="lgdcode"></div>
@@ -165,6 +168,8 @@ export default defineComponent({
         const currentNameID = ref(1);
         const layers = ref([]);
 
+        const currentFeatureName = ref('jack');
+
         const loadVillagesBoundsRef = () => {
             if(districtref.value == ''){
                 showGlobalToast('Select District First');
@@ -183,7 +188,11 @@ export default defineComponent({
         }
 
         const return0 = { loadKarnBounds, callUnloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
-        const return1 = { districtsList, districtref, showtools, fileEl, layers, loadVillagesBoundsRef }
+        const return1 = { 
+            districtsList, districtref, showtools, fileEl, layers, 
+            currentFeatureName,
+            loadVillagesBoundsRef 
+        };
 
         const invokeZoomToLayer = (e: any) => {
             let lyrid = e.target.getAttribute('lyrid');
@@ -251,8 +260,12 @@ export default defineComponent({
             let reqdlayer: any = layers.value.find((lyr) => {
                 return lyr['id'] == lyrid;
             });
+
+            currentFeatureName.value = reqdlayer.filename;
+
             let attributes = reqdlayer.attributes;
             console.log(reqdlayer, attributes);
+
             if (typeof attributes === 'object'){
                 if ('lgdcode'                   in attributes) lgdcode.value                    = attributes['lgdcode'];
                 if ('hamletname'                in attributes) hamletname.value                 = attributes['hamletname'];
@@ -284,6 +297,7 @@ export default defineComponent({
                 'taluk'                     :   taluk.value                     , 
                 'userattributedistrictref'  :   userattributedistrictref.value
             }
+
             let lyrid = currentFeatureID.value;
             // console.log(lyrid);
             let reqdlayer: any = layers.value.find((lyr) => {
@@ -296,22 +310,23 @@ export default defineComponent({
 
         const checkAttributesForLyrID = (lyrid: any) => {
             let reqdlayer: any = layers.value.find((lyr) => {
-                    return lyr['id'] == lyrid;
-                });
-                let attributes = reqdlayer.attributes;
-                let conds = [];
-                conds.push( attributes['lgdcode']                   !=  ''  );
-                conds.push( attributes['hamletname']                !=  ''  );
-                conds.push( attributes['noofproperties']            !=  0   );
-                // conds.push( attributes['startdate']                 ==  ''  );
-                // conds.push( attributes['enddate']                   ==  ''  );
-                conds.push( attributes['villagename']               !=  ''  );
-                conds.push( attributes['pocketscount']              !=  0   );
-                conds.push( attributes['grampanchayat']             !=  ''  );
-                conds.push( attributes['hobli']                     !=  ''  );
-                conds.push( attributes['taluk']                     !=  ''  ); 
-                conds.push( attributes['userattributedistrictref']  !=  ''  ); 
-                return conds.every(Boolean);
+                return lyr['id'] == lyrid;
+            });
+
+            let attributes = reqdlayer.attributes;
+            let conds = [];
+            conds.push( attributes['lgdcode']                   !=  ''  );
+            conds.push( attributes['hamletname']                !=  ''  );
+            conds.push( attributes['noofproperties']            !=  0   );
+            // conds.push( attributes['startdate']                 ==  ''  );
+            // conds.push( attributes['enddate']                   ==  ''  );
+            conds.push( attributes['villagename']               !=  ''  );
+            conds.push( attributes['pocketscount']              !=  0   );
+            conds.push( attributes['grampanchayat']             !=  ''  );
+            conds.push( attributes['hobli']                     !=  ''  );
+            conds.push( attributes['taluk']                     !=  ''  ); 
+            conds.push( attributes['userattributedistrictref']  !=  ''  ); 
+            return conds.every(Boolean);
         }
 
         const whetherAttributesValidComputed = computed(() => {
