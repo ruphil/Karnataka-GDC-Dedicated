@@ -205,6 +205,7 @@ export default defineComponent({
             if(data.validgeometry == true){
                 layers.value = <never>[...layers.value, data];
             }
+            
             currentID.value++;
         }
 

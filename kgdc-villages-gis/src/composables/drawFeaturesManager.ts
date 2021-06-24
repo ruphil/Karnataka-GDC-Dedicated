@@ -7,13 +7,14 @@ import {Draw, Modify, Snap} from 'ol/interaction';
 import GeometryType from 'ol/geom/GeometryType';
 
 import { v4 as uuidv4 } from 'uuid';
+import store from "@/store";
 
 const interactionsManager = () => {
     const app = getCurrentInstance()!;
 
     const drawNewLayer = (nameid: any) => {
-        const map = app.appContext.config.globalProperties.$map;
-        
+        const map = store.getters.getMapObj;
+
         let lyrname = 'Feature_' + nameid;
 
         let source = new VectorSource({ wrapX: false });

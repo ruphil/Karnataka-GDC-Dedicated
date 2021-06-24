@@ -40,8 +40,6 @@ const mapStyler = () => {
     ];
   }
 
-  
-  
   return { districtStyleFunction, villagesStyleFunction }
 }
 

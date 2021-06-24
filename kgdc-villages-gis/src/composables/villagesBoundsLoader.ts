@@ -31,7 +31,7 @@ const villagesBoundsLoader = () => {
             validateusername: username,
             validatepassword: password,
             mapextent
-        }
+        };
 
         console.log(requestObj);
 
