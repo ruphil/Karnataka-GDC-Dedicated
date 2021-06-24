@@ -24,21 +24,23 @@
                         <div><button class="olbtns" v-on:click="loadVillagesBoundsRef">Load Villages In View N By District</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns">Load Marked Settlements In View N By District</button></div>
-                        <div><button class="olbtns" v-on:click="unloadVillagesBounds">Unload Villages</button></div>
+                        <div><button class="olbtns">Load Abadi Limits In View N By District</button></div>
+                        <div><button class="olbtns" v-on:click="callUnloadVillagesBounds">Unload Villages</button><button class="olbtns">Unload Abadi Limits</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns">Unload Marked Settlements</button></div>
                         <div><button class="olbtns" v-on:click="drawALayer">Draw Layer</button></div>
-                    </div>
-                    <div>
                         <div>
                             <button class="olbtns" onclick="document.getElementById('fileinput').click();">Add Layer</button>
                             <br><span>*.kml / *.zip (shapefile)</span>
                             <input id="fileinput" type="file" style="display:none;" ref="fileEl"/>
                         </div>
+                    </div>
+                    <div>
                         <div>
                             <button class="olbtns">Upload Files</button>
+                        </div>
+                        <div>
+                            <button class="olbtns">Load Files</button>
                         </div>
                     </div>
                 </div><br>
@@ -153,8 +155,7 @@ export default defineComponent({
         const { drawNewLayer } = drawFeaturesManager();
         const { showGlobalToast } = globalToast();
         const { toggleLineMeasure, toggleAreaMeasure } = measureTools();
-        
-        const return0 = { loadKarnBounds, unloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
+
         const districtsList = computed(() => store.getters.getDistrictsList);
         const districtref = ref('');
         const loadedDistrict = ref('');
@@ -163,14 +164,27 @@ export default defineComponent({
         const fileEl = ref();
         const currentID = ref(1);
         const layers = ref([]);
+
         const loadVillagesBoundsRef = () => {
-            if(districtref.value != '' && loadedDistrict.value != districtref.value){
+            if(districtref.value == ''){
+                showGlobalToast('Select District First');
+                return 0;
+            }
+
+            if(loadedDistrict.value != districtref.value){
                 loadVillagesBounds(districtref.value);
                 loadedDistrict.value = districtref.value;
             }
         }
 
+        const callUnloadVillagesBounds = () => {
+            loadedDistrict.value = '';
+            unloadVillagesBounds();
+        }
+
+        const return0 = { loadKarnBounds, callUnloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
         const return1 = { districtsList, districtref, showtools, fileEl, layers, loadVillagesBoundsRef }
+
         const invokeZoomToLayer = (e: any) => {
             let lyrid = e.target.getAttribute('lyrid');
             zoomToLayer(lyrid);

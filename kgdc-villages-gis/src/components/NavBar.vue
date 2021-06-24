@@ -122,7 +122,8 @@ export default defineComponent({
       isLoggedIn, globalusername, userRoles, userDetails, 
       loginBoxShow, userBox, loginusername, loginpassword, 
       oldpassword, newpassword, renewpassword,
-      doLogin, callUpdatePassword, doLogout }
+      doLogin, callUpdatePassword, doLogout 
+    }
   },
 })
 </script>
