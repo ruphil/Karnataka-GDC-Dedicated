@@ -11,6 +11,7 @@ export default createStore({
     isLoggedIn: false,
     username: '',
     password: '',
+    userDetails: '',
     roles: '',
     attributesData: [],
     karnboundsLoaded: false,
@@ -49,6 +50,9 @@ export default createStore({
     },
     getUserRoles(state){
       return state.roles;
+    },
+    getUserDetails(state){
+      return state.userDetails;
     },
     getAttributesData(state){
       return state.attributesData
@@ -90,6 +94,9 @@ export default createStore({
     },
     setUserRoles(state, roles){
       state.roles = roles;
+    },
+    setUserDetails(state, userDetails){
+      state.userDetails = userDetails;
     },
     setAttributesData(state, attributesData){
       state.attributesData = attributesData;
@@ -137,6 +144,9 @@ export default createStore({
     },
     setUserRoles(context, roles){
       context.commit('setUserRoles', roles);
+    },
+    setUserDetails(context, userDetails){
+      context.commit('setUserDetails', userDetails);
     },
     setAttributesData(context, attributesData){
       context.commit('setAttributesData', attributesData);

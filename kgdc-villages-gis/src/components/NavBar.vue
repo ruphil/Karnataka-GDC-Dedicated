@@ -28,7 +28,16 @@
       <div class="userdetails">
         <button class="closebtn" v-on:click="userBox = false">X</button>
         <div>UserName: {{ globalusername }}</div>
-        <div>ROLES: {{ globalusername }}</div>
+        <div>Mobile Number: {{ userDetails.mobilenumber }}</div>
+        <div>Description: {{ userDetails.description }}</div>
+        <div>ROLES: {{ userRoles }}</div>
+      </div><br/>
+      <div class="changepassword">
+        <div>Change Password</div>
+        <input type="text" v-model="oldpassword" placeholder="Old Password"/><br/>
+        <input type="password" v-model="newpassword" placeholder="New Password"/><br/>
+        <input type="text" v-model="renewpassword" placeholder="Retype New Password"/><br/>
+        <button class="updatepasswd" v-on:click="callUpdatePassword">Update Password</button>
       </div>
     </div>
   </div>
@@ -50,12 +59,17 @@ export default defineComponent({
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const globalusername = computed(() => store.getters.getUsername);
     const userRoles = computed(() => store.getters.getUserRoles);
+    const userDetails = computed(() => store.getters.getUserDetails);
     
     const loginBoxShow = ref(false);
     const userBox = ref(false);
 
     const loginusername = ref('');
     const loginpassword = ref('');
+
+    const oldpassword = ref('');
+    const newpassword = ref('');
+    const renewpassword = ref('');
 
     const loadCredentials = () => {
       let globalusername = window.localStorage.getItem('globalusername')!;
@@ -77,6 +91,14 @@ export default defineComponent({
       sendAuthenticationRequest(loginusername.value, loginpassword.value);
     }
 
+    const callUpdatePassword = () => {
+      if(oldpassword.value != renewpassword.value){
+        showGlobalToast('Passwords do not match');
+      } else {
+        updatePassword(loginusername, oldpassword, renewpassword);
+      }
+    }
+
     const doLogout = () => {
       showGlobalToast('Logged Out...');
       loginusername.value = '';
@@ -89,7 +111,11 @@ export default defineComponent({
       location.reload();
     }
 
-    return { isLoggedIn, globalusername, userRoles, loginBoxShow, userBox, loginusername, loginpassword, doLogin, doLogout }
+    return { 
+      isLoggedIn, globalusername, userRoles, userDetails, 
+      loginBoxShow, userBox, loginusername, loginpassword, 
+      oldpassword, newpassword, renewpassword,
+      doLogin, callUpdatePassword, doLogout }
   },
 })
 </script>

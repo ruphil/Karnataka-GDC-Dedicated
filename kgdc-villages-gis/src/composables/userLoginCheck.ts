@@ -22,7 +22,8 @@ const userLoginCheck = () => {
 
                 if(responseObj.validUser){
                     store.dispatch('setLoggedIn', true);
-                    store.dispatch('setUserRoles', responseObj.roles);
+                    store.dispatch('setUserRoles', responseObj.userDetails.roles);
+                    store.dispatch('setUserDetails', responseObj.userDetails);
                     store.dispatch('setGlobalUsename', responseObj.validateusername);
                     store.dispatch('setGlobalPassword', responseObj.validatepassword);
                     window.localStorage.setItem('globalusername', responseObj.validateusername);
