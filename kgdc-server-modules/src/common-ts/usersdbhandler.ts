@@ -63,15 +63,15 @@ export const changePassword = (ws: WebSocket, msgObj: any) => {
         const client = new Client({ connectionString });
         client.connect();
 
-        let sqlQuery = `UPDATE userstable SET PASSWORD = '${newpassword}' WHERE USERNAME = '${validateusername}' && PASSWORD = '${oldpassword}'`;
+        let sqlQuery = `UPDATE userstable SET PASSWORD = '${newpassword}' WHERE USERNAME = '${validateusername}' AND PASSWORD = '${oldpassword}'`;
         client.query(sqlQuery)
         .then(() => {
             let responseObj = { response: 'changepassword', requestStatus: 'success', action: 'passwordchanged' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
-            // console.log(err);
-            let responseObj = { response: 'changepassword', requestStatus: 'failure', action: 'none' };
+            console.log(err);
+            let responseObj = { response: 'changepassword', requestStatus: 'failure', action: 'sqlerror' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
@@ -79,7 +79,7 @@ export const changePassword = (ws: WebSocket, msgObj: any) => {
         });
     })
     .catch((res: any) => {
-        let responseObj = { response: 'changepassword', requestStatus: 'failure', action: 'none' };
+        let responseObj = { response: 'changepassword', requestStatus: 'failure', action: 'usererror' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }

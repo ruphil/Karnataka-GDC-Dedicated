@@ -9,9 +9,11 @@ const passwordUpdation = () => {
         const password = store.getters.getPassword;
 
         let requestObj = {
-            request: 'getroles',
+            request: 'changepassword',
             validateusername: username,
-            validatepassword: password
+            validatepassword: password,
+            oldpassword,
+            newpassword
         };
 
         console.log(requestObj);
@@ -23,19 +25,10 @@ const passwordUpdation = () => {
             let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
             console.log(responseObj);
 
-            if(responseObj.validUser){
-                store.dispatch('setLoggedIn', true);
-                store.dispatch('setUserRoles', responseObj.userDetails.roles);
-                store.dispatch('setUserDetails', responseObj.userDetails);
-                store.dispatch('setGlobalUsename', responseObj.validateusername);
-                store.dispatch('setGlobalPassword', responseObj.validatepassword);
-                window.localStorage.setItem('globalusername', responseObj.validateusername);
-                window.localStorage.setItem('globalpassword', responseObj.validatepassword);
-                showGlobalToast('Login Successful...');
+            if(responseObj.requestStatus == 'success'){
+                showGlobalToast('Password Changed Successfully...');
             } else {
-                window.localStorage.removeItem('globalusername');
-                window.localStorage.removeItem('globalpassword');
-                showGlobalToast('Invalid Username / Password...');
+                showGlobalToast('Error Changing Password...');
             }
 
             ws.close();

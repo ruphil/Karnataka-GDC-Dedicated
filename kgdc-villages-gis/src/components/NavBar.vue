@@ -100,6 +100,10 @@ export default defineComponent({
       } else {
         updatePassword(oldpassword.value, newpassword.value);
       }
+
+      oldpassword.value = '';
+      newpassword.value = '';
+      renewpassword.value = '';
     }
 
     const doLogout = () => {
