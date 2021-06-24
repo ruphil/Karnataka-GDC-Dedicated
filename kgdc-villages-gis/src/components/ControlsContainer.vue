@@ -315,17 +315,19 @@ export default defineComponent({
 
             let attributes = reqdlayer.attributes;
             let conds = [];
-            conds.push( attributes['lgdcode']                   !=  ''  );
-            conds.push( attributes['hamletname']                !=  ''  );
-            conds.push( attributes['noofproperties']            !=  0   );
-            // conds.push( attributes['startdate']                 ==  ''  );
-            // conds.push( attributes['enddate']                   ==  ''  );
-            conds.push( attributes['villagename']               !=  ''  );
-            conds.push( attributes['pocketscount']              !=  0   );
-            conds.push( attributes['grampanchayat']             !=  ''  );
-            conds.push( attributes['hobli']                     !=  ''  );
-            conds.push( attributes['taluk']                     !=  ''  ); 
-            conds.push( attributes['userattributedistrictref']  !=  ''  ); 
+
+            conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
+            conds.push( 'hamletname'                in attributes && attributes['hamletname']                !=  ''  );
+            conds.push( 'noofproperties'            in attributes && attributes['noofproperties']            !=  0   );
+            conds.push( 'startdate'                 in attributes && attributes['startdate']                 ==  ''  );
+            conds.push( 'enddate'                   in attributes && attributes['enddate']                   ==  ''  );
+            conds.push( 'villagename'               in attributes && attributes['villagename']               !=  ''  );
+            conds.push( 'pocketscount'              in attributes && attributes['pocketscount']              !=  0   );
+            conds.push( 'grampanchayat'             in attributes && attributes['grampanchayat']             !=  ''  );
+            conds.push( 'hobli'                     in attributes && attributes['hobli']                     !=  ''  );
+            conds.push( 'taluk'                     in attributes && attributes['taluk']                     !=  ''  ); 
+            conds.push( 'userattributedistrictref'  in attributes && attributes['userattributedistrictref']  !=  ''  );
+
             return conds.every(Boolean);
         }
 
