@@ -319,8 +319,8 @@ export default defineComponent({
             conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
             conds.push( 'hamletname'                in attributes && attributes['hamletname']                !=  ''  );
             conds.push( 'noofproperties'            in attributes && attributes['noofproperties']            !=  0   );
-            conds.push( 'startdate'                 in attributes && attributes['startdate']                 ==  ''  );
-            conds.push( 'enddate'                   in attributes && attributes['enddate']                   ==  ''  );
+            // conds.push( 'startdate'                 in attributes && attributes['startdate']                 ==  ''  );
+            // conds.push( 'enddate'                   in attributes && attributes['enddate']                   ==  ''  );
             conds.push( 'villagename'               in attributes && attributes['villagename']               !=  ''  );
             conds.push( 'pocketscount'              in attributes && attributes['pocketscount']              !=  0   );
             conds.push( 'grampanchayat'             in attributes && attributes['grampanchayat']             !=  ''  );
