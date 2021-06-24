@@ -15,9 +15,7 @@ const interactionsManager = () => {
         let lyrname = 'Feature_' + nameid;
 
         let source = new VectorSource({ wrapX: false });
-        let vectorlyr = new VectorLayer({
-          source: source,
-        });
+        let vectorlyr = new VectorLayer({ source });
 
         let uniqueID = uuidv4();
         vectorlyr.set('lyrid', uniqueID);
@@ -44,6 +42,7 @@ const interactionsManager = () => {
           validgeometry: true,
           filename: lyrname,
           validattributes: false,
+          layer: vectorlyr,
           attributes: {}
         }
         

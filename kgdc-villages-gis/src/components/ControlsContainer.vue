@@ -61,7 +61,7 @@
                         <div v-html="whetherAttributesValidComputed(lyr.id)"></div>
                         <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">center_focus_weak</span></button></div>
                         <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="editAttributes"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit_note</span></button></div>
-                        <div><button class="olbtns" v-bind:lyrid="lyr.id"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="callUploadAbadiLimit"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
                         <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="discardLayer"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">delete_outline</span></button></div>
                         <div>-</div>
                     </div>
@@ -75,12 +75,8 @@
                     <div>{{ currentFeatureName }}</div>
                 </div>
                 <div>
-                    <div>LGD Code</div>
-                    <div><input type="text" v-model="lgdcode"></div>
-                </div>
-                <div>
-                    <div>Hamlet Name</div>
-                    <div><input type="text" v-model="hamletname"></div>
+                    <div>Abadi Limit Name</div>
+                    <div><input type="text" v-model="abadilimitname"></div>
                 </div>
                 <div>
                     <div>No. of Properties / Houses</div>
@@ -97,6 +93,10 @@
                 <div>
                     <div>Village Name</div>
                     <div><input type="text" v-model="villagename"></div>
+                </div>
+                <div>
+                    <div>LGD Code</div>
+                    <div><input type="text" v-model="lgdcode"></div>
                 </div>
                 <div>
                     <div>
@@ -147,6 +147,7 @@ import drawFeaturesManager from '../composables/drawFeaturesManager';
 import zoomdiscardLayer from '../composables/zoomdiscardLayer';
 import globalToast from '../composables/globalToast';
 import measureTools from '../composables/measureTools';
+import abadiLimitUploader from '../composables/abadiLimitUploader';
 
 export default defineComponent({
     setup() {
@@ -158,6 +159,7 @@ export default defineComponent({
         const { drawNewLayer } = drawFeaturesManager();
         const { showGlobalToast } = globalToast();
         const { toggleLineMeasure, toggleAreaMeasure } = measureTools();
+        const { uploadAbadiLimit } = abadiLimitUploader();
 
         const districtsList = computed(() => store.getters.getDistrictsList);
         const districtref = ref('');
@@ -187,7 +189,12 @@ export default defineComponent({
             unloadVillagesBounds();
         }
 
-        const return0 = { loadKarnBounds, callUnloadVillagesBounds, loadBaseMapToExtent, unloadBaseMap };
+        const return0 = { 
+            loadKarnBounds, callUnloadVillagesBounds, 
+            loadBaseMapToExtent, unloadBaseMap,
+            toggleLineMeasure, toggleAreaMeasure
+        };
+
         const return1 = { 
             districtsList, districtref, showtools, fileEl, layers, 
             currentFeatureName,
@@ -239,18 +246,23 @@ export default defineComponent({
         });
 
         const currentFeatureID = ref('');
-        const lgdcode                     = ref('');
-        const hamletname                  = ref('');
+
+        const abadilimitname              = ref('');
         const noofproperties              = ref(0);
         const startdate                   = ref();
         const enddate                     = ref();
         const villagename                 = ref('');
+        const lgdcode                     = ref('');
         const pocketscount                = ref(0);
         const grampanchayat               = ref('');
         const hobli                       = ref('');
         const taluk                       = ref('');
         const userattributedistrictref    = ref('');
-        const return3 = { lgdcode, hamletname, noofproperties, startdate, enddate, villagename, pocketscount, grampanchayat, hobli, taluk, userattributedistrictref };
+        
+        const return3 = { 
+            abadilimitname, noofproperties, startdate, enddate, villagename, lgdcode,
+            pocketscount, grampanchayat, hobli, taluk, userattributedistrictref 
+        };
         
         const showUserAttributesTable = ref(false);
         const editAttributes = (e: any) => {
@@ -268,7 +280,7 @@ export default defineComponent({
 
             if (typeof attributes === 'object'){
                 if ('lgdcode'                   in attributes) lgdcode.value                    = attributes['lgdcode'];
-                if ('hamletname'                in attributes) hamletname.value                 = attributes['hamletname'];
+                if ('abadilimitname'            in attributes) abadilimitname.value             = attributes['hamletname'];
                 if ('noofproperties'            in attributes) noofproperties.value             = attributes['noofproperties'];
                 if ('startdate'                 in attributes) startdate.value                  = attributes['startdate'];
                 if ('enddate'                   in attributes) enddate.value                    = attributes['enddate'];
@@ -286,7 +298,7 @@ export default defineComponent({
         const updateUserAttributes = () => {
             const attributes = {
                 'lgdcode'                   :   lgdcode.value                   ,   
-                'hamletname'                :   hamletname.value                ,
+                'abadilimitname'            :   abadilimitname.value                ,
                 'noofproperties'            :   noofproperties.value            ,
                 'startdate'                 :   startdate.value                 ,
                 'enddate'                   :   enddate.value                   ,
@@ -317,10 +329,10 @@ export default defineComponent({
             let conds = [];
 
             conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
-            conds.push( 'hamletname'                in attributes && attributes['hamletname']                !=  ''  );
+            conds.push( 'abadilimitname'            in attributes && attributes['abadilimitname']            !=  ''  );
             conds.push( 'noofproperties'            in attributes && attributes['noofproperties']            !=  0   );
-            // conds.push( 'startdate'                 in attributes && attributes['startdate']                 ==  ''  );
-            // conds.push( 'enddate'                   in attributes && attributes['enddate']                   ==  ''  );
+            // conds.push( 'startdate'                 in attributes && attributes['startdate']                 !=  ''  );
+            // conds.push( 'enddate'                   in attributes && attributes['enddate']                   !=  ''  );
             conds.push( 'villagename'               in attributes && attributes['villagename']               !=  ''  );
             conds.push( 'pocketscount'              in attributes && attributes['pocketscount']              !=  0   );
             conds.push( 'grampanchayat'             in attributes && attributes['grampanchayat']             !=  ''  );
@@ -344,7 +356,23 @@ export default defineComponent({
 
         const return4 = { showUserAttributesTable, editAttributes, updateUserAttributes, whetherAttributesValidComputed };
 
-        const return5 = { toggleLineMeasure, toggleAreaMeasure };
+        const callUploadAbadiLimit = (e: any) => {
+            let lyrid = e.target.getAttribute('lyrid');
+            // console.log(lyrid);
+
+            let whetherValid = checkAttributesForLyrID(lyrid);
+            if(whetherValid || true){
+                let reqdlayer: any = layers.value.find((lyr) => {
+                    return lyr['id'] == lyrid;
+                });
+
+                uploadAbadiLimit(reqdlayer);    
+            } else {
+                showGlobalToast('Kindly Edit Attributes for the feature');
+            }
+        }
+
+        const return5 = { callUploadAbadiLimit };
 
         return { ...return0, ...return1, ...return2, ...return3, ...return4, ...return5 }
     },
