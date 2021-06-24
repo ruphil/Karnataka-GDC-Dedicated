@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 
-import { getRoles, newregistration } from '../common-ts/usersdbhandler';
-import { getUsersTable, assignRole, deleteUser  } from '../common-ts/usersdbhandler';
+import { getRoles, changePassword } from '../common-ts/usersdbhandler';
+import { newregistration, getUsersTable, assignRole, deleteUser  } from '../common-ts/usersdbhandler';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -11,6 +11,9 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
         switch(msgObj.request){
             case 'getroles':
                 getRoles(ws, msgObj);
+                break;
+            case 'changepassword':
+                changePassword(ws, msgObj);
                 break;
             case 'newregistration':
                 newregistration(ws, msgObj);

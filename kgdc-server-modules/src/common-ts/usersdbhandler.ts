@@ -12,7 +12,7 @@ export const checkValidUserNGetRoles = (msgObj: any) => {
         const client = new Client({ connectionString });
         client.connect();
 
-        let getQuery = `SELECT USERNAME, PASSWORD, ROLES FROM userstable where USERNAME='${validateusername}' and PASSWORD='${validatepassword}'`;
+        let getQuery = `SELECT * FROM userstable where USERNAME='${validateusername}' and PASSWORD='${validatepassword}'`;
         client.query(getQuery)
         .then((res) => {
             let rows = res.rows;
@@ -20,7 +20,7 @@ export const checkValidUserNGetRoles = (msgObj: any) => {
 
             if(rows.length == 1){
                 let row = rows[0];
-                resolve(row.roles);
+                resolve(row);
             } else {
                 reject('error');
             }
@@ -39,18 +39,47 @@ export const getRoles = (ws: WebSocket, msgObj: any) => {
     const { validateusername, validatepassword } = msgObj;
 
     checkValidUserNGetRoles(msgObj)
-    .then((roles: any) => {
+    .then((userDetails: any) => {
         let responseObj = {
-            response: 'getroles', requestStatus: 'success', validUser: true, validateusername, validatepassword, roles
+            response: 'getroles', requestStatus: 'success', validUser: true, validateusername, validatepassword, userDetails
         };
 
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
     .catch((res: any) => {
         let responseObj = {
-            response: 'getroles', requestStatus: 'success', validUser: false, validateusername, validatepassword, roles: 'NA'
+            response: 'getroles', requestStatus: 'success', validUser: false, validateusername, validatepassword, userDetails: 'NA'
         };
 
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    });
+}
+
+export const changePassword = (ws: WebSocket, msgObj: any) => {
+    const { validateusername, newpassword } = msgObj;
+
+    checkValidUserNGetRoles(msgObj)
+    .then((res: any) => {
+        const client = new Client({ connectionString });
+        client.connect();
+
+        let sqlQuery = `UPDATE userstable SET PASSWORD = '${newpassword}' WHERE USERNAME = '${validateusername}'`;
+        client.query(sqlQuery)
+        .then(() => {
+            let responseObj = { response: 'changepassword', requestStatus: 'success', action: 'passwordchanged' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .catch((err) => {
+            // console.log(err);
+            let responseObj = { response: 'changepassword', requestStatus: 'failure', action: 'none' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .finally(() => {
+            client.end();
+        });
+    })
+    .catch((res: any) => {
+        let responseObj = { response: 'changepassword', requestStatus: 'failure', action: 'none' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }

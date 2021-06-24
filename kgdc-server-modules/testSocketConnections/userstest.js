@@ -20,6 +20,29 @@ ws.addEventListener('open', (event) => {
 
 ws.send(btoa(JSON.stringify(requestObj)));
 
+// Change Password
+
+let ws = new WebSocket('ws://localhost:3010/');
+ws.addEventListener('message',(j)=>{
+    let responseObj = JSON.parse(atob(j.data));
+    console.log(responseObj);
+});
+
+let requestObj = {
+    request: 'changepassword',
+    validateusername: 'gis',
+    validatepassword: 'gis',
+    newpassword: 'jack'
+};
+
+ws.addEventListener('open', (event) => {
+    ws.send(btoa(JSON.stringify(requestObj)));
+});
+
+ws.send(btoa(JSON.stringify(requestObj)));
+
+// Admin Logics
+
 // Add User
 
 let ws = new WebSocket('ws://localhost:3010/');

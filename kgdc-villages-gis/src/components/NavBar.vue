@@ -1,5 +1,5 @@
 <template>
-    <div id="navbarcontainer">
+  <div id="navbarcontainer">
     <div class="navbar">
       <span class="logo">
         <img src="../assets/logo.png" width="30" title="Survey of India"/>
@@ -19,10 +19,17 @@
         </span>
       </span>
       <span class="loggedInSpan" v-show="isLoggedIn">
-        <span>Welcome {{ globalusername }}</span>
+        <span class="useraction" v-on:click="userBox = !userBox">{{ globalusername }}</span>
         <button class="logoutbtn" v-on:click="doLogout">Logout</button>
       </span>
       <span class="titlekgdc">Karnataka Geospatial Data Centre</span>
+    </div>
+    <div class="userbox" v-show="userBox">
+      <div class="userdetails">
+        <button class="closebtn" v-on:click="userBox = false">X</button>
+        <div>UserName: {{ globalusername }}</div>
+        <div>ROLES: {{ globalusername }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -42,7 +49,11 @@ export default defineComponent({
 
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const globalusername = computed(() => store.getters.getUsername);
+    const userRoles = computed(() => store.getters.getUserRoles);
+    
     const loginBoxShow = ref(false);
+    const userBox = ref(false);
+
     const loginusername = ref('');
     const loginpassword = ref('');
 
@@ -78,7 +89,7 @@ export default defineComponent({
       location.reload();
     }
 
-    return { isLoggedIn, globalusername, loginBoxShow, loginusername, loginpassword, doLogin, doLogout }
+    return { isLoggedIn, globalusername, userRoles, loginBoxShow, userBox, loginusername, loginpassword, doLogin, doLogout }
   },
 })
 </script>
