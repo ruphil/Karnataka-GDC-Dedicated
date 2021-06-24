@@ -56,14 +56,14 @@ export const getRoles = (ws: WebSocket, msgObj: any) => {
 }
 
 export const changePassword = (ws: WebSocket, msgObj: any) => {
-    const { validateusername, newpassword } = msgObj;
+    const { validateusername, oldpassword, newpassword } = msgObj;
 
     checkValidUserNGetRoles(msgObj)
     .then((res: any) => {
         const client = new Client({ connectionString });
         client.connect();
 
-        let sqlQuery = `UPDATE userstable SET PASSWORD = '${newpassword}' WHERE USERNAME = '${validateusername}'`;
+        let sqlQuery = `UPDATE userstable SET PASSWORD = '${newpassword}' WHERE USERNAME = '${validateusername}' && PASSWORD = '${oldpassword}'`;
         client.query(sqlQuery)
         .then(() => {
             let responseObj = { response: 'changepassword', requestStatus: 'success', action: 'passwordchanged' };

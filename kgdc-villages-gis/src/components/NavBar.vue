@@ -51,10 +51,13 @@ import { defineComponent, ref, computed, onMounted } from 'vue';
 import './NavBar.scss';
 import globalToast from '../composables/globalToast';
 import userLoginCheck from '../composables/userLoginCheck';
+import passwordUpdation from '../composables/passwordUpdation';
+
 export default defineComponent({
   setup() {
     const { showGlobalToast } = globalToast();
     const { sendAuthenticationRequest } = userLoginCheck();
+    const { updatePassword } = passwordUpdation();
 
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const globalusername = computed(() => store.getters.getUsername);
@@ -92,10 +95,10 @@ export default defineComponent({
     }
 
     const callUpdatePassword = () => {
-      if(oldpassword.value != renewpassword.value){
+      if(newpassword.value != renewpassword.value){
         showGlobalToast('Passwords do not match');
       } else {
-        updatePassword(loginusername, oldpassword, renewpassword);
+        updatePassword(oldpassword.value, newpassword.value);
       }
     }
 

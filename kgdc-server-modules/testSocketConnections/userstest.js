@@ -32,6 +32,7 @@ let requestObj = {
     request: 'changepassword',
     validateusername: 'gis',
     validatepassword: 'gis',
+    oldpassword: 'jack',
     newpassword: 'jack'
 };
 

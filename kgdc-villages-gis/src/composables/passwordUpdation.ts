@@ -1,10 +1,13 @@
 import store from '@/store';
 import globalToast from '../composables/globalToast';
 
-const userLoginCheck = () => {
+const passwordUpdation = () => {
     const { showGlobalToast } = globalToast();
 
-    const sendAuthenticationRequest = (username: string, password: string) => {
+    const updatePassword = (oldpassword: string, newpassword: string) => {
+        const username = store.getters.getUsername;
+        const password = store.getters.getPassword;
+
         let requestObj = {
             request: 'getroles',
             validateusername: username,
@@ -43,7 +46,7 @@ const userLoginCheck = () => {
         });
     }
 
-    return { sendAuthenticationRequest }
+    return { updatePassword }
 }
 
-export default userLoginCheck;
+export default passwordUpdation;
