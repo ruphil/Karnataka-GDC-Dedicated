@@ -59,10 +59,10 @@
                         <div>{{ index + 1 }}</div>
                         <div>{{ lyr.filename }}</div>
                         <div v-html="whetherAttributesValidComputed(lyr.id)"></div>
-                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="invokeZoomToLayer">center_focus_weak</span></button></div>
-                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="editAttributes">edit_note</span></button></div>
-                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
-                        <div><button class="olbtns"><span class="material-icons-outlined" v-bind:lyrid="lyr.id" v-on:click="discardLayer">delete_outline</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">center_focus_weak</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="editAttributes"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit_note</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="lyr.id"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="discardLayer"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">delete_outline</span></button></div>
                         <div>-</div>
                     </div>
                 </div>
@@ -125,8 +125,6 @@
                     <div><button class="userattributesclose" v-on:click="updateUserAttributes">Update Attributes</button></div>
                     <div><button class="userattributesclose" v-on:click="showUserAttributesTable = false">Close</button></div>
                 </div>
-
-                
             </div>
         </div>
     </div>
@@ -143,6 +141,7 @@ import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
 import kmlshpHanlder from '../composables/kmlshpHandler';
 import drawFeaturesManager from '../composables/drawFeaturesManager';
+import zoomdiscardLayer from '../composables/zoomdiscardLayer';
 import globalToast from '../composables/globalToast';
 import measureTools from '../composables/measureTools';
 
@@ -151,7 +150,8 @@ export default defineComponent({
         const { loadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
-        const { loadFilePromise, zoomToLayer, discardLayerFromMap } = kmlshpHanlder();
+        const { loadFilePromise } = kmlshpHanlder();
+        const { zoomToLayer, discardLayerFromMap } = zoomdiscardLayer();
         const { drawNewLayer } = drawFeaturesManager();
         const { showGlobalToast } = globalToast();
         const { toggleLineMeasure, toggleAreaMeasure } = measureTools();
@@ -162,7 +162,7 @@ export default defineComponent({
         const showtools = ref(false);
         
         const fileEl = ref();
-        const currentID = ref(1);
+        const currentNameID = ref(1);
         const layers = ref([]);
 
         const loadVillagesBoundsRef = () => {
@@ -192,21 +192,22 @@ export default defineComponent({
 
         const discardLayer = (e: any) => {
             let lyrid = e.target.getAttribute('lyrid');
+            console.log('Trying to remove lyrid: ', lyrid);
             discardLayerFromMap(lyrid)
             .then(() => {
                 layers.value = layers.value.filter((lyr) => {
                     return lyr['id'] != lyrid;
                 });
-            });
+            }).catch();
         }
 
         const drawALayer = () => {
-            let data = drawNewLayer(currentID.value);
+            let data = drawNewLayer(currentNameID.value);
             if(data.validgeometry == true){
                 layers.value = <never>[...layers.value, data];
             }
-            
-            currentID.value++;
+
+            currentNameID.value++;
         }
 
         const return2 = { invokeZoomToLayer, discardLayer, drawALayer };

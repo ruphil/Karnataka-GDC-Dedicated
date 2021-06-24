@@ -56,7 +56,6 @@ const kmlshpHanlder = () => {
             }
             reader.readAsArrayBuffer(file);
         });
-
     }
 
     const loadkml = (file: any) => {
@@ -132,42 +131,7 @@ const kmlshpHanlder = () => {
         });
     }
 
-    const zoomToLayer = (lyrid: any) => {
-        const map = store.getters.getMapObj;
-        
-        try{
-            map.getLayers().forEach((lyr: any) => {
-                if (lyr.get('lyrid') == lyrid) {
-                    map.getView().fit(lyr.getSource().getExtent());
-                }
-            });
-        } catch (e) {
-            showGlobalToast('Processing Layer in Background... Please Try Again in Seconds...');
-        }
-    }
-
-    const discardLayerFromMap = (lyrid: any) => {
-        return new Promise((resolve, reject) => {
-        const map = store.getters.getMapObj;
-        // console.log(map.getInteractions());
-            try{
-                map.getLayers().forEach((lyr: any) => {
-                    if (lyr.get('lyrid') == lyrid) {
-                        let source = lyr.getSource();
-                        source.clear();
-                        
-                        map.removeLayer(lyr);
-                    }
-                });
-                resolve(0);
-            } catch (e) {
-                showGlobalToast('Processing Layer in Background... Please Try Again in Seconds...');
-                reject(1);
-            }
-        });
-    }
-
-    return { loadFilePromise, zoomToLayer, discardLayerFromMap }
+    return { loadFilePromise }
 }
 
 export default kmlshpHanlder;

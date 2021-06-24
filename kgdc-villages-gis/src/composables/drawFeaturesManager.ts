@@ -10,7 +10,7 @@ import store from "@/store";
 
 const interactionsManager = () => {
     const drawNewLayer = (nameid: any) => {
-        const map = store.getters.getMapObj;
+        let map = store.getters.getMapObj;
 
         let lyrname = 'Feature_' + nameid;
 
@@ -34,14 +34,10 @@ const interactionsManager = () => {
         });
 
         draw.on('drawend', () => {
-          console.log('Draw End Event');
-          map.removeInteraction(draw);
+          map.getInteractions().pop();
         });
         
         map.addInteraction(draw);
-
-        // let modify = new Modify({source: source});
-        // map.addInteraction(modify);
 
         return {
           id: uniqueID,
