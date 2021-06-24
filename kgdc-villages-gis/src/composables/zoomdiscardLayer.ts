@@ -22,18 +22,22 @@ const zoomDiscardLayer = () => {
         return new Promise((resolve, reject) => {
             const map = store.getters.getMapObj;
 
-            map.getLayers().forEach((lyr: any) => {
-                if (lyr.get('lyrid') == lyrid) {
-                    // console.log(`Layer to delete ${lyrid}`);
+            let layers = map.getLayers();
+            let initialLayerCount = layers.getLength();
 
+            layers.forEach((lyr: any) => {
+                if (lyr.get('lyrid') == lyrid) {
                     let source = lyr.getSource();
                     source.clear();
                     
                     map.removeLayer(lyr);
                 }
+
+                let currentLayerCount = layers.getLength();
+                if(currentLayerCount < initialLayerCount){
+                    resolve(0);
+                }
             });
-            
-            resolve(0);
         });
     }
 
