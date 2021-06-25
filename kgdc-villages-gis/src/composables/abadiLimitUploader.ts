@@ -24,7 +24,10 @@ const abadiLimitUploader = () => {
         
         // console.log(wkt);
 
-        let gj = new GeoJSON();
+        const gj = new GeoJSON({
+            geometryName: 'geom'
+        });
+
         gj.writeFeature(feature, {
             dataProjection: 'EPSG:4326',
             featureProjection: 'EPSG:3857'
@@ -32,37 +35,40 @@ const abadiLimitUploader = () => {
         
         console.log(gj);
 
+        
+
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
 
-        // let requestObj = {
-        //     request: 'uploadabadilimit',
-        //     validateusername: username,
-        //     validatepassword: password,
-        //     attributes
-        // }
+        let requestObj = {
+            request: 'uploadabadilimit',
+            validateusername: username,
+            validatepassword: password,
+            geom: gj,
+            attributes
+        }
 
-        // console.log(requestObj);
+        console.log(requestObj);
 
-        // let wssURL = store.getters.getGJModuleWSS;
-        // let ws = new WebSocket(wssURL);
+        let wssURL = store.getters.getAbadiModuleWSS;
+        let ws = new WebSocket(wssURL);
     
-        // ws.addEventListener('message', (event) => {
-        //     let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
-        //     console.log(responseObj);
+        ws.addEventListener('message', (event) => {
+            let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
+            console.log(responseObj);
 
-        //     if(responseObj.requestStatus == 'success'){
-        //         showGlobalToast('Upload Success');
-        //     } else {
-        //         showGlobalToast('Error Uploading');
-        //     }
+            if(responseObj.requestStatus == 'success'){
+                showGlobalToast('Upload Success');
+            } else {
+                showGlobalToast('Error Uploading');
+            }
 
-        //     ws.close();
-        // });
+            ws.close();
+        });
 
-        // ws.addEventListener('open', (event) => {
-        //     ws.send(btoa(JSON.stringify(requestObj)));
-        // });
+        ws.addEventListener('open', (event) => {
+            ws.send(btoa(JSON.stringify(requestObj)));
+        });
     }
 
     return { uploadAbadiLimit };
