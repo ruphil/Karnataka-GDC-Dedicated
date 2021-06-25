@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "users-dev": "ts-node src/module-users/main.ts",
+    "gjserve-dev": "ts-node src/module-gjserve/main.ts",
+    "abadilimits-dev": "ts-node src/module-abadilimits/main.ts",
+    "dev": "concurrently --kill-others \"yarn users-dev\" \"yarn gjserve-dev\" \"yarn abadilimits-dev\""
   },
   "keywords": [],
   "author": "",
