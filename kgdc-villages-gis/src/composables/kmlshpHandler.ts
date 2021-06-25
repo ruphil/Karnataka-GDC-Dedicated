@@ -87,6 +87,8 @@ const kmlshpHanlder = () => {
                         features: filteredkmlfeatures
                     })
                 });
+
+                console.log(kmllyr);
         
                 if(kmllyr.getSource().getFeatures().length > 0){
                     let uniqueID = uuidv4();
