@@ -22,6 +22,9 @@ const interactionsManager = () => {
 
         map.addLayer(vectorlyr);
 
+        // let features = vectorlyr.getSource().getFeatures();
+        // features[0]
+
         let draw = new Draw({
           source: source,
           type: GeometryType.POLYGON,

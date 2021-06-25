@@ -10,11 +10,11 @@ const abadiLimitUploader = () => {
     const uploadAbadiLimit = (lyr: any) => {
         let attributes = lyr.attributes;
         // console.log(lyr, attributes);
-        let feature = lyr.layer.getSource().getFeatures().shift();
+        let feature = lyr.layer.getSource().getFeatures()[0];
         // console.log(feature);
 
-        // let geom = feature.getGeometry();
-        // console.log(geom);
+        let geom = feature.getGeometry();
+        console.log(geom);
 
         // let wkt = new WKT();
         // wkt.writeFeature(feature, {
@@ -25,17 +25,20 @@ const abadiLimitUploader = () => {
         // console.log(wkt);
 
         const gj = new GeoJSON({
-            geometryName: 'geom'
+            // geometryName: 'geom'
         });
 
-        gj.writeFeature(feature, {
-            dataProjection: 'EPSG:4326',
-            featureProjection: 'EPSG:3857'
-        });
-        
-        console.log(gj);
+        // console.log(feature);
 
+        gj.writeGeometry(geom);
+
+        // gj.writeFeature(feature, {
+        //     dataProjection: 'EPSG:4326',
+        //     featureProjection: 'EPSG:3857'
+        // });
         
+        console.log(JSON.stringify(gj));
+
 
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
