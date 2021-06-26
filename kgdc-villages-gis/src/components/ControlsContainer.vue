@@ -219,6 +219,8 @@ export default defineComponent({
             }).catch(() => {
                 console.log('Removing Layer: Unknown Error');
             });
+
+            fileEl.value.value = '';
         }
 
         const return2 = { invokeZoomToLayer, discardLayer, drawNewLayer };

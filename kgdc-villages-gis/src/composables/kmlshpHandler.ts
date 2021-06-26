@@ -23,25 +23,58 @@ const kmlshpHanlder = () => {
             shp(shpBuffer).then((geojson:any) => {
                 console.log(geojson);
 
-                let shpvectorsource = new VectorSource({
-                    features: new GeoJSON({
-                        dataProjection: 'EPSG:4326',
-                        featureProjection: 'EPSG:3857'
-                    }).readFeatures(geojson),
+                let shpFeatures = new GeoJSON({
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                }).readFeatures(geojson)
+        
+                let filteredshpfeatures = shpFeatures.filter((feat: any) => {
+                    return feat.getGeometry()?.getType() == 'Polygon';
                 });
-
-                if(shpvectorsource.getFeatures().length > 0){
+    
+                let feature = filteredshpfeatures[0];
+                console.log(feature);
+    
+                let cond1 = shpFeatures.length != 0;
+                let cond2 = filteredshpfeatures.length != 0;
+                let cond3 = feature != undefined && feature != null;
+    
+                if(cond1 && cond2 && cond3){
                     let shplyr = new VectorLayer({
-                        source: shpvectorsource
+                        source: new VectorSource({
+                            features: [feature]
+                        })
                     });
-
+        
                     let uniqueID = uuidv4();
                     shplyr.set('lyrid', uniqueID);
-
                     map.addLayer(shplyr);
-
+        
+                    const featuresData = store.getters.getFeaturesData;
+        
+                    let newfeatureGJ = new GeoJSON().writeFeature(feature, {
+                        dataProjection: 'EPSG:4326',
+                        featureProjection: 'EPSG:3857'
+                    });
+                    
+                    console.log(JSON.stringify(newfeatureGJ));
+        
+                    let modFeaturesData = [
+                        ...featuresData,
+                        {
+                            featurename: filename,
+                            lyrid: uniqueID,
+                            gjstr: JSON.stringify(newfeatureGJ),
+                            attributes: {}
+                        }
+                    ]
+                    
+                    store.dispatch('setFeaturesData', modFeaturesData);
                 } else {
+                    showGlobalToast('Shape Zip File is not valid');
                 }
+            }).catch(() => {
+                showGlobalToast('Shape Zip File is not valid');
             });
         }
         reader.readAsArrayBuffer(file);
@@ -64,7 +97,7 @@ const kmlshpHanlder = () => {
                 featureProjection: 'EPSG:3857'
             });
     
-            let filteredkmlfeatures = kmlFeatures.filter((feat) => {
+            let filteredkmlfeatures = kmlFeatures.filter((feat: any) => {
                 return feat.getGeometry()?.getType() == 'Polygon';
             });
 
