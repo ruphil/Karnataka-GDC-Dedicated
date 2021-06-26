@@ -14,12 +14,13 @@ export default createStore({
     password: '',
     userDetails: '',
     roles: '',
-    attributesData: [],
     karnboundsLoaded: false,
     currentvillage: '',
     currentuniquevillagecode: '',
     lineMeasureEnabled: false,
     areaMeasureEnabled: false,
+    featureCounter: 0,
+    featuresData: [],
   },
   getters: {
     getMapObj(state){
@@ -58,8 +59,8 @@ export default createStore({
     getUserDetails(state){
       return state.userDetails;
     },
-    getAttributesData(state){
-      return state.attributesData
+    getFeaturesData(state){
+      return state.featuresData
     },
     getKarnBoundsLoaded(state){
       return state.karnboundsLoaded
@@ -75,6 +76,9 @@ export default createStore({
     },
     getAreaMeasureEnabled(state){
       return state.areaMeasureEnabled
+    },
+    getFeatureCounter(state){
+      return state.featureCounter
     }
   },
   mutations: {
@@ -102,9 +106,6 @@ export default createStore({
     setUserDetails(state, userDetails){
       state.userDetails = userDetails;
     },
-    setAttributesData(state, attributesData){
-      state.attributesData = attributesData;
-    },
     setKarnBoundsLoaded(state, karnboundsLoaded){
       state.karnboundsLoaded = karnboundsLoaded;
     },
@@ -119,7 +120,13 @@ export default createStore({
     },
     setAreaMeasureEnabled(state, enabled){
       state.areaMeasureEnabled = enabled;
-    }
+    },
+    setFeatureCounter(state, counter){
+      state.featureCounter = counter;
+    },
+    setFeaturesData(state, featuresData){
+      state.featuresData = featuresData;
+    },
   },
   actions: {
     setMapObj(context, mapObj){
@@ -152,9 +159,6 @@ export default createStore({
     setUserDetails(context, userDetails){
       context.commit('setUserDetails', userDetails);
     },
-    setAttributesData(context, attributesData){
-      context.commit('setAttributesData', attributesData);
-    },
     setKarnBoundsLoaded(context, karnboundsLoaded){
       context.commit('setKarnBoundsLoaded', karnboundsLoaded);
     },
@@ -169,6 +173,12 @@ export default createStore({
     },
     setAreaMeasureEnabled(context, enabled){
       context.commit('setAreaMeasureEnabled', enabled);
+    },
+    setFeatureCounter(context, counter){
+      context.commit('setFeatureCounter', counter);
+    },
+    setFeaturesData(context, featuresData){
+      context.commit('setFeaturesData', featuresData);
     },
   },
   modules: {

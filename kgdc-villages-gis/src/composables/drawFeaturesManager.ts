@@ -27,18 +27,16 @@ const interactionsManager = () => {
           type: GeometryType.POLYGON,
         });
 
-        draw.on('drawstart', () => {
-          source.clear();
-        });
-
-        draw.on('drawend', () => {
+        draw.on('drawend', (event: any) => {
           map.getInteractions().pop();
+          setTimeout(() => {
+            // try{
+              source.addFeature(event.feature);  
+            // } catch (e) {}
+          }, 500);
         });
         
         map.addInteraction(draw);
-
-        let features = vectorlyr.getSource().getFeatures();
-        console.log(vectorlyr, features);
 
         return {
           id: uniqueID,
