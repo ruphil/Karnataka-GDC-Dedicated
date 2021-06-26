@@ -123,7 +123,7 @@ const kmlshpHanlder = () => {
     
                 let newfeatureGJ = new GeoJSON().writeFeature(feature, {
                     dataProjection: 'EPSG:4326',
-                    featureProjection: 'EPSG:3857'
+                    featureProjection: 'EPSG:3857',
                 });
                 
                 console.log(newfeatureGJ);
