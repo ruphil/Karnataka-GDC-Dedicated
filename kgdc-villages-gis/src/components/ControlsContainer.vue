@@ -58,8 +58,8 @@
                     <div v-for="(feature, index) in featuresData" v-bind:key="index">
                         <div>{{ index + 1 }}</div>
                         <div>{{ feature.featurename }}</div>
-                        <!-- <div v-html="whetherAttributesValidComputed(feature.featurename)"></div> -->
-                        <div></div>
+                        <div v-html="whetherAttributesValidComputed(feature.lyrid)"></div>
+                        <!-- <div></div> -->
                         <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined"       v-bind:lyrid="feature.lyrid">center_focus_weak</span></button></div>
                         <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="editAttributes"><span class="material-icons-outlined"          v-bind:lyrid="feature.lyrid">edit_note</span></button></div>
                         <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="callUploadAbadiLimit"><span class="material-icons-outlined"    v-bind:lyrid="feature.lyrid">file_upload</span></button></div>
@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="userattributescontainer" v-show="showUserAttributesTable">
+        <div class="userattributescontainer" v-show="showUserAttributesTable">
             <div class="userattributestable">
                 <div>
                     <div>Feature Name</div>
@@ -130,7 +130,7 @@
                     <div><button class="userattributesclose" v-on:click="showUserAttributesTable = false">Close</button></div>
                 </div>
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -248,68 +248,70 @@ export default defineComponent({
             pocketscount, grampanchayat, hobli, taluk, userattributedistrictref 
         };
         
-        // const showUserAttributesTable = ref(false);
-        // const editAttributes = (e: any) => {
-        //     let lyrid = e.target.getAttribute('lyrid');
-        //     // console.log(lyrid);
-        //     currentFeatureID.value = lyrid;
-        //     let reqdlayer: any = layers.value.find((lyr) => {
-        //         return lyr['id'] == lyrid;
-        //     });
-
-        //     currentFeatureName.value = reqdlayer.filename;
-
-        //     let attributes = reqdlayer.attributes;
-        //     console.log(reqdlayer, attributes);
-
-        //     if (typeof attributes === 'object'){
-        //         if ('lgdcode'                   in attributes) lgdcode.value                    = attributes['lgdcode'];
-        //         if ('abadilimitname'            in attributes) abadilimitname.value             = attributes['hamletname'];
-        //         if ('noofproperties'            in attributes) noofproperties.value             = attributes['noofproperties'];
-        //         if ('startdate'                 in attributes) startdate.value                  = attributes['startdate'];
-        //         if ('enddate'                   in attributes) enddate.value                    = attributes['enddate'];
-        //         if ('villagename'               in attributes) villagename.value                = attributes['villagename'];
-        //         if ('pocketscount'              in attributes) pocketscount.value               = attributes['pocketscount'];
-        //         if ('grampanchayat'             in attributes) grampanchayat.value              = attributes['grampanchayat'];
-        //         if ('hobli'                     in attributes) hobli.value                      = attributes['hobli'];
-        //         if ('taluk'                     in attributes) taluk.value                      = attributes['taluk'];
-        //         if ('userattributedistrictref'  in attributes) userattributedistrictref.value   = attributes['userattributedistrictref'];
-            
-        //         showUserAttributesTable.value = true;
-        //     }
-        // }
-
-        // const updateUserAttributes = () => {
-        //     const attributes = {
-        //         'lgdcode'                   :   lgdcode.value                   ,   
-        //         'abadilimitname'            :   abadilimitname.value                ,
-        //         'noofproperties'            :   noofproperties.value            ,
-        //         'startdate'                 :   startdate.value                 ,
-        //         'enddate'                   :   enddate.value                   ,
-        //         'villagename'               :   villagename.value               , 
-        //         'pocketscount'              :   pocketscount.value              , 
-        //         'grampanchayat'             :   grampanchayat.value             , 
-        //         'hobli'                     :   hobli.value                     , 
-        //         'taluk'                     :   taluk.value                     , 
-        //         'userattributedistrictref'  :   userattributedistrictref.value
-        //     }
-
-        //     let lyrid = currentFeatureID.value;
-        //     // console.log(lyrid);
-        //     let reqdlayer: any = layers.value.find((lyr) => {
-        //         return lyr['id'] == lyrid;
-        //     });
-            
-        //     reqdlayer.attributes = attributes;
-        //     showGlobalToast('Attributes Updated...');
-        // }
-
-        const checkAttributesForLyrID = (featurename: any) => {
-            let reqdlayer: any = featuresData.value.find((feature: any) => {
-                return feature.featurename == featurename;
+        const showUserAttributesTable = ref(false);
+        const editAttributes = (e: any) => {
+            let lyrid = e.target.getAttribute('lyrid');
+            // console.log(lyrid);
+            currentFeatureID.value = lyrid;
+            let reqdfeature: any = featuresData.value.find((feature: any) => {
+                return feature.lyrid == lyrid;
             });
 
-            let attributes = reqdlayer.attributes;
+            currentFeatureName.value = reqdfeature.featurename;
+
+            let attributes = reqdfeature.attributes;
+            // console.log(reqdfeature, attributes);
+
+            if (typeof attributes === 'object'){
+                if ('lgdcode'                   in attributes) lgdcode.value                    = attributes['lgdcode'];
+                if ('abadilimitname'            in attributes) abadilimitname.value             = attributes['hamletname'];
+                if ('noofproperties'            in attributes) noofproperties.value             = attributes['noofproperties'];
+                if ('startdate'                 in attributes) startdate.value                  = attributes['startdate'];
+                if ('enddate'                   in attributes) enddate.value                    = attributes['enddate'];
+                if ('villagename'               in attributes) villagename.value                = attributes['villagename'];
+                if ('pocketscount'              in attributes) pocketscount.value               = attributes['pocketscount'];
+                if ('grampanchayat'             in attributes) grampanchayat.value              = attributes['grampanchayat'];
+                if ('hobli'                     in attributes) hobli.value                      = attributes['hobli'];
+                if ('taluk'                     in attributes) taluk.value                      = attributes['taluk'];
+                if ('userattributedistrictref'  in attributes) userattributedistrictref.value   = attributes['userattributedistrictref'];
+            
+                showUserAttributesTable.value = true;
+            }
+        }
+
+        const updateUserAttributes = () => {
+            const attributes = {
+                'lgdcode'                   :   lgdcode.value                   ,   
+                'abadilimitname'            :   abadilimitname.value                ,
+                'noofproperties'            :   noofproperties.value            ,
+                'startdate'                 :   startdate.value                 ,
+                'enddate'                   :   enddate.value                   ,
+                'villagename'               :   villagename.value               , 
+                'pocketscount'              :   pocketscount.value              , 
+                'grampanchayat'             :   grampanchayat.value             , 
+                'hobli'                     :   hobli.value                     , 
+                'taluk'                     :   taluk.value                     , 
+                'userattributedistrictref'  :   userattributedistrictref.value
+            }
+
+            let lyrid = currentFeatureID.value;
+            // console.log(lyrid);
+            let reqdfeature: any = featuresData.value.find((feature: any) => {
+                return feature.lyrid == lyrid;
+            });
+
+            currentFeatureName.value = reqdfeature.featurename;
+            
+            reqdfeature.attributes = attributes;
+            showGlobalToast('Attributes Updated...');
+        }
+
+        const checkAttributesForLyrID = (lyrid: any) => {
+            let reqdfeature: any = featuresData.value.find((feature: any) => {
+                return feature.lyrid == lyrid;
+            });
+
+            let attributes = reqdfeature.attributes;
             let conds = [];
 
             conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
@@ -328,8 +330,8 @@ export default defineComponent({
         }
 
         const whetherAttributesValidComputed = computed(() => {
-            return (featurename: any) => {
-                let whetherValid = checkAttributesForLyrID(featurename);
+            return (lyrid: any) => {
+                let whetherValid = checkAttributesForLyrID(lyrid);
                 if(whetherValid){
                     return '<span style="color:green;">OK</span>';
                 } else {
@@ -339,31 +341,31 @@ export default defineComponent({
         });
 
         const return4 = { 
-            // showUserAttributesTable, 
-            // editAttributes, updateUserAttributes, 
+            showUserAttributesTable, 
+            editAttributes, updateUserAttributes, 
             whetherAttributesValidComputed 
         };
 
-        // const callUploadAbadiLimit = (e: any) => {
-        //     let lyrid = e.target.getAttribute('lyrid');
-        //     // console.log(lyrid);
+        const callUploadAbadiLimit = (e: any) => {
+            let lyrid = e.target.getAttribute('lyrid');
+            // console.log(lyrid);
 
-        //     let whetherValid = checkAttributesForLyrID(lyrid);
-        //     if(whetherValid || true){
-        //         let reqdlayer: any = layers.value.find((lyr) => {
-        //             return lyr['id'] == lyrid;
-        //         });
+            let whetherValid = checkAttributesForLyrID(lyrid);
+            if(whetherValid || true){
+                let reqdfeature: any = featuresData.value.find((feature: any) => {
+                    return feature.lyrid == lyrid;
+                });
 
-        //         uploadAbadiLimit(reqdlayer);    
-        //     } else {
-        //         showGlobalToast('Kindly Edit Attributes for the feature');
-        //     }
-        // }
+                uploadAbadiLimit(reqdfeature);    
+            } else {
+                showGlobalToast('Kindly Edit Attributes for the feature');
+            }
+        }
 
-        // const return5 = { callUploadAbadiLimit };
+        const return5 = { callUploadAbadiLimit };
 
         return { ...return0, ...return1, ...return2, ...return3, 
-        // ...return4, ...return5 
+            ...return4, ...return5 
         }
     },
 })

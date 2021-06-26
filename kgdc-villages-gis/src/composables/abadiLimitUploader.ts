@@ -7,20 +7,22 @@ import globalToast from '../composables/globalToast';
 const abadiLimitUploader = () => {
     const { showGlobalToast } = globalToast();
 
-    const uploadAbadiLimit = (lyr: any) => {
-        let attributes = lyr.attributes;
-        // console.log(lyr, attributes);
-        let feature = lyr.layer.getSource().getFeatures()[0];
+    const uploadAbadiLimit = (feature: any) => {
         console.log(feature);
+        console.log(feature.attributes);
+        // let attributes = lyr.attributes;
+        // // console.log(lyr, attributes);
+        // let feature = lyr.layer.getSource().getFeatures()[0];
+        // console.log(feature);
 
-        const gj = new GeoJSON();
+        // const gj = new GeoJSON();
 
-        gj.writeFeatureObject(feature, {
-            dataProjection: 'EPSG:4326',
-            featureProjection: 'EPSG:3857'
-        });
+        // gj.writeFeatureObject(feature, {
+        //     dataProjection: 'EPSG:4326',
+        //     featureProjection: 'EPSG:3857'
+        // });
         
-        console.log(JSON.stringify(gj));
+        // console.log(JSON.stringify(gj));
 
 
         // const username = store.getters.getUsername;
