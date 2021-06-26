@@ -55,16 +55,16 @@
                         <div><b>Discard</b></div>
                         <div><b>Uploaded</b></div>
                     </div>
-                    <!-- <div v-for="(lyr, index) in layers" v-bind:key="index">
+                    <div v-for="(feature, index) in featuresData" v-bind:key="index">
                         <div>{{ index + 1 }}</div>
-                        <div>{{ lyr.filename }}</div>
-                        <div v-html="whetherAttributesValidComputed(lyr.id)"></div>
-                        <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">center_focus_weak</span></button></div>
-                        <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="editAttributes"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">edit_note</span></button></div>
-                        <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="callUploadAbadiLimit"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
-                        <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="discardLayer"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">delete_outline</span></button></div>
+                        <div>{{ feature.featurename }}</div>
+                        <div v-html="whetherAttributesValidComputed(feature.featurename)"></div>
+                        <div><button class="olbtns" v-bind:featurename="feature.featurename" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined"       v-bind:featurename="feature.featurename">center_focus_weak</span></button></div>
+                        <div><button class="olbtns" v-bind:featurename="feature.featurename" v-on:click="editAttributes"><span class="material-icons-outlined"          v-bind:featurename="feature.featurename">edit_note</span></button></div>
+                        <div><button class="olbtns" v-bind:featurename="feature.featurename" v-on:click="callUploadAbadiLimit"><span class="material-icons-outlined"    v-bind:featurename="feature.featurename">file_upload</span></button></div>
+                        <div><button class="olbtns" v-bind:featurename="feature.featurename" v-on:click="discardLayer"><span class="material-icons-outlined"            v-bind:featurename="feature.featurename">delete_outline</span></button></div>
                         <div>-</div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -162,6 +162,8 @@ export default defineComponent({
         const { uploadAbadiLimit } = abadiLimitUploader();
 
         const districtsList = computed(() => store.getters.getDistrictsList);
+        const featuresData = computed(() => store.getters.getFeaturesData);
+
         const districtref = ref('');
         const loadedDistrict = ref('');
         const showtools = ref(false);
@@ -194,8 +196,8 @@ export default defineComponent({
         };
 
         const return1 = { 
-            districtsList, districtref, showtools, fileEl, 
-            currentFeatureName,
+            districtsList, featuresData,
+            districtref, showtools, fileEl, currentFeatureName,
             loadVillagesBoundsRef 
         };
 
@@ -309,41 +311,45 @@ export default defineComponent({
         //     showGlobalToast('Attributes Updated...');
         // }
 
-        // const checkAttributesForLyrID = (lyrid: any) => {
-        //     let reqdlayer: any = layers.value.find((lyr) => {
-        //         return lyr['id'] == lyrid;
-        //     });
+        const checkAttributesForLyrID = (featurename: any) => {
+            let reqdlayer: any = featuresData.value.find((feature: any) => {
+                return feature.featurename == featurename;
+            });
 
-        //     let attributes = reqdlayer.attributes;
-        //     let conds = [];
+            let attributes = reqdlayer.attributes;
+            let conds = [];
 
-        //     conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
-        //     conds.push( 'abadilimitname'            in attributes && attributes['abadilimitname']            !=  ''  );
-        //     conds.push( 'noofproperties'            in attributes && attributes['noofproperties']            !=  0   );
-        //     // conds.push( 'startdate'                 in attributes && attributes['startdate']                 !=  ''  );
-        //     // conds.push( 'enddate'                   in attributes && attributes['enddate']                   !=  ''  );
-        //     conds.push( 'villagename'               in attributes && attributes['villagename']               !=  ''  );
-        //     conds.push( 'pocketscount'              in attributes && attributes['pocketscount']              !=  0   );
-        //     conds.push( 'grampanchayat'             in attributes && attributes['grampanchayat']             !=  ''  );
-        //     conds.push( 'hobli'                     in attributes && attributes['hobli']                     !=  ''  );
-        //     conds.push( 'taluk'                     in attributes && attributes['taluk']                     !=  ''  ); 
-        //     conds.push( 'userattributedistrictref'  in attributes && attributes['userattributedistrictref']  !=  ''  );
+            conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
+            conds.push( 'abadilimitname'            in attributes && attributes['abadilimitname']            !=  ''  );
+            conds.push( 'noofproperties'            in attributes && attributes['noofproperties']            !=  0   );
+            // conds.push( 'startdate'                 in attributes && attributes['startdate']                 !=  ''  );
+            // conds.push( 'enddate'                   in attributes && attributes['enddate']                   !=  ''  );
+            conds.push( 'villagename'               in attributes && attributes['villagename']               !=  ''  );
+            conds.push( 'pocketscount'              in attributes && attributes['pocketscount']              !=  0   );
+            conds.push( 'grampanchayat'             in attributes && attributes['grampanchayat']             !=  ''  );
+            conds.push( 'hobli'                     in attributes && attributes['hobli']                     !=  ''  );
+            conds.push( 'taluk'                     in attributes && attributes['taluk']                     !=  ''  ); 
+            conds.push( 'userattributedistrictref'  in attributes && attributes['userattributedistrictref']  !=  ''  );
 
-        //     return conds.every(Boolean);
-        // }
+            return conds.every(Boolean);
+        }
 
-        // const whetherAttributesValidComputed = computed(() => {
-        //     return (lyrid: any) => {
-        //         let whetherValid = checkAttributesForLyrID(lyrid);
-        //         if(whetherValid){
-        //             return '<span style="color:green;">OK</span>';
-        //         } else {
-        //             return '<span style="color:red;">Not OK</span>';
-        //         }
-        //     }
-        // });
+        const whetherAttributesValidComputed = computed(() => {
+            return (featurename: any) => {
+                let whetherValid = checkAttributesForLyrID(featurename);
+                if(whetherValid){
+                    return '<span style="color:green;">OK</span>';
+                } else {
+                    return '<span style="color:red;">Not OK</span>';
+                }
+            }
+        });
 
-        // const return4 = { showUserAttributesTable, editAttributes, updateUserAttributes, whetherAttributesValidComputed };
+        const return4 = { 
+            // showUserAttributesTable, 
+            // editAttributes, updateUserAttributes, 
+            whetherAttributesValidComputed 
+        };
 
         // const callUploadAbadiLimit = (e: any) => {
         //     let lyrid = e.target.getAttribute('lyrid');

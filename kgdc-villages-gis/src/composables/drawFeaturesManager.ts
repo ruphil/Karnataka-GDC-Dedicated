@@ -11,11 +11,6 @@ import store from "@/store";
 const interactionsManager = () => {
     const drawNewLayer = () => {
         const map = store.getters.getMapObj;
-        
-        const featuresCount = store.getters.getFeaturesCounter;
-        const featuresData = store.getters.getFeaturesData;
-
-        let lyrname = 'Feature_' + (featuresCount + 1);
 
         let source = new VectorSource({ wrapX: false });
         let vectorlyr = new VectorLayer({ source });
@@ -29,34 +24,33 @@ const interactionsManager = () => {
 
         draw.on('drawend', (event: any) => {
           map.getInteractions().pop();
-          // let modFeaturesData;
 
-          let feature = event.feature;
-          console.log(feature);
+          const featuresCount = store.getters.getFeaturesCounter;
+          const featuresData = store.getters.getFeaturesData;
 
-          const gj = new GeoJSON();
+          let featurename = 'Feature_' + (featuresCount + 1);
 
-          let newfeature = gj.writeFeature(feature, {
+          let newfeature = new GeoJSON().writeFeature(event.feature, {
               dataProjection: 'EPSG:4326',
               featureProjection: 'EPSG:3857'
           });
           
           console.log(JSON.stringify(newfeature));
+
+          let modFeaturesData = [
+            ...featuresData,
+            {
+              featurename,
+              kmlstring: JSON.stringify(newfeature),
+              attributes: {}
+            }
+          ]
           
-          // store.dispatch('', modFeaturesData);
+          store.dispatch('setFeaturesData', modFeaturesData);
+          store.dispatch('setFeatureCounter', featuresCount + 1);
         });
         
         map.addInteraction(draw);
-
-        // return {
-        //   id: uniqueID,
-        //   validgeometry: true,
-        //   // filename: lyrname,
-        //   validattributes: false,
-        //   layer: vectorlyr,
-        //   attributes: {}
-        // }
-        
     }
 
     return { drawNewLayer }
