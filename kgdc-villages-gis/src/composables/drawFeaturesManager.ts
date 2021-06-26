@@ -12,9 +12,13 @@ const interactionsManager = () => {
     const drawNewLayer = () => {
         const map = store.getters.getMapObj;
 
+        const featuresCount = store.getters.getFeaturesCounter;
+        let featurename = 'Feature_' + (featuresCount + 1);
+
         let source = new VectorSource({ wrapX: false });
         let vectorlyr = new VectorLayer({ source });
 
+        vectorlyr.set('lyrid', featurename);
         map.addLayer(vectorlyr);
 
         let draw = new Draw({
@@ -25,23 +29,20 @@ const interactionsManager = () => {
         draw.on('drawend', (event: any) => {
           map.getInteractions().pop();
 
-          const featuresCount = store.getters.getFeaturesCounter;
           const featuresData = store.getters.getFeaturesData;
 
-          let featurename = 'Feature_' + (featuresCount + 1);
-
-          let newfeature = new GeoJSON().writeFeature(event.feature, {
+          let newfeatureGJ = new GeoJSON().writeFeature(event.feature, {
               dataProjection: 'EPSG:4326',
               featureProjection: 'EPSG:3857'
           });
           
-          console.log(JSON.stringify(newfeature));
+          console.log(JSON.stringify(newfeatureGJ));
 
           let modFeaturesData = [
             ...featuresData,
             {
               featurename,
-              kmlstring: JSON.stringify(newfeature),
+              kmlstring: JSON.stringify(newfeatureGJ),
               attributes: {}
             }
           ]

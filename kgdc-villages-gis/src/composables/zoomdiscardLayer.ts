@@ -1,24 +1,17 @@
-import globalToast from './globalToast';
 import store from '@/store';
 
 const zoomDiscardLayer = () => {
-    const { showGlobalToast } = globalToast();
-
-    const zoomToLayer = (lyrid: any) => {
+    const zoomToLayer = (featurename: any) => {
         const map = store.getters.getMapObj;
         
-        try{
-            map.getLayers().forEach((lyr: any) => {
-                if (lyr.get('lyrid') == lyrid) {
-                    map.getView().fit(lyr.getSource().getExtent());
-                }
-            });
-        } catch (e) {
-            showGlobalToast('Processing Layer in Background... Please Try Again in Seconds...');
-        }
+        map.getLayers().forEach((lyr: any) => {
+            if (lyr.get('lyrid') == featurename) {
+                map.getView().fit(lyr.getSource().getExtent());
+            }
+        });
     }
 
-    const discardLayerFromMap = (lyrid: any) => {
+    const discardLayerFromMap = (featurename: any) => {
         return new Promise((resolve, reject) => {
             const map = store.getters.getMapObj;
 
@@ -26,7 +19,7 @@ const zoomDiscardLayer = () => {
             let initialLayerCount = layers.getLength();
 
             layers.forEach((lyr: any) => {
-                if (lyr.get('lyrid') == lyrid) {
+                if (lyr.get('lyrid') == featurename) {
                     let source = lyr.getSource();
                     source.clear();
                     

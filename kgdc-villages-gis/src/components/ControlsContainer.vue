@@ -58,7 +58,8 @@
                     <div v-for="(feature, index) in featuresData" v-bind:key="index">
                         <div>{{ index + 1 }}</div>
                         <div>{{ feature.featurename }}</div>
-                        <div v-html="whetherAttributesValidComputed(feature.featurename)"></div>
+                        <!-- <div v-html="whetherAttributesValidComputed(feature.featurename)"></div> -->
+                        <div></div>
                         <div><button class="olbtns" v-bind:featurename="feature.featurename" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined"       v-bind:featurename="feature.featurename">center_focus_weak</span></button></div>
                         <div><button class="olbtns" v-bind:featurename="feature.featurename" v-on:click="editAttributes"><span class="material-icons-outlined"          v-bind:featurename="feature.featurename">edit_note</span></button></div>
                         <div><button class="olbtns" v-bind:featurename="feature.featurename" v-on:click="callUploadAbadiLimit"><span class="material-icons-outlined"    v-bind:featurename="feature.featurename">file_upload</span></button></div>
@@ -154,7 +155,7 @@ export default defineComponent({
         const { loadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
-        const { loadFilePromise } = kmlshpHanlder();
+        const { loadKMLShp } = kmlshpHanlder();
         const { zoomToLayer, discardLayerFromMap } = zoomdiscardLayer();
         const { drawNewLayer } = drawFeaturesManager();
         const { showGlobalToast } = globalToast();
@@ -202,39 +203,30 @@ export default defineComponent({
         };
 
         const invokeZoomToLayer = (e: any) => {
-            let lyrid = e.target.getAttribute('lyrid');
-            zoomToLayer(lyrid);
+            let featurename = e.target.getAttribute('featurename');
+            zoomToLayer(featurename);
         }
 
-        // const discardLayer = (e: any) => {
-        //     let lyrid = e.target.getAttribute('lyrid');
-        //     // console.log('Trying to remove lyrid: ', lyrid);
-        //     discardLayerFromMap(lyrid)
-        //     .then(() => {
-        //         layers.value = layers.value.filter((lyr) => {
-        //             return lyr['id'] != lyrid;
-        //         });
-        //     }).catch(() => {
-        //         console.log('Removing Layer: Unknown Error');
-        //     });
-        // }
+        const discardLayer = (e: any) => {
+            let featurename = e.target.getAttribute('featurename');
+            // console.log('Trying to remove lyrid: ', lyrid);
+            discardLayerFromMap(featurename)
+            .then(() => {
+                let filteredData = featuresData.value.filter((feature: any) => {
+                    return feature.featurename != featurename;
+                });
 
-        const return2 = { invokeZoomToLayer, drawNewLayer };
+                store.dispatch('setFeaturesData', filteredData);
+            }).catch(() => {
+                console.log('Removing Layer: Unknown Error');
+            });
+        }
 
-        // const sendFileElementToLoad = () => {
-        //     let file = fileEl.value.files[0];
-        //     loadFilePromise(file)
-        //     .then((featuredata: any) => {
-        //         // console.log(data);
-        //         if(featuredata.validgeometry == true){
-        //             layers.value = <never>[...layers.value, featuredata];
-        //         }
-        //     });
-        // }
+        const return2 = { invokeZoomToLayer, discardLayer, drawNewLayer };
 
-        // onMounted(() => {
-        //     fileEl.value.addEventListener('change', sendFileElementToLoad);
-        // });
+        onMounted(() => {
+            fileEl.value.addEventListener('change', loadKMLShp);
+        });
 
         const currentFeatureID = ref('');
 
