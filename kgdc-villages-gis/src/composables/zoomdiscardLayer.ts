@@ -1,17 +1,17 @@
 import store from '@/store';
 
 const zoomDiscardLayer = () => {
-    const zoomToLayer = (featurename: any) => {
+    const zoomToLayer = (lyrid: any) => {
         const map = store.getters.getMapObj;
         
         map.getLayers().forEach((lyr: any) => {
-            if (lyr.get('lyrid') == featurename) {
+            if (lyr.get('lyrid') == lyrid) {
                 map.getView().fit(lyr.getSource().getExtent());
             }
         });
     }
 
-    const discardLayerFromMap = (featurename: any) => {
+    const discardLayerFromMap = (lyrid: any) => {
         return new Promise((resolve, reject) => {
             const map = store.getters.getMapObj;
 
@@ -19,7 +19,7 @@ const zoomDiscardLayer = () => {
             let initialLayerCount = layers.getLength();
 
             layers.forEach((lyr: any) => {
-                if (lyr.get('lyrid') == featurename) {
+                if (lyr.get('lyrid') == lyrid) {
                     let source = lyr.getSource();
                     source.clear();
                     

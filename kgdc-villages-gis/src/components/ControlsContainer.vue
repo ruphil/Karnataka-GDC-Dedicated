@@ -28,9 +28,9 @@
                         <div><button class="olbtns" v-on:click="callUnloadVillagesBounds">Unload Villages</button><button class="olbtns">Unload Abadi Limits</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns" v-on:click="drawNewLayer">Draw Layer</button></div>
+                        <div><button class="olbtns" v-on:click="drawNewLayer">Draw Abadi Limit Feature</button></div>
                         <div>
-                            <button class="olbtns" onclick="document.getElementById('fileinput').click();">Add Layer</button>
+                            <button class="olbtns" onclick="document.getElementById('fileinput').click();">Add Abadi Limit Feature</button>
                             <br><span>*.kml / *.zip (shapefile)</span>
                             <input id="fileinput" type="file" style="display:none;" ref="fileEl"/>
                         </div>
@@ -60,10 +60,10 @@
                         <div>{{ feature.featurename }}</div>
                         <!-- <div v-html="whetherAttributesValidComputed(feature.featurename)"></div> -->
                         <div></div>
-                        <div><button class="olbtns" v-bind:featurename="feature.featurename" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined"       v-bind:featurename="feature.featurename">center_focus_weak</span></button></div>
-                        <div><button class="olbtns" v-bind:featurename="feature.featurename" v-on:click="editAttributes"><span class="material-icons-outlined"          v-bind:featurename="feature.featurename">edit_note</span></button></div>
-                        <div><button class="olbtns" v-bind:featurename="feature.featurename" v-on:click="callUploadAbadiLimit"><span class="material-icons-outlined"    v-bind:featurename="feature.featurename">file_upload</span></button></div>
-                        <div><button class="olbtns" v-bind:featurename="feature.featurename" v-on:click="discardLayer"><span class="material-icons-outlined"            v-bind:featurename="feature.featurename">delete_outline</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined"       v-bind:lyrid="feature.lyrid">center_focus_weak</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="editAttributes"><span class="material-icons-outlined"          v-bind:lyrid="feature.lyrid">edit_note</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="callUploadAbadiLimit"><span class="material-icons-outlined"    v-bind:lyrid="feature.lyrid">file_upload</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="discardLayer"><span class="material-icons-outlined"            v-bind:lyrid="feature.lyrid">delete_outline</span></button></div>
                         <div>-</div>
                     </div>
                 </div>
@@ -203,17 +203,16 @@ export default defineComponent({
         };
 
         const invokeZoomToLayer = (e: any) => {
-            let featurename = e.target.getAttribute('featurename');
-            zoomToLayer(featurename);
+            let lyrid = e.target.getAttribute('lyrid');
+            zoomToLayer(lyrid);
         }
 
         const discardLayer = (e: any) => {
-            let featurename = e.target.getAttribute('featurename');
-            // console.log('Trying to remove lyrid: ', lyrid);
-            discardLayerFromMap(featurename)
+            let lyrid = e.target.getAttribute('lyrid');
+            discardLayerFromMap(lyrid)
             .then(() => {
                 let filteredData = featuresData.value.filter((feature: any) => {
-                    return feature.featurename != featurename;
+                    return feature.lyrid != lyrid;
                 });
 
                 store.dispatch('setFeaturesData', filteredData);

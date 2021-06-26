@@ -6,6 +6,8 @@ import {Draw, Modify, Snap} from 'ol/interaction';
 import GeometryType from 'ol/geom/GeometryType';
 import GeoJSON from 'ol/format/GeoJSON';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import store from "@/store";
 
 const interactionsManager = () => {
@@ -18,7 +20,9 @@ const interactionsManager = () => {
         let source = new VectorSource({ wrapX: false });
         let vectorlyr = new VectorLayer({ source });
 
-        vectorlyr.set('lyrid', featurename);
+        let uniqueID = uuidv4();
+        vectorlyr.set('lyrid', uniqueID);
+
         map.addLayer(vectorlyr);
 
         let draw = new Draw({
@@ -42,7 +46,8 @@ const interactionsManager = () => {
             ...featuresData,
             {
               featurename,
-              kmlstring: JSON.stringify(newfeatureGJ),
+              lyrid: uniqueID,
+              gjstr: JSON.stringify(newfeatureGJ),
               attributes: {}
             }
           ]

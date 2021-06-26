@@ -13,49 +13,38 @@ const kmlshpHanlder = () => {
     const { showGlobalToast } = globalToast();
 
     const loadshp = (file: any) => {
-        return new Promise((resolve, reject) => {
-            const map = store.getters.getMapObj;
+        const map = store.getters.getMapObj;
 
-            let filename = file.name;
+        let filename = file.name;
 
-            let reader = new FileReader();
-            reader.onload = function () {
-                let shpBuffer = <ArrayBuffer>reader.result;
-                shp(shpBuffer).then((geojson:any) => {
-                    console.log(geojson);
+        let reader = new FileReader();
+        reader.onload = function () {
+            let shpBuffer = <ArrayBuffer>reader.result;
+            shp(shpBuffer).then((geojson:any) => {
+                console.log(geojson);
 
-                    let shpvectorsource = new VectorSource({
-                        features: new GeoJSON({
-                            dataProjection: 'EPSG:4326',
-                            featureProjection: 'EPSG:3857'
-                        }).readFeatures(geojson),
+                let shpvectorsource = new VectorSource({
+                    features: new GeoJSON({
+                        dataProjection: 'EPSG:4326',
+                        featureProjection: 'EPSG:3857'
+                    }).readFeatures(geojson),
+                });
+
+                if(shpvectorsource.getFeatures().length > 0){
+                    let shplyr = new VectorLayer({
+                        source: shpvectorsource
                     });
 
-                    if(shpvectorsource.getFeatures().length > 0){
-                        let shplyr = new VectorLayer({
-                            source: shpvectorsource
-                        });
+                    let uniqueID = uuidv4();
+                    shplyr.set('lyrid', uniqueID);
 
-                        let uniqueID = uuidv4();
-                        shplyr.set('lyrid', uniqueID);
+                    map.addLayer(shplyr);
 
-                        map.addLayer(shplyr);
-
-                        resolve({
-                            id: uniqueID,
-                            validgeometry: true,
-                            filename,
-                            validattributes: false,
-                            layer: shplyr,
-                            attributes: {}
-                        });
-                    } else {
-                        reject({ validgeometry: false })
-                    }
-                });
-            }
-            reader.readAsArrayBuffer(file);
-        });
+                } else {
+                }
+            });
+        }
+        reader.readAsArrayBuffer(file);
     }
 
     const loadkml = (file: any) => {
@@ -66,8 +55,6 @@ const kmlshpHanlder = () => {
 
         let reader = new FileReader();
         reader.onload = function () {
-            // console.log(reader.result);
-            // console.log(fileFullname, extension);
 
             let kmlstring = reader.result!;
             let kmlFeatures = new KML({
@@ -80,22 +67,51 @@ const kmlshpHanlder = () => {
             let filteredkmlfeatures = kmlFeatures.filter((feat) => {
                 return feat.getGeometry()?.getType() == 'Polygon';
             });
-    
-            let kmllyr = new VectorLayer({
-                source: new VectorSource({
-                    features: filteredkmlfeatures
-                })
-            });
 
-            console.log(kmllyr);
+            let feature = filteredkmlfeatures[0];
+            console.log(feature);
+
+            let cond1 = kmlFeatures.length != 0;
+            let cond2 = filteredkmlfeatures.length != 0;
+            let cond3 = feature != undefined && feature != null;
+
+            if(cond1 && cond2 && cond3){
+                let kmllyr = new VectorLayer({
+                    source: new VectorSource({
+                        features: [feature]
+                    })
+                });
     
-            if(kmllyr.getSource().getFeatures().length > 0){
+                const featuresCount = store.getters.getFeaturesCounter;
+                let featurename = 'Feature_' + (featuresCount + 1);
+    
                 let uniqueID = uuidv4();
                 kmllyr.set('lyrid', uniqueID);
-
                 map.addLayer(kmllyr);
+    
+                const featuresData = store.getters.getFeaturesData;
+    
+                let newfeatureGJ = new GeoJSON().writeFeature(feature, {
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                });
+                
+                console.log(JSON.stringify(newfeatureGJ));
+    
+                let modFeaturesData = [
+                    ...featuresData,
+                    {
+                        featurename,
+                        lyrid: uniqueID,
+                        gjstr: JSON.stringify(newfeatureGJ),
+                        attributes: {}
+                    }
+                ]
+                
+                store.dispatch('setFeaturesData', modFeaturesData);
+                store.dispatch('setFeatureCounter', featuresCount + 1);
             } else {
-                // reject({ validgeometry: false })
+                showGlobalToast('KML File is not valid');
             }
         }
         reader.readAsText(file);
@@ -109,12 +125,12 @@ const kmlshpHanlder = () => {
         console.log(fileFullname, extension);
 
         if (extension != 'kml' && extension != 'zip'){
-            showGlobalToast('Invalid File Selected...');
+            showGlobalToast('Invalid File.. Only kml or zip files are allowed...');
         } else if (extension == 'kml') {
-            loadkml(file)
+            loadkml(file);
         } 
         else if (extension == 'zip') {
-            loadshp(file)
+            loadshp(file);
         }
     }
 
