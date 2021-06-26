@@ -6,14 +6,11 @@ const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 export const uploadAbadiLimit = (ws: WebSocket, msgObj: any) => {
     let { validateusername, gjstr, attributes } = msgObj;
 
-    // let reGJStr = JSON.stringify(JSON.parse(gjstr));
-    // console.log(reGJStr);
-
     let insertQuery = `INSERT INTO abadilimits (
         ABADILIMITNAME, NOOFPROPERTIES, MARKINGSTARTDATE, MARKINGENDDATE, VILLAGENAME, VILLAGELGDCODE, ABADIAREASCOUNTINVILLAGE,
         GRAMPANCHAYAT, HOBLI, TALUK, DISTRICT, CREATORINFO, APPROVERINFO, GEOM)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, ST_GeomFromGeoJSON('${gjstr}'))`;
-    console.log(insertQuery);
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, ST_Force2D(ST_GeomFromGeoJSON('${gjstr}')))`;
+    // console.log(insertQuery);
     // console.log(attributes);
     // console.log(gjstr);
 
@@ -25,13 +22,6 @@ export const uploadAbadiLimit = (ws: WebSocket, msgObj: any) => {
     let insertData = [ abadilimitname, noofproperties, startdate, enddate, villagename, lgdcode, pocketscount,
         grampanchayat, hobli, taluk, userattributedistrictref, validateusername, ''
     ];
-
-    // let insertQuery = `INSERT INTO abadilimits (
-    //     ABADILIMITNAME, NOOFPROPERTIES, MARKINGSTARTDATE, MARKINGENDDATE, VILLAGENAME, VILLAGELGDCODE, ABADIAREASCOUNTINVILLAGE,
-    //     GRAMPANCHAYAT, HOBLI, TALUK, DISTRICT, CREATORINFO, APPROVERINFO, GEOM) 
-    //     VALUES (
-    //         ${}, ${}, ${}, ${}, ${}, ${}, ${}, 
-    //         ${}, ${}, ${}, ${}, ${}, ST_GeomFromGeoJSON('$14')`;
     
     const client = new Client({ connectionString });
     client.connect();

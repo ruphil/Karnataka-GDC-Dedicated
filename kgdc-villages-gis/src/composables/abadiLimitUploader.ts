@@ -16,12 +16,6 @@ const abadiLimitUploader = () => {
 
         let gjgeom = JSON.parse(gjstr).geometry;
         console.log(gjgeom);
-        // let gjgeom = JSON.stringify(['geometry']);
-        // // let gjstrcleaned = gjstr.replace(/\\/g, '');
-        // let gjgeomstrcleaned = gjgeom.replace(/\\/g, '').replace(/(^")|("$)/g, '');
-        // console.log(gjgeomstrcleaned);
-
-        
 
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
