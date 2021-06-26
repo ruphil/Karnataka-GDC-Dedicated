@@ -57,14 +57,14 @@ const kmlshpHanlder = () => {
                         featureProjection: 'EPSG:3857'
                     });
                     
-                    console.log(JSON.stringify(newfeatureGJ));
+                    console.log(newfeatureGJ);
         
                     let modFeaturesData = [
                         ...featuresData,
                         {
                             featurename: filename,
                             lyrid: uniqueID,
-                            gjstr: JSON.stringify(newfeatureGJ),
+                            gjstr: newfeatureGJ,
                             attributes: {}
                         }
                     ]
@@ -84,7 +84,7 @@ const kmlshpHanlder = () => {
         const map = store.getters.getMapObj;
 
         let filename = file.name;
-        console.log(filename);
+        // console.log(filename);
 
         let reader = new FileReader();
         reader.onload = function () {
@@ -126,14 +126,14 @@ const kmlshpHanlder = () => {
                     featureProjection: 'EPSG:3857'
                 });
                 
-                console.log(JSON.stringify(newfeatureGJ));
+                console.log(newfeatureGJ);
     
                 let modFeaturesData = [
                     ...featuresData,
                     {
                         featurename: filename,
                         lyrid: uniqueID,
-                        gjstr: JSON.stringify(newfeatureGJ),
+                        gjstr: newfeatureGJ,
                         attributes: {}
                     }
                 ]
@@ -151,7 +151,7 @@ const kmlshpHanlder = () => {
         let fileFullname = file.name;
         let lastDot = fileFullname.lastIndexOf('.');
         let extension = fileFullname.substring(lastDot + 1);
-        console.log(fileFullname, extension);
+        // console.log(fileFullname, extension);
 
         if (extension != 'kml' && extension != 'zip'){
             showGlobalToast('Invalid File.. Only kml or zip files are allowed...');

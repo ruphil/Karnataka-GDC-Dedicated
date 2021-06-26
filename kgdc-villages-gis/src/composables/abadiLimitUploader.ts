@@ -8,55 +8,53 @@ const abadiLimitUploader = () => {
     const { showGlobalToast } = globalToast();
 
     const uploadAbadiLimit = (feature: any) => {
-        console.log(feature);
-        console.log(feature.attributes);
-        // let attributes = lyr.attributes;
-        // // console.log(lyr, attributes);
-        // let feature = lyr.layer.getSource().getFeatures()[0];
-        // console.log(feature);
+        // console.log(feature.gjstr);
+        // console.log(feature.attributes);
 
-        // const gj = new GeoJSON();
+        let gjstr = feature.gjstr;
+        let attributes = feature.attributes;
 
-        // gj.writeFeatureObject(feature, {
-        //     dataProjection: 'EPSG:4326',
-        //     featureProjection: 'EPSG:3857'
-        // });
+        let gjgeom = JSON.parse(gjstr).geometry;
+        console.log(gjgeom);
+        // let gjgeom = JSON.stringify(['geometry']);
+        // // let gjstrcleaned = gjstr.replace(/\\/g, '');
+        // let gjgeomstrcleaned = gjgeom.replace(/\\/g, '').replace(/(^")|("$)/g, '');
+        // console.log(gjgeomstrcleaned);
+
         
-        // console.log(JSON.stringify(gj));
 
+        const username = store.getters.getUsername;
+        const password = store.getters.getPassword;
 
-        // const username = store.getters.getUsername;
-        // const password = store.getters.getPassword;
+        let requestObj = {
+            request: 'uploadabadilimit',
+            validateusername: username,
+            validatepassword: password,
+            gjstr: JSON.stringify(gjgeom),
+            attributes
+        }
 
-        // let requestObj = {
-        //     request: 'uploadabadilimit',
-        //     validateusername: username,
-        //     validatepassword: password,
-        //     geom: gj,
-        //     attributes
-        // }
+        console.log(requestObj);
 
-        // console.log(requestObj);
-
-        // let wssURL = store.getters.getAbadiModuleWSS;
-        // let ws = new WebSocket(wssURL);
+        let wssURL = store.getters.getAbadiModuleWSS;
+        let ws = new WebSocket(wssURL);
     
-        // ws.addEventListener('message', (event) => {
-        //     let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
-        //     console.log(responseObj);
+        ws.addEventListener('message', (event) => {
+            let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
+            console.log(responseObj);
 
-        //     if(responseObj.requestStatus == 'success'){
-        //         showGlobalToast('Upload Success');
-        //     } else {
-        //         showGlobalToast('Error Uploading');
-        //     }
+            if(responseObj.requestStatus == 'success'){
+                showGlobalToast('Abadi Limit Uploaded');
+            } else {
+                showGlobalToast('Error Uploading Abadi Limit');
+            }
 
-        //     ws.close();
-        // });
+            ws.close();
+        });
 
-        // ws.addEventListener('open', (event) => {
-        //     ws.send(btoa(JSON.stringify(requestObj)));
-        // });
+        ws.addEventListener('open', (event) => {
+            ws.send(btoa(JSON.stringify(requestObj)));
+        });
     }
 
     return { uploadAbadiLimit };

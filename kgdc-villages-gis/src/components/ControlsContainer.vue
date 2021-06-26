@@ -101,8 +101,8 @@
                 </div>
                 <div>
                     <div>
-                        <span>Total Number of Pockets in Village</span><br> 
-                        <span style="font-size:0.5em;">Hamlets + Main Village Settlements Count</span>
+                        <span>Total Abadi Areas Count in Village</span><br> 
+                        <span style="font-size:0.8em;">Hamlets + Main Village Settlements Count</span>
                     </div>
                     <div><input type="number" v-model="pocketscount"></div>
                 </div>
@@ -282,7 +282,7 @@ export default defineComponent({
         const updateUserAttributes = () => {
             const attributes = {
                 'lgdcode'                   :   lgdcode.value                   ,   
-                'abadilimitname'            :   abadilimitname.value                ,
+                'abadilimitname'            :   abadilimitname.value            ,
                 'noofproperties'            :   noofproperties.value            ,
                 'startdate'                 :   startdate.value                 ,
                 'enddate'                   :   enddate.value                   ,
@@ -314,12 +314,12 @@ export default defineComponent({
             let attributes = reqdfeature.attributes;
             let conds = [];
 
-            conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
             conds.push( 'abadilimitname'            in attributes && attributes['abadilimitname']            !=  ''  );
             conds.push( 'noofproperties'            in attributes && attributes['noofproperties']            !=  0   );
             // conds.push( 'startdate'                 in attributes && attributes['startdate']                 !=  ''  );
             // conds.push( 'enddate'                   in attributes && attributes['enddate']                   !=  ''  );
             conds.push( 'villagename'               in attributes && attributes['villagename']               !=  ''  );
+            conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
             conds.push( 'pocketscount'              in attributes && attributes['pocketscount']              !=  0   );
             conds.push( 'grampanchayat'             in attributes && attributes['grampanchayat']             !=  ''  );
             conds.push( 'hobli'                     in attributes && attributes['hobli']                     !=  ''  );

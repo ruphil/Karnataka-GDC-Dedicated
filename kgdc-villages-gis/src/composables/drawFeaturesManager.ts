@@ -40,7 +40,7 @@ const interactionsManager = () => {
               featureProjection: 'EPSG:3857'
           });
           
-          console.log(JSON.stringify(newfeatureGJ));
+          // console.log(JSON.stringify(newfeatureGJ));
 
           let modFeaturesData = [
             ...featuresData,
