@@ -82,9 +82,6 @@ const kmlshpHanlder = () => {
                     })
                 });
     
-                const featuresCount = store.getters.getFeaturesCounter;
-                let featurename = 'Feature_' + (featuresCount + 1);
-    
                 let uniqueID = uuidv4();
                 kmllyr.set('lyrid', uniqueID);
                 map.addLayer(kmllyr);
@@ -101,7 +98,7 @@ const kmlshpHanlder = () => {
                 let modFeaturesData = [
                     ...featuresData,
                     {
-                        featurename,
+                        featurename: filename,
                         lyrid: uniqueID,
                         gjstr: JSON.stringify(newfeatureGJ),
                         attributes: {}
@@ -109,7 +106,6 @@ const kmlshpHanlder = () => {
                 ]
                 
                 store.dispatch('setFeaturesData', modFeaturesData);
-                store.dispatch('setFeatureCounter', featuresCount + 1);
             } else {
                 showGlobalToast('KML File is not valid');
             }

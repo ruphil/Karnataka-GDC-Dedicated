@@ -15,6 +15,7 @@ export default createStore({
     userDetails: '',
     roles: '',
     karnboundsLoaded: false,
+    attributesData: [],
     currentvillage: '',
     currentuniquevillagecode: '',
     lineMeasureEnabled: false,
@@ -62,6 +63,9 @@ export default createStore({
     getKarnBoundsLoaded(state){
       return state.karnboundsLoaded;
     },
+    getAttributesData(state){
+      return state.attributesData;
+    },
     getCurrentVillage(state){
       return state.currentvillage;
     },
@@ -108,6 +112,9 @@ export default createStore({
     },
     setKarnBoundsLoaded(state, karnboundsLoaded){
       state.karnboundsLoaded = karnboundsLoaded;
+    },
+    setAttributesData(state, attributesData){
+      state.attributesData = attributesData;
     },
     setCurrentVillage(state, currentvillage){
       state.currentvillage = currentvillage;
@@ -161,6 +168,9 @@ export default createStore({
     },
     setKarnBoundsLoaded(context, karnboundsLoaded){
       context.commit('setKarnBoundsLoaded', karnboundsLoaded);
+    },
+    setAttributesData(context, attributesData){
+      context.commit('setAttributesData', attributesData);
     },
     setCurrentVillage(context, currentvillage){
       context.commit('setCurrentVillage', currentvillage);
