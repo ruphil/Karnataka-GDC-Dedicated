@@ -28,7 +28,7 @@
                         <div><button class="olbtns" v-on:click="callUnloadVillagesBounds">Unload Villages</button><button class="olbtns">Unload Abadi Limits</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns" v-on:click="drawALayer">Draw Layer</button></div>
+                        <div><button class="olbtns" v-on:click="drawNewLayer">Draw Layer</button></div>
                         <div>
                             <button class="olbtns" onclick="document.getElementById('fileinput').click();">Add Layer</button>
                             <br><span>*.kml / *.zip (shapefile)</span>
@@ -55,7 +55,7 @@
                         <div><b>Discard</b></div>
                         <div><b>Uploaded</b></div>
                     </div>
-                    <div v-for="(lyr, index) in layers" v-bind:key="index">
+                    <!-- <div v-for="(lyr, index) in layers" v-bind:key="index">
                         <div>{{ index + 1 }}</div>
                         <div>{{ lyr.filename }}</div>
                         <div v-html="whetherAttributesValidComputed(lyr.id)"></div>
@@ -64,11 +64,11 @@
                         <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="callUploadAbadiLimit"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">file_upload</span></button></div>
                         <div><button class="olbtns" v-bind:lyrid="lyr.id" v-on:click="discardLayer"><span class="material-icons-outlined" v-bind:lyrid="lyr.id">delete_outline</span></button></div>
                         <div>-</div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
-        <div class="userattributescontainer" v-show="showUserAttributesTable">
+        <!-- <div class="userattributescontainer" v-show="showUserAttributesTable">
             <div class="userattributestable">
                 <div>
                     <div>Feature Name</div>
@@ -129,7 +129,7 @@
                     <div><button class="userattributesclose" v-on:click="showUserAttributesTable = false">Close</button></div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -167,10 +167,8 @@ export default defineComponent({
         const showtools = ref(false);
         
         const fileEl = ref();
-        const currentNameID = ref(1);
-        const layers = ref([]);
 
-        const currentFeatureName = ref('jack');
+        const currentFeatureName = ref('');
 
         const loadVillagesBoundsRef = () => {
             if(districtref.value == ''){
@@ -196,7 +194,7 @@ export default defineComponent({
         };
 
         const return1 = { 
-            districtsList, districtref, showtools, fileEl, layers, 
+            districtsList, districtref, showtools, fileEl, 
             currentFeatureName,
             loadVillagesBoundsRef 
         };
@@ -206,44 +204,35 @@ export default defineComponent({
             zoomToLayer(lyrid);
         }
 
-        const discardLayer = (e: any) => {
-            let lyrid = e.target.getAttribute('lyrid');
-            // console.log('Trying to remove lyrid: ', lyrid);
-            discardLayerFromMap(lyrid)
-            .then(() => {
-                layers.value = layers.value.filter((lyr) => {
-                    return lyr['id'] != lyrid;
-                });
-            }).catch(() => {
-                console.log('Removing Layer: Unknown Error');
-            });
-        }
+        // const discardLayer = (e: any) => {
+        //     let lyrid = e.target.getAttribute('lyrid');
+        //     // console.log('Trying to remove lyrid: ', lyrid);
+        //     discardLayerFromMap(lyrid)
+        //     .then(() => {
+        //         layers.value = layers.value.filter((lyr) => {
+        //             return lyr['id'] != lyrid;
+        //         });
+        //     }).catch(() => {
+        //         console.log('Removing Layer: Unknown Error');
+        //     });
+        // }
 
-        const drawALayer = () => {
-            let data = drawNewLayer(currentNameID.value);
-            if(data.validgeometry == true){
-                layers.value = <never>[...layers.value, data];
-            }
+        const return2 = { invokeZoomToLayer, drawNewLayer };
 
-            currentNameID.value++;
-        }
+        // const sendFileElementToLoad = () => {
+        //     let file = fileEl.value.files[0];
+        //     loadFilePromise(file)
+        //     .then((featuredata: any) => {
+        //         // console.log(data);
+        //         if(featuredata.validgeometry == true){
+        //             layers.value = <never>[...layers.value, featuredata];
+        //         }
+        //     });
+        // }
 
-        const return2 = { invokeZoomToLayer, discardLayer, drawALayer };
-
-        const sendFileElementToLoad = () => {
-            let file = fileEl.value.files[0];
-            loadFilePromise(file)
-            .then((featuredata: any) => {
-                // console.log(data);
-                if(featuredata.validgeometry == true){
-                    layers.value = <never>[...layers.value, featuredata];
-                }
-            });
-        }
-
-        onMounted(() => {
-            fileEl.value.addEventListener('change', sendFileElementToLoad);
-        });
+        // onMounted(() => {
+        //     fileEl.value.addEventListener('change', sendFileElementToLoad);
+        // });
 
         const currentFeatureID = ref('');
 
@@ -264,117 +253,119 @@ export default defineComponent({
             pocketscount, grampanchayat, hobli, taluk, userattributedistrictref 
         };
         
-        const showUserAttributesTable = ref(false);
-        const editAttributes = (e: any) => {
-            let lyrid = e.target.getAttribute('lyrid');
-            // console.log(lyrid);
-            currentFeatureID.value = lyrid;
-            let reqdlayer: any = layers.value.find((lyr) => {
-                return lyr['id'] == lyrid;
-            });
+        // const showUserAttributesTable = ref(false);
+        // const editAttributes = (e: any) => {
+        //     let lyrid = e.target.getAttribute('lyrid');
+        //     // console.log(lyrid);
+        //     currentFeatureID.value = lyrid;
+        //     let reqdlayer: any = layers.value.find((lyr) => {
+        //         return lyr['id'] == lyrid;
+        //     });
 
-            currentFeatureName.value = reqdlayer.filename;
+        //     currentFeatureName.value = reqdlayer.filename;
 
-            let attributes = reqdlayer.attributes;
-            console.log(reqdlayer, attributes);
+        //     let attributes = reqdlayer.attributes;
+        //     console.log(reqdlayer, attributes);
 
-            if (typeof attributes === 'object'){
-                if ('lgdcode'                   in attributes) lgdcode.value                    = attributes['lgdcode'];
-                if ('abadilimitname'            in attributes) abadilimitname.value             = attributes['hamletname'];
-                if ('noofproperties'            in attributes) noofproperties.value             = attributes['noofproperties'];
-                if ('startdate'                 in attributes) startdate.value                  = attributes['startdate'];
-                if ('enddate'                   in attributes) enddate.value                    = attributes['enddate'];
-                if ('villagename'               in attributes) villagename.value                = attributes['villagename'];
-                if ('pocketscount'              in attributes) pocketscount.value               = attributes['pocketscount'];
-                if ('grampanchayat'             in attributes) grampanchayat.value              = attributes['grampanchayat'];
-                if ('hobli'                     in attributes) hobli.value                      = attributes['hobli'];
-                if ('taluk'                     in attributes) taluk.value                      = attributes['taluk'];
-                if ('userattributedistrictref'  in attributes) userattributedistrictref.value   = attributes['userattributedistrictref'];
+        //     if (typeof attributes === 'object'){
+        //         if ('lgdcode'                   in attributes) lgdcode.value                    = attributes['lgdcode'];
+        //         if ('abadilimitname'            in attributes) abadilimitname.value             = attributes['hamletname'];
+        //         if ('noofproperties'            in attributes) noofproperties.value             = attributes['noofproperties'];
+        //         if ('startdate'                 in attributes) startdate.value                  = attributes['startdate'];
+        //         if ('enddate'                   in attributes) enddate.value                    = attributes['enddate'];
+        //         if ('villagename'               in attributes) villagename.value                = attributes['villagename'];
+        //         if ('pocketscount'              in attributes) pocketscount.value               = attributes['pocketscount'];
+        //         if ('grampanchayat'             in attributes) grampanchayat.value              = attributes['grampanchayat'];
+        //         if ('hobli'                     in attributes) hobli.value                      = attributes['hobli'];
+        //         if ('taluk'                     in attributes) taluk.value                      = attributes['taluk'];
+        //         if ('userattributedistrictref'  in attributes) userattributedistrictref.value   = attributes['userattributedistrictref'];
             
-                showUserAttributesTable.value = true;
-            }
-        }
+        //         showUserAttributesTable.value = true;
+        //     }
+        // }
 
-        const updateUserAttributes = () => {
-            const attributes = {
-                'lgdcode'                   :   lgdcode.value                   ,   
-                'abadilimitname'            :   abadilimitname.value                ,
-                'noofproperties'            :   noofproperties.value            ,
-                'startdate'                 :   startdate.value                 ,
-                'enddate'                   :   enddate.value                   ,
-                'villagename'               :   villagename.value               , 
-                'pocketscount'              :   pocketscount.value              , 
-                'grampanchayat'             :   grampanchayat.value             , 
-                'hobli'                     :   hobli.value                     , 
-                'taluk'                     :   taluk.value                     , 
-                'userattributedistrictref'  :   userattributedistrictref.value
-            }
+        // const updateUserAttributes = () => {
+        //     const attributes = {
+        //         'lgdcode'                   :   lgdcode.value                   ,   
+        //         'abadilimitname'            :   abadilimitname.value                ,
+        //         'noofproperties'            :   noofproperties.value            ,
+        //         'startdate'                 :   startdate.value                 ,
+        //         'enddate'                   :   enddate.value                   ,
+        //         'villagename'               :   villagename.value               , 
+        //         'pocketscount'              :   pocketscount.value              , 
+        //         'grampanchayat'             :   grampanchayat.value             , 
+        //         'hobli'                     :   hobli.value                     , 
+        //         'taluk'                     :   taluk.value                     , 
+        //         'userattributedistrictref'  :   userattributedistrictref.value
+        //     }
 
-            let lyrid = currentFeatureID.value;
-            // console.log(lyrid);
-            let reqdlayer: any = layers.value.find((lyr) => {
-                return lyr['id'] == lyrid;
-            });
+        //     let lyrid = currentFeatureID.value;
+        //     // console.log(lyrid);
+        //     let reqdlayer: any = layers.value.find((lyr) => {
+        //         return lyr['id'] == lyrid;
+        //     });
             
-            reqdlayer.attributes = attributes;
-            showGlobalToast('Attributes Updated...');
+        //     reqdlayer.attributes = attributes;
+        //     showGlobalToast('Attributes Updated...');
+        // }
+
+        // const checkAttributesForLyrID = (lyrid: any) => {
+        //     let reqdlayer: any = layers.value.find((lyr) => {
+        //         return lyr['id'] == lyrid;
+        //     });
+
+        //     let attributes = reqdlayer.attributes;
+        //     let conds = [];
+
+        //     conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
+        //     conds.push( 'abadilimitname'            in attributes && attributes['abadilimitname']            !=  ''  );
+        //     conds.push( 'noofproperties'            in attributes && attributes['noofproperties']            !=  0   );
+        //     // conds.push( 'startdate'                 in attributes && attributes['startdate']                 !=  ''  );
+        //     // conds.push( 'enddate'                   in attributes && attributes['enddate']                   !=  ''  );
+        //     conds.push( 'villagename'               in attributes && attributes['villagename']               !=  ''  );
+        //     conds.push( 'pocketscount'              in attributes && attributes['pocketscount']              !=  0   );
+        //     conds.push( 'grampanchayat'             in attributes && attributes['grampanchayat']             !=  ''  );
+        //     conds.push( 'hobli'                     in attributes && attributes['hobli']                     !=  ''  );
+        //     conds.push( 'taluk'                     in attributes && attributes['taluk']                     !=  ''  ); 
+        //     conds.push( 'userattributedistrictref'  in attributes && attributes['userattributedistrictref']  !=  ''  );
+
+        //     return conds.every(Boolean);
+        // }
+
+        // const whetherAttributesValidComputed = computed(() => {
+        //     return (lyrid: any) => {
+        //         let whetherValid = checkAttributesForLyrID(lyrid);
+        //         if(whetherValid){
+        //             return '<span style="color:green;">OK</span>';
+        //         } else {
+        //             return '<span style="color:red;">Not OK</span>';
+        //         }
+        //     }
+        // });
+
+        // const return4 = { showUserAttributesTable, editAttributes, updateUserAttributes, whetherAttributesValidComputed };
+
+        // const callUploadAbadiLimit = (e: any) => {
+        //     let lyrid = e.target.getAttribute('lyrid');
+        //     // console.log(lyrid);
+
+        //     let whetherValid = checkAttributesForLyrID(lyrid);
+        //     if(whetherValid || true){
+        //         let reqdlayer: any = layers.value.find((lyr) => {
+        //             return lyr['id'] == lyrid;
+        //         });
+
+        //         uploadAbadiLimit(reqdlayer);    
+        //     } else {
+        //         showGlobalToast('Kindly Edit Attributes for the feature');
+        //     }
+        // }
+
+        // const return5 = { callUploadAbadiLimit };
+
+        return { ...return0, ...return1, ...return2, ...return3, 
+        // ...return4, ...return5 
         }
-
-        const checkAttributesForLyrID = (lyrid: any) => {
-            let reqdlayer: any = layers.value.find((lyr) => {
-                return lyr['id'] == lyrid;
-            });
-
-            let attributes = reqdlayer.attributes;
-            let conds = [];
-
-            conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
-            conds.push( 'abadilimitname'            in attributes && attributes['abadilimitname']            !=  ''  );
-            conds.push( 'noofproperties'            in attributes && attributes['noofproperties']            !=  0   );
-            // conds.push( 'startdate'                 in attributes && attributes['startdate']                 !=  ''  );
-            // conds.push( 'enddate'                   in attributes && attributes['enddate']                   !=  ''  );
-            conds.push( 'villagename'               in attributes && attributes['villagename']               !=  ''  );
-            conds.push( 'pocketscount'              in attributes && attributes['pocketscount']              !=  0   );
-            conds.push( 'grampanchayat'             in attributes && attributes['grampanchayat']             !=  ''  );
-            conds.push( 'hobli'                     in attributes && attributes['hobli']                     !=  ''  );
-            conds.push( 'taluk'                     in attributes && attributes['taluk']                     !=  ''  ); 
-            conds.push( 'userattributedistrictref'  in attributes && attributes['userattributedistrictref']  !=  ''  );
-
-            return conds.every(Boolean);
-        }
-
-        const whetherAttributesValidComputed = computed(() => {
-            return (lyrid: any) => {
-                let whetherValid = checkAttributesForLyrID(lyrid);
-                if(whetherValid){
-                    return '<span style="color:green;">OK</span>';
-                } else {
-                    return '<span style="color:red;">Not OK</span>';
-                }
-            }
-        });
-
-        const return4 = { showUserAttributesTable, editAttributes, updateUserAttributes, whetherAttributesValidComputed };
-
-        const callUploadAbadiLimit = (e: any) => {
-            let lyrid = e.target.getAttribute('lyrid');
-            // console.log(lyrid);
-
-            let whetherValid = checkAttributesForLyrID(lyrid);
-            if(whetherValid || true){
-                let reqdlayer: any = layers.value.find((lyr) => {
-                    return lyr['id'] == lyrid;
-                });
-
-                uploadAbadiLimit(reqdlayer);    
-            } else {
-                showGlobalToast('Kindly Edit Attributes for the feature');
-            }
-        }
-
-        const return5 = { callUploadAbadiLimit };
-
-        return { ...return0, ...return1, ...return2, ...return3, ...return4, ...return5 }
     },
 })
 </script>

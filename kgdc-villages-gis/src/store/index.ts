@@ -19,7 +19,7 @@ export default createStore({
     currentuniquevillagecode: '',
     lineMeasureEnabled: false,
     areaMeasureEnabled: false,
-    featureCounter: 0,
+    featuresCounter: 0,
     featuresData: [],
   },
   getters: {
@@ -59,26 +59,26 @@ export default createStore({
     getUserDetails(state){
       return state.userDetails;
     },
-    getFeaturesData(state){
-      return state.featuresData
-    },
     getKarnBoundsLoaded(state){
-      return state.karnboundsLoaded
+      return state.karnboundsLoaded;
     },
     getCurrentVillage(state){
-      return state.currentvillage
+      return state.currentvillage;
     },
     getCurrentUniqueVillageCode(state){
-      return state.currentuniquevillagecode
+      return state.currentuniquevillagecode;
     },
     getLineMeasureEnabled(state){
-      return state.lineMeasureEnabled
+      return state.lineMeasureEnabled;
     },
     getAreaMeasureEnabled(state){
-      return state.areaMeasureEnabled
+      return state.areaMeasureEnabled;
     },
-    getFeatureCounter(state){
-      return state.featureCounter
+    getFeaturesCounter(state){
+      return state.featuresCounter;
+    },
+    getFeaturesData(state){
+      return state.featuresData;
     }
   },
   mutations: {
@@ -122,7 +122,7 @@ export default createStore({
       state.areaMeasureEnabled = enabled;
     },
     setFeatureCounter(state, counter){
-      state.featureCounter = counter;
+      state.featuresCounter = counter;
     },
     setFeaturesData(state, featuresData){
       state.featuresData = featuresData;
