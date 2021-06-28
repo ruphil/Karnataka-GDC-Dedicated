@@ -73,6 +73,8 @@ const villagesBoundsLoader = () => {
         villagesBounds.set('loadedfromserver', 'yes');
         villagesBounds.set('name', 'villageslyr');
 
+        store.dispatch('setVillageBoundsLoaded', true);
+
         map.addLayer(villagesBounds);
     }
 
@@ -82,6 +84,8 @@ const villagesBoundsLoader = () => {
         map.getLayers().forEach(function (layer: any) {
             if (layer.get('name') != undefined && layer.get('name') === 'villageslyr') {
                 map.removeLayer(layer);
+
+                store.dispatch('setVillageBoundsLoaded', false);
             }
         });
     }

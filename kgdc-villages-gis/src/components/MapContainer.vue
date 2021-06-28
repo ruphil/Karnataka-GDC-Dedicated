@@ -84,6 +84,10 @@ export default defineComponent({
                             store.dispatch('setUniqueVillageCode', attributesData['uniquevill']);
                             store.dispatch('setAttributesData', attributesData);
                         }
+
+                        if(!store.getters.getVillagesBoundsLoaded){
+                            showGlobalToast('Load Villages Layer First');
+                        }
                     } catch (e) {}
                 });
             });
