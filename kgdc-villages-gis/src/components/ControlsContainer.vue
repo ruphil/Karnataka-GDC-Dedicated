@@ -24,8 +24,11 @@
                         <div><button class="olbtns" v-on:click="loadVillagesBoundsRef">Load Villages In View N By District</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns">Load Abadi Limits In View N By District</button></div>
-                        <div><button class="olbtns" v-on:click="callUnloadVillagesBounds">Unload Villages</button><button class="olbtns">Unload Abadi Limits</button></div>
+                        <div><button class="olbtns" v-on:click="loadAbadiLimitsRef">Load Abadi Limits In View N By District</button></div>
+                        <div>
+                            <button class="olbtns" v-on:click="callUnloadVillagesBounds">Unload Villages</button>
+                            <button class="olbtns" v-on:click="callUnloadAbadiLimits">Unload Abadi Limits</button>
+                        </div>
                     </div>
                     <div>
                         <div><button class="olbtns" v-on:click="drawNewLayer">Draw Abadi Limit Feature</button></div>
@@ -149,6 +152,7 @@ import zoomdiscardLayer from '../composables/zoomdiscardLayer';
 import globalToast from '../composables/globalToast';
 import measureTools from '../composables/measureTools';
 import abadiLimitUploader from '../composables/abadiLimitUploader';
+import abadiLimitsLoader from '../composables/abadiLimitsLoader';
 
 export default defineComponent({
     setup() {
@@ -161,6 +165,8 @@ export default defineComponent({
         const { showGlobalToast } = globalToast();
         const { toggleLineMeasure, toggleAreaMeasure } = measureTools();
         const { tryToUploadAbadiLimit } = abadiLimitUploader();
+
+        const { loadAbadiLimits, unloadAbadiLimits } = abadiLimitsLoader();
 
         const districtsList = computed(() => store.getters.getDistrictsList);
         const featuresData = computed(() => store.getters.getFeaturesData);
@@ -179,10 +185,8 @@ export default defineComponent({
                 return 0;
             }
 
-            if(loadedDistrict.value != districtref.value){
-                loadVillagesBounds(districtref.value);
-                loadedDistrict.value = districtref.value;
-            }
+            loadVillagesBounds(districtref.value);
+            loadedDistrict.value = districtref.value;
         }
 
         const callUnloadVillagesBounds = () => {
@@ -190,16 +194,32 @@ export default defineComponent({
             unloadVillagesBounds();
         }
 
+        const loadAbadiLimitsRef = () => {
+            if(districtref.value == ''){
+                showGlobalToast('Select District First');
+                return 0;
+            }
+
+            loadAbadiLimits(districtref.value);
+            loadedDistrict.value = districtref.value;
+        }
+
+        const callUnloadAbadiLimits = () => {
+            loadedDistrict.value = '';
+            unloadAbadiLimits();
+        }
+
         const return0 = { 
-            loadKarnBounds, callUnloadVillagesBounds, 
+            loadKarnBounds, 
+            loadVillagesBoundsRef, callUnloadVillagesBounds, 
             loadBaseMapToExtent, unloadBaseMap,
-            toggleLineMeasure, toggleAreaMeasure
+            toggleLineMeasure, toggleAreaMeasure,
+            loadAbadiLimitsRef, callUnloadAbadiLimits
         };
 
         const return1 = { 
             districtsList, featuresData,
             districtref, showtools, fileEl, currentFeatureName,
-            loadVillagesBoundsRef 
         };
 
         const invokeZoomToLayer = (e: any) => {

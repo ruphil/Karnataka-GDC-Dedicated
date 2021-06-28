@@ -16,6 +16,13 @@ export const getGeoJson = (ws: WebSocket, msgObj: any) => {
         let query1 = `SELECT * FROM karnvillages WHERE kgisdist_1='${district}'`;
         queryVariant = `SELECT * FROM (${query1}) AS districtvillages WHERE geom && ST_Transform(ST_MakeEnvelope(${mapextent[0]}, ${mapextent[1]}, ${mapextent[2]}, ${mapextent[3]}, 3857), 4326)`;
         // console.log(queryVariant);
+    } else if (layer == 'abadilimits'){
+        let district = msgObj.district;
+        let mapextent = msgObj.mapextent;
+        
+        let query1 = `SELECT * FROM abadilimits WHERE district='${district}'`;
+        queryVariant = `SELECT * FROM (${query1}) AS districtabadis WHERE geom && ST_Transform(ST_MakeEnvelope(${mapextent[0]}, ${mapextent[1]}, ${mapextent[2]}, ${mapextent[3]}, 3857), 4326)`;
+        // console.log(queryVariant);
     }
 
     let getQuery = `SELECT jsonb_build_object(

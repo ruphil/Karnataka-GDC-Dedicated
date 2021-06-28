@@ -1,31 +1,28 @@
-import { View } from 'ol';
-import { fromLonLat } from 'ol/proj';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 
 import mapStyler from './mapStyler';
 import store from '@/store';
-import globalToast from '../composables/globalToast';
 
 const abadiLimitsLoader = () => {
-    const { villagesStyleFunction } = mapStyler();
+    const { abadisStyleFunction } = mapStyler();
 
     const loadAbadiLimits = (districtname: string) => {
-        unloadVillagesBounds();
+        unloadAbadiLimits();
 
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
         const map = store.getters.getMapObj;
 
         let mapextent = map.getView().calculateExtent();
-        console.log(mapextent);
+        // console.log(mapextent);
 
-        console.log(map.getView().getProjection());
+        // console.log(map.getView().getProjection());
 
         let requestObj = {
             request: 'getgeojson',
-            layer: 'karnvillages',
+            layer: 'abadilimits',
             district: districtname,
             validateusername: username,
             validatepassword: password,
@@ -43,9 +40,9 @@ const abadiLimitsLoader = () => {
             console.log(responseObj);
             if (responseObj.requestStatus == 'success'){
                 let gj = responseObj.featureCollection;
-                setVillagesBounds(gj);
+                setAbadiLimits(gj);
             } else {
-                console.log('Villages GJ Error...')
+                console.log('Abadis GJ Error...')
             }
             ws.close();
         });
@@ -58,23 +55,23 @@ const abadiLimitsLoader = () => {
     const setAbadiLimits = (gj: any) => {
         const map = store.getters.getMapObj;
 
-        let villagesBounds = new VectorLayer({
+        let abadiLimits = new VectorLayer({
             source: new VectorSource({
                 features: new GeoJSON({
                     dataProjection: 'EPSG:4326',
                     featureProjection: 'EPSG:3857'
                 }).readFeatures(gj)
             }),
-            style: villagesStyleFunction,
+            style: abadisStyleFunction,
             zIndex: 3
         });
 
-        villagesBounds.set('loadedfromserver', 'yes');
-        villagesBounds.set('name', 'abadilimits');
+        abadiLimits.set('loadedfromserver', 'yes');
+        abadiLimits.set('name', 'abadilimits');
 
         store.dispatch('setAbadiLimitsLoaded', true);
 
-        map.addLayer(villagesBounds);
+        map.addLayer(abadiLimits);
     }
 
     const unloadAbadiLimits = () => {
@@ -82,23 +79,16 @@ const abadiLimitsLoader = () => {
 
         try {
             map.getLayers().forEach(function (layer: any) {
-                if (layer.get('name') != undefined && layer.get('name') === 'villageslyr') {
+                if (layer.get('name') != undefined && layer.get('name') === 'abadilimits') {
                     map.removeLayer(layer);
     
-                    removeVillageDetails();
+                    store.dispatch('setAbadiLimitsLoaded', false);
                 }
             });
         } catch (e) {}
     }
 
-    const removeVillageDetails = () => {
-        store.dispatch('setVillageBoundsLoaded', false);
-        store.dispatch('setCurrentVillage', '');
-        store.dispatch('setUniqueVillageCode', '');
-        store.dispatch('setAttributesData', '');
-    }
-
-    return { loadVillagesBounds, unloadVillagesBounds }
+    return { loadAbadiLimits, unloadAbadiLimits }
 }
 
 export default abadiLimitsLoader;

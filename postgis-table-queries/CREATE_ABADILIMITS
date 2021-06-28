@@ -1,5 +1,5 @@
 CREATE TABLE ABADILIMITS(
-    ID                          SERIAL  PRIMARY KEY,
+    GID                         SERIAL  PRIMARY KEY,
     DISTRICT                    TEXT,
     UNIQUEVILLAGECODE           TEXT,
     ABADILIMITNAME              TEXT,

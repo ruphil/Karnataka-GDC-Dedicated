@@ -20,9 +20,9 @@ const villagesBoundsLoader = () => {
         const map = store.getters.getMapObj;
 
         let mapextent = map.getView().calculateExtent();
-        console.log(mapextent);
+        // console.log(mapextent);
 
-        console.log(map.getView().getProjection());
+        // console.log(map.getView().getProjection());
 
         let requestObj = {
             request: 'getgeojson',
