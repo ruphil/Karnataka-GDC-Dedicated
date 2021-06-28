@@ -81,13 +81,15 @@ const villagesBoundsLoader = () => {
     const unloadVillagesBounds = () => {
         const map = store.getters.getMapObj;
 
-        map.getLayers().forEach(function (layer: any) {
-            if (layer.get('name') != undefined && layer.get('name') === 'villageslyr') {
-                map.removeLayer(layer);
-
-                removeVillageDetails();
-            }
-        });
+        try {
+            map.getLayers().forEach(function (layer: any) {
+                if (layer.get('name') != undefined && layer.get('name') === 'villageslyr') {
+                    map.removeLayer(layer);
+    
+                    removeVillageDetails();
+                }
+            });
+        } catch (e) {}
     }
 
     const removeVillageDetails = () => {
