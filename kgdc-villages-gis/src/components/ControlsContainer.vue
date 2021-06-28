@@ -363,7 +363,7 @@ export default defineComponent({
                 if(district != '' && uniquevillagecode != ''){
                     uploadAbadiLimit(reqdfeature);
                 } else {
-                    showGlobalToast('Kindly Edit Attributes for the feature');
+                    showGlobalToast('Kindly Select Village and District for the feature');
                 }
             } else {
                 showGlobalToast('Kindly Edit Attributes for the feature');
