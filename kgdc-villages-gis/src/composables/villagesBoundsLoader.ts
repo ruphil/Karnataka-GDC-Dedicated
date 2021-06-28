@@ -85,9 +85,16 @@ const villagesBoundsLoader = () => {
             if (layer.get('name') != undefined && layer.get('name') === 'villageslyr') {
                 map.removeLayer(layer);
 
-                store.dispatch('setVillageBoundsLoaded', false);
+                removeVillageDetails();
             }
         });
+    }
+
+    const removeVillageDetails = () => {
+        store.dispatch('setVillageBoundsLoaded', false);
+        store.dispatch('setCurrentVillage', '');
+        store.dispatch('setUniqueVillageCode', '');
+        store.dispatch('setAttributesData', '');
     }
 
     return { loadVillagesBounds, unloadVillagesBounds }

@@ -32,22 +32,23 @@ const interactionsManager = () => {
 
         draw.on('drawend', (event: any) => {
           map.getInteractions().pop();
-
+          let featureGeometry = event.feature.getGeometry()
+          
           const featuresData = store.getters.getFeaturesData;
 
-          let newfeatureGJ = new GeoJSON().writeFeature(event.feature, {
-              dataProjection: 'EPSG:4326',
-              featureProjection: 'EPSG:3857'
+          let newfeatGeom = new GeoJSON().writeGeometry(featureGeometry, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: 'EPSG:3857'
           });
           
-          // console.log(JSON.stringify(newfeatureGJ));
+          console.log(newfeatGeom);
 
           let modFeaturesData = [
             ...featuresData,
             {
               featurename,
               lyrid: uniqueID,
-              gjstr: JSON.stringify(newfeatureGJ),
+              geom: JSON.parse(newfeatGeom),
               attributes: {}
             }
           ]

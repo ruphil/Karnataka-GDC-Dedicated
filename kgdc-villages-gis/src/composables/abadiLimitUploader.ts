@@ -7,25 +7,27 @@ import globalToast from '../composables/globalToast';
 const abadiLimitUploader = () => {
     const { showGlobalToast } = globalToast();
 
-    const uploadAbadiLimit = (feature: any) => {
+    const uploadAbadiLimit = (featureData: any) => {
         // console.log(feature.gjstr);
         // console.log(feature.attributes);
 
-        let gjstr = feature.gjstr;
-        let attributes = feature.attributes;
-
-        let gjgeom = JSON.parse(gjstr).geometry;
-        console.log(gjgeom);
+        let geom = featureData.geom;
+        let attributes = featureData.attributes;
 
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
+
+        let district = attributes.userattributedistrictref;
+        let uniquevillagecode = store.getters.getCurrentUniqueVillageCode;
 
         let requestObj = {
             request: 'uploadabadilimit',
             validateusername: username,
             validatepassword: password,
-            gjstr: JSON.stringify(gjgeom),
-            attributes
+            gjstr: geom,
+            attributes,
+            district,
+            uniquevillagecode
         }
 
         console.log(requestObj);

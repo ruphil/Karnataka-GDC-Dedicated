@@ -39,20 +39,22 @@ const kmlshpHanlder = () => {
 
             const featuresData = store.getters.getFeaturesData;
 
-            let newfeatureGJ = new GeoJSON().writeFeature(feature, {
+            let featureGeometry = feature.getGeometry()
+        
+            let newfeatGeom = new GeoJSON().writeGeometry(featureGeometry, {
                 dataProjection: 'EPSG:4326',
-                featureProjection: 'EPSG:3857',
+                featureProjection: 'EPSG:3857'
             });
             
-            console.log(newfeatureGJ);
+            console.log(newfeatGeom);
 
             let modFeaturesData = [
                 ...featuresData,
                 {
-                    featurename: filename,
-                    lyrid: uniqueID,
-                    gjstr: newfeatureGJ,
-                    attributes: {}
+                featurename: filename,
+                lyrid: uniqueID,
+                geom: newfeatGeom,
+                attributes: {}
                 }
             ]
             
@@ -63,8 +65,6 @@ const kmlshpHanlder = () => {
     }
 
     const loadshp = (file: any) => {
-        
-
         let filename = file.name;
 
         let reader = new FileReader();
@@ -88,8 +88,6 @@ const kmlshpHanlder = () => {
     }
 
     const loadkml = (file: any) => {
-        const map = store.getters.getMapObj;
-
         let filename = file.name;
         // console.log(filename);
 
