@@ -81,7 +81,7 @@
                 </div>
                 <div>
                     <div>No. of Properties / Houses</div>
-                    <div><input type="text" v-model="noofproperties"></div>
+                    <div><input type="number" v-model="noofproperties"></div>
                 </div>
                 <div>
                     <div>Date of Commencement of Marking</div>
@@ -351,12 +351,20 @@ export default defineComponent({
             // console.log(lyrid);
 
             let whetherValid = checkAttributesForLyrID(lyrid);
-            if(whetherValid || true){
+            if(whetherValid){
                 let reqdfeature: any = featuresData.value.find((feature: any) => {
                     return feature.lyrid == lyrid;
                 });
 
-                uploadAbadiLimit(reqdfeature);    
+                let attributes = reqdfeature.attributes;
+                let district = attributes.userattributedistrictref;
+                let uniquevillagecode = store.getters.getCurrentUniqueVillageCode;
+
+                if(district != '' && uniquevillagecode != ''){
+                    uploadAbadiLimit(reqdfeature);
+                } else {
+                    showGlobalToast('Kindly Edit Attributes for the feature');
+                }
             } else {
                 showGlobalToast('Kindly Edit Attributes for the feature');
             }

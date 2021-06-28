@@ -27,15 +27,16 @@ const kmlshpHanlder = () => {
         let cond3 = feature != undefined && feature != null;
 
         if(cond1 && cond2 && cond3){
-            let kmllyr = new VectorLayer({
+            let lyr = new VectorLayer({
                 source: new VectorSource({
                     features: [feature]
-                })
+                }),
+                zIndex: 3
             });
 
             let uniqueID = uuidv4();
-            kmllyr.set('lyrid', uniqueID);
-            map.addLayer(kmllyr);
+            lyr.set('lyrid', uniqueID);
+            map.addLayer(lyr);
 
             const featuresData = store.getters.getFeaturesData;
 

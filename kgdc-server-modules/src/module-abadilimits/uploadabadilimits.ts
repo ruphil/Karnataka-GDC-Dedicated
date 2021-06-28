@@ -9,7 +9,8 @@ export const uploadAbadiLimit = (ws: WebSocket, msgObj: any) => {
     let insertQuery = `INSERT INTO abadilimits (
         DISTRICT, UNIQUEVILLAGECODE, ABADILIMITNAME, NOOFPROPERTIES, MARKINGSTARTDATE, MARKINGENDDATE, 
         VILLAGENAME, VILLAGELGDCODE, ABADIAREASCOUNTINVILLAGE, GRAMPANCHAYAT, HOBLI, TALUK, CREATORINFO, APPROVERINFO, GEOM)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, ST_Force2D(ST_GeomFromGeoJSON('${gjstr}')))`;
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, ST_Force2D(ST_GeomFromGeoJSON('${gjstr}'))
+    )`;
     // console.log(insertQuery);
     // console.log(attributes);
     // console.log(gjstr);

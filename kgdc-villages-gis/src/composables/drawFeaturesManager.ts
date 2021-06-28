@@ -18,7 +18,7 @@ const interactionsManager = () => {
         let featurename = 'Feature_' + (featuresCount + 1);
 
         let source = new VectorSource({ wrapX: false });
-        let vectorlyr = new VectorLayer({ source });
+        let vectorlyr = new VectorLayer({ source, zIndex: 3 });
 
         let uniqueID = uuidv4();
         vectorlyr.set('lyrid', uniqueID);
@@ -48,7 +48,7 @@ const interactionsManager = () => {
             {
               featurename,
               lyrid: uniqueID,
-              geom: JSON.parse(newfeatGeom),
+              geom: newfeatGeom,
               attributes: {}
             }
           ]
