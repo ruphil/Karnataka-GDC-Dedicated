@@ -9,6 +9,9 @@ const mapStyler = () => {
           color: 'rgba(0,60,136,0.8)',
           width: 3,
         }),
+        fill: new Fill({
+          color: 'rgba(255,255,255,0.1)',
+        }),
         text: new Text({
           font: '12px Calibri,sans-serif',
           fill: new Fill({ color: 'white' }),
@@ -27,6 +30,9 @@ const mapStyler = () => {
         stroke: new Stroke({
           color: 'rgba(0,60,136,0.8)',
           width: 1,
+        }),
+        fill: new Fill({
+          color: 'rgba(0,60,136,0.1)',
         }),
         text: new Text({
           font: '10px Calibri,sans-serif',

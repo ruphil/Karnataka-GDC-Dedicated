@@ -16,6 +16,7 @@
             <button class="closeattributeswindow" v-on:click="showAttributesTable = false"><span class="material-icons-outlined">close</span></button>
         </div>
         <div class="latlon" ref="latlon"></div>
+        <div class="currentvillage">Current Village: {{ currentVillage }}</div>
     </div>
 </template>
 
@@ -30,15 +31,23 @@ import './MapContainer.scss';
 import store from '@/store';
 import setMapToVuex from '../composables/setMapToVuex';
 import karnBoundsLoader from '../composables/karnBoundsLoader';
+import globalToast from '../composables/globalToast';
+
 export default defineComponent({
     setup() {
         const { setMapObjectToVeux } = setMapToVuex();
         const { loadKarnBounds } = karnBoundsLoader();
+        const { showGlobalToast } = globalToast();
+
         const mapref = ref();
         const popup = ref();
         const latlon = ref();
-        const attributesData = computed(() => store.getters.getAttributesData);
+        
         const showAttributesTable = ref(false);
+
+        const attributesData = computed(() => store.getters.getAttributesData);
+        const currentVillage = computed(() => store.getters.getCurrentVillage);
+
         const loadKarnBoundaryAfterElementLoaded = () => {
             const overlay = new Overlay({
                 element: popup.value,
@@ -67,9 +76,15 @@ export default defineComponent({
                     delete attributesData['geometry'];
                     try {
                         if(layer.get('loadedfromserver') == 'yes'){
+                            store.dispatch('setAttributesData', attributesData);
+                        }
+
+                        if(layer.get('loadedfromserver') == 'yes' && layer.get('name') == 'villageslyr'){
                             store.dispatch('setCurrentVillage', attributesData['kgisvill_2']);
                             store.dispatch('setUniqueVillageCode', attributesData['uniquevill']);
                             store.dispatch('setAttributesData', attributesData);
+                        } else {
+                            showGlobalToast('Load Villages Layer First');
                         }
                     } catch (e) {}
                 });
@@ -88,7 +103,7 @@ export default defineComponent({
             loadKarnBoundaryAfterElementLoaded();
         });
 
-        return { mapref, popup, attributesData, showAttributesTable, latlon }
+        return { mapref, popup, attributesData, showAttributesTable, latlon, currentVillage }
     },
 })
 </script>

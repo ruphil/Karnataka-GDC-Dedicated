@@ -16,7 +16,7 @@ export default createStore({
     roles: '',
     karnboundsLoaded: false,
     attributesData: [],
-    currentvillage: '',
+    currentvillage: 'village',
     currentuniquevillagecode: '',
     lineMeasureEnabled: false,
     areaMeasureEnabled: false,
