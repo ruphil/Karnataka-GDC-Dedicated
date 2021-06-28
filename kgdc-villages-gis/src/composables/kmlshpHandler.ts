@@ -12,8 +12,58 @@ import store from '@/store';
 const kmlshpHanlder = () => {
     const { showGlobalToast } = globalToast();
 
-    const loadshp = (file: any) => {
+    const handleFeature = (features: any, filename: any) => {
         const map = store.getters.getMapObj;
+
+        let filteredFeatures = features.filter((feat: any) => {
+            return feat.getGeometry()?.getType() == 'Polygon';
+        });
+
+        let feature = filteredFeatures[0];
+        console.log(feature);
+
+        let cond1 = features.length != 0;
+        let cond2 = filteredFeatures.length != 0;
+        let cond3 = feature != undefined && feature != null;
+
+        if(cond1 && cond2 && cond3){
+            let kmllyr = new VectorLayer({
+                source: new VectorSource({
+                    features: [feature]
+                })
+            });
+
+            let uniqueID = uuidv4();
+            kmllyr.set('lyrid', uniqueID);
+            map.addLayer(kmllyr);
+
+            const featuresData = store.getters.getFeaturesData;
+
+            let newfeatureGJ = new GeoJSON().writeFeature(feature, {
+                dataProjection: 'EPSG:4326',
+                featureProjection: 'EPSG:3857',
+            });
+            
+            console.log(newfeatureGJ);
+
+            let modFeaturesData = [
+                ...featuresData,
+                {
+                    featurename: filename,
+                    lyrid: uniqueID,
+                    gjstr: newfeatureGJ,
+                    attributes: {}
+                }
+            ]
+            
+            store.dispatch('setFeaturesData', modFeaturesData);
+        } else {
+            showGlobalToast('KML File is not valid');
+        }
+    }
+
+    const loadshp = (file: any) => {
+        
 
         let filename = file.name;
 
@@ -28,51 +78,8 @@ const kmlshpHanlder = () => {
                     featureProjection: 'EPSG:3857'
                 }).readFeatures(geojson)
         
-                let filteredshpfeatures = shpFeatures.filter((feat: any) => {
-                    return feat.getGeometry()?.getType() == 'Polygon';
-                });
-    
-                let feature = filteredshpfeatures[0];
-                console.log(feature);
-    
-                let cond1 = shpFeatures.length != 0;
-                let cond2 = filteredshpfeatures.length != 0;
-                let cond3 = feature != undefined && feature != null;
-    
-                if(cond1 && cond2 && cond3){
-                    let shplyr = new VectorLayer({
-                        source: new VectorSource({
-                            features: [feature]
-                        })
-                    });
-        
-                    let uniqueID = uuidv4();
-                    shplyr.set('lyrid', uniqueID);
-                    map.addLayer(shplyr);
-        
-                    const featuresData = store.getters.getFeaturesData;
-        
-                    let newfeatureGJ = new GeoJSON().writeFeature(feature, {
-                        dataProjection: 'EPSG:4326',
-                        featureProjection: 'EPSG:3857'
-                    });
-                    
-                    console.log(newfeatureGJ);
-        
-                    let modFeaturesData = [
-                        ...featuresData,
-                        {
-                            featurename: filename,
-                            lyrid: uniqueID,
-                            gjstr: newfeatureGJ,
-                            attributes: {}
-                        }
-                    ]
-                    
-                    store.dispatch('setFeaturesData', modFeaturesData);
-                } else {
-                    showGlobalToast('Shape Zip File is not valid');
-                }
+                handleFeature(shpFeatures, filename);
+
             }).catch(() => {
                 showGlobalToast('Shape Zip File is not valid');
             });
@@ -90,6 +97,7 @@ const kmlshpHanlder = () => {
         reader.onload = function () {
 
             let kmlstring = reader.result!;
+            
             let kmlFeatures = new KML({
                 extractStyles: false
             }).readFeatures(kmlstring, {
@@ -97,51 +105,7 @@ const kmlshpHanlder = () => {
                 featureProjection: 'EPSG:3857'
             });
     
-            let filteredkmlfeatures = kmlFeatures.filter((feat: any) => {
-                return feat.getGeometry()?.getType() == 'Polygon';
-            });
-
-            let feature = filteredkmlfeatures[0];
-            console.log(feature);
-
-            let cond1 = kmlFeatures.length != 0;
-            let cond2 = filteredkmlfeatures.length != 0;
-            let cond3 = feature != undefined && feature != null;
-
-            if(cond1 && cond2 && cond3){
-                let kmllyr = new VectorLayer({
-                    source: new VectorSource({
-                        features: [feature]
-                    })
-                });
-    
-                let uniqueID = uuidv4();
-                kmllyr.set('lyrid', uniqueID);
-                map.addLayer(kmllyr);
-    
-                const featuresData = store.getters.getFeaturesData;
-    
-                let newfeatureGJ = new GeoJSON().writeFeature(feature, {
-                    dataProjection: 'EPSG:4326',
-                    featureProjection: 'EPSG:3857',
-                });
-                
-                console.log(newfeatureGJ);
-    
-                let modFeaturesData = [
-                    ...featuresData,
-                    {
-                        featurename: filename,
-                        lyrid: uniqueID,
-                        gjstr: newfeatureGJ,
-                        attributes: {}
-                    }
-                ]
-                
-                store.dispatch('setFeaturesData', modFeaturesData);
-            } else {
-                showGlobalToast('KML File is not valid');
-            }
+            handleFeature(kmlFeatures, filename);
         }
         reader.readAsText(file);
     }

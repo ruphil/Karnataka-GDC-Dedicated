@@ -1,5 +1,7 @@
 CREATE TABLE ABADILIMITS(
     ID                          SERIAL  PRIMARY KEY,
+    DISTRICT                    TEXT,
+    UNIQUEVILLAGECODE           TEXT,
     ABADILIMITNAME              TEXT,
     NOOFPROPERTIES              TEXT,
     MARKINGSTARTDATE            TEXT,
@@ -10,7 +12,6 @@ CREATE TABLE ABADILIMITS(
     GRAMPANCHAYAT               TEXT,
     HOBLI                       TEXT,
     TALUK                       TEXT,
-    DISTRICT                    TEXT,
     CREATORINFO                 TEXT,
     APPROVERINFO                TEXT,
     GEOM                        GEOMETRY(POLYGON, 4326),
