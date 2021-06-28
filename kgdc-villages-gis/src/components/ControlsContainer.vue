@@ -61,10 +61,10 @@
                         <div v-html="whetherAttributesValidComputed(feature.lyrid)"></div>
                         <!-- <div></div> -->
                         <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined"       v-bind:lyrid="feature.lyrid">center_focus_weak</span></button></div>
-                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="editAttributes"><span class="material-icons-outlined"          v-bind:lyrid="feature.lyrid">edit_note</span></button></div>
-                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="callUploadAbadiLimit"><span class="material-icons-outlined"    v-bind:lyrid="feature.lyrid">file_upload</span></button></div>
-                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="discardLayer"><span class="material-icons-outlined"            v-bind:lyrid="feature.lyrid">delete_outline</span></button></div>
-                        <div>-</div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="editAttributes" v-show="!feature.uploaded"><span class="material-icons-outlined"          v-bind:lyrid="feature.lyrid">edit_note</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="callUploadAbadiLimit" v-show="!feature.uploaded"><span class="material-icons-outlined"    v-bind:lyrid="feature.lyrid">file_upload</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="discardLayer" v-show="!feature.uploaded"><span class="material-icons-outlined"            v-bind:lyrid="feature.lyrid">delete_outline</span></button></div>
+                        <div><div v-show="feature.uploaded">Uploaded</div></div>
                     </div>
                 </div>
             </div>
@@ -160,7 +160,7 @@ export default defineComponent({
         const { drawNewLayer } = drawFeaturesManager();
         const { showGlobalToast } = globalToast();
         const { toggleLineMeasure, toggleAreaMeasure } = measureTools();
-        const { uploadAbadiLimit } = abadiLimitUploader();
+        const { tryToUploadAbadiLimit } = abadiLimitUploader();
 
         const districtsList = computed(() => store.getters.getDistrictsList);
         const featuresData = computed(() => store.getters.getFeaturesData);
@@ -352,19 +352,7 @@ export default defineComponent({
 
             let whetherValid = checkAttributesForLyrID(lyrid);
             if(whetherValid){
-                let reqdfeature: any = featuresData.value.find((feature: any) => {
-                    return feature.lyrid == lyrid;
-                });
-
-                let attributes = reqdfeature.attributes;
-                let district = attributes.userattributedistrictref;
-                let uniquevillagecode = store.getters.getCurrentUniqueVillageCode;
-
-                if(district != '' && uniquevillagecode != ''){
-                    uploadAbadiLimit(reqdfeature);
-                } else {
-                    showGlobalToast('Kindly Select Village and District for the feature');
-                }
+                tryToUploadAbadiLimit(lyrid);
             } else {
                 showGlobalToast('Kindly Edit Attributes for the feature');
             }

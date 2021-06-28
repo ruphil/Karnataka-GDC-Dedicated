@@ -1,59 +1,73 @@
 import store from "@/store";
-import WKT from 'ol/format/WKT';
-import GeoJSON from 'ol/format/GeoJSON';
 
 import globalToast from '../composables/globalToast';
 
 const abadiLimitUploader = () => {
     const { showGlobalToast } = globalToast();
 
-    const uploadAbadiLimit = (featureData: any) => {
-        // console.log(feature.gjstr);
-        // console.log(feature.attributes);
+    const tryToUploadAbadiLimit = (lyrid: any) => {
+        const featuresData = store.getters.getFeaturesData;
 
-        let geom = featureData.geom;
-        let attributes = featureData.attributes;
+        let reqdfeature: any = featuresData.find((feature: any) => {
+            return feature.lyrid == lyrid;
+        });
 
-        const username = store.getters.getUsername;
-        const password = store.getters.getPassword;
+        let reqdfeatureIndex: any = featuresData.findIndex((feature: any) => {
+            return feature.lyrid == lyrid;
+        });
+
+        let attributes = reqdfeature.attributes;
+        let geom = reqdfeature.geom;
 
         let district = attributes.userattributedistrictref;
         let uniquevillagecode = store.getters.getCurrentUniqueVillageCode;
 
-        let requestObj = {
-            request: 'uploadabadilimit',
-            validateusername: username,
-            validatepassword: password,
-            gjstr: geom,
-            attributes,
-            district,
-            uniquevillagecode
-        }
+        if(district != '' && uniquevillagecode != ''){
+            const username = store.getters.getUsername;
+            const password = store.getters.getPassword;
 
-        console.log(requestObj);
-
-        let wssURL = store.getters.getAbadiModuleWSS;
-        let ws = new WebSocket(wssURL);
-    
-        ws.addEventListener('message', (event) => {
-            let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
-            console.log(responseObj);
-
-            if(responseObj.requestStatus == 'success'){
-                showGlobalToast('Abadi Limit Uploaded');
-            } else {
-                showGlobalToast('Error Uploading Abadi Limit');
+            let requestObj = {
+                request: 'uploadabadilimit',
+                validateusername: username,
+                validatepassword: password,
+                gjstr: geom,
+                attributes,
+                district,
+                uniquevillagecode
             }
 
-            ws.close();
-        });
+            console.log(requestObj);
 
-        ws.addEventListener('open', (event) => {
-            ws.send(btoa(JSON.stringify(requestObj)));
-        });
+            let wssURL = store.getters.getAbadiModuleWSS;
+            let ws = new WebSocket(wssURL);
+        
+            ws.addEventListener('message', (event) => {
+                let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
+                console.log(responseObj);
+
+                if(responseObj.requestStatus == 'success'){
+                    showGlobalToast('Abadi Limit Uploaded');
+
+                    featuresData[reqdfeatureIndex].uploaded = true;
+                    
+                    store.dispatch('setFeaturesData', featuresData);
+
+                } else {
+                    showGlobalToast('Error Uploading Abadi Limit');
+                }
+
+                ws.close();
+            });
+
+            ws.addEventListener('open', (event) => {
+                ws.send(btoa(JSON.stringify(requestObj)));
+            });
+        } else {
+            showGlobalToast('Kindly Select Village and District for the feature');
+        }
     }
 
-    return { uploadAbadiLimit };
+    return { tryToUploadAbadiLimit };
 }
 
 export default abadiLimitUploader;

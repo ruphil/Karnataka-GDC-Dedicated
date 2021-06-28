@@ -49,7 +49,8 @@ const interactionsManager = () => {
               featurename,
               lyrid: uniqueID,
               geom: newfeatGeom,
-              attributes: {}
+              attributes: {},
+              uploaded: false
             }
           ]
           

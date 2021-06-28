@@ -52,10 +52,11 @@ const kmlshpHanlder = () => {
             let modFeaturesData = [
                 ...featuresData,
                 {
-                featurename: filename,
-                lyrid: uniqueID,
-                geom: newfeatGeom,
-                attributes: {}
+                    featurename: filename,
+                    lyrid: uniqueID,
+                    geom: newfeatGeom,
+                    attributes: {},
+                    uploaded: false
                 }
             ]
             
