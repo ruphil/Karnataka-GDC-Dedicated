@@ -22,6 +22,7 @@ const interactionsManager = () => {
 
         let uniqueID = uuidv4();
         vectorlyr.set('lyrid', uniqueID);
+        vectorlyr.set('name', 'featurelyr');
 
         map.addLayer(vectorlyr);
 

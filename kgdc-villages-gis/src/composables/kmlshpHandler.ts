@@ -36,6 +36,8 @@ const kmlshpHanlder = () => {
 
             let uniqueID = uuidv4();
             lyr.set('lyrid', uniqueID);
+            lyr.set('name', 'featurelyr');
+
             map.addLayer(lyr);
 
             const featuresData = store.getters.getFeaturesData;

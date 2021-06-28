@@ -21,14 +21,15 @@
                                 <option v-for="(district, index) in districtsList" v-bind:key="index">{{ district }}</option>
                             </select>
                         </div>
+                        <div><button class="olbtns" v-on:click="clearAllFeatures">Clear All Features</button></div>
+                    </div>
+                    <div>
                         <div><button class="olbtns" v-on:click="loadVillagesBoundsRef">Load Villages In View N By District</button></div>
+                        <div><button class="olbtns" v-on:click="callUnloadVillagesBounds">Unload Villages</button></div>
                     </div>
                     <div>
                         <div><button class="olbtns" v-on:click="loadAbadiLimitsRef">Load Abadi Limits In View N By District</button></div>
-                        <div>
-                            <button class="olbtns" v-on:click="callUnloadVillagesBounds">Unload Villages</button>
-                            <button class="olbtns" v-on:click="callUnloadAbadiLimits">Unload Abadi Limits</button>
-                        </div>
+                        <div><button class="olbtns" v-on:click="callUnloadAbadiLimits">Unload Abadi Limits</button></div>
                     </div>
                     <div>
                         <div><button class="olbtns" v-on:click="drawNewLayer">Draw Abadi Limit Feature</button></div>
@@ -148,7 +149,7 @@ import villagesBoundsLoader from '../composables/villagesBoundsLoader';
 import baseMapLoader from '../composables/baseMapLoader';
 import kmlshpHanlder from '../composables/kmlshpHandler';
 import drawFeaturesManager from '../composables/drawFeaturesManager';
-import zoomdiscardLayer from '../composables/zoomdiscardLayer';
+import zoomdiscardLayerFeatures from '../composables/zoomdiscardLayersFeatures';
 import globalToast from '../composables/globalToast';
 import measureTools from '../composables/measureTools';
 import abadiLimitUploader from '../composables/abadiLimitUploader';
@@ -160,7 +161,7 @@ export default defineComponent({
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
         const { loadKMLShp } = kmlshpHanlder();
-        const { zoomToLayer, discardLayerFromMap } = zoomdiscardLayer();
+        const { zoomToLayer, discardLayerFromMap, clearAllFeatures } = zoomdiscardLayerFeatures();
         const { drawNewLayer } = drawFeaturesManager();
         const { showGlobalToast } = globalToast();
         const { toggleLineMeasure, toggleAreaMeasure } = measureTools();
@@ -210,7 +211,7 @@ export default defineComponent({
         }
 
         const return0 = { 
-            loadKarnBounds, 
+            loadKarnBounds, clearAllFeatures,
             loadVillagesBoundsRef, callUnloadVillagesBounds, 
             loadBaseMapToExtent, unloadBaseMap,
             toggleLineMeasure, toggleAreaMeasure,
@@ -219,7 +220,7 @@ export default defineComponent({
 
         const return1 = { 
             districtsList, featuresData,
-            districtref, showtools, fileEl, currentFeatureName,
+            districtref, showtools, fileEl, currentFeatureName
         };
 
         const invokeZoomToLayer = (e: any) => {

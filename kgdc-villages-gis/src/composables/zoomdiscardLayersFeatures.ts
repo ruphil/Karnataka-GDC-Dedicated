@@ -34,7 +34,21 @@ const zoomDiscardLayer = () => {
         });
     }
 
-    return { zoomToLayer, discardLayerFromMap }
+    const clearAllFeatures = () => {
+        const map = store.getters.getMapObj;
+
+        try {
+            map.getLayers().forEach(function (layer: any) {
+                if (layer.get('name') != undefined && layer.get('name') === 'featurelyr') {
+                    map.removeLayer(layer);
+                }
+            });
+        } catch (e) {}
+        
+        store.dispatch('setFeaturesData', []);
+    }
+
+    return { zoomToLayer, discardLayerFromMap, clearAllFeatures }
 }
 
 export default zoomDiscardLayer;
