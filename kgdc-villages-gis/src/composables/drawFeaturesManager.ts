@@ -8,61 +8,69 @@ import GeoJSON from 'ol/format/GeoJSON';
 import { v4 as uuidv4 } from 'uuid';
 
 import store from "@/store";
+import globalToast from '../composables/globalToast';
 
 const interactionsManager = () => {
-    const drawNewLayer = () => {
-    
-      const map = store.getters.getMapObj;
+  const { showGlobalToast } = globalToast();
 
-      const featuresCount = store.getters.getFeaturesCounter;
-      let featurename = 'Feature_' + (featuresCount + 1);
+  const drawNewLayer = () => {
+    const villagesBoundsLoaded = store.getters.getVillagesBoundsLoaded;
+    if(!villagesBoundsLoaded){
+        showGlobalToast('Load Villages Layer First');
+        return 0;
+    }
+  
+    const map = store.getters.getMapObj;
 
-      let source = new VectorSource({ wrapX: false });
-      let vectorlyr = new VectorLayer({ source, zIndex: 3 });
+    const featuresCount = store.getters.getFeaturesCounter;
+    let featurename = 'Feature_' + (featuresCount + 1);
 
-      let uniqueID = uuidv4();
-      vectorlyr.set('lyrid', uniqueID);
-      vectorlyr.set('name', 'featurelyr');
+    let source = new VectorSource({ wrapX: false });
+    let vectorlyr = new VectorLayer({ source, zIndex: 3 });
 
-      map.addLayer(vectorlyr);
+    let uniqueID = uuidv4();
+    vectorlyr.set('lyrid', uniqueID);
+    vectorlyr.set('name', 'featurelyr');
 
-      let draw = new Draw({
-        source: source,
-        type: GeometryType.POLYGON,
-      });
+    map.addLayer(vectorlyr);
 
-      draw.on('drawend', (event: any) => {
-        map.getInteractions().pop();
-        let featureGeometry = event.feature.getGeometry()
-        
-        const featuresData = store.getters.getFeaturesData;
+    let draw = new Draw({
+      source: source,
+      type: GeometryType.POLYGON,
+    });
 
-        let newfeatGeom = new GeoJSON().writeGeometry(featureGeometry, {
-          dataProjection: 'EPSG:4326',
-          featureProjection: 'EPSG:3857'
-        });
-        
-        console.log(newfeatGeom);
+    draw.on('drawend', (event: any) => {
+      map.getInteractions().pop();
+      let featureGeometry = event.feature.getGeometry()
+      
+      const featuresData = store.getters.getFeaturesData;
 
-        let modFeaturesData = [
-          ...featuresData,
-          {
-            featurename,
-            lyrid: uniqueID,
-            geom: newfeatGeom,
-            attributes: {},
-            uploaded: false
-          }
-        ]
-        
-        store.dispatch('setFeaturesData', modFeaturesData);
-        store.dispatch('setFeatureCounter', featuresCount + 1);
+      let newfeatGeom = new GeoJSON().writeGeometry(featureGeometry, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857'
       });
       
-      map.addInteraction(draw);
-    }
+      console.log(newfeatGeom);
 
-    return { drawNewLayer }
+      let modFeaturesData = [
+        ...featuresData,
+        {
+          featurename,
+          lyrid: uniqueID,
+          geom: newfeatGeom,
+          attributes: {},
+          uploaded: false
+        }
+      ]
+      
+      store.dispatch('setFeaturesData', modFeaturesData);
+      store.dispatch('setFeatureCounter', featuresCount + 1);
+    });
+    
+    map.addInteraction(draw);
+  }
+
+  return { drawNewLayer }
 }
 
 export default interactionsManager;

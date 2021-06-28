@@ -1,5 +1,3 @@
-import globalToast from '../composables/globalToast';
-
 import KML from 'ol/format/KML';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -8,6 +6,8 @@ import GeoJSON from 'ol/format/GeoJSON';
 import shp from 'shpjs';
 import { v4 as uuidv4 } from 'uuid';
 import store from '@/store';
+
+import globalToast from '../composables/globalToast';
 
 const kmlshpHanlder = () => {
     const { showGlobalToast } = globalToast();
@@ -113,6 +113,13 @@ const kmlshpHanlder = () => {
     }
 
     const loadKMLShp = (e: any) => {
+        const villagesBoundsLoaded = store.getters.getVillagesBoundsLoaded;
+        if(!villagesBoundsLoaded){
+            showGlobalToast('Load Villages Layer First');
+            e.target.value = '';
+            return 0;
+        }
+
         let file = e.target.files[0];
         let fileFullname = file.name;
         let lastDot = fileFullname.lastIndexOf('.');
