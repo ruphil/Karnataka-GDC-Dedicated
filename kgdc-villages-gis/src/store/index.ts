@@ -15,6 +15,7 @@ export default createStore({
     userDetails: '',
     roles: '',
     karnboundsLoaded: false,
+    villagesBoundsLoaded: false,
     attributesData: [],
     currentvillage: 'village',
     currentuniquevillagecode: '',
@@ -62,6 +63,9 @@ export default createStore({
     },
     getKarnBoundsLoaded(state){
       return state.karnboundsLoaded;
+    },
+    getVillagesBoundsLoaded(state){
+      return state.villagesBoundsLoaded;
     },
     getAttributesData(state){
       return state.attributesData;
@@ -112,6 +116,9 @@ export default createStore({
     },
     setKarnBoundsLoaded(state, karnboundsLoaded){
       state.karnboundsLoaded = karnboundsLoaded;
+    },
+    setVillageBoundsLoaded(state, villageBoundsLoaded){
+      state.villagesBoundsLoaded = villageBoundsLoaded;
     },
     setAttributesData(state, attributesData){
       state.attributesData = attributesData;
@@ -168,6 +175,9 @@ export default createStore({
     },
     setKarnBoundsLoaded(context, karnboundsLoaded){
       context.commit('setKarnBoundsLoaded', karnboundsLoaded);
+    },
+    setVillageBoundsLoaded(context, villagesBoundsLoaded){
+      context.commit('setVillageBoundsLoaded', villagesBoundsLoaded);
     },
     setAttributesData(context, attributesData){
       context.commit('setAttributesData', attributesData);
