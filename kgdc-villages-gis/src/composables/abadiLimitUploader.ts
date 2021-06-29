@@ -20,6 +20,7 @@ const abadiLimitUploader = () => {
         let geom = reqdfeature.geom;
 
         let district = attributes.userattributedistrictref;
+        let villageSelected = store.getters.getCurrentVillage;
         let uniquevillagecode = store.getters.getCurrentUniqueVillageCode;
 
         if(district != '' && uniquevillagecode != ''){
@@ -33,6 +34,7 @@ const abadiLimitUploader = () => {
                 gjstr: geom,
                 attributes,
                 district,
+                villageSelected,
                 uniquevillagecode
             }
 

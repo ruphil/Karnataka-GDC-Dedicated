@@ -4,12 +4,12 @@ import { Client } from 'pg';
 const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
 export const uploadAbadiLimit = (ws: WebSocket, msgObj: any) => {
-    let { district, uniquevillagecode, validateusername, gjstr, attributes } = msgObj;
+    let { district, villageSelected, uniquevillagecode, validateusername, gjstr, attributes } = msgObj;
 
     let insertQuery = `INSERT INTO abadilimits (
-        DISTRICT, UNIQUEVILLAGECODE, ABADILIMITNAME, NOOFPROPERTIES, MARKINGSTARTDATE, MARKINGENDDATE, 
+        DISTRICT, VILLAGESELECTED, UNIQUEVILLAGECODE, ABADILIMITNAME, NOOFPROPERTIES, MARKINGSTARTDATE, MARKINGENDDATE, 
         VILLAGENAME, VILLAGELGDCODE, ABADIAREASCOUNTINVILLAGE, GRAMPANCHAYAT, HOBLI, TALUK, CREATORINFO, APPROVERINFO, GEOM)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, ST_Force2D(ST_GeomFromGeoJSON('${gjstr}'))
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, ST_Force2D(ST_GeomFromGeoJSON('${gjstr}'))
     )`;
     // console.log(insertQuery);
     // console.log(attributes);
@@ -20,7 +20,7 @@ export const uploadAbadiLimit = (ws: WebSocket, msgObj: any) => {
         pocketscount, grampanchayat, hobli, taluk
     } = attributes;
 
-    let insertData = [ district, uniquevillagecode,  abadilimitname, noofproperties, startdate, enddate, 
+    let insertData = [ district, villageSelected, uniquevillagecode,  abadilimitname, noofproperties, startdate, enddate, 
         villagename, lgdcode, pocketscount, grampanchayat, hobli, taluk, validateusername, ''
     ];
     

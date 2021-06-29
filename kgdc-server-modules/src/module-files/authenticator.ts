@@ -1,0 +1,18 @@
+import { checkValidUserNGetRoles } from '../common-ts/usersdbhandler';
+
+export const checkuser = (params: any) => {
+    return new Promise((resolve, reject) => {
+        let proxyMsgObj = {
+            username: params.get('username'),
+            password: params.get('password')
+        }
+    
+        checkValidUserNGetRoles(proxyMsgObj)
+        .then((roles: any) => {
+            resolve(roles);
+        })
+        .catch(() => {
+            reject(['NA']);
+        })
+    })
+}
