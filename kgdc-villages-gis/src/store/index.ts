@@ -24,6 +24,8 @@ export default createStore({
     areaMeasureEnabled: false,
     featuresCounter: 0,
     featuresData: [],
+    showFilesUploader: false,
+    showFilesLoader: false
   },
   getters: {
     getMapObj(state){
@@ -91,6 +93,12 @@ export default createStore({
     },
     getFeaturesData(state){
       return state.featuresData;
+    },
+    getShowFilesUploader(state){
+      return state.showFilesUploader;
+    },
+    getShowFilesLoader(state){
+      return state.showFilesLoader;
     }
   },
   mutations: {
@@ -147,6 +155,12 @@ export default createStore({
     },
     setFeaturesData(state, featuresData){
       state.featuresData = featuresData;
+    },
+    setShowFilesUploader(state, toShow){
+      state.showFilesUploader = toShow;
+    },
+    setShowFilesLoader(state, toShow){
+      state.showFilesLoader = toShow;
     },
   },
   actions: {
@@ -209,6 +223,12 @@ export default createStore({
     },
     setFeaturesData(context, featuresData){
       context.commit('setFeaturesData', featuresData);
+    },
+    setShowFilesUploader(context, toShow){
+      context.commit('setShowFilesUploader', toShow);
+    },
+    setShowFilesLoader(context, toShow){
+      context.commit('setShowFilesLoader', toShow);
     },
   },
   modules: {

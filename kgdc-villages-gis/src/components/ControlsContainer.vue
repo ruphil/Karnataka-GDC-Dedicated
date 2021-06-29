@@ -41,7 +41,7 @@
                     </div>
                     <div>
                         <div>
-                            <button class="olbtns">Upload Files</button>
+                            <button class="olbtns" v-on:click="toggleFileUploader">Upload Files</button>
                         </div>
                         <div>
                             <button class="olbtns">Load Files</button>
@@ -64,10 +64,10 @@
                         <div>{{ feature.featurename }}</div>
                         <div v-html="whetherAttributesValidComputed(feature.lyrid)"></div>
                         <!-- <div></div> -->
-                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined"       v-bind:lyrid="feature.lyrid">center_focus_weak</span></button></div>
-                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="editAttributes" v-show="!feature.uploaded"><span class="material-icons-outlined"          v-bind:lyrid="feature.lyrid">edit_note</span></button></div>
-                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="callUploadAbadiLimit" v-show="!feature.uploaded"><span class="material-icons-outlined"    v-bind:lyrid="feature.lyrid">file_upload</span></button></div>
-                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="discardLayer" v-show="!feature.uploaded"><span class="material-icons-outlined"            v-bind:lyrid="feature.lyrid">delete_outline</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined"                                   v-bind:lyrid="feature.lyrid">center_focus_weak</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="editAttributes" v-show="!feature.uploaded"><span class="material-icons-outlined"           v-bind:lyrid="feature.lyrid">edit_note</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="callUploadAbadiLimit" v-show="!feature.uploaded"><span class="material-icons-outlined"     v-bind:lyrid="feature.lyrid">file_upload</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="discardLayer" v-show="!feature.uploaded"><span class="material-icons-outlined"             v-bind:lyrid="feature.lyrid">delete_outline</span></button></div>
                         <div><div v-show="feature.uploaded">Uploaded</div></div>
                     </div>
                 </div>
@@ -379,7 +379,16 @@ export default defineComponent({
             }
         }
 
-        const return5 = { callUploadAbadiLimit };
+        const toggleFileUploader = () => {
+            console.log('toggling fileuplaoder');
+            console.log(store.getters.getShowFilesUploader);
+
+            store.dispatch('setShowFilesUploader', !store.getters.getShowFilesUploader);
+        }
+
+        const return5 = { callUploadAbadiLimit, toggleFileUploader };
+
+        
 
         return { ...return0, ...return1, ...return2, ...return3, 
             ...return4, ...return5 

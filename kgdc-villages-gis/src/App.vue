@@ -3,6 +3,7 @@
     <MapContainer v-if="isLoggedIn"/>
     <NavBar />
     <ControlsContainer v-if="isLoggedIn"/>
+    <FilesContainer v-if="isLoggedIn"/>
     <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
   </div>
 </template>
@@ -13,13 +14,15 @@ import './App.scss';
 import NavBar from './components/NavBar.vue';
 import MapContainer from './components/MapContainer.vue';
 import ControlsContainer from './components/ControlsContainer.vue';
+import FilesContainer from './components/FilesContainer.vue';
+
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import store from './store';
 
 export default defineComponent({
   name: 'App',
   components: {
-    NavBar, MapContainer, ControlsContainer
+    NavBar, MapContainer, ControlsContainer, FilesContainer
   },
   setup() {
     const globaltoastmsg = computed(() => store.getters.getGlobalToastMsg);
