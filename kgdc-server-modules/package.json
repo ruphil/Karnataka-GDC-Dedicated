@@ -4,10 +4,11 @@
   "description": "",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "users-dev": "ts-node --transpile-only src/module-users/main.ts",
-    "gjserve-dev": "ts-node --transpile-only src/module-gjserve/main.ts",
-    "abadilimits-dev": "ts-node --transpile-only src/module-abadilimits/main.ts",
-    "dev": "concurrently --kill-others \"yarn users-dev\" \"yarn gjserve-dev\" \"yarn abadilimits-dev\""
+    "users": "ts-node --transpile-only src/module-users/main.ts",
+    "gjserve": "ts-node --transpile-only src/module-gjserve/main.ts",
+    "abadilimits": "ts-node --transpile-only src/module-abadilimits/main.ts",
+    "files": "ts-node --transpile-only src/module-files/main.ts",
+    "start": "concurrently --kill-others \"yarn users\" \"yarn gjserve\" \"yarn abadilimits\" \"yarn files\""
   },
   "keywords": [],
   "author": "",
