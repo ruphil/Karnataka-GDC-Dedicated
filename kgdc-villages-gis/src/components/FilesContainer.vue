@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="filesloader" v-show="showFilesLoader">
-
+            
         </div>
     </div>
 </template>
