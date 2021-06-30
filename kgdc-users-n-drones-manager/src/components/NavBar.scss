@@ -1,0 +1,30 @@
+#navbar {
+    > .navcontainer {
+        background-color: grey;
+        color: white;
+        padding: 10px;
+        font-size: 20px;
+        min-height: 2em;
+
+        > .title {
+            float: left;
+        }
+
+        > .nav {
+            a {
+                // font-weight: bold;
+                color: white;
+            
+                &.router-link-exact-active {
+                    color: #4056d3;
+                }
+
+                text-decoration: none;
+            }
+        }
+
+        > .logout {
+            float: right;
+        }
+    }
+}
