@@ -7,8 +7,8 @@ import { checkAdminUser } from '../common-ts/userRolesAdminCheck';
 
 export const addDrone = async (ws: WebSocket, msgObj: any) => {
     let insertQuery = `INSERT INTO drones (DRONENUMBER) VALUES ($1)`;
-    let { dronenumber } = msgObj;
-    let insertData = [dronenumber];
+    let { newdronenumber } = msgObj;
+    let insertData = [ newdronenumber ];
 
     checkAdminUser(msgObj)
     .then((res: any) => {
@@ -50,22 +50,6 @@ export const getDrones = (ws: WebSocket, msgObj: any) => {
         client.query(getQuery)
         .then((res) => {
             let droneslist = res.rows;
-
-            droneslist = droneslist.filter((user: any) => {
-                let roles = user.roles;
-
-                try {
-                    let rolesArry = roles.split(',');
-                    console.log(rolesArry);
-
-                    if(rolesArry.includes('ADMIN')){
-                        return false;
-                    } else {
-                        return true;
-                    }
-                } catch (e) { return true; }
-                
-            });
 
             let responseObj = {
                 response: 'getdrones', requestStatus: 'success', droneslist
