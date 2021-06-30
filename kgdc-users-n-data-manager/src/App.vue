@@ -21,7 +21,7 @@ import store from './store';
 export default defineComponent({
     name: 'App',
     components: {
-        NavBar, LoginBar, UsersSection, NewUser
+      NavBar, LoginBar, UsersSection, NewUser
     },
   setup() {
     const globaltoastmsg = computed(() => store.getters.getGlobalToastMsg);

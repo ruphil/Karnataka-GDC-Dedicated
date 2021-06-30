@@ -27,6 +27,7 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
             case 'deleteuser':
                 deleteUser(ws, msgObj);
                 break;
+            case 'adddrone':
             default:
                 // To clearly inform the Unanonymous Users Requesting Without Base64 String
                 ws.send('invalidrequest');
