@@ -18,12 +18,8 @@ export const checkValidUserNGetRoles = (msgObj: any) => {
             let rows = res.rows;
             // console.log('User Rows', rows);
 
-            if(rows.length == 1){
-                let row = rows[0];
-                resolve(row);
-            } else {
-                reject('error');
-            }
+            let row = rows[0];
+            resolve(row);
         })
         .catch((err) => {
             // console.log(err);
@@ -71,7 +67,7 @@ export const changePassword = (ws: WebSocket, msgObj: any) => {
         })
         .catch((err) => {
             console.log(err);
-            let responseObj = { response: 'changepassword', requestStatus: 'failure', action: 'sqlerror' };
+            let responseObj = { response: 'changepassword', requestStatus: 'failure', action: 'SQL Error' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
@@ -79,7 +75,7 @@ export const changePassword = (ws: WebSocket, msgObj: any) => {
         });
     })
     .catch((res: any) => {
-        let responseObj = { response: 'changepassword', requestStatus: 'failure', action: 'usererror' };
+        let responseObj = { response: 'changepassword', requestStatus: 'failure', error: 'Usercheck Error' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }
@@ -89,8 +85,11 @@ export const changePassword = (ws: WebSocket, msgObj: any) => {
 const checkAdminUser = (msgObj: any) => {
     return new Promise((resolve, reject) => {
         checkValidUserNGetRoles(msgObj)
-        .then((roles: any) => {
+        .then((user: any) => {
+            let roles = user.roles;
             let rolesArry = roles.split(',');
+            // console.log(rolesArry);
+
             if(rolesArry.includes('ADMIN')){
                 resolve('success');
             } else {
@@ -124,7 +123,7 @@ export const newregistration = async (ws: WebSocket, msgObj: any) => {
         })
         .catch((err) => {
             // console.log(err);
-            let responseObj = { response: 'newregistration', requestStatus: 'failure', action: 'none' };
+            let responseObj = { response: 'newregistration', requestStatus: 'failure', action: 'SQL Error' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
@@ -133,7 +132,7 @@ export const newregistration = async (ws: WebSocket, msgObj: any) => {
     })
     .catch((err) => {
         // console.log(err);
-        let responseObj = { response: 'newregistration', requestStatus: 'failure', action: 'none' };
+        let responseObj = { response: 'newregistration', requestStatus: 'failure', error: 'Admincheck Error' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
 }
@@ -144,17 +143,25 @@ export const getUsersTable = (ws: WebSocket, msgObj: any) => {
         const client = new Client({ connectionString });
         client.connect();
 
-        let getQuery = `SELECT USERNAME, PASSWORD, MOBILENUMBER, DESCRIPTION, ROLES FROM userstable ORDER BY MOBILENUMBER DESC`;
+        let getQuery = `SELECT * FROM userstable`;
         client.query(getQuery)
         .then((res) => {
             let userstable = res.rows;
+
             userstable = userstable.filter((user: any) => {
-                let roles = user.roles.split(',');
-                if(roles.includes('ADMIN')){
-                    return false;
-                } else {
-                    return true;
-                }
+                let roles = user.roles;
+
+                try {
+                    let rolesArry = roles.split(',');
+                    console.log(rolesArry);
+
+                    if(rolesArry.includes('ADMIN')){
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } catch (e) { return true; }
+                
             });
 
             let responseObj = {
@@ -167,7 +174,7 @@ export const getUsersTable = (ws: WebSocket, msgObj: any) => {
         })
         .catch((err) => {
             // console.log(err);
-            let responseObj = { response: 'userstable', requestStatus: 'failure', action: 'none' };
+            let responseObj = { response: 'userstable', requestStatus: 'failure', error: 'SQL Error' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
@@ -175,7 +182,7 @@ export const getUsersTable = (ws: WebSocket, msgObj: any) => {
         });
     })
     .catch((res: any) => {
-        let responseObj = { response: 'userstable', requestStatus: 'failure', action: 'none' };
+        let responseObj = { response: 'userstable', requestStatus: 'failure', error: 'Admincheck Error' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }
@@ -197,7 +204,7 @@ export const assignRole = (ws: WebSocket, msgObj: any) => {
         })
         .catch((err) => {
             // console.log(err);
-            let responseObj = { response: 'assignrole', requestStatus: 'failure', action: 'none' };
+            let responseObj = { response: 'assignrole', requestStatus: 'failure', error: 'SQL Error' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
@@ -205,7 +212,7 @@ export const assignRole = (ws: WebSocket, msgObj: any) => {
         });
     })
     .catch((res: any) => {
-        let responseObj = { response: 'assignrole', requestStatus: 'failure', action: 'none' };
+        let responseObj = { response: 'assignrole', requestStatus: 'failure', error: 'Admincheck Error' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }
@@ -226,7 +233,7 @@ export const deleteUser = (ws: WebSocket, msgObj: any) => {
         })
         .catch((err) => {
             // console.log(err);
-            let responseObj = { response: 'deleteuser', requestStatus: 'failure', action: 'none' };
+            let responseObj = { response: 'deleteuser', requestStatus: 'failure', error: 'SQL Error' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
@@ -234,7 +241,7 @@ export const deleteUser = (ws: WebSocket, msgObj: any) => {
         });
     })
     .catch((res: any) => {
-        let responseObj = { response: 'deleteuser', requestStatus: 'failure', action: 'none' };
+        let responseObj = { response: 'deleteuser', requestStatus: 'failure', error: 'Admincheck Error' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }

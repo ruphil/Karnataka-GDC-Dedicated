@@ -20,12 +20,14 @@ const usersTable = () => {
           }, 1000);
         });
         ws.addEventListener('open', (event) => {
-          // console.log(usernameref.value, passwordref.value);
           let userstableObj = {
             request: 'userstable',
             validateusername: adminuser,
             validatepassword: adminpass,
           }
+
+          console.log(userstableObj);
+
           ws.send(Buffer.from(JSON.stringify(userstableObj)).toString('base64'));
         });
     }

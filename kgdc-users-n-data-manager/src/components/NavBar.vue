@@ -1,7 +1,7 @@
 <template>
   <div id="navbar">
     <div class="navcontainer">
-      <span class="title">GIS Users Manager</span>
+      <span class="title">KGDC GIS Users and Data Manager</span>
       <span class="logout" v-show="isLoggedIn" v-on:click="doLogout">
         <button>Logout</button>
       </span>
