@@ -6,6 +6,7 @@
 </template>
 
 <script lang="ts">
+import './NewDrone.scss';
 import store from '@/store';
 import { computed, defineComponent, ref } from 'vue'
 
@@ -19,7 +20,7 @@ export default defineComponent({
         }
 
         const deleteDroneNumber = () => {
-
+            
         }
 
         return { newdrone, dronenumbers, addDroneNumber, deleteDroneNumber }

@@ -1,7 +1,7 @@
 <template>
   <div id="drones">
     <NewDrone v-show="isLoggedIn"/>
-    <DroneSection v-show="isLoggedIn"/>
+    <DronesSection v-show="isLoggedIn"/>
   </div>
 </template>
 
@@ -11,11 +11,11 @@ import { computed, defineComponent } from 'vue';
 import store from '@/store';
 
 import NewDrone from '@/components/NewDrone.vue';
-import DroneSection from '@/components/DroneSection.vue';
+import DronesSection from '@/components/DronesSection.vue';
 
 export default defineComponent({
   components: {
-    DroneSection, NewDrone
+    DronesSection, NewDrone
   },
   setup() {
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
