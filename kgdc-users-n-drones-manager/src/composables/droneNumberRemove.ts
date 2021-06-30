@@ -1,10 +1,10 @@
 import store from "@/store";
 import globalToast from './globalToast';
-import usersTable from '../composables/fetchUserTable';
+import droneNumbersFetch from '../composables/droneNumbersFetch';
 
 const droneDeletion = () => {
     const { showGlobalToast } = globalToast();
-    const { getUsers } = usersTable();
+    const { getDrones } = droneNumbersFetch();
 
     const deleteDrone = (dronetodelete: any) => {
         const adminuser = store.getters.getUsername;
@@ -18,7 +18,7 @@ const droneDeletion = () => {
             
             if(responseObj.requestStatus == 'success') {
                 showGlobalToast('Drone Number Deleted...');
-                getUsers();
+                getDrones();
             } else {
                 showGlobalToast('Error Deleting Drone...');
             }
