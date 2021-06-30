@@ -48,12 +48,8 @@ export default defineComponent({
 
         const renderRolesOptions = computed(() => {
             return (roles: any) => {
-                if(roles != ''){
-                    try{
-                        return [...new Set(roles.split(','))];
-                    } catch (e) {
-                        return [];
-                    }
+                if(roles != null && roles != ''){
+                    return [...new Set(roles.split(','))];
                 } else {
                     return [];
                 }
