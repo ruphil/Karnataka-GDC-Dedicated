@@ -1,7 +1,8 @@
 import WebSocket from 'ws';
 
-import { getRoles, changePassword } from '../common-ts/usersdbhandler';
-import { newregistration, getUsersTable, assignRole, deleteUser  } from '../common-ts/usersdbhandler';
+import { getRoles, changePassword } from './dbhandlerusers';
+import { newregistration, getUsersTable, assignRole, deleteUser  } from './dbhandlerusers';
+import { addDrone, removeDrone, getDrones  } from './dbhandlerdrones';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -28,6 +29,14 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
                 deleteUser(ws, msgObj);
                 break;
             case 'adddrone':
+                addDrone(ws, msgObj);
+                break;
+            case 'removedrone':
+                removeDrone(ws, msgObj);
+                break;
+            case 'getdrones':
+                getDrones(ws, msgObj);
+                break;
             default:
                 // To clearly inform the Unanonymous Users Requesting Without Base64 String
                 ws.send('invalidrequest');

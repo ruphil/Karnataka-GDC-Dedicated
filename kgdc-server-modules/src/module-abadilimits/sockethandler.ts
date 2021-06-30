@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 
-import { checkValidUserNGetRoles } from '../common-ts/usersdbhandler';
+import { checkValidUserNGetRoles } from '../common-ts/userRolesAdminCheck';
 import { uploadAbadiLimit } from './uploadabadilimits';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {

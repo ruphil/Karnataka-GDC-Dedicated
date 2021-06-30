@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 
-import { checkValidUserNGetRoles } from '../common-ts/usersdbhandler';
+import { checkValidUserNGetRoles } from '../common-ts/userRolesAdminCheck';
 import { getGeoJson } from './getgeojsons';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {

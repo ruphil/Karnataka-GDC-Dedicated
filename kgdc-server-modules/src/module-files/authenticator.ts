@@ -1,4 +1,4 @@
-import { checkValidUserNGetRoles } from '../common-ts/usersdbhandler';
+import { checkValidUserNGetRoles } from '../common-ts/userRolesAdminCheck';
 
 export const checkuser = (params: any) => {
     return new Promise((resolve, reject) => {

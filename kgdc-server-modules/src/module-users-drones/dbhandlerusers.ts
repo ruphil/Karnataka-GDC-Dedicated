@@ -1,35 +1,11 @@
 import WebSocket from 'ws';
 import { Client } from 'pg';
 
+import { checkValidUserNGetRoles, checkAdminUser } from '../common-ts/userRolesAdminCheck';
+
 const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
 // All User Logics    --------------------------------------------------------------------------------------------------
-
-export const checkValidUserNGetRoles = (msgObj: any) => {
-    return new Promise((resolve, reject) => {
-        const { validateusername, validatepassword } = msgObj;
-        
-        const client = new Client({ connectionString });
-        client.connect();
-
-        let getQuery = `SELECT * FROM userstable where USERNAME='${validateusername}' and PASSWORD='${validatepassword}'`;
-        client.query(getQuery)
-        .then((res) => {
-            let rows = res.rows;
-            // console.log('User Rows', rows);
-
-            let row = rows[0];
-            resolve(row);
-        })
-        .catch((err) => {
-            // console.log(err);
-            reject('error');
-        })
-        .finally(() => {
-            client.end();
-        });
-    });
-}
 
 export const getRoles = (ws: WebSocket, msgObj: any) => {
     const { validateusername, validatepassword } = msgObj;
@@ -81,26 +57,6 @@ export const changePassword = (ws: WebSocket, msgObj: any) => {
 }
 
 // Admin Only Logics    --------------------------------------------------------------------------------------------------
-
-const checkAdminUser = (msgObj: any) => {
-    return new Promise((resolve, reject) => {
-        checkValidUserNGetRoles(msgObj)
-        .then((user: any) => {
-            let roles = user.roles;
-            let rolesArry = roles.split(',');
-            // console.log(rolesArry);
-
-            if(rolesArry.includes('ADMIN')){
-                resolve('success');
-            } else {
-                reject('error');
-            }
-        })
-        .catch((res: any) => {
-            reject('error');
-        });
-    });
-}
 
 export const newregistration = async (ws: WebSocket, msgObj: any) => {
     let insertQuery = `INSERT INTO userstable (USERNAME, PASSWORD, MOBILENUMBER, DESCRIPTION, ROLES) VALUES ($1, $2, $3, $4, $5)`;
