@@ -7,8 +7,8 @@
     "usersdrones": "ts-node --transpile-only src/module-users-drones/main.ts",
     "gjserve": "ts-node --transpile-only src/module-gjserve/main.ts",
     "abadilimits": "ts-node --transpile-only src/module-abadilimits/main.ts",
-    "files": "ts-node --transpile-only src/module-files/main.ts",
-    "start": "concurrently --kill-others \"yarn usersdrones\" \"yarn gjserve\" \"yarn abadilimits\" \"yarn files\""
+    "filesmanager": "ts-node --transpile-only src/module-files-manager/main.ts",
+    "start": "concurrently --kill-others \"yarn usersdrones\" \"yarn gjserve\" \"yarn abadilimits\" \"yarn filesmanager\""
   },
   "keywords": [],
   "author": "",
