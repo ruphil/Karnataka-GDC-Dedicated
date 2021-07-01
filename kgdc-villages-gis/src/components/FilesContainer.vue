@@ -7,7 +7,7 @@
             </div>
             <div class="fileuploader">
                 <input class="file" type="file" ref="fileEl"><br>
-                <input class="description" type="text" v-model="filedetails" placeholder="description" size="40"><br>
+                <input class="description" type="text" v-model="description" placeholder="description" size="40"><br>
                 <button class="uploadbtn" v-on:click="calluploadfile" v-bind:disabled="uploadbtndisabled">Upload</button>
             </div>
         </div>
@@ -19,30 +19,72 @@
 
 <script lang="ts">
 import store from '@/store';
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import './FilesContainer.scss';
+
+import fileUploader from '@/composables/fileUploader';
+import globalToast from '../composables/globalToast';
 
 export default defineComponent({
     setup() {
+        const { showGlobalToast } = globalToast();
+        const { uploadFile } = fileUploader();
+
         const showFileUploader = computed(() => store.getters.getShowFilesUploader);
         const showFilesLoader = computed(() => store.getters.getShowFilesLoader);
+        
+        const currentuser = computed(() => store.getters.getUsername);
         const currentvillage = computed(() => store.getters.getCurrentVillage);
+        const currentvillagecode = computed(() => store.getters.getCurrentUniqueVillageCode);
 
         const fileEl = ref();
-        const filedetails = ref('');
+        const fileName = ref('');
+        const fileType = ref('');
+
+        const description = ref('');
         const uploadbtndisabled = ref(false);
 
         const closeFileUploader = () => {
             store.dispatch('setShowFilesUploader', false);
         }
 
-        const calluploadfile = () => {
+        const loadFileInformation = (e: any) => {
+            let file = e.target.files[0];
+            let fileFullname = file.name;
+            let lastDot = fileFullname.lastIndexOf('.');
+            let extension = fileFullname.substring(lastDot + 1);
+            let filename = fileFullname.substring(0, lastDot);
 
+            fileName.value = filename;
+            fileType.value = extension;
         }
+
+        const calluploadfile = () => {
+            if(fileName.value == '' || fileType.value == ''){
+                showGlobalToast('Select Valid File');
+                return 0;
+            }
+
+            if(currentvillage.value == '' ||  currentvillagecode.value == ''){
+                showGlobalToast('Select Village First');
+                return 0;
+            }
+
+            if(description.value == ''){
+                showGlobalToast('Enter Some Description');
+                return 0;
+            }
+
+            uploadFile(currentvillage.value, currentvillagecode.value, fileName.value, fileType.value, description.value, currentuser.value)
+        }
+
+        onMounted(() => {
+            fileEl.value.addEventListener('change', loadFileInformation);
+        });
 
         return { 
             showFileUploader, showFilesLoader, currentvillage, closeFileUploader,
-            fileEl, filedetails, calluploadfile, uploadbtndisabled
+            fileEl, description, calluploadfile, uploadbtndisabled
         }
     },
 })
