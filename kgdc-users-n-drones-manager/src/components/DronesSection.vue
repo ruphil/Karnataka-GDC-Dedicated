@@ -10,7 +10,7 @@
             </tr>
             <tr v-for="(drone, index) in dronenumbers" v-bind:key="index">
                 <td>{{ drone.dronenumber }}</td>
-                <td><button v-bind:dronenumber="drone.dronenumber" v-on:click="deleteDroneNumber">Delete User</button></td>
+                <td><button v-bind:dronenumber="drone.dronenumber" v-on:click="deleteDroneNumber">Delete Drone</button></td>
             </tr>
         </table>
     </div>
