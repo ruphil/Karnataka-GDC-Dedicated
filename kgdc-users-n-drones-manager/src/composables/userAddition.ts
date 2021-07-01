@@ -9,7 +9,7 @@ const userAddition = () => {
     const addUser = (newusername: any, newpassword: any, newmobilenumber: any, newdescription: any) => {
         const adminuser = store.getters.getUsername;
         const adminpass = store.getters.getPassword;
-        const wssURL = store.getters.getUsersModuleWSS;
+        const wssURL = store.getters.getUsersDronesModuleWSS;
         let ws = new WebSocket(wssURL);
 
         ws.addEventListener('message', (event) => {

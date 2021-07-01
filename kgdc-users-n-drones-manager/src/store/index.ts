@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    usersModuleWSS: 'ws://localhost:3010',
+    usersDronesModuleWSS: 'ws://localhost:3010',
     globaltoastmsg: '',
     globaltoastEl: null,
     isLoggedIn: false,
@@ -13,8 +13,8 @@ export default createStore({
     dronenumbers: []
   },
   getters: {
-    getUsersModuleWSS(state){
-      return state.usersModuleWSS;
+    getUsersDronesModuleWSS(state){
+      return state.usersDronesModuleWSS;
     },
     getGlobalToastMsg(state){
       return state.globaltoastmsg;

@@ -7,32 +7,30 @@
 
 <script lang="ts">
 import './NewDrone.scss';
-import store from '@/store';
-import { computed, defineComponent, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 
+import globalToast from '@/composables/globalToast';
 import droneNumberAdd from '@/composables/droneNumberAdd';
-import droneNumberRemove from '@/composables/droneNumberRemove';
-import droneNumbersFetch from '@/composables/droneNumbersFetch';
 
 export default defineComponent({
     setup() {
+        const { showGlobalToast } = globalToast();
+
         const newdrone = ref('');
-        const dronenumbers = computed(() => store.getters.getDroneNumbers);
 
         const { addDrone } = droneNumberAdd();
-        const { deleteDrone } = droneNumberRemove();
-        const { getDrones } = droneNumbersFetch();
 
         const addDroneNumber = () => {
-            addDrone(newdrone);
-            newdrone.value = '';
+            let dronenumber = newdrone.value;
+            if(dronenumber != ''){
+                addDrone(dronenumber);
+                newdrone.value = '';
+            } else {
+                showGlobalToast('Enter Drone Number...');
+            }
         }
 
-        const deleteDroneNumber = () => {
-            
-        }
-
-        return { newdrone, dronenumbers, addDroneNumber, deleteDroneNumber }
+        return { newdrone, addDroneNumber }
     },
 })
 </script>

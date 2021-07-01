@@ -8,4 +8,4 @@ wss.on('connection', (ws: WebSocket, roles: any) => {
     handleWebSocketConnection(ws);
 });
 
-console.log(`Server: Users Module may have started on Port:${PORT}`);
+console.log(`Server: Users / Drones Module may have started on Port:${PORT}`);

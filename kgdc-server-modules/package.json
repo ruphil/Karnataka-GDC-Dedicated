@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "users": "ts-node --transpile-only src/module-users/main.ts",
+    "users": "ts-node --transpile-only src/module-users-drones/main.ts",
     "gjserve": "ts-node --transpile-only src/module-gjserve/main.ts",
     "abadilimits": "ts-node --transpile-only src/module-abadilimits/main.ts",
     "files": "ts-node --transpile-only src/module-files/main.ts",

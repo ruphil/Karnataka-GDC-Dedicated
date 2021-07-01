@@ -3,7 +3,45 @@ import { Client } from 'pg';
 
 const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
-import { checkAdminUser } from '../common-ts/userRolesAdminCheck';
+import { checkValidUserNGetRoles, checkAdminUser } from '../common-ts/userRolesAdminCheck';
+
+//  All User Logics
+
+export const getDrones = (ws: WebSocket, msgObj: any) => {
+    checkValidUserNGetRoles(msgObj)
+    .then((res: any) => {
+        const client = new Client({ connectionString });
+        client.connect();
+
+        let getQuery = `SELECT * FROM drones`;
+        client.query(getQuery)
+        .then((res) => {
+            let droneslist = res.rows;
+
+            let responseObj = {
+                response: 'getdrones', requestStatus: 'success', droneslist
+            };
+
+            // console.log(responseObj);
+    
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .catch((err) => {
+            // console.log(err);
+            let responseObj = { response: 'getdrones', requestStatus: 'failure', error: 'SQL Error' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .finally(() => {
+            client.end();
+        });
+    })
+    .catch((res: any) => {
+        let responseObj = { response: 'getdrones', requestStatus: 'failure', error: 'Usercheck Error' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    });
+}
+
+//  Admin Logics
 
 export const addDrone = async (ws: WebSocket, msgObj: any) => {
     let insertQuery = `INSERT INTO drones (DRONENUMBER) VALUES ($1)`;
@@ -38,40 +76,6 @@ export const addDrone = async (ws: WebSocket, msgObj: any) => {
         let responseObj = { response: 'adddrone', requestStatus: 'failure', error: 'Admincheck Error' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })
-}
-
-export const getDrones = (ws: WebSocket, msgObj: any) => {
-    checkAdminUser(msgObj)
-    .then((res: any) => {
-        const client = new Client({ connectionString });
-        client.connect();
-
-        let getQuery = `SELECT * FROM drones`;
-        client.query(getQuery)
-        .then((res) => {
-            let droneslist = res.rows;
-
-            let responseObj = {
-                response: 'getdrones', requestStatus: 'success', droneslist
-            };
-
-            // console.log(responseObj);
-    
-            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-        })
-        .catch((err) => {
-            // console.log(err);
-            let responseObj = { response: 'getdrones', requestStatus: 'failure', error: 'SQL Error' };
-            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-        })
-        .finally(() => {
-            client.end();
-        });
-    })
-    .catch((res: any) => {
-        let responseObj = { response: 'getdrones', requestStatus: 'failure', error: 'Admincheck Error' };
-        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    });
 }
 
 export const removeDrone = (ws: WebSocket, msgObj: any) => {

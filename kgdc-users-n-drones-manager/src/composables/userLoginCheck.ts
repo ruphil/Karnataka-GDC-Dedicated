@@ -14,7 +14,7 @@ const userLoginCheck = () => {
 
             console.log(requestObj);
 
-            let wssURL = store.getters.getUsersModuleWSS;
+            let wssURL = store.getters.getUsersDronesModuleWSS;
             let ws = new WebSocket(wssURL);
         
             ws.addEventListener('message', (event) => {

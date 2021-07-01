@@ -31,7 +31,7 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
             case 'adddrone':
                 addDrone(ws, msgObj);
                 break;
-            case 'removedrone':
+            case 'deletedrone':
                 removeDrone(ws, msgObj);
                 break;
             case 'getdrones':
