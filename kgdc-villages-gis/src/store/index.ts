@@ -6,6 +6,7 @@ export default createStore({
     usersModuleWSS: 'ws://localhost:3010',
     gjModuleWSS: 'ws://localhost:3020',
     abadiModuleWSS: 'ws://localhost:3030',
+    fileServerModule: 'http://localhost:4010',
     districtsList: ['Bagalkot', 'Ballari', 'Belagavi', 'Bengaluru (Rural)', 'Bengaluru (Urban)', 'Bidar', 'Chamarajanagara', 'Chikkaballapura', 'Chikkamagaluru', 'Chitradurga', 'Dakshina Kannada', 'Davanagere', 'Dharwad', 'Gadag', 'Hassan', 'Haveri', 'Kalburgi', 'Kodagu', 'Kolara', 'Koppal', 'Mandya', 'Mysuru', 'Raichur', 'Ramanagara', 'Shivamogga', 'Tumakuru', 'Udupi', 'Uttara Kannada', 'Vijayapura', 'Yadgir'],
     globaltoastmsg: '',
     globaltoastEl: null,
@@ -39,6 +40,9 @@ export default createStore({
     },
     getAbadiModuleWSS(state){
       return state.abadiModuleWSS;
+    },
+    getFileServerModule(state){
+      return state.fileServerModule;
     },
     getDistrictsList(state){
       return state.districtsList;

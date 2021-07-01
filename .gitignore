@@ -105,3 +105,4 @@ dist
 # TernJS port file
 .tern-port
 gas-kml-portal-v2/app/index.html
+static/

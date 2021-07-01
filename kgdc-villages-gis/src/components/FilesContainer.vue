@@ -75,7 +75,7 @@ export default defineComponent({
                 return 0;
             }
 
-            uploadFile(currentvillage.value, currentvillagecode.value, fileName.value, fileType.value, description.value, currentuser.value)
+            uploadFile(currentvillage.value, currentvillagecode.value, fileName.value, fileType.value, description.value, currentuser.value, fileEl.value)
         }
 
         onMounted(() => {
