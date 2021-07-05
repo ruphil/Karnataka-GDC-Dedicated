@@ -46,6 +46,11 @@ app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
 
     if(existsSync(uploadfilepath)){
         console.log('File Uploaded');
+
+        let formData = req.body;
+        const { maggi } = formData;
+        console.log(nameidentifier, maggi);
+        
     } else {
         console.log('File Not Uploaded');
     }
