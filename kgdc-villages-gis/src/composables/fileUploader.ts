@@ -8,6 +8,7 @@ const fileUploader = () => {
         let file = fileEl.files[0];
         let formData = new FormData();
         formData.append('uploadedfile', file);
+        formData.append('maggi', 'jack');
 
         let fileServerURL = store.getters.getFileServerModule;
         let uploadURL = fileServerURL + '/fileupload';

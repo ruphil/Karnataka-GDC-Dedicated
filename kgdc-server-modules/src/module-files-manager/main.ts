@@ -2,15 +2,22 @@ import http from 'http';
 import express from 'express';
 import { checkuser } from './authenticator';
 import multer from 'multer';
+import { existsSync } from 'fs';
+import { resolve } from 'path';
+
+const composefilename = (file: any) => {
+    return file.originalname;
+}
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './static/')
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname)
-  }
-})
+        let nameidentifier = composefilename(file);
+        cb(null, nameidentifier)
+    }
+});
 
 const upload = multer({ storage: storage });
 
@@ -32,7 +39,16 @@ const staticAuthentication = (req: any, res: any, next: any) => {
 
 app.use('/files', [ staticAuthentication, express.static('static') ]);
 app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
-    console.log(req.file);
+    let file = req.file!;
+    let nameidentifier = composefilename(file);
+    let uploadfilepath = resolve('./static/', nameidentifier);
+    console.log(uploadfilepath);
+
+    if(existsSync(uploadfilepath)){
+        console.log('File Uploaded');
+    } else {
+        console.log('File Not Uploaded');
+    }
 });
 
 app.get('/', function(req, res){
