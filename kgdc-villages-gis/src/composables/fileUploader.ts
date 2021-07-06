@@ -1,4 +1,5 @@
 import store from "@/store";
+import axios from 'axios';
 
 const fileUploader = () => {
     const uploadFile = (currentvillage: any, currentvillagecode: any, fileName: any, fileType: any, description: any, currentuser: any, fileEl: any) => {
@@ -14,12 +15,22 @@ const fileUploader = () => {
         formData.append('fileType', fileType);
         formData.append('description', description);
         formData.append('currentuser', currentuser);
-        formData.append('currentvillage', currentvillage);
 
         let fileServerURL = store.getters.getFileServerModule;
         let uploadURL = fileServerURL + '/fileupload';
         
-        fetch(uploadURL, {method: "POST", body: formData});
+        // fetch(uploadURL, {method: "POST", body: formData});
+        axios.post(uploadURL, {
+            url: uploadURL,
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data" },
+            onUploadProgress: (p: any) => {
+                console.log(p);
+            }
+        }).then (data => {
+            console.log(data);
+            console.log('uploaded');
+        });
     }
 
     return { uploadFile };
