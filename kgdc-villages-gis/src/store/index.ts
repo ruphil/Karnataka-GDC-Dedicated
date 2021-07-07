@@ -1,3 +1,4 @@
+import State from 'ol/source/State';
 import { createStore } from 'vuex'
 
 export default createStore({
@@ -26,7 +27,8 @@ export default createStore({
     featuresCounter: 0,
     featuresData: [],
     showFilesUploader: false,
-    showFilesLoader: false
+    showFilesLoader: false,
+    fileUploadProgress: 0,
   },
   getters: {
     getMapObj(state){
@@ -103,6 +105,9 @@ export default createStore({
     },
     getShowFilesLoader(state){
       return state.showFilesLoader;
+    },
+    getFileUploadProgress(state){
+      return state.fileUploadProgress;
     }
   },
   mutations: {
@@ -165,6 +170,9 @@ export default createStore({
     },
     setShowFilesLoader(state, toShow){
       state.showFilesLoader = toShow;
+    },
+    setFileUploadProgress(state, progress){
+      state.fileUploadProgress = progress;
     },
   },
   actions: {
@@ -233,6 +241,9 @@ export default createStore({
     },
     setShowFilesLoader(context, toShow){
       context.commit('setShowFilesLoader', toShow);
+    },
+    setFileUploadProgress(context, progress){
+      context.commit('setFileUploadProgress', progress);
     },
   },
   modules: {

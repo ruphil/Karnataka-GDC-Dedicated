@@ -6,6 +6,9 @@ const fileUploader = () => {
         console.log(currentvillage, currentvillagecode, fileName, fileType, description, currentuser);
 
         let file = fileEl.files[0];
+        console.log(file);
+        file.newname = 'jack';
+
         let formData = new FormData();
         formData.append('uploadedfile', file);
 
@@ -18,19 +21,34 @@ const fileUploader = () => {
 
         let fileServerURL = store.getters.getFileServerModule;
         let uploadURL = fileServerURL + '/fileupload';
-        
-        // fetch(uploadURL, {method: "POST", body: formData});
-        axios.post(uploadURL, {
-            url: uploadURL,
-            data: formData,
-            headers: { "Content-Type": "multipart/form-data" },
+        console.log(uploadURL);
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            },
             onUploadProgress: (p: any) => {
                 console.log(p);
             }
-        }).then (data => {
-            console.log(data);
-            console.log('uploaded');
-        });
+        };
+
+        axios.post(uploadURL, formData, config)
+            .then((response) => {
+                console.log("The file is successfully uploaded");
+            }).catch((error) => {
+                console.log(error);
+            });
+
+        // axios.post(uploadURL, {
+        //     url: uploadURL,
+        //     data: formData,
+        //     onUploadProgress: (p: any) => {
+        //         console.log(p);
+        //     }
+        // }, config).then (data => {
+        //     console.log(data);
+        //     console.log('uploaded');
+        // });
     }
 
     return { uploadFile };

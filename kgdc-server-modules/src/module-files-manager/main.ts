@@ -5,27 +5,27 @@ import multer from 'multer';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import cors from 'cors';
-
-const composefilename = (file: any) => {
-    console.log(file);
-    return file.originalname;
-}
+import { json, urlencoded } from 'body-parser';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './static/')
+        cb(null, './statictemp/')
     },
     filename: function (req, file, cb) {
-        // let nameidentifier = composefilename(file);
-        console.log(file);
         cb(null, file.originalname);
     }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+    storage: storage,
+    // limits: { fileSize: 1000000 },
+});
 
 const app = express();
 app.use(cors());
+app.use(json());
+app.use(urlencoded({ extended: false }));
+
 const server = new http.Server(app);
 
 const staticAuthentication = (req: any, res: any, next: any) => {
@@ -45,23 +45,20 @@ app.use('/files', [ staticAuthentication, express.static('static') ]);
 app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
     let file = req.file!;
     console.log(file);
+    console.log(req.body);
 
-    
-    // let nameidentifier = composefilename(file);
-    // let nameidentifier = 'd';
-    // let uploadfilepath = resolve('./static/', nameidentifier);
-    // console.log(uploadfilepath);
+    let uploadfilepath = resolve('./statictemp/', file.originalname);
+    console.log(uploadfilepath);
 
-    // if(existsSync(uploadfilepath)){
-    //     console.log('File Uploaded');
+    if(existsSync(uploadfilepath)){
+        console.log('File Uploaded');
 
-    //     let formData = req.body;
-    //     const { maggi } = formData;
-    //     console.log(nameidentifier, maggi);
-        
-    // } else {
-    //     console.log('File Not Uploaded');
-    // }
+        let formData = req.body;
+        const { maggi } = formData;
+
+    } else {
+        console.log('File Not Uploaded');
+    }
 });
 
 app.get('/', function(req, res){

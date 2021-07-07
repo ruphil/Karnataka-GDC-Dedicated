@@ -8,6 +8,7 @@
             <div class="fileuploader">
                 <input class="file" type="file" ref="fileEl"><br>
                 <input class="description" type="text" v-model="description" placeholder="description" size="40"><br>
+                <progress value="32" max="100"></progress><br/>
                 <button class="uploadbtn" v-on:click="calluploadfile" v-bind:disabled="uploadbtndisabled">Upload</button>
             </div>
         </div>
