@@ -22,6 +22,7 @@ export default createStore({
     attributesData: [],
     currentvillage: 'None Selected',
     currentuniquevillagecode: '',
+    currentvillagedetails: {},
     lineMeasureEnabled: false,
     areaMeasureEnabled: false,
     featuresCounter: 0,
@@ -88,6 +89,9 @@ export default createStore({
     getCurrentUniqueVillageCode(state){
       return state.currentuniquevillagecode;
     },
+    getCurrentVillageDetails(state){
+      return state.currentvillagedetails;
+    },
     getLineMeasureEnabled(state){
       return state.lineMeasureEnabled;
     },
@@ -152,6 +156,9 @@ export default createStore({
     },
     setUniqueVillageCode(state, currentuniquevillagecode){
       state.currentuniquevillagecode = currentuniquevillagecode;
+    },
+    setCurrentVillageDetails(state, villagedetails){
+      state.currentvillagedetails = villagedetails;
     },
     setLineMeasureEnabled(state, enabled){
       state.lineMeasureEnabled = enabled;
@@ -223,6 +230,9 @@ export default createStore({
     },
     setUniqueVillageCode(context, currentlgd){
       context.commit('setUniqueVillageCode', currentlgd);
+    },
+    setCurrentVillageDetails(context, villagedetails){
+      context.commit('setCurrentVillageDetails', villagedetails);
     },
     setLineMeasureEnabled(context, enabled){
       context.commit('setLineMeasureEnabled', enabled);

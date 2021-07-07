@@ -80,8 +80,18 @@ export default defineComponent({
                         }
 
                         if(layer.get('loadedfromserver') == 'yes' && layer.get('name') == 'villageslyr'){
+                            // console.log(attributesData);
+                            
                             store.dispatch('setCurrentVillage', attributesData['kgisvill_2']);
                             store.dispatch('setUniqueVillageCode', attributesData['uniquevill']);
+
+                            let villagedetails = {
+                                district: attributesData['kgisdist_1'],
+                                taluk: attributesData['kgistalukn'],
+                                gp: attributesData['lgdgpname'],
+                            }
+
+                            store.dispatch('setCurrentVillageDetails', villagedetails);
                             store.dispatch('setAttributesData', attributesData);
                         }
 

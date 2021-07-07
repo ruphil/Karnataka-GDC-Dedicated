@@ -9,7 +9,7 @@ import { json, urlencoded } from 'body-parser';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './statictemp/')
+        cb(null, 'D:/KGDCTEMP/')
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname);
@@ -47,14 +47,16 @@ app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
     console.log(file);
     console.log(req.body);
 
-    let uploadfilepath = resolve('./statictemp/', file.originalname);
+    let uploadfilepath = resolve('D:/KGDCTEMP/', file.originalname);
     console.log(uploadfilepath);
 
     if(existsSync(uploadfilepath)){
         console.log('File Uploaded');
 
         let formData = req.body;
-        const { currentvillage, currentvillagecode, fileName, fileType, description, currentuser } = formData;
+        const { currentdistrict, currenttaluk, currentgp, currentvillage, currentvillagecode, fileName, fileType, description, currentuser } = formData;
+
+        const newFileName = currentdistrict + '_' 
 
     } else {
         console.log('File Not Uploaded');

@@ -37,6 +37,7 @@ export default defineComponent({
         const currentuser = computed(() => store.getters.getUsername);
         const currentvillage = computed(() => store.getters.getCurrentVillage);
         const currentvillagecode = computed(() => store.getters.getCurrentUniqueVillageCode);
+        const currentvillagedetails = computed(() => store.getters.getCurrentVillageDetails);
 
         const fileEl = ref();
         const fileName = ref('');
@@ -76,7 +77,7 @@ export default defineComponent({
                 return 0;
             }
 
-            uploadFile(currentvillage.value, currentvillagecode.value, fileName.value, fileType.value, description.value, currentuser.value, fileEl.value)
+            uploadFile(currentvillagedetails.value, currentvillage.value, currentvillagecode.value, fileName.value, fileType.value, description.value, currentuser.value, fileEl.value)
         }
 
         onMounted(() => {
