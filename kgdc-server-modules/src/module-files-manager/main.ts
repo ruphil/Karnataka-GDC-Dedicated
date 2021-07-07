@@ -56,7 +56,7 @@ app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
         let formData = req.body;
         const { currentdistrict, currenttaluk, currentgp, currentvillage, currentvillagecode, fileName, fileType, description, currentuser } = formData;
 
-        const newFileName = currentdistrict + '_' 
+        // const newFileName = currentdistrict + '_' + currenttaluk + '_' + currentgp + '_'+ currentvillage + '_' + description + '' + 
 
     } else {
         console.log('File Not Uploaded');
