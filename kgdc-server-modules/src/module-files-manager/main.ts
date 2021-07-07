@@ -53,8 +53,6 @@ app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
     console.log(tempfilepath);
 
     if(existsSync(tempfilepath)){
-        console.log('File Uploaded');
-
         let formData = req.body;
         const { currentdistrict, currenttaluk, currentgp, currentvillage, currentvillagecode, fileName, fileType, description, currentuser } = formData;
 
@@ -63,7 +61,7 @@ app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
 
         rename(tempfilepath, storagefilepath, function (err) {
             if(!err){
-                console.log('File Saved Successfully');
+                // console.log('File Saved Successfully');
                 res.send('success');
             } else {
                 res.send('failure');
@@ -72,7 +70,6 @@ app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
         });
 
     } else {
-        console.log('File Not Uploaded');
         res.send('failure');
     }
 });
