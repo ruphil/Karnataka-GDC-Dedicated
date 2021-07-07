@@ -45,10 +45,14 @@ const fileUploader = () => {
 
         axios.post(uploadURL, formData, config)
             .then((response) => {
-                console.log(response);
-                showGlobalToast('File Uploaded Successfully');
+                if(response.data == 'success'){
+                    showGlobalToast('File Uploaded Successfully');
+                } else {
+                    showGlobalToast('Error Uploading File');
+                }
             }).catch((error) => {
-                console.log(error);
+                // console.log(error);
+                showGlobalToast('Error Uploading File');
             });
     }
 
