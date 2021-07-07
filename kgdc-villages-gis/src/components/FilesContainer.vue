@@ -8,7 +8,7 @@
             <div class="fileuploader">
                 <input class="file" type="file" ref="fileEl"><br>
                 <input class="description" type="text" v-model="description" placeholder="description" size="40"><br>
-                <progress value="32" max="100"></progress><br/>
+                <progress max="100" v-bind:value="fileuploadprogress"></progress><br>
                 <button class="uploadbtn" v-on:click="calluploadfile" v-bind:disabled="uploadbtndisabled">Upload</button>
             </div>
         </div>
@@ -33,6 +33,8 @@ export default defineComponent({
 
         const showFileUploader = computed(() => store.getters.getShowFilesUploader);
         const showFilesLoader = computed(() => store.getters.getShowFilesLoader);
+
+        const fileuploadprogress = computed(() => store.getters.getFileUploadProgress);
         
         const currentuser = computed(() => store.getters.getUsername);
         const currentvillage = computed(() => store.getters.getCurrentVillage);
@@ -85,7 +87,8 @@ export default defineComponent({
         });
 
         return { 
-            showFileUploader, showFilesLoader, currentvillage, closeFileUploader,
+            showFileUploader, showFilesLoader, fileuploadprogress,
+            currentvillage, closeFileUploader,
             fileEl, description, calluploadfile, uploadbtndisabled
         }
     },

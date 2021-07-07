@@ -58,17 +58,19 @@ app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
         let formData = req.body;
         const { currentdistrict, currenttaluk, currentgp, currentvillage, currentvillagecode, fileName, fileType, description, currentuser } = formData;
 
-        const newFileName = currentdistrict + '_' + currenttaluk + '_' + currentgp + '_'+ currentvillage + '_' + description + '' + uuidv4() + '.' + fileType;
-        const storagefilepath = resolve(storageFolder, newFileName.replace(/\W/g, ''));
+        const newFileName = currentdistrict + '_' + currenttaluk + '_' + currentgp + '_'+ currentvillage + '_' + description + '' + uuidv4();
+        const storagefilepath = resolve(storageFolder, newFileName.replace(/\W/g, '')) + '.' + fileType;
 
         rename(tempfilepath, storagefilepath, function (err) {
             if(!err){
                 console.log('File Saved Successfully');
+                res.send('success');
             }
         })
 
     } else {
         console.log('File Not Uploaded');
+        res.send('failure');
     }
 });
 

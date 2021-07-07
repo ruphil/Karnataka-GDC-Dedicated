@@ -1,7 +1,11 @@
 import store from "@/store";
 import axios from 'axios';
 
+import globalToast from '../composables/globalToast';
+
 const fileUploader = () => {
+    const { showGlobalToast } = globalToast();
+
     const uploadFile = (currentvillagedetails: any, currentvillage: any, currentvillagecode: any, fileName: any, fileType: any, description: any, currentuser: any, fileEl: any) => {
         console.log(currentvillage, currentvillagecode, fileName, fileType, description, currentuser);
 
@@ -23,7 +27,7 @@ const fileUploader = () => {
         formData.append('fileType', fileType);
         formData.append('description', description);
         formData.append('currentuser', currentuser);
-        console.log(formData.values);
+        console.log(...formData);
 
         let fileServerURL = store.getters.getFileServerModule;
         let uploadURL = fileServerURL + '/fileupload';
@@ -34,13 +38,15 @@ const fileUploader = () => {
                 'content-type': 'multipart/form-data'
             },
             onUploadProgress: (p: any) => {
-                console.log(p);
+                let percentCompleted = Math.round((p.loaded * 100) / p.total)
+                store.dispatch('setFileUploadProgress', percentCompleted);
             }
         };
 
         axios.post(uploadURL, formData, config)
             .then((response) => {
-                console.log("The file is successfully uploaded");
+                console.log(response);
+                showGlobalToast('File Uploaded Successfully');
             }).catch((error) => {
                 console.log(error);
             });
