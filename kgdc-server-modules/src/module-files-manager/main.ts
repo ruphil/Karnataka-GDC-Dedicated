@@ -6,7 +6,7 @@ import { existsSync } from 'fs';
 import { resolve } from 'path';
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
-import { rename } from 'fs';
+import { rename, unlink } from 'fs';
 
 const tempFolder = 'D:/KGDCTEMP/';
 const storageFolder = 'D:/KGDCVILLAGES/';
@@ -65,8 +65,11 @@ app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
             if(!err){
                 console.log('File Saved Successfully');
                 res.send('success');
+            } else {
+                res.send('failure');
+                unlink(tempfilepath, ()=>{});
             }
-        })
+        });
 
     } else {
         console.log('File Not Uploaded');
