@@ -5,11 +5,15 @@ import multer from 'multer';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import cors from 'cors';
-import { json, urlencoded } from 'body-parser';
+import { v4 as uuidv4 } from 'uuid';
+import { rename } from 'fs';
+
+const tempFolder = 'D:/KGDCTEMP/';
+const storageFolder = 'D:/KGDCVILLAGES/';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'D:/KGDCTEMP/')
+        cb(null, tempFolder)
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname);
@@ -23,8 +27,6 @@ const upload = multer({
 
 const app = express();
 app.use(cors());
-app.use(json());
-app.use(urlencoded({ extended: false }));
 
 const server = new http.Server(app);
 
@@ -47,16 +49,23 @@ app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
     console.log(file);
     console.log(req.body);
 
-    let uploadfilepath = resolve('D:/KGDCTEMP/', file.originalname);
-    console.log(uploadfilepath);
+    let tempfilepath = resolve(tempFolder, file.originalname);
+    console.log(tempfilepath);
 
-    if(existsSync(uploadfilepath)){
+    if(existsSync(tempfilepath)){
         console.log('File Uploaded');
 
         let formData = req.body;
         const { currentdistrict, currenttaluk, currentgp, currentvillage, currentvillagecode, fileName, fileType, description, currentuser } = formData;
 
-        // const newFileName = currentdistrict + '_' + currenttaluk + '_' + currentgp + '_'+ currentvillage + '_' + description + '' + 
+        const newFileName = currentdistrict + '_' + currenttaluk + '_' + currentgp + '_'+ currentvillage + '_' + description + '' + uuidv4() + '.' + fileType;
+        const storagefilepath = resolve(storageFolder, newFileName.replace(/\W/g, ''));
+
+        rename(tempfilepath, storagefilepath, function (err) {
+            if(!err){
+                console.log('File Saved Successfully');
+            }
+        })
 
     } else {
         console.log('File Not Uploaded');

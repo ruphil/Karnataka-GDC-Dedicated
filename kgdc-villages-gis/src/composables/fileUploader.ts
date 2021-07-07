@@ -23,7 +23,7 @@ const fileUploader = () => {
         formData.append('fileType', fileType);
         formData.append('description', description);
         formData.append('currentuser', currentuser);
-        console.log(formData);
+        console.log(formData.values);
 
         let fileServerURL = store.getters.getFileServerModule;
         let uploadURL = fileServerURL + '/fileupload';
