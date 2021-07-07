@@ -46,7 +46,7 @@ export default defineComponent({
         const fileType = ref('');
 
         const description = ref('');
-        const uploadbtndisabled = ref(false);
+        const uploadbtndisabled = computed(() => store.getters.getUploadBtnDisabled);
 
         const closeFileUploader = () => {
             store.dispatch('setShowFilesUploader', false);
@@ -79,7 +79,8 @@ export default defineComponent({
                 return 0;
             }
 
-            uploadFile(currentvillagedetails.value, currentvillage.value, currentvillagecode.value, fileName.value, fileType.value, description.value, currentuser.value, fileEl.value)
+            uploadFile(currentvillagedetails.value, currentvillage.value, currentvillagecode.value, fileName.value, fileType.value, description.value, currentuser.value, fileEl.value);
+            store.dispatch('setUploadBtnDisabled', true);
         }
 
         onMounted(() => {

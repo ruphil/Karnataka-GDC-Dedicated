@@ -30,6 +30,7 @@ export default createStore({
     showFilesUploader: false,
     showFilesLoader: false,
     fileUploadProgress: 0,
+    uploadbtndisabled: false,
   },
   getters: {
     getMapObj(state){
@@ -112,6 +113,9 @@ export default createStore({
     },
     getFileUploadProgress(state){
       return state.fileUploadProgress;
+    },
+    getUploadBtnDisabled(state){
+      return state.uploadbtndisabled;
     }
   },
   mutations: {
@@ -180,6 +184,9 @@ export default createStore({
     },
     setFileUploadProgress(state, progress){
       state.fileUploadProgress = progress;
+    },
+    setUploadBtnDisabled(state, status){
+      state.uploadbtndisabled = status;
     },
   },
   actions: {
@@ -254,6 +261,9 @@ export default createStore({
     },
     setFileUploadProgress(context, progress){
       context.commit('setFileUploadProgress', progress);
+    },
+    setUploadBtnDisabled(context, status){
+      context.commit('setUploadBtnDisabled', status);
     },
   },
   modules: {

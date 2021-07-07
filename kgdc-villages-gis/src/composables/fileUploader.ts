@@ -53,6 +53,8 @@ const fileUploader = () => {
             }).catch((error) => {
                 // console.log(error);
                 showGlobalToast('Error Uploading File');
+            }).finally(() => {
+                store.dispatch('setUploadBtnDisabled', false);
             });
     }
 
