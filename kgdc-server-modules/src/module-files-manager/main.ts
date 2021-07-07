@@ -54,7 +54,7 @@ app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
         console.log('File Uploaded');
 
         let formData = req.body;
-        const { maggi } = formData;
+        const { currentvillage, currentvillagecode, fileName, fileType, description, currentuser } = formData;
 
     } else {
         console.log('File Not Uploaded');

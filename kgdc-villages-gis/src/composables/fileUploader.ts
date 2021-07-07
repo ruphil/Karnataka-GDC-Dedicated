@@ -38,17 +38,6 @@ const fileUploader = () => {
             }).catch((error) => {
                 console.log(error);
             });
-
-        // axios.post(uploadURL, {
-        //     url: uploadURL,
-        //     data: formData,
-        //     onUploadProgress: (p: any) => {
-        //         console.log(p);
-        //     }
-        // }, config).then (data => {
-        //     console.log(data);
-        //     console.log('uploaded');
-        // });
     }
 
     return { uploadFile };
