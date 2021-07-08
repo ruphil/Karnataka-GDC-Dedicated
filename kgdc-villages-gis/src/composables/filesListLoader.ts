@@ -2,22 +2,19 @@ import store from '@/store';
 
 const fileListLoader = () => {
 
-    const loadFilesList = (districtname: string) => {
+    const loadFilesList = (uniquevillagecode: string) => {
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
 
         let requestObj = {
-            request: 'getgeojson',
-            layer: 'abadilimits',
-            district: districtname,
+            request: 'getfilelist',
             validateusername: username,
             validatepassword: password,
-            mapextent
         };
 
         console.log(requestObj);
 
-        let wssURL = store.getters.getGJModuleWSS;
+        let wssURL = store.getters.getFileListAproverServerMOdule;
         let ws = new WebSocket(wssURL);
 
         ws.addEventListener('message', (event) => {
