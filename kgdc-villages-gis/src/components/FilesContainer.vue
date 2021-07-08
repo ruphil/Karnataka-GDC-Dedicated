@@ -17,7 +17,7 @@
             <div class="village">
                 Current Village: {{ currentvillage }}
             </div>
-            jack
+            <button v-on:click="loadFiles">Load Files</button>
         </div>
     </div>
 </template>
@@ -91,13 +91,18 @@ export default defineComponent({
             store.dispatch('setUploadBtnDisabled', true);
         }
 
+        const loadFiles = () => {
+            showGlobalToast('Loading Files...');
+            
+        }
+
         onMounted(() => {
             fileEl.value.addEventListener('change', loadFileInformation);
         });
 
         return { 
             showFileUploader, showFilesLoader, fileuploadprogress,
-            currentvillage, closeFileUploader, closeFilesLoader,
+            currentvillage, closeFileUploader, closeFilesLoader, loadFiles,
             fileEl, description, calluploadfile, uploadbtndisabled
         }
     },

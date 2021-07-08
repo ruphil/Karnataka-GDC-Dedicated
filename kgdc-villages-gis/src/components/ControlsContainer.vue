@@ -44,7 +44,7 @@
                             <button class="olbtns" v-on:click="toggleFileUploader">Upload Files</button>
                         </div>
                         <div>
-                            <button class="olbtns" v-on:click="toggleFilesLoader">Load Files</button>
+                            <button class="olbtns" v-on:click="toggleFilesLoader">Display Files</button>
                         </div>
                     </div>
                 </div><br>
@@ -394,8 +394,6 @@ export default defineComponent({
         }
 
         const return5 = { callUploadAbadiLimit, toggleFileUploader, toggleFilesLoader };
-
-        
 
         return { ...return0, ...return1, ...return2, ...return3, 
             ...return4, ...return5 
