@@ -32,7 +32,7 @@ const fileUploader = () => {
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
 
-        let fileServerURL = store.getters.getFileServerModule;
+        let fileServerURL = store.getters.getFileGetPostServerModule;
         let uploadURL = fileServerURL + `/fileupload?username=${username}&password=${password}`;
         // console.log(uploadURL);
 
