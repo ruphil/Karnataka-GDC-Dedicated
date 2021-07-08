@@ -29,8 +29,11 @@ const fileUploader = () => {
         formData.append('currentuser', currentuser);
         console.log(...formData);
 
+        const username = store.getters.getUsername;
+        const password = store.getters.getPassword;
+
         let fileServerURL = store.getters.getFileServerModule;
-        let uploadURL = fileServerURL + '/fileupload';
+        let uploadURL = fileServerURL + `/fileupload?username=${username}&password=${password}`;
         // console.log(uploadURL);
 
         const config = {

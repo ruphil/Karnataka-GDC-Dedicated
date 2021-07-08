@@ -16,7 +16,7 @@ export const checkValidUserNGetRoles = (msgObj: any) => {
         client.query(getQuery)
         .then((res) => {
             let rows = res.rows;
-            // console.log('User Rows', rows);
+            // console.log('User Rows', rows, rows.length);
 
             if(rows.length > 0){
                 let row = rows[0];
