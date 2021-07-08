@@ -39,7 +39,7 @@
         position: fixed;
         top: 20vh;
         left: 10em;
-        // width: 20em;
+        width: 20em;
         padding: 1em;
         line-height: 4em;
 
@@ -54,20 +54,6 @@
         > .village {
             font-size: large;
             color: white;
-        }
-
-        > .fileuploader {
-            > .file{
-                color: white;
-            }
-    
-            > .description {
-                padding: 1em;
-            }
-
-            > .uploadbtn {
-                padding: 1em;
-            }
         }
     }
 }
