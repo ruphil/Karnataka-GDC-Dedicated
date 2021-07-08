@@ -23,12 +23,11 @@ const fileListLoader = () => {
             let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
             console.log(responseObj);
             if (responseObj.requestStatus == 'success'){
-                console.log(responseObj.filesList);
-
+                store.dispatch('setFilesList', responseObj.fileslist)
             } else {
                 console.log('File List Error...')
             }
-            ws.close();
+            // ws.close();
         });
 
         ws.addEventListener('open', (event) => {
