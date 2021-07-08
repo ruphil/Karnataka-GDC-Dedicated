@@ -13,6 +13,9 @@ export const getFileList = (ws: WebSocket, msgObj: any) => {
     client.query(getQuery)
     .then((res) => {
         let abadilist = res.rows;
+
+        
+
         let responseObj = { response: 'getfilelist', requestStatus: 'success', validUser: true, abadilist };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     })

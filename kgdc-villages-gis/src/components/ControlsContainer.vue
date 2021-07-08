@@ -67,7 +67,7 @@
                         <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined"                                   v-bind:lyrid="feature.lyrid">center_focus_weak</span></button></div>
                         <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="editAttributes" v-show="!feature.uploaded"><span class="material-icons-outlined"           v-bind:lyrid="feature.lyrid">edit_note</span></button></div>
                         <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="callUploadAbadiLimit" v-show="!feature.uploaded"><span class="material-icons-outlined"     v-bind:lyrid="feature.lyrid">file_upload</span></button></div>
-                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="discardLayer" v-show="!feature.uploaded"><span class="material-icons-outlined"             v-bind:lyrid="feature.lyrid">delete_outline</span></button></div>
+                        <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="discardLayer"><span class="material-icons-outlined"             v-bind:lyrid="feature.lyrid">delete_outline</span></button></div>
                         <div><div v-show="feature.uploaded">Uploaded</div></div>
                     </div>
                 </div>
