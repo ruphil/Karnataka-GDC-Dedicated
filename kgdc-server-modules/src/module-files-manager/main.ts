@@ -1,12 +1,14 @@
 import http from 'http';
 import express from 'express';
-import { checkuser } from './authenticator';
 import multer from 'multer';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
 import { rename, unlink } from 'fs';
+
+import { checkuser } from './authenticator';
+import { addFileRowToDB } from './dbhandlerfiles';
 
 const tempFolder = 'D:/KGDCTEMP/';
 const storageFolder = 'D:/KGDCVILLAGES/';
@@ -62,7 +64,16 @@ app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
         rename(tempfilepath, storagefilepath, function (err) {
             if(!err){
                 // console.log('File Saved Successfully');
-                res.send('success');
+
+        const { currentdistrict, currenttaluk, currentgp, currentvillage, currentvillagecode, fileName, fileType, description, currentuser } = formData;
+                addFileRowToDB(currentvillage, currentvillagecode, fileName, fileType, description, currentuser, storagefilepath)
+                .then(() => {
+                    res.send('success');
+                })
+                .catch(() => {
+                    unlink(storagefilepath, ()=>{});
+                    res.send('failure');
+                })
             } else {
                 res.send('failure');
                 unlink(tempfilepath, ()=>{});
