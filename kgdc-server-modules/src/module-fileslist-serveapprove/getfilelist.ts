@@ -1,0 +1,27 @@
+import WebSocket from 'ws';
+import { Client } from 'pg';
+
+const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
+
+export const getFileList = (ws: WebSocket, msgObj: any) => {
+    const { uniquevillagecode } = msgObj;
+    let getQuery = `SELECT * FROM abadilimits WHERE UNIQUEVILLAGECODE='${uniquevillagecode}'`;
+
+    const client = new Client({ connectionString });
+    client.connect();
+
+    client.query(getQuery)
+    .then((res) => {
+        let abadilist = res.rows;
+        let responseObj = { response: 'getfilelist', requestStatus: 'success', validUser: true, abadilist };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    })
+    .catch((err) => {
+        console.log(err);
+        let responseObj = { response: 'getfilelist', requestStatus: 'failure', validUser: true, status: 'Error in SQL' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    })
+    .finally(() => {
+        client.end();
+    });
+}
