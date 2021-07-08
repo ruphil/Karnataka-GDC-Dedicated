@@ -37,9 +37,8 @@
                     </div>
                     <div>{{ abadi.creatorinfo }}</div>
                     <div>{{ abadi.approverinfo }}</div>
-                    <!-- <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined"                                   v-bind:lyrid="feature.lyrid">center_focus_weak</span></button></div> -->
-                    <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="editAttributes"><span class="material-icons-outlined"           v-bind:gid="abadi.gid">library_add_check</span></button></div>
-                    <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="callUploadAbadiLimit"><span class="material-icons-outlined"     v-bind:gid="abadi.gid">file_download</span></button></div>
+                    <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="approveAbadi"><span class="material-icons-outlined"           v-bind:gid="abadi.gid">library_add_check</span></button></div>
+                    <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="downloadAbadi"><span class="material-icons-outlined"     v-bind:gid="abadi.gid">file_download</span></button></div>
                 </div>
             </div>
         </div>
@@ -133,10 +132,19 @@ export default defineComponent({
             fileEl.value.addEventListener('change', loadFileInformation);
         });
 
+        const approveAbadi = () => {
+
+        }
+
+        const downloadAbadi = () => {
+            
+        }
+
         return { 
             showFileUploader, showFilesLoader, fileuploadprogress,
             currentvillage, closeFileUploader, closeFilesLoader, loadFiles,
-            fileEl, description, calluploadfile, uploadbtndisabled, filesList
+            fileEl, description, calluploadfile, uploadbtndisabled, filesList,
+            approveAbadi, downloadAbadi
         }
     },
 })

@@ -13,7 +13,7 @@ export const getFileList = (ws: WebSocket, msgObj: any) => {
     client.query(query1)
     .then((res) => {
         let abadilist = res.rows;
-        console.log(abadilist);
+        // console.log(abadilist);
 
         let query2 = `SELECT * FROM filesattachment WHERE UNIQUEVILLAGECODE='${uniquevillagecode}'`;
         client.query(query2)
