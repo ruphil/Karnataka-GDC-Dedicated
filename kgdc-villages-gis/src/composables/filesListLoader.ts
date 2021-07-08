@@ -8,6 +8,7 @@ const fileListLoader = () => {
 
         let requestObj = {
             request: 'getfilelist',
+            uniquevillagecode,
             validateusername: username,
             validatepassword: password,
         };
@@ -22,10 +23,10 @@ const fileListLoader = () => {
             let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
             console.log(responseObj);
             if (responseObj.requestStatus == 'success'){
-                let gj = responseObj.featureCollection;
-                setAbadiLimits(gj);
+                console.log(responseObj.filesList);
+
             } else {
-                console.log('Abadis GJ Error...')
+                console.log('File List Error...')
             }
             ws.close();
         });
@@ -35,43 +36,7 @@ const fileListLoader = () => {
         });
     }
 
-    const setAbadiLimits = (gj: any) => {
-        const map = store.getters.getMapObj;
-
-        let abadiLimits = new VectorLayer({
-            source: new VectorSource({
-                features: new GeoJSON({
-                    dataProjection: 'EPSG:4326',
-                    featureProjection: 'EPSG:3857'
-                }).readFeatures(gj)
-            }),
-            style: abadisStyleFunction,
-            zIndex: 3
-        });
-
-        abadiLimits.set('loadedfromserver', 'yes');
-        abadiLimits.set('name', 'abadilimits');
-
-        store.dispatch('setAbadiLimitsLoaded', true);
-
-        map.addLayer(abadiLimits);
-    }
-
-    const unloadAbadiLimits = () => {
-        const map = store.getters.getMapObj;
-
-        try {
-            map.getLayers().forEach(function (layer: any) {
-                if (layer.get('name') != undefined && layer.get('name') === 'abadilimits') {
-                    map.removeLayer(layer);
-    
-                    store.dispatch('setAbadiLimitsLoaded', false);
-                }
-            });
-        } catch (e) {}
-    }
-
-    return { loadAbadiLimits, unloadAbadiLimits }
+    return { loadFilesList }
 }
 
 export default fileListLoader;

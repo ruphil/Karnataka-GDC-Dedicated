@@ -27,13 +27,15 @@ import store from '@/store';
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import './FilesContainer.scss';
 
-import fileUploader from '@/composables/fileUploader';
 import globalToast from '../composables/globalToast';
+import fileUploader from '@/composables/fileUploader';
+import filesListLoader from '@/composables/filesListLoader';
 
 export default defineComponent({
     setup() {
         const { showGlobalToast } = globalToast();
         const { uploadFile } = fileUploader();
+        const { loadFilesList } = filesListLoader();
 
         const showFileUploader = computed(() => store.getters.getShowFilesUploader);
         const showFilesLoader = computed(() => store.getters.getShowFilesLoader);
@@ -93,7 +95,7 @@ export default defineComponent({
 
         const loadFiles = () => {
             showGlobalToast('Loading Files...');
-            
+            loadFilesList(currentvillagecode.value);
         }
 
         onMounted(() => {
