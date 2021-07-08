@@ -8,7 +8,8 @@
     "gjserve": "ts-node --transpile-only src/module-gjserve/main.ts",
     "abadilimits": "ts-node --transpile-only src/module-abadilimits/main.ts",
     "filesmanager": "ts-node --transpile-only src/module-files-manager/main.ts",
-    "start": "concurrently --kill-others --restart-tries 999999 \"yarn usersdrones\" \"yarn gjserve\" \"yarn abadilimits\" \"yarn filesmanager\""
+    "fileslist": "ts-node --transpile-only src/module-fileslist-serveapprove/main.ts",
+    "start": "concurrently --kill-others --restart-tries 999999 \"yarn usersdrones\" \"yarn gjserve\" \"yarn abadilimits\" \"yarn filesmanager\" \"yarn fileslist\""
   },
   "keywords": [],
   "author": "",
