@@ -1,5 +1,4 @@
 import { Client } from 'pg';
-import { checkuser } from './authenticator';
 
 const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 

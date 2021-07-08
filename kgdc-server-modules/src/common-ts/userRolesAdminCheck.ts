@@ -18,8 +18,12 @@ export const checkValidUserNGetRoles = (msgObj: any) => {
             let rows = res.rows;
             // console.log('User Rows', rows);
 
-            let row = rows[0];
-            resolve(row);
+            if(rows.length > 0){
+                let row = rows[0];
+                resolve(row);
+            } else {
+                reject('error');
+            }
         })
         .catch((err) => {
             // console.log(err);

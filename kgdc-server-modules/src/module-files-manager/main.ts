@@ -38,15 +38,17 @@ const staticAuthentication = (req: any, res: any, next: any) => {
 
     checkuser(searchParams)
     .then(() => {
+        console.log('came here 1');
         next();
     })
     .catch(() => {
+        console.log('came here 2');
         res.status(401).end();
     })
 }
 
-app.use('/files', [ staticAuthentication, express.static('static') ]);
-app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
+app.use('/files', [ staticAuthentication, express.static(storageFolder) ]);
+app.post('/fileupload', [ staticAuthentication, upload.single('uploadedfile')], function(req: any, res: any){
     let file = req.file!;
     // console.log(file);
     // console.log(req.body);
