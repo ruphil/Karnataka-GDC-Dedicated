@@ -18,6 +18,10 @@
                 Current Village: {{ currentvillage }}
             </div>
             <button v-on:click="loadFiles">Load Files</button>
+            <div v-for="(abadi, index) in filesList.abadilist" v-bind:key="index">
+                <div>{{ abadi.gid }}</div>
+                <div>{{ abadi.district }}</div>
+            </div>
         </div>
     </div>
 </template>
@@ -46,6 +50,8 @@ export default defineComponent({
         const currentvillage = computed(() => store.getters.getCurrentVillage);
         const currentvillagecode = computed(() => store.getters.getCurrentUniqueVillageCode);
         const currentvillagedetails = computed(() => store.getters.getCurrentVillageDetails);
+
+        const filesList = computed(() => store.getters.getFilesList);
 
         const fileEl = ref();
         const fileName = ref('');
@@ -105,7 +111,7 @@ export default defineComponent({
         return { 
             showFileUploader, showFilesLoader, fileuploadprogress,
             currentvillage, closeFileUploader, closeFilesLoader, loadFiles,
-            fileEl, description, calluploadfile, uploadbtndisabled
+            fileEl, description, calluploadfile, uploadbtndisabled, filesList
         }
     },
 })
