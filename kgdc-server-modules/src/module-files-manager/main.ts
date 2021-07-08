@@ -48,25 +48,25 @@ const staticAuthentication = (req: any, res: any, next: any) => {
 app.use('/files', [ staticAuthentication, express.static('static') ]);
 app.post('/fileupload', upload.single('uploadedfile'), function(req, res){
     let file = req.file!;
-    console.log(file);
-    console.log(req.body);
+    // console.log(file);
+    // console.log(req.body);
 
     let tempfilepath = resolve(tempFolder, file.originalname);
-    console.log(tempfilepath);
+    // console.log(tempfilepath);
 
     if(existsSync(tempfilepath)){
         let formData = req.body;
         const { currentdistrict, currenttaluk, currentgp, currentvillage, currentvillagecode, fileName, fileType, description, currentuser } = formData;
 
-        const newFileName = currentdistrict + '_' + currenttaluk + '_' + currentgp + '_'+ currentvillage + '_' + description + '' + uuidv4();
-        const storagefilepath = resolve(storageFolder, newFileName.replace(/\W/g, '')) + '.' + fileType;
+        const newFileName = currentdistrict + '_' + currenttaluk + '_' + currentgp + '_'+ currentvillage + '_' + description + '_' + uuidv4();
+        const diskidentifier = newFileName.replace(/\W/g, '');
+        const storagefilepath = resolve(storageFolder, diskidentifier) + '.' + fileType;
 
         rename(tempfilepath, storagefilepath, function (err) {
             if(!err){
                 // console.log('File Saved Successfully');
 
-        const { currentdistrict, currenttaluk, currentgp, currentvillage, currentvillagecode, fileName, fileType, description, currentuser } = formData;
-                addFileRowToDB(currentvillage, currentvillagecode, fileName, fileType, description, currentuser, storagefilepath)
+                addFileRowToDB(currentvillage, currentvillagecode, fileName, fileType, description, currentuser, diskidentifier)
                 .then(() => {
                     res.send('success');
                 })

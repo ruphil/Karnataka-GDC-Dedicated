@@ -8,7 +8,7 @@ const globalToast = () => {
 
         globaltoastel.classList.add('show');
 
-        setTimeout(function(){ globaltoastel.classList.remove('show'); }, 3000);
+        setTimeout(function(){ globaltoastel.classList.remove('show'); }, 6000);
     }
 
     return { showGlobalToast }
