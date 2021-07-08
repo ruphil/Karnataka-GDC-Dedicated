@@ -5,7 +5,20 @@ const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
 export const getFileList = (ws: WebSocket, msgObj: any) => {
     const { uniquevillagecode } = msgObj;
-    let query1 = `SELECT * FROM abadilimits WHERE UNIQUEVILLAGECODE='${uniquevillagecode}'`;
+    let queryVariant = `SELECT * FROM abadilimits WHERE UNIQUEVILLAGECODE='${uniquevillagecode}'`;
+    
+    let query1 = `SELECT jsonb_build_object(
+            'type',     'FeatureCollection',
+            'features', jsonb_agg(features.feature)
+        )
+        FROM (
+        SELECT jsonb_build_object(
+            'type',       'Feature',
+            'id',         gid,
+            'geometry',   ST_AsGeoJSON(geom)::jsonb,
+            'properties', to_jsonb(inputs) - 'gid' - 'geom'
+        ) AS feature
+        FROM (${queryVariant}) inputs) features;`;
 
     const client = new Client({ connectionString });
     client.connect();
