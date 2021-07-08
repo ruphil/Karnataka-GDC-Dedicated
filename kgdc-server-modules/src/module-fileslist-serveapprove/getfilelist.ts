@@ -36,5 +36,5 @@ export const getFileList = (ws: WebSocket, msgObj: any) => {
         console.log(err);
         let responseObj = { response: 'getfilelist', requestStatus: 'failure', validUser: true, status: 'Error in SQL' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
-    })
+    });
 }

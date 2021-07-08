@@ -16,11 +16,31 @@
             <div class="close"><span class="material-icons-outlined" v-on:click="closeFilesLoader">close</span></div>
             <div class="village">
                 Current Village: {{ currentvillage }}
+                &emsp;&emsp;&emsp;
+                <button v-on:click="loadFiles">Load Files</button>
             </div>
-            <button v-on:click="loadFiles">Load Files</button>
-            <div v-for="(abadi, index) in filesList.abadilist" v-bind:key="index">
-                <div>{{ abadi.gid }}</div>
-                <div>{{ abadi.district }}</div>
+            <div class="display-table-abadilist">
+                <div>
+                    <div><b>No</b></div>
+                    <div><b>Details</b></div>
+                    <div><b>Uploader Info</b></div>
+                    <div><b>Approver Info</b></div>
+                    <div><b>Approve</b></div>
+                    <div><b>Download</b></div>
+                </div>
+                <div v-for="(abadi, index) in filesList.abadilist" v-bind:key="index">
+                    <div>{{ index + 1 }}</div>
+                    <div>
+                        <span>Abadi Name: </span><span>{{ abadi.abadilimitname }}</span><br>
+                        <span>Marked Date: </span><span>{{ abadi.markingenddate }}</span><br>
+                        <span>Village: </span><span>{{ abadi.villagename }} ({{ abadi.villagelgdcode }})</span>
+                    </div>
+                    <div>{{ abadi.creatorinfo }}</div>
+                    <div>{{ abadi.approverinfo }}</div>
+                    <!-- <div><button class="olbtns" v-bind:lyrid="feature.lyrid" v-on:click="invokeZoomToLayer"><span class="material-icons-outlined"                                   v-bind:lyrid="feature.lyrid">center_focus_weak</span></button></div> -->
+                    <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="editAttributes"><span class="material-icons-outlined"           v-bind:gid="abadi.gid">library_add_check</span></button></div>
+                    <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="callUploadAbadiLimit"><span class="material-icons-outlined"     v-bind:gid="abadi.gid">file_download</span></button></div>
+                </div>
             </div>
         </div>
     </div>
@@ -100,6 +120,11 @@ export default defineComponent({
         }
 
         const loadFiles = () => {
+            if(currentvillage.value == '' ||  currentvillagecode.value == ''){
+                showGlobalToast('Select Village First');
+                return 0;
+            }
+            
             showGlobalToast('Loading Files...');
             loadFilesList(currentvillagecode.value);
         }
