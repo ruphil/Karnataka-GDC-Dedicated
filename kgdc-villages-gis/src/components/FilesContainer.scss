@@ -34,4 +34,40 @@
             }
         }
     }
+
+    > .filesloadercontainer{
+        position: fixed;
+        top: 20vh;
+        left: 10em;
+        // width: 20em;
+        padding: 1em;
+        line-height: 4em;
+
+        background-color: rgba(0,60,136,0.9);
+
+        > .close {
+            float: right;
+            color: white;
+            cursor: pointer;
+        }
+
+        > .village {
+            font-size: large;
+            color: white;
+        }
+
+        > .fileuploader {
+            > .file{
+                color: white;
+            }
+    
+            > .description {
+                padding: 1em;
+            }
+
+            > .uploadbtn {
+                padding: 1em;
+            }
+        }
+    }
 }

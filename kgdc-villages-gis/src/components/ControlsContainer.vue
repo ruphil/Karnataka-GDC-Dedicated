@@ -44,7 +44,7 @@
                             <button class="olbtns" v-on:click="toggleFileUploader">Upload Files</button>
                         </div>
                         <div>
-                            <button class="olbtns">Load Files</button>
+                            <button class="olbtns" v-on:click="toggleFilesLoader">Load Files</button>
                         </div>
                     </div>
                 </div><br>
@@ -386,7 +386,14 @@ export default defineComponent({
             store.dispatch('setShowFilesUploader', !store.getters.getShowFilesUploader);
         }
 
-        const return5 = { callUploadAbadiLimit, toggleFileUploader };
+        const toggleFilesLoader = () => {
+            console.log('toggling filesloader');
+            console.log(store.getters.getShowFilesLoader);
+
+            store.dispatch('setShowFilesLoader', !store.getters.getShowFilesLoader);
+        }
+
+        const return5 = { callUploadAbadiLimit, toggleFileUploader, toggleFilesLoader };
 
         
 

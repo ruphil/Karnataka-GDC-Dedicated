@@ -12,8 +12,12 @@
                 <button class="uploadbtn" v-on:click="calluploadfile" v-bind:disabled="uploadbtndisabled">Upload</button>
             </div>
         </div>
-        <div class="filesloader" v-show="showFilesLoader">
-            
+        <div class="filesloadercontainer" v-show="showFilesLoader">
+            <div class="close"><span class="material-icons-outlined" v-on:click="closeFilesLoader">close</span></div>
+            <div class="village">
+                Current Village: {{ currentvillage }}
+            </div>
+            jack
         </div>
     </div>
 </template>
@@ -50,6 +54,10 @@ export default defineComponent({
 
         const closeFileUploader = () => {
             store.dispatch('setShowFilesUploader', false);
+        }
+
+        const closeFilesLoader = () => {
+            store.dispatch('setShowFilesLoader', false);
         }
 
         const loadFileInformation = (e: any) => {
@@ -89,7 +97,7 @@ export default defineComponent({
 
         return { 
             showFileUploader, showFilesLoader, fileuploadprogress,
-            currentvillage, closeFileUploader,
+            currentvillage, closeFileUploader, closeFilesLoader,
             fileEl, description, calluploadfile, uploadbtndisabled
         }
     },
