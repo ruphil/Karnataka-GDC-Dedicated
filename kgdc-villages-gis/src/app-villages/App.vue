@@ -11,13 +11,13 @@
 <script lang="ts">
 import './App.scss';
 
-import NavBar from '../components/NavBar.vue';
-import MapContainer from '../components/MapContainer.vue';
-import ControlsContainer from '../components/ControlsContainer.vue';
-import FilesContainer from '../components/FilesContainer.vue';
+import NavBar from '@/shared/components/NavBar.vue';
+import MapContainer from '@/shared/components/MapContainer.vue';
+import ControlsContainer from '@/shared/components/ControlsContainer.vue';
+import FilesContainer from '@/shared/components/FilesContainer.vue';
 
 import { computed, defineComponent, onMounted, ref } from 'vue';
-import store from './store';
+import store from '@/shared/store';
 
 export default defineComponent({
   name: 'App',
