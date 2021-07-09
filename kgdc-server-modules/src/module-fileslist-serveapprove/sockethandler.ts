@@ -2,6 +2,7 @@ import WebSocket from 'ws';
 
 import { checkValidUserNGetRoles } from '../common-ts/userRolesAdminCheck';
 import { getFileList } from './getfilelist';
+import { approveAbadiLimit } from './filesapprover';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -12,6 +13,8 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
         .then(() => {
             if(msgObj.request == 'getfilelist'){
                 getFileList(ws, msgObj);
+            } else if (msgObj.request == 'approveabadilimit'){
+                approveAbadiLimit(ws, msgObj);
             } else {
                 let responseObj = { response: 'getfilelist', requestStatus: 'failure', validUser: true, status: 'Invalid Request' };
                 ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
