@@ -54,7 +54,7 @@
                         </div>
                         <div>{{ attachment.uploaderinfo }}</div>
                         <div>{{ attachment.approverinfo }}</div>
-                        <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="approveAttachment"><span class="material-icons-outlined"      v-bind:id="attachment.id">thumb_up_alt</span></button></div>
+                        <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="approveFile"><span class="material-icons-outlined"      v-bind:id="attachment.id">thumb_up_alt</span></button></div>
                         <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="downloadAttachment"><span class="material-icons-outlined"     v-bind:id="attachment.id">file_download</span></button></div>
                     </div>
                 </div>
@@ -73,6 +73,7 @@ import fileUploader from '@/composables/fileUploader';
 import filesListLoader from '@/composables/filesListLoader';
 import downloaderKML from '@/composables/downloaderKML';
 import downloaderAttachment from '@/composables/downloaderAttachment';
+import approverFilesList from '@/composables/approverFilesList';
 
 export default defineComponent({
     setup() {
@@ -81,6 +82,7 @@ export default defineComponent({
         const { loadFilesList } = filesListLoader();
         const { downloadKML } = downloaderKML();
         const { downloadFile } = downloaderAttachment();
+        const { approveKML, approveAttachment } = approverFilesList();
 
         const showFileUploader = computed(() => store.getters.getShowFilesUploader);
         const showFilesLoader = computed(() => store.getters.getShowFilesLoader);
@@ -159,7 +161,14 @@ export default defineComponent({
             let gid = e.target.getAttribute('gid');
             console.log(gid);
 
-            approveAbadi(gid);
+            approveKML(gid);
+        }
+
+        const approveFile = (e: any) => {
+            let id = e.target.getAttribute('id');
+            console.log(id);
+
+            approveAttachment(id);
         }
 
         const downloadAbadi = (e: any) => {
@@ -180,7 +189,8 @@ export default defineComponent({
             showFileUploader, showFilesLoader, fileuploadprogress,
             currentvillage, closeFileUploader, closeFilesLoader, loadFiles,
             fileEl, description, calluploadfile, uploadbtndisabled, filesList,
-            approveAbadi, downloadAbadi, downloadAttachment
+            approveAbadi, approveFile,
+            downloadAbadi, downloadAttachment
         }
     },
 })
