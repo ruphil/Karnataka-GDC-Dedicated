@@ -9,14 +9,11 @@ const approverFilesList = () => {
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
 
-        let approverinfo = username;
-
         let requestObj = {
             request: 'approveabadilimit',
             validateusername: username,
             validatepassword: password,
-            gid,
-            approverinfo
+            gid
         }
 
         console.log(requestObj);

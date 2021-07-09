@@ -34,7 +34,7 @@ const server = new http.Server(app);
 
 const staticAuthentication = (req: any, res: any, next: any) => {
     let searchParams = new URLSearchParams(req._parsedUrl.search);
-    console.log(searchParams);
+    // console.log(searchParams);
 
     checkuser(searchParams)
     .then(() => {
