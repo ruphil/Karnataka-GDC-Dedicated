@@ -5,7 +5,9 @@ const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
 export const getFileList = (ws: WebSocket, msgObj: any) => {
     const { uniquevillagecode } = msgObj;
-    let query1 = `SELECT * FROM abadilimits WHERE UNIQUEVILLAGECODE='${uniquevillagecode}'`;
+    let query1 = `SELECT GID, ABADILIMITNAME, MARKINGENDDATE, VILLAGENAME, VILLAGELGDCODE, 
+    CREATORINFO, APPROVERINFO, ST_AsKML(GEOM)
+    FROM abadilimits WHERE UNIQUEVILLAGECODE='${uniquevillagecode}'`;
 
     // let queryVariant = `SELECT * FROM abadilimits WHERE UNIQUEVILLAGECODE='${uniquevillagecode}'`;
     

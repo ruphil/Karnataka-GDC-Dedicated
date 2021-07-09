@@ -37,7 +37,7 @@
                     </div>
                     <div>{{ abadi.creatorinfo }}</div>
                     <div>{{ abadi.approverinfo }}</div>
-                    <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="approveAbadi"><span class="material-icons-outlined"           v-bind:gid="abadi.gid">library_add_check</span></button></div>
+                    <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="approveAbadi"><span class="material-icons-outlined"      v-bind:gid="abadi.gid">library_add_check</span></button></div>
                     <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="downloadAbadi"><span class="material-icons-outlined"     v-bind:gid="abadi.gid">file_download</span></button></div>
                 </div>
             </div>
@@ -53,12 +53,14 @@ import './FilesContainer.scss';
 import globalToast from '../composables/globalToast';
 import fileUploader from '@/composables/fileUploader';
 import filesListLoader from '@/composables/filesListLoader';
+import kmlDownloader from '@/composables/kmlDownloader';
 
 export default defineComponent({
     setup() {
         const { showGlobalToast } = globalToast();
         const { uploadFile } = fileUploader();
         const { loadFilesList } = filesListLoader();
+        const { downloadKML } = kmlDownloader();
 
         const showFileUploader = computed(() => store.getters.getShowFilesUploader);
         const showFilesLoader = computed(() => store.getters.getShowFilesLoader);
@@ -136,8 +138,11 @@ export default defineComponent({
 
         }
 
-        const downloadAbadi = () => {
-            
+        const downloadAbadi = (e: any) => {
+            let gid = e.target.getAttribute('gid');
+            console.log(gid);
+
+            downloadKML(gid);
         }
 
         return { 

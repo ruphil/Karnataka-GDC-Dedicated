@@ -42,7 +42,7 @@ const kmlshpHanlder = () => {
 
             const featuresData = store.getters.getFeaturesData;
 
-            let featureGeometry = feature.getGeometry()
+            let featureGeometry = feature.getGeometry();
         
             let newfeatGeom = new GeoJSON().writeGeometry(featureGeometry, {
                 dataProjection: 'EPSG:4326',
