@@ -71,14 +71,16 @@ import './FilesContainer.scss';
 import globalToast from '../composables/globalToast';
 import fileUploader from '@/composables/fileUploader';
 import filesListLoader from '@/composables/filesListLoader';
-import kmlDownloader from '@/composables/kmlDownloader';
+import downloaderKML from '@/composables/downloaderKML';
+import downloaderAttachment from '@/composables/downloaderAttachment';
 
 export default defineComponent({
     setup() {
         const { showGlobalToast } = globalToast();
         const { uploadFile } = fileUploader();
         const { loadFilesList } = filesListLoader();
-        const { downloadKML } = kmlDownloader();
+        const { downloadKML } = downloaderKML();
+        const { downloadFile } = downloaderAttachment();
 
         const showFileUploader = computed(() => store.getters.getShowFilesUploader);
         const showFilesLoader = computed(() => store.getters.getShowFilesLoader);
@@ -86,15 +88,12 @@ export default defineComponent({
         const fileuploadprogress = computed(() => store.getters.getFileUploadProgress);
         
         const currentuser = computed(() => store.getters.getUsername);
-        const password = computed(() => store.getters.getPassword);
 
         const currentvillage = computed(() => store.getters.getCurrentVillage);
         const currentvillagecode = computed(() => store.getters.getCurrentUniqueVillageCode);
         const currentvillagedetails = computed(() => store.getters.getCurrentVillageDetails);
 
         const filesList = computed(() => store.getters.getFilesList);
-
-        const fileServerURL = store.getters.getFileGetPostServerModule;
 
         const fileEl = ref();
         const fileName = ref('');
@@ -170,11 +169,18 @@ export default defineComponent({
             downloadKML(gid);
         }
 
+        const downloadAttachment = (e: any) => {
+            let gid = e.target.getAttribute('id');
+            console.log(gid);
+
+            downloadFile(gid);
+        }
+
         return { 
             showFileUploader, showFilesLoader, fileuploadprogress,
             currentvillage, closeFileUploader, closeFilesLoader, loadFiles,
             fileEl, description, calluploadfile, uploadbtndisabled, filesList,
-            approveAbadi, downloadAbadi
+            approveAbadi, downloadAbadi, downloadAttachment
         }
     },
 })

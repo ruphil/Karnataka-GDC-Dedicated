@@ -1,6 +1,6 @@
 import store from '@/store';
 
-const kmlDownloader = () => {
+const downlooaderKML = () => {
     const downloadKML = (gid: any) => {
         const filesList = store.getters.getFilesList;
         // console.log(filesList);
@@ -32,4 +32,4 @@ const kmlDownloader = () => {
     return { downloadKML }
 }
 
-export default kmlDownloader;
+export default downlooaderKML;
