@@ -81,6 +81,7 @@ export default defineComponent({
 
                         if(layer.get('loadedfromserver') == 'yes' && layer.get('name') == 'villageslyr'){
                             // console.log(attributesData);
+                            resetVillageDetails();
                             
                             store.dispatch('setCurrentVillage', attributesData['kgisvill_2']);
                             store.dispatch('setUniqueVillageCode', attributesData['uniquevill']);
@@ -101,6 +102,10 @@ export default defineComponent({
                     } catch (e) {}
                 });
             });
+
+            const resetVillageDetails = () => {
+                store.dispatch('setFilesList', []);
+            }
             
             setMapObjectToVeux(map)
             .then(() => {
