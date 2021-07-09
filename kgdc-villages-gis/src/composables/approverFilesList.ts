@@ -43,14 +43,38 @@ const approverFilesList = () => {
     }
 
     const approveAttachment = (id: any) => {
-        const filesList = store.getters.getFilesList;
-        // console.log(filesList);
+        const username = store.getters.getUsername;
+        const password = store.getters.getPassword;
 
-        let reqdfeature: any = filesList.attachmentlist.find((feature: any) => {
-            return feature.id == id;
+        let requestObj = {
+            request: 'approvefileattachment',
+            validateusername: username,
+            validatepassword: password,
+            id
+        }
+
+        console.log(requestObj);
+
+        let wssURL = store.getters.getFileListApproverServerModule;
+        let ws = new WebSocket(wssURL);
+    
+        ws.addEventListener('message', (event) => {
+            let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
+            console.log(responseObj);
+
+            if(responseObj.requestStatus == 'success'){
+                showGlobalToast('File Approved');
+                loadFilesList();
+            } else {
+                showGlobalToast('Error Approving File');
+            }
+
+            ws.close();
         });
 
-        let filelocation = reqdfeature.filelocation + '.' + reqdfeature.filetype;
+        ws.addEventListener('open', (event) => {
+            ws.send(btoa(JSON.stringify(requestObj)));
+        });
 
     }
 
