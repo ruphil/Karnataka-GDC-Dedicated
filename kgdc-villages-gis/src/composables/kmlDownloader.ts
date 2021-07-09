@@ -1,15 +1,6 @@
-import KML from 'ol/format/KML';
-import GeoJSON from 'ol/format/GeoJSON';
-
-import shp from 'shpjs';
-import { v4 as uuidv4 } from 'uuid';
 import store from '@/store';
 
-import globalToast from '../composables/globalToast';
-
 const kmlDownloader = () => {
-    const { showGlobalToast } = globalToast();
-
     const downloadKML = (gid: any) => {
         const filesList = store.getters.getFilesList;
         // console.log(filesList);

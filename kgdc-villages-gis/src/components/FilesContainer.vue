@@ -40,6 +40,18 @@
                     <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="approveAbadi"><span class="material-icons-outlined"      v-bind:gid="abadi.gid">library_add_check</span></button></div>
                     <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="downloadAbadi"><span class="material-icons-outlined"     v-bind:gid="abadi.gid">file_download</span></button></div>
                 </div>
+                <div v-for="(attachment, index) in filesList.attachmentlist" v-bind:key="index">
+                    <div>{{ index + 1 }}</div>
+                    <div>
+                        <span>File Name: </span><span>{{ attachment.identifier }}</span><br>
+                        <span>Description: </span><span>{{ attachment.description }}</span>&emsp;&emsp;
+                        <span>Upload Date: </span><span>{{ attachment.serverdate }}</span>
+                    </div>
+                    <div>{{ attachment.creatorinfo }}</div>
+                    <div>{{ attachment.approverinfo }}</div>
+                    <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="approveAttachment"><span class="material-icons-outlined"      v-bind:id="attachment.id">library_add_check</span></button></div>
+                    <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="downloadAttachment"><span class="material-icons-outlined"     v-bind:id="attachment.id">file_download</span></button></div>
+                </div>
             </div>
         </div>
     </div>
@@ -134,8 +146,11 @@ export default defineComponent({
             fileEl.value.addEventListener('change', loadFileInformation);
         });
 
-        const approveAbadi = () => {
+        const approveAbadi = (e: any) => {
+            let gid = e.target.getAttribute('gid');
+            console.log(gid);
 
+            approveAbadi(gid);
         }
 
         const downloadAbadi = (e: any) => {
