@@ -16,6 +16,7 @@
             <button class="closeattributeswindow" v-on:click="showAttributesTable = false"><span class="material-icons-outlined">close</span></button>
         </div>
         <div class="latlon" ref="latlon"></div>
+        <div class="currentvillage">Current Village: {{ currentVillage }}</div>
     </div>
 </template>
 
@@ -27,10 +28,11 @@ import MousePosition from 'ol/control/MousePosition';
 import {defaults as defaultControls} from 'ol/control';
 import 'ol/ol.css';
 import './MapContainer.scss';
-import store from '@/store';
-import setMapToVuex from '../composables/setMapToVuex';
-import karnBoundsLoader from '../composables/karnBoundsLoader';
-import globalToast from '../composables/globalToast';
+import store from '@/shared/store';
+
+import setMapToVuex from '@/shared/composables/setMapToVuex';
+import karnBoundsLoader from '@/shared/composables/karnBoundsLoader';
+import globalToast from '@/shared/composables/globalToast';
 
 export default defineComponent({
     setup() {
@@ -92,6 +94,10 @@ export default defineComponent({
 
                             store.dispatch('setCurrentVillageDetails', villagedetails);
                             store.dispatch('setAttributesData', attributesData);
+                        }
+
+                        if(!store.getters.getVillagesBoundsLoaded){
+                            showGlobalToast('Load Villages Layer First');
                         }
                     } catch (e) {}
                 });

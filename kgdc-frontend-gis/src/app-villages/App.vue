@@ -31,7 +31,7 @@ export default defineComponent({
     const karnboundsLoaded = computed(() => store.getters.getKarnBoundsLoaded);
     
     const setTitle = () => {
-      document.title = 'Karnataka Villages';
+      document.title = 'Karnataka Villages Manager';
     }
 
     const setGlobalToastEl = () => {

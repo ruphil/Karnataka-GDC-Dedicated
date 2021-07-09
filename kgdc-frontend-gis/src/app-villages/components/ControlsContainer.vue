@@ -1,5 +1,5 @@
 <template>
-    <div id="flightsmanager">
+    <div id="markedvillages">
         <div class="linemeasurecontainer">
             <button class="linemeasure" v-on:click="toggleLineMeasure"><span class="material-icons-outlined" title="Measure Line">straighten</span></button>
         </div>
@@ -35,7 +35,7 @@
                         <div><button class="olbtns" v-on:click="drawNewLayer">Draw Abadi Limit Feature</button></div>
                         <div>
                             <button class="olbtns" onclick="document.getElementById('fileinput').click();">Add Abadi Limit Feature</button>
-                            <br><span>*.kml / *.zip (shapefile)</span>
+                            <br><span>*.kml / *.kmz / *.zip (shapefile)</span>
                             <input id="fileinput" type="file" style="display:none;" ref="fileEl"/>
                         </div>
                     </div>
@@ -141,19 +141,20 @@
 <script lang="ts">
 import './ControlsContainer.scss';
 
-import store from '@/store';
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import store from '@/shared/store';
 
-import karnBoundsLoader from '../composables/karnBoundsLoader';
-import villagesBoundsLoader from '../composables/villagesBoundsLoader';
-import baseMapLoader from '../composables/baseMapLoader';
-import kmlshpHanlder from '../composables/kmlshpHandler';
-import drawFeaturesManager from '../composables/drawFeaturesManager';
-import zoomdiscardLayerFeatures from '../composables/zoomdiscardLayersFeatures';
-import globalToast from '../composables/globalToast';
-import measureTools from '../composables/measureTools';
-import abadiLimitUploader from '../composables/abadiLimitUploader';
-import abadiLimitsLoader from '../composables/abadiLimitsLoader';
+import { computed, defineComponent, onMounted, ref } from 'vue';
+
+import karnBoundsLoader from '@/shared/composables/karnBoundsLoader';
+import villagesBoundsLoader from '@/shared/composables/villagesBoundsLoader';
+import baseMapLoader from '@/shared/composables/baseMapLoader';
+import kmlshpHanlder from '@/shared/composables/kmlshpHandler';
+import drawFeaturesManager from '@/shared/composables/drawFeaturesManager';
+import zoomdiscardLayerFeatures from '@/shared/composables/zoomdiscardLayersFeatures';
+import globalToast from '@/shared/composables/globalToast';
+import measureTools from '@/shared/composables/measureTools';
+import abadiLimitUploader from '@/shared/composables/abadiLimitUploader';
+import abadiLimitsLoader from '@/shared/composables/abadiLimitsLoader';
 
 export default defineComponent({
     setup() {

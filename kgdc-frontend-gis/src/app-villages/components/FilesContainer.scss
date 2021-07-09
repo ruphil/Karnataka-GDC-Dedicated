@@ -1,0 +1,109 @@
+#filescontainer {
+    > .fileuploadercontainer{
+        position: fixed;
+        top: 20vh;
+        left: 10em;
+        // width: 20em;
+        padding: 1em;
+        line-height: 4em;
+
+        background-color: rgba(0,60,136,0.9);
+
+        > .close {
+            float: right;
+            color: white;
+            cursor: pointer;
+        }
+
+        > .village {
+            font-size: large;
+            color: white;
+        }
+
+        > .fileuploader {
+            > .file{
+                color: white;
+            }
+    
+            > .description {
+                padding: 1em;
+            }
+
+            > .uploadbtn {
+                padding: 1em;
+            }
+        }
+    }
+
+    > .filesloadercontainer{
+        position: fixed;
+        top: 20vh;
+        left: 10em;
+        width: 70vw;
+
+        padding: 0.2em;
+        background-color: rgba(60,60,60,0.5);
+
+        > .village {
+            font-size: large;
+            color: white;
+
+            > .close {
+                cursor: pointer;
+            }
+        }
+
+        > .tablecontainer{
+            margin-top: 0.5em;
+            height: 50vh;
+            overflow-y: scroll;
+            overflow-x: scroll;
+            // white-space: nowrap;
+            
+            background-color: rgba(0,20,136,0.5);
+
+            > .display-table-fileslist {
+                display: table;
+                
+                text-align: center;
+                display: block;
+                width: 100%;
+                
+                float: right;
+                color: white;
+                padding: 0.5em;
+                
+                > div {
+                    display: table-row;
+
+                    > div {
+                        display: table-cell;
+                        border: 0.1em solid white;
+                        vertical-align: middle;
+                        padding: 0.2em;
+                        // font-size: 0.8em;
+                        
+                        > button {
+                            background-color: rgba(0,60,136,0.9);
+                            font-size: 0.9em;
+
+                            &:hover {
+                                background-color: rgba(0,60,136,0.1);
+                                color: blue;
+                            }
+
+                            &:active {
+                                background-color: rgba(0,60,136,0.1);
+                                color: white;
+                            }
+                        }
+
+                        > span {
+                            font-size: 0.9em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

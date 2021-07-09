@@ -1,14 +1,18 @@
 {
-  "name": "kgdc-flights-gis",
+  "name": "kgdc-frontend-gis",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "serve:villages": "vue-cli-service serve --port 8010 --open src/app-villages/main.ts",
+    "serve:flights": "vue-cli-service serve --port 8020 --open src/app-flights/main.ts",
+    "build:villages": "vue-cli-service build --dest dist/villages src/app-villages/main.ts",
+    "build:flights": "vue-cli-service build --dest dist/flights src/app-flights/main.ts",
+    "serve": "concurrently \"yarn serve:villages\" \"yarn serve:flights\""
   },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "jszip": "^3.6.0",
     "ol": "^6.5.0",
     "shpjs": "^3.6.3",
     "uuid": "^8.3.2",
