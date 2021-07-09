@@ -2,7 +2,7 @@
   <div id="navbarcontainer">
     <div class="navbar">
       <span class="logo">
-        <img src="../assets/logo.png" width="30" title="Survey of India"/>
+        <img src="@/assets/logo.png" width="30" title="Survey of India"/>
       </span>
       &emsp;&emsp;
       <span class="titlecontainer">
@@ -49,9 +49,9 @@ import './NavBar.scss';
 import store from '@/shared/store';
 import { defineComponent, ref, computed, onMounted } from 'vue';
 import './NavBar.scss';
-import globalToast from '../composables/globalToast';
-import userLoginCheck from '../composables/userLoginCheck';
-import passwordUpdation from '../composables/passwordUpdation';
+import globalToast from '@/shared/composables/globalToast';
+import userLoginCheck from '@/shared/composables/userLoginCheck';
+import passwordUpdation from '@/shared/composables/passwordUpdation';
 
 export default defineComponent({
   setup() {

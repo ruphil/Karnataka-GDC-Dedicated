@@ -145,16 +145,16 @@ import store from '@/shared/store';
 
 import { computed, defineComponent, onMounted, ref } from 'vue';
 
-import karnBoundsLoader from '../composables/karnBoundsLoader';
-import villagesBoundsLoader from '../composables/villagesBoundsLoader';
-import baseMapLoader from '../composables/baseMapLoader';
-import kmlshpHanlder from '../composables/kmlshpHandler';
-import drawFeaturesManager from '../composables/drawFeaturesManager';
-import zoomdiscardLayerFeatures from '../composables/zoomdiscardLayersFeatures';
-import globalToast from '../composables/globalToast';
-import measureTools from '../composables/measureTools';
-import abadiLimitUploader from '../composables/abadiLimitUploader';
-import abadiLimitsLoader from '../composables/abadiLimitsLoader';
+import karnBoundsLoader from '@/shared/composables/karnBoundsLoader';
+import villagesBoundsLoader from '@/shared/composables/villagesBoundsLoader';
+import baseMapLoader from '@/shared/composables/baseMapLoader';
+import kmlshpHanlder from '@/shared/composables/kmlshpHandler';
+import drawFeaturesManager from '@/shared/composables/drawFeaturesManager';
+import zoomdiscardLayerFeatures from '@/shared/composables/zoomdiscardLayersFeatures';
+import globalToast from '@/shared/composables/globalToast';
+import measureTools from '@/shared/composables/measureTools';
+import abadiLimitUploader from '@/shared/composables/abadiLimitUploader';
+import abadiLimitsLoader from '@/shared/composables/abadiLimitsLoader';
 
 export default defineComponent({
     setup() {

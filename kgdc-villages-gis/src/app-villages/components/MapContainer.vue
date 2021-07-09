@@ -29,9 +29,10 @@ import {defaults as defaultControls} from 'ol/control';
 import 'ol/ol.css';
 import './MapContainer.scss';
 import store from '@/shared/store';
-import setMapToVuex from '../composables/setMapToVuex';
-import karnBoundsLoader from '../composables/karnBoundsLoader';
-import globalToast from '../composables/globalToast';
+
+import setMapToVuex from '@/shared/composables/setMapToVuex';
+import karnBoundsLoader from '@/shared/composables/karnBoundsLoader';
+import globalToast from '@/shared/composables/globalToast';
 
 export default defineComponent({
     setup() {

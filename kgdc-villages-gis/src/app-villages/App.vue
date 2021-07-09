@@ -11,10 +11,10 @@
 <script lang="ts">
 import './App.scss';
 
-import NavBar from '@/shared/components/NavBar.vue';
-import MapContainer from '@/shared/components/MapContainer.vue';
-import ControlsContainer from '@/shared/components/ControlsContainer.vue';
-import FilesContainer from '@/shared/components/FilesContainer.vue';
+import NavBar from '@/app-villages/components/NavBar.vue';
+import MapContainer from '@/app-villages/components/MapContainer.vue';
+import ControlsContainer from '@/app-villages/components/ControlsContainer.vue';
+import FilesContainer from '@/app-villages/components/FilesContainer.vue';
 
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import store from '@/shared/store';
