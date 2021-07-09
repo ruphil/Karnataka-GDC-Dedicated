@@ -39,58 +39,66 @@
         position: fixed;
         top: 20vh;
         left: 10em;
-        // width: 20em;
-        padding: 1em;
-        overflow-y:scroll;
+        width: 70vw;
 
-        background-color: rgba(0,60,136,0.9);
-
-        > .close {
-            float: right;
-            color: white;
-            cursor: pointer;
-        }
+        padding: 0.2em;
+        background-color: rgba(60,60,60,0.5);
 
         > .village {
             font-size: large;
             color: white;
+
+            > .close {
+                cursor: pointer;
+            }
         }
 
-        > .display-table-abadilist {
-            display: table;
-            background-color: rgba(0,20,136,0.5);
-            text-align: center;
-            max-height: 2em;
-            float: right;
-            color: white;
+        > .tablecontainer{
+            margin-top: 0.5em;
+            height: 50vh;
             overflow-y: scroll;
+            overflow-x: scroll;
+            // white-space: nowrap;
+            
+            background-color: rgba(0,20,136,0.5);
 
-            > div {
-                display: table-row;
-
+            > .display-table-fileslist {
+                display: table;
+                
+                text-align: center;
+                display: block;
+                width: 100%;
+                
+                float: right;
+                color: white;
+                
                 > div {
-                    display: table-cell;
-                    vertical-align: middle;
-                    padding: 0.2em;
-                    // font-size: 0.8em;
-                    
-                    > button {
-                        background-color: rgba(0,60,136,0.9);
-                        font-size: 0.9em;
+                    display: table-row;
 
-                        &:hover {
-                            background-color: rgba(0,60,136,0.1);
-                            color: blue;
+                    > div {
+                        display: table-cell;
+                        vertical-align: middle;
+                        padding: 0.2em;
+                        // font-size: 0.8em;
+                        
+                        > button {
+                            background-color: rgba(0,60,136,0.9);
+                            font-size: 0.9em;
+
+                            &:hover {
+                                background-color: rgba(0,60,136,0.1);
+                                color: blue;
+                            }
+
+                            &:active {
+                                background-color: rgba(0,60,136,0.1);
+                                color: white;
+                            }
                         }
 
-                        &:active {
-                            background-color: rgba(0,60,136,0.1);
-                            color: white;
+                        > span {
+                            font-size: 0.9em;
                         }
-                    }
-
-                    > span {
-                        font-size: 0.9em;
                     }
                 }
             }

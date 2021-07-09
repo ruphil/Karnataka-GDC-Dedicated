@@ -3,7 +3,7 @@
         <div class="fileuploadercontainer" v-show="showFileUploader">
             <div class="close"><span class="material-icons-outlined" v-on:click="closeFileUploader">close</span></div>
             <div class="village">
-                Current Village: {{ currentvillage }}
+                <span>Current Village: {{ currentvillage }}</span>
             </div>
             <div class="fileuploader">
                 <input class="file" type="file" ref="fileEl"><br>
@@ -13,44 +13,50 @@
             </div>
         </div>
         <div class="filesloadercontainer" v-show="showFilesLoader">
-            <div class="close"><span class="material-icons-outlined" v-on:click="closeFilesLoader">close</span></div>
             <div class="village">
-                Current Village: {{ currentvillage }}
+                <span class="material-icons-outlined close" v-on:click="closeFilesLoader">close</span>
+                &emsp;&emsp;&emsp;
+                <span>Current Village: {{ currentvillage }}</span>
                 &emsp;&emsp;&emsp;
                 <button v-on:click="loadFiles">Load Files</button>
             </div>
-            <div class="display-table-abadilist">
-                <div>
-                    <div><b>No</b></div>
-                    <div><b>Details</b></div>
-                    <div><b>Uploader Info</b></div>
-                    <div><b>Approver Info</b></div>
-                    <div><b>Approve</b></div>
-                    <div><b>Download</b></div>
-                </div>
-                <div v-for="(abadi, index) in filesList.abadilist" v-bind:key="index">
-                    <div>{{ index + 1 }}</div>
+            <div class="tablecontainer">
+                <div class="display-table-fileslist">
                     <div>
-                        <span>Abadi Name: </span><span>{{ abadi.abadilimitname }}</span><br>
-                        <span>Marked Date: </span><span>{{ abadi.markingenddate }}</span><br>
-                        <span>Village: </span><span>{{ abadi.villagename }} ({{ abadi.villagelgdcode }})</span>
+                        <div><b>No</b></div>
+                        <div>File Type</div>
+                        <div><b>Details</b></div>
+                        <div><b>Uploader Info</b></div>
+                        <div><b>Approver Info</b></div>
+                        <div><b>Approve</b></div>
+                        <div><b>Download</b></div>
                     </div>
-                    <div>{{ abadi.creatorinfo }}</div>
-                    <div>{{ abadi.approverinfo }}</div>
-                    <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="approveAbadi"><span class="material-icons-outlined"      v-bind:gid="abadi.gid">library_add_check</span></button></div>
-                    <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="downloadAbadi"><span class="material-icons-outlined"     v-bind:gid="abadi.gid">file_download</span></button></div>
-                </div>
-                <div v-for="(attachment, index) in filesList.attachmentlist" v-bind:key="index">
-                    <div>{{ index + 1 }}</div>
-                    <div>
-                        <span>File Name: </span><span>{{ attachment.identifier }}</span><br>
-                        <span>Description: </span><span>{{ attachment.description }}</span>&emsp;&emsp;
-                        <span>Upload Date: </span><span>{{ attachment.serverdate }}</span>
+                    <div v-for="(abadi, index) in filesList.abadilist" v-bind:key="index">
+                        <div>{{ index + 1 }}</div>
+                        <div>KML</div>
+                        <div>
+                            <span>Abadi Name: </span><span>{{ abadi.abadilimitname }}</span><br>
+                            <span>Marked Date: </span><span>{{ abadi.markingenddate }}</span><br>
+                            <span>Village: </span><span>{{ abadi.villagename }} ({{ abadi.villagelgdcode }})</span>
+                        </div>
+                        <div>{{ abadi.creatorinfo }}</div>
+                        <div>{{ abadi.approverinfo }}</div>
+                        <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="approveAbadi"><span class="material-icons-outlined"      v-bind:gid="abadi.gid">library_add_check</span></button></div>
+                        <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="downloadAbadi"><span class="material-icons-outlined"     v-bind:gid="abadi.gid">file_download</span></button></div>
                     </div>
-                    <div>{{ attachment.creatorinfo }}</div>
-                    <div>{{ attachment.approverinfo }}</div>
-                    <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="approveAttachment"><span class="material-icons-outlined"      v-bind:id="attachment.id">library_add_check</span></button></div>
-                    <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="downloadAttachment"><span class="material-icons-outlined"     v-bind:id="attachment.id">file_download</span></button></div>
+                    <div v-for="(attachment, index) in filesList.attachmentlist" v-bind:key="index">
+                        <div>{{ index + 1 }}</div>
+                        <div>Attachment</div>
+                        <div>
+                            <span>File Name: </span><span>{{ attachment.identifier }}</span><br>
+                            <span>Description: </span><span>{{ attachment.description }}</span>&emsp;&emsp;
+                            <span>Upload Date: </span><span>{{ attachment.serverdate }}</span>
+                        </div>
+                        <div>{{ attachment.uploaderinfo }}</div>
+                        <div>{{ attachment.approverinfo }}</div>
+                        <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="approveAttachment"><span class="material-icons-outlined"      v-bind:id="attachment.id">library_add_check</span></button></div>
+                        <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="downloadAttachment"><span class="material-icons-outlined"     v-bind:id="attachment.id">file_download</span></button></div>
+                    </div>
                 </div>
             </div>
         </div>
