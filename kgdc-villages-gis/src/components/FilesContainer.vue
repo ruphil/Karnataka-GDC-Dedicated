@@ -41,7 +41,7 @@
                         </div>
                         <div>{{ abadi.creatorinfo }}</div>
                         <div>{{ abadi.approverinfo }}</div>
-                        <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="approveAbadi"><span class="material-icons-outlined"      v-bind:gid="abadi.gid">library_add_check</span></button></div>
+                        <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="approveAbadi"><span class="material-icons-outlined"      v-bind:gid="abadi.gid">thumb_up_alt</span></button></div>
                         <div><button class="olbtns" v-bind:gid="abadi.gid" v-on:click="downloadAbadi"><span class="material-icons-outlined"     v-bind:gid="abadi.gid">file_download</span></button></div>
                     </div>
                     <div v-for="(attachment, index) in filesList.attachmentlist" v-bind:key="index">
@@ -54,7 +54,7 @@
                         </div>
                         <div>{{ attachment.uploaderinfo }}</div>
                         <div>{{ attachment.approverinfo }}</div>
-                        <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="approveAttachment"><span class="material-icons-outlined"      v-bind:id="attachment.id">library_add_check</span></button></div>
+                        <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="approveAttachment"><span class="material-icons-outlined"      v-bind:id="attachment.id">thumb_up_alt</span></button></div>
                         <div><button class="olbtns" v-bind:id="attachment.id" v-on:click="downloadAttachment"><span class="material-icons-outlined"     v-bind:id="attachment.id">file_download</span></button></div>
                     </div>
                 </div>
@@ -86,11 +86,15 @@ export default defineComponent({
         const fileuploadprogress = computed(() => store.getters.getFileUploadProgress);
         
         const currentuser = computed(() => store.getters.getUsername);
+        const password = computed(() => store.getters.getPassword);
+
         const currentvillage = computed(() => store.getters.getCurrentVillage);
         const currentvillagecode = computed(() => store.getters.getCurrentUniqueVillageCode);
         const currentvillagedetails = computed(() => store.getters.getCurrentVillageDetails);
 
         const filesList = computed(() => store.getters.getFilesList);
+
+        const fileServerURL = store.getters.getFileGetPostServerModule;
 
         const fileEl = ref();
         const fileName = ref('');

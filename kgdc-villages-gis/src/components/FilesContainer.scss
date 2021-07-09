@@ -71,12 +71,14 @@
                 
                 float: right;
                 color: white;
+                padding: 0.5em;
                 
                 > div {
                     display: table-row;
 
                     > div {
                         display: table-cell;
+                        border: 0.1em solid white;
                         vertical-align: middle;
                         padding: 0.2em;
                         // font-size: 0.8em;
