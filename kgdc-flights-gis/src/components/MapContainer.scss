@@ -1,0 +1,191 @@
+#mapcontainer {
+    > .mapview {
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    > .attributestogglecontainer {
+        position: fixed;
+        bottom: 1vh;
+        right: 1em;
+
+        pointer-events: auto;
+        background-color: rgba(255,255,255,0.4);
+        border-radius: 0.5em;
+        padding: 0.2em;
+
+        > .toggleattributes {
+            display: block;
+            margin: 1px;
+            padding: 0;
+            color: white;
+            font-size: 1.14em;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            height: 1.375em;
+            width: 1.375em;
+            line-height: .4em;
+            background-color: rgba(0,60,136,0.5);
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(0,60,136,0.7);
+            }
+
+            &:active {
+                color: rgba(0,60,136,0.7);
+                background-color: white;
+            }
+        }
+    }
+
+    > .attributeswindow {
+        position: fixed;
+        bottom: 1vh;
+        right: 1em;
+
+        pointer-events: auto;
+        background-color: rgba(255,255,255,0.4);
+        border-radius: 0.5em;
+        padding: 0.2em;
+
+        > .closeattributeswindow {
+            display: block;
+            margin: 1px;
+            padding: 0;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            line-height: .4em;
+            background-color: rgba(0,60,136,0.5);
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            float: right;
+
+            > span {
+                font-size: 1em;
+            }
+
+            &:hover {
+                background-color: rgba(0,60,136,0.7);
+            }
+
+            &:active {
+                color: rgba(0,60,136,0.7);
+                background-color: white;
+            }   
+        }
+        
+        > .attributestable {
+            position: fixed;
+            bottom: 5vh;
+            right: 1em;
+
+            pointer-events: auto;
+            background-color: rgba(0,60,136,0.7);
+            border-radius: 0.5em;
+            padding: 0.2em;
+            color: white;
+            display: table;
+            // height: 1vh;
+
+            > div {
+                display: table-row;
+
+                > div {
+                    display: table-cell;
+                    vertical-align: middle;
+                    padding: 0.2em;
+                    font-size: 0.5em;
+                    
+                    > button, span {
+                        font-size: 0.5em;
+                    }
+                }
+            }
+        }
+    }
+
+    > .latlon {
+        position: fixed;
+        bottom: 2.5em;
+        left: 2em;
+        width: 8em;
+
+        > .ol-mouse-position {
+            color: rgba(0,60,136,1.0);
+            display: inline;
+            font-size: 0.6em;
+        }
+    }
+
+    > .currentvillage {
+        position: fixed;
+        top: 5em;
+        left: 2em;
+        // width: 8em;
+
+        background-color: rgba(0,60,136,1.0);
+        padding: 0.5em;
+        border-radius: 0.5em;
+        color: white;
+
+        > .ol-mouse-position {
+            color: rgba(0,60,136,1.0);
+            display: inline;
+            font-size: 0.6em;
+        }
+    }
+}
+
+// Open Layers Standard CSS
+
+.ol-zoom {
+    left: 1em;
+    // right: 1em;
+    top: unset;
+    bottom: 1em;
+}
+
+.ol-tooltip {
+    position: relative;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    color: white;
+    padding: 4px 8px;
+    opacity: 0.7;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+.ol-tooltip-measure {
+    opacity: 1;
+    font-weight: bold;
+}
+
+.ol-tooltip-static {
+    background-color: #ffcc33;
+    color: black;
+    border: 1px solid white;
+}
+
+.ol-tooltip-measure:before, .ol-tooltip-static:before {
+    border-top: 6px solid rgba(0, 0, 0, 0.5);
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    margin-left: -7px;
+    left: 50%;
+}
+
+.ol-tooltip-static:before {
+    border-top-color: #ffcc33;
+}

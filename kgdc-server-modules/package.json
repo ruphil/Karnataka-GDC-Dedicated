@@ -4,12 +4,13 @@
   "description": "",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "usersdrones": "ts-node --transpile-only src/module-users-drones/main.ts",
-    "gjserve": "ts-node --transpile-only src/module-gjserve/main.ts",
-    "abadilimits": "ts-node --transpile-only src/module-abadilimits/main.ts",
-    "filesmanager": "ts-node --transpile-only src/module-files-manager/main.ts",
-    "fileslist": "ts-node --transpile-only src/module-fileslist-serveapprove/main.ts",
-    "start": "concurrently --kill-others --restart-tries 999999 \"yarn usersdrones\" \"yarn gjserve\" \"yarn abadilimits\" \"yarn filesmanager\" \"yarn fileslist\""
+    "filesmanager": "ts-node --transpile-only src/module-files-manager/main4010.ts",
+    "fileslist": "ts-node --transpile-only src/module-fileslist-serveapprove/main4020.ts",
+    "usersdrones": "ts-node --transpile-only src/module-users-drones/main3010.ts",
+    "gjserve": "ts-node --transpile-only src/module-gjserve/main3020.ts",
+    "abadilimits": "ts-node --transpile-only src/module-abadilimits/main3030.ts",
+    "flights": "ts-node --transpile-only src/module-flights/main3040.ts",
+    "start": "concurrently --kill-others --restart-tries 999999 \"yarn usersdrones\" \"yarn gjserve\" \"yarn abadilimits\" \"yarn filesmanager\" \"yarn fileslist\" \"yarn flights\""
   },
   "keywords": [],
   "author": "",
