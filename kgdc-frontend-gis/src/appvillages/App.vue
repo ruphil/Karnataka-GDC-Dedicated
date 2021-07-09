@@ -11,10 +11,10 @@
 <script lang="ts">
 import './App.scss';
 
-import NavBar from '@/app-villages/components/NavBar.vue';
-import MapContainer from '@/app-villages/components/MapContainer.vue';
-import ControlsContainer from '@/app-villages/components/ControlsContainer.vue';
-import FilesContainer from '@/app-villages/components/FilesContainer.vue';
+import NavBar from '@/appvillages/components/NavBar.vue';
+import MapContainer from '@/appvillages/components/MapContainer.vue';
+import ControlsContainer from '@/appvillages/components/ControlsContainer.vue';
+import FilesContainer from '@/appvillages/components/FilesContainer.vue';
 
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import store from '@/shared/store';
@@ -31,7 +31,7 @@ export default defineComponent({
     const karnboundsLoaded = computed(() => store.getters.getKarnBoundsLoaded);
     
     const setTitle = () => {
-      document.title = 'Karnataka Flights Manager';
+      document.title = 'Karnataka Villages Manager';
     }
 
     const setGlobalToastEl = () => {

@@ -3,7 +3,6 @@
     <MapContainer v-if="isLoggedIn"/>
     <NavBar />
     <ControlsContainer v-if="isLoggedIn"/>
-    <FilesContainer v-if="isLoggedIn"/>
     <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
   </div>
 </template>
@@ -11,10 +10,9 @@
 <script lang="ts">
 import './App.scss';
 
-import NavBar from '@/app-villages/components/NavBar.vue';
-import MapContainer from '@/app-villages/components/MapContainer.vue';
-import ControlsContainer from '@/app-villages/components/ControlsContainer.vue';
-import FilesContainer from '@/app-villages/components/FilesContainer.vue';
+import NavBar from '@/appflights/components/NavBar.vue';
+import MapContainer from '@/appflights/components/MapContainer.vue';
+import ControlsContainer from '@/appflights/components/ControlsContainer.vue';
 
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import store from '@/shared/store';
@@ -22,7 +20,7 @@ import store from '@/shared/store';
 export default defineComponent({
   name: 'App',
   components: {
-    NavBar, MapContainer, ControlsContainer, FilesContainer
+    NavBar, MapContainer, ControlsContainer
   },
   setup() {
     const globaltoastmsg = computed(() => store.getters.getGlobalToastMsg);
@@ -31,7 +29,7 @@ export default defineComponent({
     const karnboundsLoaded = computed(() => store.getters.getKarnBoundsLoaded);
     
     const setTitle = () => {
-      document.title = 'Karnataka Villages Manager';
+      document.title = 'Karnataka Flights Manager';
     }
 
     const setGlobalToastEl = () => {

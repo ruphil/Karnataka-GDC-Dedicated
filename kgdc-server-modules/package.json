@@ -10,7 +10,7 @@
     "gjserve": "ts-node --transpile-only src/module-gjserve/main3020.ts",
     "abadilimits": "ts-node --transpile-only src/module-abadilimits/main3030.ts",
     "flights": "ts-node --transpile-only src/module-flights/main3040.ts",
-    "start": "concurrently --kill-others --restart-tries 999999 \"yarn usersdrones\" \"yarn gjserve\" \"yarn abadilimits\" \"yarn filesmanager\" \"yarn fileslist\" \"yarn flights\""
+    "start": "concurrently --kill-others --restart-tries 999999 \"yarn filesmanager\" \"yarn fileslist\" \"yarn usersdrones\" \"yarn gjserve\" \"yarn abadilimits\"  \"yarn flights\""
   },
   "keywords": [],
   "author": "",

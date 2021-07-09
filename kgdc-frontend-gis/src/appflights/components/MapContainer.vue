@@ -16,7 +16,6 @@
             <button class="closeattributeswindow" v-on:click="showAttributesTable = false"><span class="material-icons-outlined">close</span></button>
         </div>
         <div class="latlon" ref="latlon"></div>
-        <div class="currentvillage">Current Village: {{ currentVillage }}</div>
     </div>
 </template>
 
