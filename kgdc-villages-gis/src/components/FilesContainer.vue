@@ -150,7 +150,7 @@ export default defineComponent({
             }
             
             showGlobalToast('Loading Files...');
-            loadFilesList(currentvillagecode.value);
+            loadFilesList();
         }
 
         onMounted(() => {

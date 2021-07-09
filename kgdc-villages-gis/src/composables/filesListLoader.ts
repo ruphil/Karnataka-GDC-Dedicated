@@ -2,9 +2,10 @@ import store from '@/store';
 
 const fileListLoader = () => {
 
-    const loadFilesList = (uniquevillagecode: string) => {
+    const loadFilesList = () => {
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
+        const uniquevillagecode = store.getters.getCurrentUniqueVillageCode;
 
         let requestObj = {
             request: 'getfilelist',

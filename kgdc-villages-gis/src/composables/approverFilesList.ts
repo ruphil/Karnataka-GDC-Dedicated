@@ -1,9 +1,11 @@
 import store from '@/store';
 
 import globalToast from '../composables/globalToast';
+import filesListLoader from '@/composables/filesListLoader';
 
 const approverFilesList = () => {
     const { showGlobalToast } = globalToast();
+    const { loadFilesList } = filesListLoader();
 
     const approveKML = (gid: any) => {
         const username = store.getters.getUsername;
@@ -27,7 +29,7 @@ const approverFilesList = () => {
 
             if(responseObj.requestStatus == 'success'){
                 showGlobalToast('Abadi Limit Approved');
-
+                loadFilesList();
             } else {
                 showGlobalToast('Error Approving Abadi Limit');
             }
