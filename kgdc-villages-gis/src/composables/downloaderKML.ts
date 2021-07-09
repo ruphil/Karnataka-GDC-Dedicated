@@ -17,7 +17,7 @@ const downlooaderKML = () => {
     }
 
     const download = (filename: any, kmlstr: any) => {
-        var element = document.createElement('a');
+        let element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(kmlstr));
         element.setAttribute('download', filename);
       
