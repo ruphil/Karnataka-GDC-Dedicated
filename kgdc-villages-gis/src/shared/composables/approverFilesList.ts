@@ -1,7 +1,7 @@
-import store from '@/store';
+import store from '@/shared/store';
 
-import globalToast from '../composables/globalToast';
-import filesListLoader from '@/composables/filesListLoader';
+import globalToast from './globalToast';
+import filesListLoader from '@/shared/composables/filesListLoader';
 
 const approverFilesList = () => {
     const { showGlobalToast } = globalToast();

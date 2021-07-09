@@ -1,6 +1,6 @@
 import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
-import store from '@/store';
+import store from '@/shared/store';
 
 const mapLoader = () => {
     const loadBaseMapToExtent = () => {

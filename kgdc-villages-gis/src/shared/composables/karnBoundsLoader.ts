@@ -5,7 +5,7 @@ import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import LayerGroup from 'ol/layer/Group';
 
-import store from '@/store';
+import store from '@/shared/store';
 
 import mapStyler from './mapStyler';
 

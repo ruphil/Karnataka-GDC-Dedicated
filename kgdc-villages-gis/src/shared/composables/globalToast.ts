@@ -1,4 +1,4 @@
-import store from "@/store";
+import store from '@/shared/store';
 
 const globalToast = () => {
     const showGlobalToast = (msg: string) => {

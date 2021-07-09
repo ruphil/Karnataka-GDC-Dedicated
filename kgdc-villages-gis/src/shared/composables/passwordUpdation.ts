@@ -1,5 +1,6 @@
-import store from '@/store';
-import globalToast from '../composables/globalToast';
+import store from '@/shared/store';
+
+import globalToast from './globalToast';
 
 const passwordUpdation = () => {
     const { showGlobalToast } = globalToast();

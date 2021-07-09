@@ -28,7 +28,7 @@ import MousePosition from 'ol/control/MousePosition';
 import {defaults as defaultControls} from 'ol/control';
 import 'ol/ol.css';
 import './MapContainer.scss';
-import store from '@/store';
+import store from '@/shared/store';
 import setMapToVuex from '../composables/setMapToVuex';
 import karnBoundsLoader from '../composables/karnBoundsLoader';
 import globalToast from '../composables/globalToast';

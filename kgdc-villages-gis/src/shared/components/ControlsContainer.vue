@@ -141,7 +141,8 @@
 <script lang="ts">
 import './ControlsContainer.scss';
 
-import store from '@/store';
+import store from '@/shared/store';
+
 import { computed, defineComponent, onMounted, ref } from 'vue';
 
 import karnBoundsLoader from '../composables/karnBoundsLoader';

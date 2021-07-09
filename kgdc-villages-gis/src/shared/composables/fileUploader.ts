@@ -1,7 +1,7 @@
-import store from "@/store";
+import store from '@/shared/store';
 import axios from 'axios';
 
-import globalToast from '../composables/globalToast';
+import globalToast from './globalToast';
 
 const fileUploader = () => {
     const { showGlobalToast } = globalToast();

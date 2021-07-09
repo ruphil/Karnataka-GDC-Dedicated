@@ -7,9 +7,9 @@ import shp from 'shpjs';
 import { v4 as uuidv4 } from 'uuid';
 import JSZip from 'jszip';
 
-import store from '@/store';
+import store from '@/shared/store';
 
-import globalToast from '../composables/globalToast';
+import globalToast from './globalToast';
 
 const kmlshpHanlder = () => {
     const { showGlobalToast } = globalToast();

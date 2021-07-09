@@ -46,7 +46,7 @@
 <script lang="ts">
 import './NavBar.scss';
 
-import store from '@/store';
+import store from '@/shared/store';
 import { defineComponent, ref, computed, onMounted } from 'vue';
 import './NavBar.scss';
 import globalToast from '../composables/globalToast';

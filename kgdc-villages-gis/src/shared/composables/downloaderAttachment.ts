@@ -1,4 +1,4 @@
-import store from '@/store';
+import store from '@/shared/store';
 
 const downloaderAttachment = () => {
     const downloadFile = (id: any) => {

@@ -1,4 +1,4 @@
-import store from '@/store';
+import store from '@/shared/store';
 
 const downlooaderKML = () => {
     const downloadKML = (gid: any) => {

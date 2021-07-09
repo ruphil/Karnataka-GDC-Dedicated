@@ -1,6 +1,6 @@
-import store from "@/store";
+import store from '../store';
 
-import globalToast from '../composables/globalToast';
+import globalToast from './globalToast';
 
 const abadiLimitUploader = () => {
     const { showGlobalToast } = globalToast();

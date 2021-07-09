@@ -1,4 +1,5 @@
-import store from "@/store";
+import store from '@/shared/store';
+
 import 'ol/ol.css';
 import Draw from 'ol/interaction/Draw';
 import Overlay from 'ol/Overlay';

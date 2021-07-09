@@ -64,16 +64,17 @@
 </template>
 
 <script lang="ts">
-import store from '@/store';
+import store from '@/shared/store';
+
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import './FilesContainer.scss';
 
-import globalToast from '../composables/globalToast';
-import fileUploader from '@/composables/fileUploader';
-import filesListLoader from '@/composables/filesListLoader';
-import downloaderKML from '@/composables/downloaderKML';
-import downloaderAttachment from '@/composables/downloaderAttachment';
-import approverFilesList from '@/composables/approverFilesList';
+import globalToast from '@/shared/composables/globalToast';
+import fileUploader from '@/shared/composables/fileUploader';
+import filesListLoader from '@/shared/composables/filesListLoader';
+import downloaderKML from '@/shared/composables/downloaderKML';
+import downloaderAttachment from '@/shared/composables/downloaderAttachment';
+import approverFilesList from '@/shared/composables/approverFilesList';
 
 export default defineComponent({
     setup() {
