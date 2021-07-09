@@ -15,7 +15,7 @@ const fileListLoader = () => {
 
         console.log(requestObj);
 
-        let wssURL = store.getters.getFileListAproverServerMOdule;
+        let wssURL = store.getters.getFileListApproverServerModule;
         let ws = new WebSocket(wssURL);
 
         ws.addEventListener('message', (event) => {

@@ -50,7 +50,7 @@ export default createStore({
     getFileGetPostServerModule(state){
       return state.fileGetPostServerModule;
     },
-    getFileListAproverServerMOdule(state){
+    getFileListApproverServerModule(state){
       return state.filesListApproveModuleWSS;
     },
     getDistrictsList(state){

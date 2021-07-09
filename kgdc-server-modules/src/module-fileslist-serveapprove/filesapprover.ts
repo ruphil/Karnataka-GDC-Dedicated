@@ -1,29 +1,32 @@
 import WebSocket from 'ws';
 import { Client } from 'pg';
 
-import { checkValidUserNGetRoles, checkAdminUser } from '../common-ts/userRolesAdminCheck';
+import { checkValidUserNGetRoles } from '../common-ts/userRolesAdminCheck';
 
 const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
 export const approveAbadiLimit = (ws: WebSocket, msgObj: any) => {
     
-    const { validateusername, oldpassword, newpassword } = msgObj;
+    const { gid } = msgObj;
 
     checkValidUserNGetRoles(msgObj)
     .then((res: any) => {
-        console.log(res);
+        // console.log(res);
         const client = new Client({ connectionString });
         client.connect();
 
-        let sqlQuery = `UPDATE userstable SET PASSWORD = '${newpassword}' WHERE USERNAME = '${validateusername}' AND PASSWORD = '${oldpassword}'`;
+        let approverInfo = res.username + ' <' + res.description + '>,';
+        console.log(approverInfo);
+
+        let sqlQuery = `UPDATE abadilimits SET APPROVERINFO = APPROVERINFO || E'${approverInfo}' WHERE GID = '${gid}'`;
         client.query(sqlQuery)
         .then(() => {
-            let responseObj = { response: 'changepassword', requestStatus: 'success', action: 'passwordchanged' };
+            let responseObj = { response: 'approveabadilimit', requestStatus: 'success', action: 'approved' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
             console.log(err);
-            let responseObj = { response: 'changepassword', requestStatus: 'failure', action: 'SQL Error' };
+            let responseObj = { response: 'approveabadilimit', requestStatus: 'failure', action: 'SQL Error' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
@@ -31,7 +34,7 @@ export const approveAbadiLimit = (ws: WebSocket, msgObj: any) => {
         });
     })
     .catch((res: any) => {
-        let responseObj = { response: 'changepassword', requestStatus: 'failure', error: 'Usercheck Error' };
+        let responseObj = { response: 'approveabadilimit', requestStatus: 'failure', error: 'Usercheck Error' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }

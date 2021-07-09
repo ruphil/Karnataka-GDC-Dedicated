@@ -18,7 +18,7 @@ const approverFilesList = () => {
 
         console.log(requestObj);
 
-        let wssURL = store.getters.getAbadiModuleWSS;
+        let wssURL = store.getters.getFileListApproverServerModule;
         let ws = new WebSocket(wssURL);
     
         ws.addEventListener('message', (event) => {

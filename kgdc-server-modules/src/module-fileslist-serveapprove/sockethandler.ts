@@ -14,14 +14,15 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
             if(msgObj.request == 'getfilelist'){
                 getFileList(ws, msgObj);
             } else if (msgObj.request == 'approveabadilimit'){
+                
                 approveAbadiLimit(ws, msgObj);
             } else {
-                let responseObj = { response: 'getfilelist', requestStatus: 'failure', validUser: true, status: 'Invalid Request' };
+                let responseObj = { response: 'fileserveapprove', requestStatus: 'failure', validUser: true, status: 'Invalid Request' };
                 ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
             }
         })
         .catch(() => {
-            let responseObj = { response: 'getfilelist', requestStatus: 'failure', validUser: false, status: 'Unauthorized Request' };
+            let responseObj = { response: 'fileserveapprove', requestStatus: 'failure', validUser: false, status: 'Unauthorized Request' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
     });
