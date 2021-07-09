@@ -3,7 +3,6 @@
     <MapContainer v-if="isLoggedIn"/>
     <NavBar />
     <ControlsContainer v-if="isLoggedIn"/>
-    <FilesContainer v-if="isLoggedIn"/>
     <div class="globaltoast" ref="globalToastEl">{{ globaltoastmsg }}</div>
   </div>
 </template>
@@ -22,7 +21,7 @@ import store from './store';
 export default defineComponent({
   name: 'App',
   components: {
-    NavBar, MapContainer, ControlsContainer, FilesContainer
+    NavBar, MapContainer, ControlsContainer
   },
   setup() {
     const globaltoastmsg = computed(() => store.getters.getGlobalToastMsg);
@@ -31,7 +30,7 @@ export default defineComponent({
     const karnboundsLoaded = computed(() => store.getters.getKarnBoundsLoaded);
     
     const setTitle = () => {
-      document.title = 'Karnataka Villages';
+      document.title = 'Karnataka Flights Manager';
     }
 
     const setGlobalToastEl = () => {

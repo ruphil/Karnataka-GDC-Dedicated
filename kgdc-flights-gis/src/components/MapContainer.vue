@@ -16,7 +16,6 @@
             <button class="closeattributeswindow" v-on:click="showAttributesTable = false"><span class="material-icons-outlined">close</span></button>
         </div>
         <div class="latlon" ref="latlon"></div>
-        <div class="currentvillage">Current Village: {{ currentVillage }}</div>
     </div>
 </template>
 
@@ -81,7 +80,6 @@ export default defineComponent({
 
                         if(layer.get('loadedfromserver') == 'yes' && layer.get('name') == 'villageslyr'){
                             // console.log(attributesData);
-                            resetVillageDetails();
                             
                             store.dispatch('setCurrentVillage', attributesData['kgisvill_2']);
                             store.dispatch('setUniqueVillageCode', attributesData['uniquevill']);
@@ -95,17 +93,9 @@ export default defineComponent({
                             store.dispatch('setCurrentVillageDetails', villagedetails);
                             store.dispatch('setAttributesData', attributesData);
                         }
-
-                        if(!store.getters.getVillagesBoundsLoaded){
-                            showGlobalToast('Load Villages Layer First');
-                        }
                     } catch (e) {}
                 });
             });
-
-            const resetVillageDetails = () => {
-                store.dispatch('setFilesList', []);
-            }
             
             setMapObjectToVeux(map)
             .then(() => {

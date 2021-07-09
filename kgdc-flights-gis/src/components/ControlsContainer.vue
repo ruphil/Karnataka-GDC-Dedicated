@@ -1,5 +1,5 @@
 <template>
-    <div id="markedvillages">
+    <div id="flightsmanager">
         <div class="linemeasurecontainer">
             <button class="linemeasure" v-on:click="toggleLineMeasure"><span class="material-icons-outlined" title="Measure Line">straighten</span></button>
         </div>
