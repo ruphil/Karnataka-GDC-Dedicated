@@ -5,6 +5,8 @@ import GeoJSON from 'ol/format/GeoJSON';
 
 import shp from 'shpjs';
 import { v4 as uuidv4 } from 'uuid';
+import JSZip from 'jszip';
+
 import store from '@/store';
 
 import globalToast from '../composables/globalToast';
@@ -20,7 +22,7 @@ const kmlshpHanlder = () => {
         });
 
         let feature = filteredFeatures[0];
-        console.log(feature);
+        // console.log(feature);
 
         let cond1 = features.length != 0;
         let cond2 = filteredFeatures.length != 0;
@@ -49,7 +51,7 @@ const kmlshpHanlder = () => {
                 featureProjection: 'EPSG:3857'
             });
             
-            console.log(newfeatGeom);
+            // console.log(newfeatGeom);
 
             let modFeaturesData = [
                 ...featuresData,
@@ -112,6 +114,43 @@ const kmlshpHanlder = () => {
         reader.readAsText(file);
     }
 
+    const loadkmz = (file: any) => {
+        let zip = new JSZip();
+
+        let filename = file.name;
+        // console.log(filename);
+
+        let reader = new FileReader();
+        reader.onload = function () {
+
+            let kmzipbuffer = reader.result!;
+            zip.loadAsync(kmzipbuffer)
+            .then((zip) => {
+                let kmlFile = zip.file(/.kml$/i)[0];    
+
+                if (kmlFile) {
+                    kmlFile.async('text')
+                    .then((kmlstring) => {
+                        // console.log(kmlstring);
+                        let kmlFeatures = new KML({
+                            extractStyles: false
+                        }).readFeatures(kmlstring, {
+                            dataProjection: 'EPSG:4326',
+                            featureProjection: 'EPSG:3857'
+                        });
+                
+                        handleFeature(kmlFeatures, filename);
+                    }).catch(() => {
+                        showGlobalToast('Invalid KMZ File...');
+                    });
+                }
+            }).catch(() => {
+                showGlobalToast('Invalid KMZ File...');
+            });
+        }
+        reader.readAsArrayBuffer(file);
+    }
+
     const loadKMLShp = (e: any) => {
         const villagesBoundsLoaded = store.getters.getVillagesBoundsLoaded;
         if(!villagesBoundsLoaded){
@@ -126,11 +165,13 @@ const kmlshpHanlder = () => {
         let extension = fileFullname.substring(lastDot + 1);
         // console.log(fileFullname, extension);
 
-        if (extension != 'kml' && extension != 'zip'){
+        if (extension != 'kml' && extension != 'kmz' && extension != 'zip'){
             showGlobalToast('Invalid File.. Only kml or zip files are allowed...');
         } else if (extension == 'kml') {
             loadkml(file);
-        } 
+        } else if (extension == 'kmz') {
+            loadkmz(file);
+        }
         else if (extension == 'zip') {
             loadshp(file);
         }

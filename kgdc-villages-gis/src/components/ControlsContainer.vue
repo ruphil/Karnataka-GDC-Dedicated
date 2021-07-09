@@ -142,7 +142,7 @@
 import './ControlsContainer.scss';
 
 import store from '@/store';
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue';
 
 import karnBoundsLoader from '../composables/karnBoundsLoader';
 import villagesBoundsLoader from '../composables/villagesBoundsLoader';
