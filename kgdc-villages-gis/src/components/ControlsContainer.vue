@@ -35,7 +35,7 @@
                         <div><button class="olbtns" v-on:click="drawNewLayer">Draw Abadi Limit Feature</button></div>
                         <div>
                             <button class="olbtns" onclick="document.getElementById('fileinput').click();">Add Abadi Limit Feature</button>
-                            <br><span>*.kml / *.zip (shapefile)</span>
+                            <br><span>*.kml / *.kmz / *.zip (shapefile)</span>
                             <input id="fileinput" type="file" style="display:none;" ref="fileEl"/>
                         </div>
                     </div>

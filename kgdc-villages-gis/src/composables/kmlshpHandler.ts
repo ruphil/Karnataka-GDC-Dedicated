@@ -166,7 +166,7 @@ const kmlshpHanlder = () => {
         // console.log(fileFullname, extension);
 
         if (extension != 'kml' && extension != 'kmz' && extension != 'zip'){
-            showGlobalToast('Invalid File.. Only kml or zip files are allowed...');
+            showGlobalToast('Invalid File.. Only kml / kmz or shapefiles zip are allowed...');
         } else if (extension == 'kml') {
             loadkml(file);
         } else if (extension == 'kmz') {
