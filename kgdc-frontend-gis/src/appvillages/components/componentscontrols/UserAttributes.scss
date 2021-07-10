@@ -1,0 +1,49 @@
+#userattributescontainer {
+    
+    > .userattributestable {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: auto;
+        background-color: rgba(200, 200, 200, 1.0);
+        padding: 0.2em;
+        border-radius: 0.5em;
+        display: table;
+
+        > div {
+            display: table-row;
+
+            > div {
+                display: table-cell;
+                text-align: right;
+                vertical-align: middle;
+                padding: 0.2em;
+                color: rgba(0,60,136,1.0);
+                font-size: 1.0em;
+                
+                > button {
+                    font-size: 0.5em;
+                    float: right;
+                }
+
+                > .userattributesclose {
+                    display: block;
+                    margin: 0.1em;
+                    padding: 0.2em;
+                    color: white;
+                    font-weight: bold;
+                    text-decoration: none;
+                    background-color: rgba(0,60,136,0.5);
+                    border: none;
+                    border-radius: 2px;
+                    cursor: pointer;
+        
+                    > span {
+                        font-size: 1em;
+                    }
+                }
+            }
+        }
+    }
+}
