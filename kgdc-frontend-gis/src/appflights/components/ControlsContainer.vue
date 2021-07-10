@@ -32,15 +32,20 @@
                         <div><button class="olbtns" v-on:click="callUnloadAbadiLimits">Unload Abadi Limits</button></div>
                     </div>
                     <div>
-                        <div><button class="olbtns" >Load Flightlines In View N By District</button></div>
-                        <div><button class="olbtns" >Unload Flightlines</button></div>
+                        <div><button class="olbtns" v-on:click="drawNewLayer">Draw Abadi Limit Feature</button></div>
+                        <div>
+                            <button class="olbtns" onclick="document.getElementById('fileinput').click();">Add Abadi Limit Feature</button>
+                            <br><span>*.kml / *.kmz / *.zip (shapefile)</span>
+                            <input id="fileinput" type="file" style="display:none;" ref="fileEl"/>
+                        </div>
                     </div>
                     <div>
                         <div>
-                            <button class="olbtns" onclick="document.getElementById('fileinput').click();">Upload Flightline</button>
-                            <input id="fileinput" type="file" style="display:none;" ref="fileEl"/>
+                            <button class="olbtns" v-on:click="toggleFileUploader">Upload Files</button>
                         </div>
-                        <div><button class="olbtns" v-on:click="drawNewLayer">Generate Summary</button></div>
+                        <div>
+                            <button class="olbtns" v-on:click="toggleFilesLoader">Display Files</button>
+                        </div>
                     </div>
                 </div><br>
                 <div class="display-table-features">
