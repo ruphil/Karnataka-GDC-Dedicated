@@ -8,23 +8,24 @@
         </div>
         <ToolBox />
         <UserAttributes />
+        <FilesContainer />
     </div>
 </template>
 
 <script lang="ts">
 import './ControlsContainer.scss';
 
-import store from '@/shared/store';
 import { computed, defineComponent, onMounted, ref } from 'vue';
 
 import ToolBox from './componentscontrols/ToolBox.vue';
 import UserAttributes from './componentscontrols/UserAttributes.vue';
+import FilesContainer from './componentscontrols/FilesContainer.vue';
 
 import measureTools from '@/shared/composables/measureTools';
 
 export default defineComponent({
     components: {
-        ToolBox, UserAttributes
+        ToolBox, UserAttributes, FilesContainer
     },
     setup() {
         const { toggleLineMeasure, toggleAreaMeasure } = measureTools();

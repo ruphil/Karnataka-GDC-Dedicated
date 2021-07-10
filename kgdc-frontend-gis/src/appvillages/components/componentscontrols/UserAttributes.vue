@@ -77,6 +77,7 @@ export default defineComponent({
         const { showGlobalToast } = globalToast();
         const { tryToUploadAbadiLimit } = abadiLimitUploader();
 
+        const districtsList = computed(() => store.getters.getDistrictsList);
         const featuresData = computed(() => store.getters.getFeaturesData);
 
         const currentFeatureID = ref('');
@@ -95,7 +96,7 @@ export default defineComponent({
         const userattributedistrictref    = ref('');
         
         const return1 = { 
-            currentFeatureName,
+            districtsList, currentFeatureName,
             abadilimitname, noofproperties, startdate, enddate, villagename, lgdcode,
             pocketscount, grampanchayat, hobli, taluk, userattributedistrictref 
         };
@@ -227,7 +228,7 @@ export default defineComponent({
         const return3 = { callUploadAbadiLimit, toggleFileUploader, toggleFilesLoader };
 
         return {
-            return1, return2, return3
+            ...return1, ...return2, ...return3
         }
     },
 })

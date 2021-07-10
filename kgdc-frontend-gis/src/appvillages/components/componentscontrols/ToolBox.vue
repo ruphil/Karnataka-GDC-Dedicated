@@ -173,8 +173,7 @@ export default defineComponent({
             fileEl.value.addEventListener('change', loadKMLShp);
         });
 
-        return { ...return0, ...return1, ...return2
-        }
+        return { ...return0, ...return1, ...return2 }
     },
 })
 </script>
