@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
     "serve:villages": "vue-cli-service serve --port 8010 --open src/appvillages/main.ts",
     "serve:flights": "vue-cli-service serve --port 8020 --open src/appflights/main.ts",
     "build:villages": "vue-cli-service build --dest dist/villages src/appvillages/main.ts",

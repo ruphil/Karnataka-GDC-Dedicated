@@ -1,7 +1,7 @@
 import WebSocket, { Server } from 'ws';
 import { handleWebSocketConnection } from './sockethandler';
 
-const PORT = 3040;
+const PORT = 5010;
 const wss = new Server({ port: PORT });
 
 wss.on('connection', (ws: WebSocket) => {
