@@ -49,7 +49,7 @@
                         <div>Attachment</div>
                         <div>
                             <span>File Name: </span><span>{{ attachment.identifier }}</span><br>
-                            <span>Description: </span><span>{{ attachment.description }}</span>&emsp;&emsp;
+                            <span>Description: </span><span>{{ attachment.description }}</span><br>
                             <span>Upload Date: </span><span>{{ attachment.serverdate }}</span>
                         </div>
                         <div>{{ attachment.uploaderinfo }}</div>
