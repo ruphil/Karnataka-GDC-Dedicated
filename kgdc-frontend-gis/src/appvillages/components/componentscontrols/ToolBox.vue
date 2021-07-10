@@ -83,7 +83,7 @@ import drawFeaturesManager from '@/shared/composables/drawFeaturesManager';
 import zoomdiscardLayerFeatures from '@/shared/composables/zoomdiscardLayersFeatures';
 import abadiLimitsLoader from '@/shared/composables/abadiLimitsLoader';
 
-import villageAttributesCheck from '@/appvillages/composables/villageAttributesCheck';
+import abadiLimitUploader from '@/shared/composables/abadiLimitUploader';
 
 export default defineComponent({
     setup() {
@@ -94,9 +94,9 @@ export default defineComponent({
         const { loadKMLShp } = kmlshpHanlder();
         const { zoomToLayer, discardLayerFromMap, clearAllFeatures } = zoomdiscardLayerFeatures();
         const { drawNewLayer } = drawFeaturesManager();
-        const { checkVillageAttributesForLyrID } = villageAttributesCheck();
 
         const { loadAbadiLimits, unloadAbadiLimits } = abadiLimitsLoader();
+        const { tryToUploadAbadiLimit } = abadiLimitUploader();
 
         const districtsList = computed(() => store.getters.getDistrictsList);
         const featuresData = computed(() => store.getters.getFeaturesData);
@@ -170,6 +170,25 @@ export default defineComponent({
             fileEl.value.value = '';
         }
 
+        const checkVillageAttributesForLyrID = (reqdfeature: any) => {
+            let attributes = reqdfeature.attributes;
+            let conds = [];
+
+            conds.push( 'abadilimitname'            in attributes && attributes['abadilimitname']            !=  ''  );
+            conds.push( 'noofproperties'            in attributes && attributes['noofproperties']            !=  0   );
+            // conds.push( 'startdate'                 in attributes && attributes['startdate']                 !=  ''  );
+            // conds.push( 'enddate'                   in attributes && attributes['enddate']                   !=  ''  );
+            conds.push( 'villagename'               in attributes && attributes['villagename']               !=  ''  );
+            conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
+            conds.push( 'pocketscount'              in attributes && attributes['pocketscount']              !=  0   );
+            conds.push( 'grampanchayat'             in attributes && attributes['grampanchayat']             !=  ''  );
+            conds.push( 'hobli'                     in attributes && attributes['hobli']                     !=  ''  );
+            conds.push( 'taluk'                     in attributes && attributes['taluk']                     !=  ''  ); 
+            conds.push( 'userattributedistrictref'  in attributes && attributes['userattributedistrictref']  !=  ''  );
+
+            return conds.every(Boolean);
+        }
+
         const whetherAttributesValidComputed = computed(() => {
             return (lyrid: any) => {
                 let reqdfeature: any = featuresData.value.find((feature: any) => {
@@ -185,8 +204,35 @@ export default defineComponent({
             }
         });
 
+        const callUploadAbadiLimit = (e: any) => {
+            let lyrid = e.target.getAttribute('lyrid');
+            // console.log(lyrid);
+
+            let whetherValid = checkVillageAttributesForLyrID(lyrid);
+            if(whetherValid){
+                tryToUploadAbadiLimit(lyrid);
+            } else {
+                showGlobalToast('Kindly Edit Attributes for the feature');
+            }
+        }
+
+                const toggleFileUploader = () => {
+            console.log('toggling fileuplaoder');
+            console.log(store.getters.getShowFilesUploader);
+
+            store.dispatch('setShowFilesUploader', !store.getters.getShowFilesUploader);
+        }
+
+        const toggleFilesLoader = () => {
+            console.log('toggling filesloader');
+            console.log(store.getters.getShowFilesLoader);
+
+            store.dispatch('setShowFilesLoader', !store.getters.getShowFilesLoader);
+        }
+
         const return2 = { 
-            invokeZoomToLayer, discardLayer, drawNewLayer, whetherAttributesValidComputed
+            invokeZoomToLayer, discardLayer, drawNewLayer, whetherAttributesValidComputed,
+            callUploadAbadiLimit, toggleFileUploader, toggleFilesLoader
         };
 
         onMounted(() => {

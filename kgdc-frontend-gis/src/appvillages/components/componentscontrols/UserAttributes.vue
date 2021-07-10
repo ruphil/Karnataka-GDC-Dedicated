@@ -70,15 +70,10 @@ import { computed, defineComponent, onMounted, ref } from 'vue';
 import './UserAttributes.scss';
 
 import globalToast from '@/shared/composables/globalToast';
-import abadiLimitUploader from '@/shared/composables/abadiLimitUploader';
-
-import villageAttributesCheck from '@/appvillages/composables/villageAttributesCheck';
 
 export default defineComponent({
     setup() {
         const { showGlobalToast } = globalToast();
-        const { tryToUploadAbadiLimit } = abadiLimitUploader();
-        const { checkVillageAttributesForLyrID } = villageAttributesCheck();
 
         const districtsList = computed(() => store.getters.getDistrictsList);
         const featuresData = computed(() => store.getters.getFeaturesData);
@@ -162,43 +157,13 @@ export default defineComponent({
             showGlobalToast('Attributes Updated...');
         }
 
-        
-
         const return2 = { 
             showUserAttributesTable, 
             editAttributes, updateUserAttributes 
         };
 
-        const callUploadAbadiLimit = (e: any) => {
-            let lyrid = e.target.getAttribute('lyrid');
-            // console.log(lyrid);
-
-            let whetherValid = checkVillageAttributesForLyrID(lyrid);
-            if(whetherValid){
-                tryToUploadAbadiLimit(lyrid);
-            } else {
-                showGlobalToast('Kindly Edit Attributes for the feature');
-            }
-        }
-
-        const toggleFileUploader = () => {
-            console.log('toggling fileuplaoder');
-            console.log(store.getters.getShowFilesUploader);
-
-            store.dispatch('setShowFilesUploader', !store.getters.getShowFilesUploader);
-        }
-
-        const toggleFilesLoader = () => {
-            console.log('toggling filesloader');
-            console.log(store.getters.getShowFilesLoader);
-
-            store.dispatch('setShowFilesLoader', !store.getters.getShowFilesLoader);
-        }
-
-        const return3 = { callUploadAbadiLimit, toggleFileUploader, toggleFilesLoader };
-
         return {
-            ...return1, ...return2, ...return3
+            ...return1, ...return2
         }
     },
 })
