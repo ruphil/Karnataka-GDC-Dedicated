@@ -83,15 +83,18 @@ import drawFeaturesManager from '@/shared/composables/drawFeaturesManager';
 import zoomdiscardLayerFeatures from '@/shared/composables/zoomdiscardLayersFeatures';
 import abadiLimitsLoader from '@/shared/composables/abadiLimitsLoader';
 
+import villageAttributesCheck from '@/appvillages/composables/villageAttributesCheck';
+
 export default defineComponent({
     setup() {
+        const { showGlobalToast } = globalToast();
         const { loadKarnBounds } = karnBoundsLoader();
         const { loadVillagesBounds, unloadVillagesBounds } = villagesBoundsLoader();
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
         const { loadKMLShp } = kmlshpHanlder();
         const { zoomToLayer, discardLayerFromMap, clearAllFeatures } = zoomdiscardLayerFeatures();
         const { drawNewLayer } = drawFeaturesManager();
-        const { showGlobalToast } = globalToast();
+        const { checkVillageAttributesForLyrID } = villageAttributesCheck();
 
         const { loadAbadiLimits, unloadAbadiLimits } = abadiLimitsLoader();
 
@@ -167,7 +170,24 @@ export default defineComponent({
             fileEl.value.value = '';
         }
 
-        const return2 = { invokeZoomToLayer, discardLayer, drawNewLayer };
+        const whetherAttributesValidComputed = computed(() => {
+            return (lyrid: any) => {
+                let reqdfeature: any = featuresData.value.find((feature: any) => {
+                    return feature.lyrid == lyrid;
+                });
+
+                let whetherValid = checkVillageAttributesForLyrID(reqdfeature);
+                if(whetherValid){
+                    return '<span style="color:green;">OK</span>';
+                } else {
+                    return '<span style="color:red;">Not OK</span>';
+                }
+            }
+        });
+
+        const return2 = { 
+            invokeZoomToLayer, discardLayer, drawNewLayer, whetherAttributesValidComputed
+        };
 
         onMounted(() => {
             fileEl.value.addEventListener('change', loadKMLShp);

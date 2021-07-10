@@ -72,10 +72,13 @@ import './UserAttributes.scss';
 import globalToast from '@/shared/composables/globalToast';
 import abadiLimitUploader from '@/shared/composables/abadiLimitUploader';
 
+import villageAttributesCheck from '@/appvillages/composables/villageAttributesCheck';
+
 export default defineComponent({
     setup() {
         const { showGlobalToast } = globalToast();
         const { tryToUploadAbadiLimit } = abadiLimitUploader();
+        const { checkVillageAttributesForLyrID } = villageAttributesCheck();
 
         const districtsList = computed(() => store.getters.getDistrictsList);
         const featuresData = computed(() => store.getters.getFeaturesData);
@@ -159,51 +162,18 @@ export default defineComponent({
             showGlobalToast('Attributes Updated...');
         }
 
-        const checkAttributesForLyrID = (lyrid: any) => {
-            let reqdfeature: any = featuresData.value.find((feature: any) => {
-                return feature.lyrid == lyrid;
-            });
-
-            let attributes = reqdfeature.attributes;
-            let conds = [];
-
-            conds.push( 'abadilimitname'            in attributes && attributes['abadilimitname']            !=  ''  );
-            conds.push( 'noofproperties'            in attributes && attributes['noofproperties']            !=  0   );
-            // conds.push( 'startdate'                 in attributes && attributes['startdate']                 !=  ''  );
-            // conds.push( 'enddate'                   in attributes && attributes['enddate']                   !=  ''  );
-            conds.push( 'villagename'               in attributes && attributes['villagename']               !=  ''  );
-            conds.push( 'lgdcode'                   in attributes && attributes['lgdcode']                   !=  ''  );
-            conds.push( 'pocketscount'              in attributes && attributes['pocketscount']              !=  0   );
-            conds.push( 'grampanchayat'             in attributes && attributes['grampanchayat']             !=  ''  );
-            conds.push( 'hobli'                     in attributes && attributes['hobli']                     !=  ''  );
-            conds.push( 'taluk'                     in attributes && attributes['taluk']                     !=  ''  ); 
-            conds.push( 'userattributedistrictref'  in attributes && attributes['userattributedistrictref']  !=  ''  );
-
-            return conds.every(Boolean);
-        }
-
-        const whetherAttributesValidComputed = computed(() => {
-            return (lyrid: any) => {
-                let whetherValid = checkAttributesForLyrID(lyrid);
-                if(whetherValid){
-                    return '<span style="color:green;">OK</span>';
-                } else {
-                    return '<span style="color:red;">Not OK</span>';
-                }
-            }
-        });
+        
 
         const return2 = { 
             showUserAttributesTable, 
-            editAttributes, updateUserAttributes, 
-            whetherAttributesValidComputed 
+            editAttributes, updateUserAttributes 
         };
 
         const callUploadAbadiLimit = (e: any) => {
             let lyrid = e.target.getAttribute('lyrid');
             // console.log(lyrid);
 
-            let whetherValid = checkAttributesForLyrID(lyrid);
+            let whetherValid = checkVillageAttributesForLyrID(lyrid);
             if(whetherValid){
                 tryToUploadAbadiLimit(lyrid);
             } else {
