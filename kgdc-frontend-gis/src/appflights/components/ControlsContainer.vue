@@ -144,9 +144,11 @@ import karnBoundsLoader from '@/shared/composables/karnBoundsLoader';
 import villagesBoundsLoader from '@/shared/composables/villagesBoundsLoader';
 import baseMapLoader from '@/shared/composables/baseMapLoader';
 import kmlshpHanlder from '@/shared/composables/kmlshpHandler';
+import drawFeaturesManager from '@/shared/composables/drawFeaturesManager';
 import zoomdiscardLayerFeatures from '@/shared/composables/zoomdiscardLayersFeatures';
 import globalToast from '@/shared/composables/globalToast';
 import measureTools from '@/shared/composables/measureTools';
+import abadiLimitUploader from '@/shared/composables/abadiLimitUploader';
 import abadiLimitsLoader from '@/shared/composables/abadiLimitsLoader';
 
 export default defineComponent({
@@ -156,8 +158,10 @@ export default defineComponent({
         const { loadBaseMapToExtent, unloadBaseMap } = baseMapLoader();
         const { loadKMLShp } = kmlshpHanlder();
         const { zoomToLayer, discardLayerFromMap, clearAllFeatures } = zoomdiscardLayerFeatures();
+        const { drawNewLayer } = drawFeaturesManager();
         const { showGlobalToast } = globalToast();
         const { toggleLineMeasure, toggleAreaMeasure } = measureTools();
+        const { tryToUploadAbadiLimit } = abadiLimitUploader();
 
         const { loadAbadiLimits, unloadAbadiLimits } = abadiLimitsLoader();
 
@@ -236,7 +240,7 @@ export default defineComponent({
             fileEl.value.value = '';
         }
 
-        const return2 = { invokeZoomToLayer, discardLayer };
+        const return2 = { invokeZoomToLayer, discardLayer, drawNewLayer };
 
         onMounted(() => {
             fileEl.value.addEventListener('change', loadKMLShp);
@@ -359,6 +363,18 @@ export default defineComponent({
             whetherAttributesValidComputed 
         };
 
+        const callUploadAbadiLimit = (e: any) => {
+            let lyrid = e.target.getAttribute('lyrid');
+            // console.log(lyrid);
+
+            let whetherValid = checkAttributesForLyrID(lyrid);
+            if(whetherValid){
+                tryToUploadAbadiLimit(lyrid);
+            } else {
+                showGlobalToast('Kindly Edit Attributes for the feature');
+            }
+        }
+
         const toggleFileUploader = () => {
             console.log('toggling fileuplaoder');
             console.log(store.getters.getShowFilesUploader);
@@ -373,7 +389,7 @@ export default defineComponent({
             store.dispatch('setShowFilesLoader', !store.getters.getShowFilesLoader);
         }
 
-        const return5 = { toggleFileUploader, toggleFilesLoader };
+        const return5 = { callUploadAbadiLimit, toggleFileUploader, toggleFilesLoader };
 
         return { ...return0, ...return1, ...return2, ...return3, 
             ...return4, ...return5 
