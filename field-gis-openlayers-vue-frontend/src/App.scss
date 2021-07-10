@@ -1,0 +1,296 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#map {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+}
+
+#mapview {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+}
+
+#controllermainbtncontainer {
+    position: fixed;
+    pointer-events: auto;
+    top: .5em;
+    right: .5em;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+#controllermainbtn {
+    display: block;
+    margin: 1px;
+    padding: 0;
+    color: white;
+    font-size: 1.14em;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    height: 1.375em;
+    width: 1.375em;
+    line-height: .4em;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
+
+    &:hover {
+        background-color: rgba(0,60,136,0.7);
+    }
+}
+
+#controllerlayersbtncontainer {
+    position: fixed;
+    pointer-events: auto;
+    bottom: .5em;
+    right: .5em;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+#controllerlayersbtn {
+    display: block;
+    margin: 1px;
+    padding: 0;
+    color: white;
+    font-size: 1.14em;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    height: 1.375em;
+    width: 1.375em;
+    line-height: .4em;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
+
+    &:hover {
+        background-color: rgba(0,60,136,0.7);
+    }
+}
+
+#controllersummarybtncontainer {
+    position: fixed;
+    pointer-events: auto;
+    bottom: .5em;
+    left: .5em;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+#controllersummarybtn {
+    display: block;
+    margin: 1px;
+    padding: 0;
+    color: white;
+    font-size: 1.14em;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    height: 1.375em;
+    width: 1.375em;
+    line-height: .4em;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
+
+    &:hover {
+        background-color: rgba(0,60,136,0.7);
+    }
+}
+
+#maincontrollerbox {
+    position: absolute;
+    top: 3em;
+    right: 1em;
+    padding: 4px;
+    background-color: rgba(255,255,255,0.4);
+}
+
+#loginsection {
+    display: block;
+    margin: 1px;
+    padding: 1em;
+    color: white;
+    font-size: 1.14em;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    line-height: 1em;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
+
+    input {
+        padding: 10px;
+    }
+
+    button {
+        padding: 10px;
+    }
+}
+
+#fileslistholder {
+    min-width: 10em;
+    min-height: 10em;
+}
+
+#fileslist {
+    height: 8em;
+    color: white;
+    background-color: rgba(0,60,136,0.5);
+    margin-bottom: 0.5em;
+    padding: 0.5em;
+}
+
+#filesaddbtnscontainer {
+    float: right;
+}
+
+.olbtns{
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
+    margin-right: 0.5em;
+
+    &:hover {
+        background-color: rgba(0,60,136,0.7);
+    }
+}
+
+.filediscardbtns {
+    color:rgba(0,60,136,0.5);
+    background-color:white;
+    border:none;
+
+    &:hover {
+        color: white;
+        background-color: rgba(0,60,136,0.7);
+    }
+}
+
+#attributesuploadbtn {
+    float: right;
+}
+
+#summaryattributescontainer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: rgba(255,255,255,0.4);
+}
+
+#attributesbox {
+    text-align: center;
+    // height: 25em;
+    background-color: rgba(0,60,136,0.5);
+    color: white;
+    margin: 0.5em;
+    padding: 0.5em;
+    line-height: 1.5em;
+    // overflow-y: scroll;
+}
+
+#attributessummarybox {
+    text-align: center;
+    height: 25em;
+    background-color: rgba(0,60,136,0.8);
+    color: white;
+    margin: 0.5em;
+    padding: 0.5em;
+    line-height: 1em;
+    overflow-y: scroll;
+}
+
+.olbtnsgreen {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    background-color: rgba(183, 235, 222, 0.5);
+    border: none;
+    border-radius: 2px;
+    margin-right: 0.5em;
+
+    &:hover {
+        background-color: rgba(0,60,136,0.7);
+    }
+}
+
+#uploadstatusmsgdiv {
+    margin-top: 4em;
+    text-align: center;
+    color: white;
+    background-color: rgba(0,60,136,0.7);
+}
+
+#layercontrollercontainer {
+    position: absolute;
+    bottom: 3em;
+    right: 1em;
+    padding: 4px;
+    background-color: rgba(255,255,255,0.4);
+}
+
+#layercontroller {
+    display: block;
+    margin: 1px;
+    padding: 1em;
+    color: white;
+    font-size: 1.14em;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    line-height: 2em;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
+
+    button {
+        padding: 0.3em;
+    }
+}
+
+#summarygeneratorcontainer {
+    position: absolute;
+    bottom: 3em;
+    left: 0.5em;
+    padding: 4px;
+    background-color: rgba(255,255,255,0.4);
+}
+
+#summarygenerator {
+    display: block;
+    margin: 1px;
+    padding: 1em;
+    color: white;
+    font-size: 1.14em;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    line-height: 2em;
+    background-color: rgba(0,60,136,0.5);
+    border: none;
+    border-radius: 2px;
+
+    button {
+        padding: 0.3em;
+    }
+}
