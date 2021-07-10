@@ -216,7 +216,7 @@ export default defineComponent({
             }
         }
 
-                const toggleFileUploader = () => {
+        const toggleFileUploader = () => {
             console.log('toggling fileuplaoder');
             console.log(store.getters.getShowFilesUploader);
 
