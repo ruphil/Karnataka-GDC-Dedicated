@@ -64,6 +64,7 @@ const karnBoundsLoader = () => {
         });
 
         karndistbounds.set('loadedfromserver', 'yes');
+        karndistbounds.set('name', 'karnboundary');
 
         map.setLayerGroup(new LayerGroup({
             layers: [ karndistbounds ]

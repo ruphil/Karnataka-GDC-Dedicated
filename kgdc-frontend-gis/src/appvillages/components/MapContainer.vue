@@ -77,30 +77,34 @@ export default defineComponent({
                     let attributesData = { ...feature.getProperties() };
                     delete attributesData['geometry'];
                     try {
-                        if(layer.get('loadedfromserver') == 'yes'){
+                        if(layer.get('loadedfromserver') == 'yes' && layer.get('name') == 'karnboundary'){
                             store.dispatch('setAttributesData', attributesData);
                         }
 
                         if(layer.get('loadedfromserver') == 'yes' && layer.get('name') == 'villageslyr'){
                             // console.log(attributesData);
-                            resetDisplayedFileList();
-                            
-                            store.dispatch('setCurrentVillage', attributesData['kgisvill_2']);
-                            store.dispatch('setUniqueVillageCode', attributesData['uniquevill']);
+                            resetFewThings()
+                            .then(() => {
+                                store.dispatch('setCurrentVillage', attributesData['kgisvill_2']);
+                                store.dispatch('setUniqueVillageCode', attributesData['uniquevill']);
 
-                            let villagedetails = {
-                                district: attributesData['kgisdist_1'],
-                                taluk: attributesData['kgistalukn'],
-                                gp: attributesData['lgdgpname'],
-                            }
+                                let villagedetails = {
+                                    district: attributesData['kgisdist_1'],
+                                    taluk: attributesData['kgistalukn'],
+                                    gp: attributesData['lgdgpname'],
+                                }
 
-                            store.dispatch('setCurrentVillageDetails', villagedetails);
+                                store.dispatch('setCurrentVillageDetails', villagedetails);  
+                            });
                         }
 
                         if(layer.get('loadedfromserver') == 'yes' && layer.get('name') == 'abadilimits'){
-                            // console.log(attributesData);
-                            resetDisplayedFileList();
-
+                            console.log(attributesData);
+                            resetFewThings()
+                            .then(() => {
+                                store.dispatch('setCurrentAbadiLimit', attributesData['abadilimitname']);
+                                store.dispatch('setCurrentAbadiUUID', attributesData['abadilimituuid']);    
+                            });
                         }
 
                         if(!store.getters.getVillagesBoundsLoaded && !store.getters.getAbadiLimitsLoaded){
@@ -110,8 +114,13 @@ export default defineComponent({
                 });
             });
 
-            const resetDisplayedFileList = () => {
-                store.dispatch('setFilesList', []);
+            const resetFewThings = () => {
+                return new Promise((resolve: any, reject: any) => {
+                    store.dispatch('setFilesList', []);
+                    store.dispatch('setCurrentAbadiLimit', 'None Selected');
+                    store.dispatch('setCurrentAbadiUUID', '');
+                    resolve('success');
+                });
             }
             
             setMapObjectToVeux(map)

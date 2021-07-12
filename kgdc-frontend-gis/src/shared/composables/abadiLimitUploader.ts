@@ -36,7 +36,7 @@ const abadiLimitUploader = () => {
                 district,
                 gisselectedvillage,
                 uniquevillagecode
-            }
+            };
 
             console.log(requestObj);
 
