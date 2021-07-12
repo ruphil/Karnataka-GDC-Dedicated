@@ -1,27 +1,32 @@
 import WebSocket from 'ws';
 import { Client } from 'pg';
+import { v4 as uuidv4 } from 'uuid';
 
 const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
 export const uploadAbadiLimit = (ws: WebSocket, msgObj: any) => {
-    let { district, villageSelected, uniquevillagecode, validateusername, gjstr, attributes } = msgObj;
+    let { district, gisselectedvillage, uniquevillagecode, validateusername, gjstr, attributes } = msgObj;
 
     let insertQuery = `INSERT INTO abadilimits (
-        DISTRICT, VILLAGESELECTED, UNIQUEVILLAGECODE, ABADILIMITNAME, NOOFPROPERTIES, MARKINGSTARTDATE, MARKINGENDDATE, 
-        VILLAGENAME, VILLAGELGDCODE, ABADIAREASCOUNTINVILLAGE, GRAMPANCHAYAT, HOBLI, TALUK, CREATORINFO, APPROVERINFO, GEOM)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, ST_Force2D(ST_GeomFromGeoJSON('${gjstr}'))
+        DISTRICT, TALUK, HOBLI, GRAMPANCHAYAT, VILLAGENAME, VILLAGELGDCODE, GISSELECTEDVILLAGE, UNIQUEVILLAGECODE, 
+        ABADILIMITNAME, ABADILIMITUUID, NOOFPROPERTIES, MARKINGSTARTDATE, MARKINGENDDATE, ABADIAREASCOUNTINVILLAGE,
+        CREATORINFO, APPROVERINFO, GEOM)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, ST_Force2D(ST_GeomFromGeoJSON('${gjstr}'))
     )`;
     // console.log(insertQuery);
     // console.log(attributes);
     // console.log(gjstr);
 
+    let abadilimituuid = uuidv4();
+
     let { 
-        abadilimitname, noofproperties, startdate, enddate, villagename, lgdcode,
-        pocketscount, grampanchayat, hobli, taluk
+        taluk, hobli, grampanchayat, villagename, lgdcode, 
+        abadilimitname, noofproperties, startdate, enddate, pocketscount
     } = attributes;
 
-    let insertData = [ district, villageSelected, uniquevillagecode,  abadilimitname, noofproperties, startdate, enddate, 
-        villagename, lgdcode, pocketscount, grampanchayat, hobli, taluk, validateusername, ''
+    let insertData = [ district, taluk, hobli, grampanchayat, villagename, lgdcode, gisselectedvillage, uniquevillagecode,
+        abadilimitname, abadilimituuid, noofproperties, startdate, enddate, pocketscount,
+        validateusername, ''
     ];
     
     const client = new Client({ connectionString });
