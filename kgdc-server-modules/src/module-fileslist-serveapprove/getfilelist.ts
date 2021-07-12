@@ -4,10 +4,10 @@ import { Client } from 'pg';
 const connectionString = 'postgres://postgres:kgdcgis@localhost:5432/kgdcdb';
 
 export const getFileList = (ws: WebSocket, msgObj: any) => {
-    const { uniquevillagecode } = msgObj;
+    const { uniquevillagecode, currentabadiuuid } = msgObj;
     let query1 = `SELECT GID, ABADILIMITNAME, MARKINGENDDATE, VILLAGENAME, VILLAGELGDCODE, 
     CREATORINFO, APPROVERINFO, ST_AsKML(GEOM)
-    FROM abadilimits WHERE UNIQUEVILLAGECODE='${uniquevillagecode}' ORDER BY GID`;
+    FROM abadilimits WHERE UNIQUEVILLAGECODE='${uniquevillagecode}' AND ABADILIMITUUID='${currentabadiuuid}' ORDER BY GID`;
 
     const client = new Client({ connectionString });
     client.connect();
@@ -17,7 +17,7 @@ export const getFileList = (ws: WebSocket, msgObj: any) => {
         let abadilist = res.rows;
         // console.log(abadilist);
 
-        let query2 = `SELECT * FROM filesattachment WHERE UNIQUEVILLAGECODE='${uniquevillagecode}' ORDER BY ID`;
+        let query2 = `SELECT * FROM filesattachment WHERE UNIQUEVILLAGECODE='${uniquevillagecode}' AND ABADILIMITUUID='${currentabadiuuid}' ORDER BY ID`;
         client.query(query2)
         .then((res) => {
             let attachmentlist = res.rows;

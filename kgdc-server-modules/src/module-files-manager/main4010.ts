@@ -62,7 +62,9 @@ app.post('/fileupload', [ staticAuthentication, upload.single('uploadedfile') ],
             currentabadiname, currentabadiuuid,
             fileName, fileType, description, currentuser } = formData;
 
-        const newFileName = currentdistrict + '_' + currenttaluk + '_' + currentgp + '_'+ currentvillage + '_' + currentabadiname + '_' + description + '_' + uuidv4();
+        let modabadi = 'abadi_' + currentabadiname;
+
+        const newFileName = currentdistrict + '_' + currenttaluk + '_' + currentgp + '_'+ currentvillage + '_' + modabadi + '_' + description + '_' + uuidv4();
         const diskidentifier = newFileName.replace(/\W/g, '');
         const storagefilepath = resolve(storageFolder, diskidentifier) + '.' + fileType;
 

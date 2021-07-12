@@ -6,10 +6,12 @@ const fileListLoader = () => {
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
         const uniquevillagecode = store.getters.getCurrentUniqueVillageCode;
+        const currentabadiuuid = store.getters.getCurrentAbadiUUID;
 
         let requestObj = {
             request: 'getfilelist',
             uniquevillagecode,
+            currentabadiuuid,
             validateusername: username,
             validatepassword: password,
         };

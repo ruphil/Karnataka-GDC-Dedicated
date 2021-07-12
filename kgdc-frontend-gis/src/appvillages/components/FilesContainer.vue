@@ -173,7 +173,7 @@ export default defineComponent({
             }
 
             if(currentabadiname.value == 'None Selected' ||  currentabadiuuid.value == ''){
-                showGlobalToast('Select / Draw Abadi Limit First');
+                showGlobalToast('Select Abadi Limit First');
                 return 0;
             }
             
