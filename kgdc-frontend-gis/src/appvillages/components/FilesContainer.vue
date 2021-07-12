@@ -133,8 +133,13 @@ export default defineComponent({
                 return 0;
             }
 
-            if(currentvillage.value == '' ||  currentvillagecode.value == ''){
+            if(currentvillage.value == 'None' ||  currentvillagecode.value == ''){
                 showGlobalToast('Select Village First');
+                return 0;
+            }
+
+            if(currentabadiname.value == 'None Selected' ||  currentabadiuuid.value == ''){
+                showGlobalToast('Select / Draw Abadi Limit First');
                 return 0;
             }
 

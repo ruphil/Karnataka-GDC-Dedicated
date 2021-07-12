@@ -9,7 +9,7 @@ const fileUploader = () => {
     const uploadFile = (uploadfilearguments: any) => {
         const { 
             currentvillagedetails, currentvillage, currentvillagecode,
-            currentabadiname, currentabadiuuid, 
+            currentabadiname, currentabadiuuid,
             fileName, fileType, description, currentuser, fileEl 
         } = uploadfilearguments;
 
@@ -27,7 +27,7 @@ const fileUploader = () => {
         formData.append('currentvillagecode', currentvillagecode);
         formData.append('currentabadiname', currentabadiname);
         formData.append('currentabadiuuid', currentabadiuuid);
-        
+
         formData.append('currentdistrict', district);
         formData.append('currenttaluk', taluk);
         formData.append('currentgp', gp);

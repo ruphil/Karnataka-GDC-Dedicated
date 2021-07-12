@@ -22,7 +22,7 @@ export default createStore({
     abadiLimitsLoaded: false,
     attributesData: [],
     currentabadi: 'None Selected',
-    currentvillage: '',
+    currentvillage: 'None',
     currentabadiuuid: '',
     currentuniquevillagecode: '',
     currentvillagedetails: {},
