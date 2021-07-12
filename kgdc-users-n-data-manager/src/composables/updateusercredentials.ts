@@ -25,6 +25,7 @@ const roleAssignment = () => {
             
             ws.close();
         });
+        
         ws.addEventListener('open', (event) => {
             let requestObj = {
                 request: 'assignrole',
