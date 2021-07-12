@@ -4,13 +4,13 @@
   "description": "",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "usersdrones": "ts-node --transpile-only src/module-users-drones/main3010.ts",
+    "usersndata": "ts-node --transpile-only src/module-users-data/main3010.ts",
     "gjserve": "ts-node --transpile-only src/module-gjserve/main3020.ts",
     "abadilimits": "ts-node --transpile-only src/module-abadilimits/main3030.ts",
     "filesmanager": "ts-node --transpile-only src/module-files-manager/main4010.ts",
     "fileslist": "ts-node --transpile-only src/module-fileslist-serveapprove/main4020.ts",
     "flights": "ts-node --transpile-only src/module-flights/main5010.ts",
-    "start": "concurrently --kill-others --restart-tries 999999 \"yarn usersdrones\" \"yarn gjserve\" \"yarn filesmanager\" \"yarn fileslist\" \"yarn abadilimits\"  \"yarn flights\""
+    "start": "concurrently --kill-others --restart-tries 999999 \"yarn usersndata\" \"yarn gjserve\" \"yarn filesmanager\" \"yarn fileslist\" \"yarn abadilimits\"  \"yarn flights\""
   },
   "keywords": [],
   "author": "",
