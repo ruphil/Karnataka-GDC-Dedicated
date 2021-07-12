@@ -6,7 +6,8 @@
 
         <table border="1" class="tablecenter">
             <tr>
-                <th>Username</th><th>Password</th><th>Mobilenumber</th><th>Description</th><th>Roles</th><th>Delete</th>
+                <th>Username</th><th>Password</th><th>Mobilenumber</th><th>Description</th>
+                <th>Roles</th><th>Jurisdiction</th><th>Expiry</th><th>Delete</th>
             </tr>
             <tr v-for="(user, index) in usersData" v-bind:key="index">
                 <td>{{ user.username }}</td>

@@ -6,7 +6,7 @@ const userAddition = () => {
     const { showGlobalToast } = globalToast();
     const { getUsers } = usersTable();
 
-    const addUser = (newusername: any, newpassword: any, newmobilenumber: any, newdescription: any, expiry: any) => {
+    const addUser = (newusername: any, newpassword: any, newmobilenumber: any, newdescription: any) => {
         const adminuser = store.getters.getUsername;
         const adminpass = store.getters.getPassword;
         const wssURL = store.getters.getUsersDronesModuleWSS;
@@ -36,7 +36,7 @@ const userAddition = () => {
                 description: newdescription,
                 roles: '',
                 jurisdiction: '',
-                expiry
+                expiry: '2099-12-31'
             };
 
             console.log(requestObj);
