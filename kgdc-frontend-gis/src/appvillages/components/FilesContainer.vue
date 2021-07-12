@@ -207,10 +207,10 @@ export default defineComponent({
         }
 
         const downloadAttachment = (e: any) => {
-            let gid = e.target.getAttribute('id');
-            console.log(gid);
+            let id = e.target.getAttribute('id');
+            console.log(id);
 
-            downloadFile(gid);
+            downloadFile(id);
         }
 
         return { 
