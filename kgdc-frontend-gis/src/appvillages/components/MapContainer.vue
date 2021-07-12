@@ -16,7 +16,7 @@
             <button class="closeattributeswindow" v-on:click="showAttributesTable = false"><span class="material-icons-outlined">close</span></button>
         </div>
         <div class="latlon" ref="latlon"></div>
-        <div class="currentvillage">Current Village: {{ currentVillage }}</div>
+        <div class="currentvillage">Current Abadi: {{ currentAbadi }} ({{ currentVillage }})</div>
     </div>
 </template>
 
@@ -48,6 +48,7 @@ export default defineComponent({
 
         const attributesData = computed(() => store.getters.getAttributesData);
         const currentVillage = computed(() => store.getters.getCurrentVillage);
+        const currentAbadi = computed(() => store.getters.getCurrentAbadiLimit);
 
         const loadKarnBoundaryAfterElementLoaded = () => {
             const overlay = new Overlay({
@@ -82,7 +83,7 @@ export default defineComponent({
 
                         if(layer.get('loadedfromserver') == 'yes' && layer.get('name') == 'villageslyr'){
                             // console.log(attributesData);
-                            resetVillageDetails();
+                            resetDisplayedFileList();
                             
                             store.dispatch('setCurrentVillage', attributesData['kgisvill_2']);
                             store.dispatch('setUniqueVillageCode', attributesData['uniquevill']);
@@ -94,17 +95,22 @@ export default defineComponent({
                             }
 
                             store.dispatch('setCurrentVillageDetails', villagedetails);
-                            store.dispatch('setAttributesData', attributesData);
                         }
 
-                        if(!store.getters.getVillagesBoundsLoaded){
-                            showGlobalToast('Load Villages Layer First');
+                        if(layer.get('loadedfromserver') == 'yes' && layer.get('name') == 'abadilimits'){
+                            // console.log(attributesData);
+                            resetDisplayedFileList();
+
+                        }
+
+                        if(!store.getters.getVillagesBoundsLoaded && !store.getters.getAbadiLimitsLoaded){
+                            showGlobalToast('Load Villages Layer and Abadi Limits First');
                         }
                     } catch (e) {}
                 });
             });
 
-            const resetVillageDetails = () => {
+            const resetDisplayedFileList = () => {
                 store.dispatch('setFilesList', []);
             }
             
@@ -121,7 +127,7 @@ export default defineComponent({
             loadKarnBoundaryAfterElementLoaded();
         });
 
-        return { mapref, popup, attributesData, showAttributesTable, latlon, currentVillage }
+        return { mapref, popup, attributesData, showAttributesTable, latlon, currentVillage, currentAbadi }
     },
 })
 </script>

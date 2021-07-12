@@ -21,7 +21,8 @@ export default createStore({
     villagesBoundsLoaded: false,
     abadiLimitsLoaded: false,
     attributesData: [],
-    currentvillage: 'None Selected',
+    currentvillage: '',
+    currentabadi: 'None Selected',
     currentuniquevillagecode: '',
     currentvillagedetails: {},
     lineMeasureEnabled: false,
@@ -98,6 +99,9 @@ export default createStore({
     getCurrentVillageDetails(state){
       return state.currentvillagedetails;
     },
+    getCurrentAbadiLimit(state){
+      return state.currentabadi;
+    },
     getLineMeasureEnabled(state){
       return state.lineMeasureEnabled;
     },
@@ -171,6 +175,9 @@ export default createStore({
     },
     setCurrentVillageDetails(state, villagedetails){
       state.currentvillagedetails = villagedetails;
+    },
+    setCurrentAbadiLimit(state, abadilimit){
+      state.currentabadi = abadilimit;
     },
     setLineMeasureEnabled(state, enabled){
       state.lineMeasureEnabled = enabled;
@@ -251,6 +258,9 @@ export default createStore({
     },
     setCurrentVillageDetails(context, villagedetails){
       context.commit('setCurrentVillageDetails', villagedetails);
+    },
+    setCurrentAbadiLimit(context, abadilimit){
+      context.commit('setCurrentAbadiLimit', abadilimit);
     },
     setLineMeasureEnabled(context, enabled){
       context.commit('setLineMeasureEnabled', enabled);
