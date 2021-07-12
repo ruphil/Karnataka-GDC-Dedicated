@@ -4,5 +4,7 @@ CREATE TABLE USERSTABLE(
     PASSWORD        TEXT    NOT NULL,
     MOBILENUMBER    TEXT,
     DESCRIPTION     TEXT,
-    ROLES           TEXT
+    ROLES           TEXT,
+    JURISDICTION    TEXT,
+    EXPIRY          DATE
 );

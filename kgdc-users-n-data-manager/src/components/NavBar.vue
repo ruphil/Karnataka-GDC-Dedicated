@@ -1,7 +1,7 @@
 <template>
   <div id="navbar">
     <div class="navcontainer">
-      <span class="title">KGDC GIS Users and Drones Manager</span>
+      <span class="title">KGDC GIS Users and Data Manager</span>
       <span class="nav" v-show="isLoggedIn">
         <router-link to="/users">Users</router-link> |
         <router-link to="/drones">Drones</router-link>

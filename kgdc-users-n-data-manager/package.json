@@ -1,9 +1,9 @@
 {
-  "name": "kgdc-users-n-drones-manager",
+  "name": "kgdc-users-n-data-manager",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 9010",
     "build": "vue-cli-service build"
   },
   "dependencies": {
