@@ -9,7 +9,12 @@
                 <td>Username</td><td>Password</td><td>Mobilenumber</td><td>Description</td><td>Roles</td><td>Add Role</td><td>Remove Role</td><td>Delete</td>
             </tr>
             <tr v-for="(user, index) in usersData" v-bind:key="index">
-                <td>{{ user.username }}</td><td>{{ user.password }}</td><td>{{ user.mobilenumber }}</td>
+                <td>{{ user.username }}</td>
+                <td>
+                    <input type="text" size="10" v-bind:value="user.password">
+                    <div><button>Update</button></div>
+                </td>
+                <td>{{ user.mobilenumber }}</td>
                 <td>{{ user.description }}</td><td>{{ user.roles }}</td>
                 <td v-bind:username="user.username" v-bind:roles="user.roles">
                     <input type="text" />
