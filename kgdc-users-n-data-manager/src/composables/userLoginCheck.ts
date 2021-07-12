@@ -21,7 +21,10 @@ const userLoginCheck = () => {
                 let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
                 console.log(responseObj);
 
-                if(responseObj.validUser && responseObj.userDetails.roles == 'ADMIN'){
+                let roles = responseObj.userDetails.roles;
+                let rolesArry = roles.split(',');
+
+                if(responseObj.validUser && rolesArry.includes('ADMIN')){
                     store.dispatch('setLoggedIn', true);
                     store.dispatch('setUserRoles', responseObj.roles);
                     store.dispatch('setGlobalUsename', responseObj.validateusername);
