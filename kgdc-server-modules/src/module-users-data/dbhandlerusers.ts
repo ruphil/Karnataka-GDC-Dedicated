@@ -59,9 +59,12 @@ export const changePassword = (ws: WebSocket, msgObj: any) => {
 // Admin Only Logics    --------------------------------------------------------------------------------------------------
 
 export const newregistration = async (ws: WebSocket, msgObj: any) => {
-    let insertQuery = `INSERT INTO userstable (USERNAME, PASSWORD, MOBILENUMBER, DESCRIPTION, ROLES) VALUES ($1, $2, $3, $4, $5)`;
-    let { newusername, newpassword, mobilenumber, description, roles } = msgObj;
-    let insertData = [newusername, newpassword, mobilenumber, description, roles];
+    let insertQuery = `INSERT INTO userstable (
+        USERNAME, PASSWORD, MOBILENUMBER, DESCRIPTION, ROLES, JURISDICTION, EXPIRY) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7)`;
+
+    let { newusername, newpassword, mobilenumber, description, roles, jurisdiction, expiry } = msgObj;
+    let insertData = [ newusername, newpassword, mobilenumber, description, roles, jurisdiction, expiry ];
 
     checkAdminUser(msgObj)
     .then((res: any) => {

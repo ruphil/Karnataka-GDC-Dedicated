@@ -6,29 +6,28 @@
 
         <table border="1" class="tablecenter">
             <tr>
-                <td>Username</td><td>Password</td><td>Mobilenumber</td><td>Description</td><td>Add Role</td><td>Remove Role</td><td>Delete</td>
+                <th>Username</th><th>Password</th><th>Mobilenumber</th><th>Description</th><th>Roles</th><th>Delete</th>
             </tr>
             <tr v-for="(user, index) in usersData" v-bind:key="index">
                 <td>{{ user.username }}</td>
                 <td>
-                    <input type="text" size="10" v-bind:value="user.password">
-                    <div><button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'password'">Update</button></div>
+                    <input type="text" size="10" v-bind:value="user.password"><br><br>
+                    <button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'password'">Update</button>
                 </td>
                 <td>
-                    <input type="text" size="10" v-bind:value="user.mobilenumber">
-                    <div><button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'mobilenumber'">Update</button></div>
+                    <input type="text" size="10" v-bind:value="user.mobilenumber"><br><br>
+                    <button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'mobilenumber'">Update</button>
                 </td>
                 <td>
-                    <input type="text" size="10" v-bind:value="user.description">
-                    <div><button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'description'">Update</button></div>
+                    <input type="text" size="10" v-bind:value="user.description"><br><br>
+                    <button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'description'">Update</button>
                 </td>
                 
                 <td v-bind:username="user.username" v-bind:roles="user.roles">
-                    {{ user.roles }} <br>
+                    Defined:<br> {{ user.roles }} <br><br>
                     <input type="text" />
                     <button v-on:click="addRole">Add</button>
-                </td>
-                <td v-bind:username="user.username" v-bind:roles="user.roles">
+                    <br><br>
                     <select>
                         <option selected></option>
                         <option v-for="(item, index) in renderRolesOptions(user.roles)" v-bind:key="index">
@@ -81,10 +80,15 @@ export default defineComponent({
 
         const updateaction = (e: any) => {
             let el = e.target;
+            let parent = e.target.parentNode;
+
             let username = el.getAttribute('username');
             let updatetype = el.getAttribute('updatetype');
 
-            console.log(username, updatetype);
+            let updateinput = parent.querySelectorAll('input')[0];
+            let updatevalue = updateinput.value;
+
+            console.log(username, updatetype, updatevalue);
         }
 
         const addRole = (e: any) => {

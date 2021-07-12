@@ -1,0 +1,5 @@
+CREATE TABLE USERSTABLE(
+    ID              SERIAL  PRIMARY KEY,
+    DISTRICT        TEXT    NOT NULL,
+    TALUK           TEXT    NOT NULL,
+);
