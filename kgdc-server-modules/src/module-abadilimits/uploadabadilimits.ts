@@ -19,7 +19,7 @@ export const uploadAbadiLimit = (ws: WebSocket, msgObj: any) => {
 
     let abadilimituuid = uuidv4();
 
-    let { 
+    let {
         taluk, hobli, grampanchayat, villagename, lgdcode, 
         abadilimitname, noofproperties, startdate, enddate, pocketscount
     } = attributes;

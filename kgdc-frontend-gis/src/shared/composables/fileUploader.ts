@@ -6,7 +6,13 @@ import globalToast from './globalToast';
 const fileUploader = () => {
     const { showGlobalToast } = globalToast();
 
-    const uploadFile = (currentvillagedetails: any, currentvillage: any, currentvillagecode: any, fileName: any, fileType: any, description: any, currentuser: any, fileEl: any) => {
+    const uploadFile = (uploadfilearguments: any) => {
+        const { 
+            currentvillagedetails, currentvillage, currentvillagecode,
+            currentabadiname, currentabadiuuid, 
+            fileName, fileType, description, currentuser, fileEl 
+        } = uploadfilearguments;
+
         console.log(currentvillage, currentvillagecode, fileName, fileType, description, currentuser);
 
         let file = fileEl.files[0];
@@ -19,6 +25,9 @@ const fileUploader = () => {
 
         formData.append('currentvillage', currentvillage);
         formData.append('currentvillagecode', currentvillagecode);
+        formData.append('currentabadiname', currentabadiname);
+        formData.append('currentabadiuuid', currentabadiuuid);
+        
         formData.append('currentdistrict', district);
         formData.append('currenttaluk', taluk);
         formData.append('currentgp', gp);

@@ -3,7 +3,7 @@
         <div class="fileuploadercontainer" v-show="showFileUploader">
             <div class="close"><span class="material-icons-outlined" v-on:click="closeFileUploader">close</span></div>
             <div class="village">
-                <span>Current Village: {{ currentvillage }}</span>
+                <span>Current Abadi: {{ currentabadiname }} ({{ currentvillage }})</span>
             </div>
             <div class="fileuploader">
                 <input class="file" type="file" ref="fileEl"><br>
@@ -16,7 +16,7 @@
             <div class="village">
                 <span class="material-icons-outlined close" v-on:click="closeFilesLoader">close</span>
                 &emsp;&emsp;&emsp;
-                <span>Current Village: {{ currentvillage }}</span>
+                <span>Current Abadi: {{ currentabadiname }} ({{ currentvillage }})</span>
                 &emsp;&emsp;&emsp;
                 <button v-on:click="loadFiles">Load Files</button>
             </div>
@@ -96,6 +96,9 @@ export default defineComponent({
         const currentvillagecode = computed(() => store.getters.getCurrentUniqueVillageCode);
         const currentvillagedetails = computed(() => store.getters.getCurrentVillageDetails);
 
+        const currentabadiname = computed(() => store.getters.getCurrentAbadiLimit);
+        const currentabadiuuid = computed(() => store.getters.getCurrentAbadiUUID);
+
         const filesList = computed(() => store.getters.getFilesList);
 
         const fileEl = ref();
@@ -140,7 +143,21 @@ export default defineComponent({
                 return 0;
             }
 
-            uploadFile(currentvillagedetails.value, currentvillage.value, currentvillagecode.value, fileName.value, fileType.value, description.value, currentuser.value, fileEl.value);
+            let uploadfilearguments = {
+                currentvillagedetails: currentvillagedetails.value,
+                currentvillage: currentvillage.value,
+                currentvillagecode: currentvillagecode.value,
+                currentabadiname: currentabadiname.value,
+                currentabadiuuid: currentabadiuuid.value,
+                fileName: fileName.value,
+                fileType: fileType.value,
+                description: description.value,
+                currentuser:
+                currentuser.value,
+                fileEl: fileEl.value
+            }
+
+            uploadFile(uploadfilearguments);
             store.dispatch('setUploadBtnDisabled', true);
         }
 
@@ -188,7 +205,8 @@ export default defineComponent({
 
         return { 
             showFileUploader, showFilesLoader, fileuploadprogress,
-            currentvillage, closeFileUploader, closeFilesLoader, loadFiles,
+            currentvillage, currentabadiname,
+            closeFileUploader, closeFilesLoader, loadFiles,
             fileEl, description, calluploadfile, uploadbtndisabled, filesList,
             approveAbadi, approveFile,
             downloadAbadi, downloadAttachment

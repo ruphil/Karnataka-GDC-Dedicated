@@ -381,15 +381,15 @@ export default defineComponent({
         }
 
         const toggleFileUploader = () => {
-            console.log('toggling fileuplaoder');
-            console.log(store.getters.getShowFilesUploader);
+            // console.log('toggling fileuplaoder');
+            // console.log(store.getters.getShowFilesUploader);
 
             store.dispatch('setShowFilesUploader', !store.getters.getShowFilesUploader);
         }
 
         const toggleFilesLoader = () => {
-            console.log('toggling filesloader');
-            console.log(store.getters.getShowFilesLoader);
+            // console.log('toggling filesloader');
+            // console.log(store.getters.getShowFilesLoader);
 
             store.dispatch('setShowFilesLoader', !store.getters.getShowFilesLoader);
         }

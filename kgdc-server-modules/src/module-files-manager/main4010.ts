@@ -56,9 +56,13 @@ app.post('/fileupload', [ staticAuthentication, upload.single('uploadedfile') ],
 
     if(existsSync(tempfilepath)){
         let formData = req.body;
-        const { currentdistrict, currenttaluk, currentgp, currentvillage, currentvillagecode, fileName, fileType, description, currentuser } = formData;
+        const { 
+            currentdistrict, currenttaluk, currentgp, 
+            currentvillage, currentvillagecode,
+            currentabadiname, currentabadiuuid,
+            fileName, fileType, description, currentuser } = formData;
 
-        const newFileName = currentdistrict + '_' + currenttaluk + '_' + currentgp + '_'+ currentvillage + '_' + description + '_' + uuidv4();
+        const newFileName = currentdistrict + '_' + currenttaluk + '_' + currentgp + '_'+ currentvillage + '_' + currentabadiname + '_' + description + '_' + uuidv4();
         const diskidentifier = newFileName.replace(/\W/g, '');
         const storagefilepath = resolve(storageFolder, diskidentifier) + '.' + fileType;
 
@@ -66,7 +70,7 @@ app.post('/fileupload', [ staticAuthentication, upload.single('uploadedfile') ],
             if(!err){
                 // console.log('File Saved Successfully');
 
-                addFileRowToDB(currentvillage, currentvillagecode, fileName, fileType, description, currentuser, diskidentifier)
+                addFileRowToDB(currentvillage, currentvillagecode, currentabadiname, currentabadiuuid, fileName, fileType, description, currentuser, diskidentifier)
                 .then(() => {
                     res.send('success');
                 })

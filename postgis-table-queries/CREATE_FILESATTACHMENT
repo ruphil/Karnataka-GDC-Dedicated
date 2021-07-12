@@ -2,6 +2,8 @@ CREATE TABLE filesattachment(
     ID                  SERIAL  PRIMARY KEY,
     VILLAGENAME         TEXT    NOT NULL,
     UNIQUEVILLAGECODE   TEXT    NOT NULL,
+    ABADILIMITNAME      TEXT    NOT NULL,
+    ABADILIMITUUID      TEXT    NOT NULL,
     IDENTIFIER          TEXT    NOT NULL,
     FILETYPE            TEXT,
     DESCRIPTION         TEXT,
