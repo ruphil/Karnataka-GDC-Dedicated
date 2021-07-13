@@ -1,0 +1,258 @@
+1,ALL@ALL
+2,ALL@Bagalkot
+3,ALL@Ballari
+4,ALL@Belagavi
+5,ALL@Bengaluru (Rural)
+6,ALL@Bengaluru (Urban)
+7,ALL@Bidar
+8,ALL@Chamarajanagara
+9,ALL@Chikkaballapura
+10,ALL@Chikkamagaluru
+11,ALL@Chitradurga
+12,ALL@Dakshina Kannada
+13,ALL@Davanagere
+14,ALL@Dharwad
+15,ALL@Gadag
+16,ALL@Hassan
+17,ALL@Haveri
+18,ALL@Kalburgi
+19,ALL@Kodagu
+20,ALL@Kolara
+21,ALL@Koppal
+22,ALL@Mandya
+23,ALL@Mysuru
+24,ALL@Raichur
+25,ALL@Ramanagara
+26,ALL@Shivamogga
+27,ALL@Tumakuru
+28,ALL@Udupi
+29,ALL@Uttara Kannada
+30,ALL@Vijayapura
+31,ALL@Yadgir
+32,Badami@Bagalkot
+33,Bagalkote@Bagalkot
+34,Bilagi@Bagalkot
+35,Guledagudda@Bagalkot
+36,Hungund@Bagalkot
+37,Ilkal@Bagalkot
+38,Jamakhandi@Bagalkot
+39,Mudhol@Bagalkot
+40,RABAKAVI BANAHATTI@Bagalkot
+41,Ballari@Ballari
+42,Hadagali@Ballari
+43,Hagaribommanahalli@Ballari
+44,Harapanahalli@Ballari
+45,Hospet@Ballari
+46,Kampli@Ballari
+47,Kotturu@Ballari
+48,Kudligi@Ballari
+49,Kurugodu@Ballari
+50,Siraguppa@Ballari
+51,Sonduru@Ballari
+52,Athani@Belagavi
+53,Bailhongal@Belagavi
+54,Belagavi@Belagavi
+55,Chikkodi@Belagavi
+56,Gokak@Belagavi
+57,Hukkeri@Belagavi
+58,Kagavada@Belagavi
+59,Khanapur@Belagavi
+60,Kitthuru@Belagavi
+61,Mudalagi@Belagavi
+62,Nippani@Belagavi
+63,Raibag@Belagavi
+64,Ramadurg@Belagavi
+65,Savadatti@Belagavi
+66,Devanahalli@Bengaluru (Rural)
+67,Doddaballapura@Bengaluru (Rural)
+68,Hoskote@Bengaluru (Rural)
+69,Nelamangala@Bengaluru (Rural)
+70,Anekal@Bengaluru (Urban)
+71,Bangalore (North)@Bengaluru (Urban)
+72,Bangalore-East@Bengaluru (Urban)
+73,Bangalore-South@Bengaluru (Urban)
+74,Yelahanka@Bengaluru (Urban)
+75,Aurad@Bidar
+76,Basavakalyan@Bidar
+77,Bhalki@Bidar
+78,Bidar@Bidar
+79,Chittaguppa@Bidar
+80,Hulasuru@Bidar
+81,Humnabad@Bidar
+82,Kamalanagara@Bidar
+83,Chamarajanagara@Chamarajanagara
+84,Gundlupet@Chamarajanagara
+85,Kollegala@Chamarajanagara
+86,Kollegala(Hanur)@Chamarajanagara
+87,Yalandur@Chamarajanagara
+88,Bagepalli@Chikkaballapura
+89,chikballapur@Chikkaballapura
+90,Chinthamani@Chikkaballapura
+91,gauribidanur@Chikkaballapura
+92,gudibande@Chikkaballapura
+93,Shidlagatta@Chikkaballapura
+94,Ajjampura@Chikkamagaluru
+95,Chikmagalur@Chikkamagaluru
+96,Kadur@Chikkamagaluru
+97,Koppa@Chikkamagaluru
+98,Mudigere@Chikkamagaluru
+99,Narasimharajapura@Chikkamagaluru
+100,Sringeri@Chikkamagaluru
+101,Tarikere@Chikkamagaluru
+102,Challakere@Chitradurga
+103,chitradurga@Chitradurga
+104,hiriyur@Chitradurga
+105,holalkere@Chitradurga
+106,hosadurga@Chitradurga
+107,Molakalmuru@Chitradurga
+108,Bantwal@Dakshina Kannada
+109,Belthangady@Dakshina Kannada
+110,Kadaba@Dakshina Kannada
+111,Mangalore@Dakshina Kannada
+112,Mudabidri@Dakshina Kannada
+113,Puttur@Dakshina Kannada
+114,Sulya@Dakshina Kannada
+115,Channagiri@Davanagere
+116,Davanagere@Davanagere
+117,Harihar@Davanagere
+118,Honnali@Davanagere
+119,Jagaluru@Davanagere
+120,Nyamati@Davanagere
+121,Alnavara@Dharwad
+122,ANNIGERI@Dharwad
+123,Dharwad@Dharwad
+124,Hubballi Nagara@Dharwad
+125,Hubli@Dharwad
+126,Kalgatgi@Dharwad
+127,Kundgol@Dharwad
+128,Navalgund@Dharwad
+129,Gadag@Gadag
+130,Gajendragad@Gadag
+131,Laxmeshwar@Gadag
+132,Mundargi@Gadag
+133,Naragund@Gadag
+134,Rona@Gadag
+135,Shirahatti@Gadag
+136,Alur@Hassan
+137,Arkalgud@Hassan
+138,Arsikere@Hassan
+139,Belur@Hassan
+140,Channarayapatna@Hassan
+141,Hassan@Hassan
+142,Holenarasipura@Hassan
+143,Sakleshpura@Hassan
+144,Byadagi@Haveri
+145,Hangal@Haveri
+146,Haveri@Haveri
+147,Hirekerur@Haveri
+148,Ranebennur@Haveri
+149,Ratteehalli@Haveri
+150,Savanur@Haveri
+151,Shiggaon@Haveri
+152,Afzalpur@Kalburgi
+153,Aland@Kalburgi
+154,Chincholi@Kalburgi
+155,Chittapur@Kalburgi
+156,Gulbarga@Kalburgi
+157,Jevargi@Kalburgi
+158,Kalagi@Kalburgi
+159,Kamalapura@Kalburgi
+160,Sedam@Kalburgi
+161,Shahbadha@Kalburgi
+162,Yadrami@Kalburgi
+163,Madikeri@Kodagu
+164,somawarpet@Kodagu
+165,Virajpet@Kodagu
+166,BANGARPET@Kolara
+167,K.G.F@Kolara
+168,Kolar@Kolara
+169,Malur@Kolara
+170,Mulabagilu@Kolara
+171,Srinivaspura@Kolara
+172,Gangavathi@Koppal
+173,Kanakagiri@Koppal
+174,Karatagi@Koppal
+175,koppal@Koppal
+176,Kukanuru@Koppal
+177,Kushtagi@Koppal
+178,yelburga@Koppal
+179,Krishnarajpet@Mandya
+180,Maddur@Mandya
+181,Malavalli@Mandya
+182,Mandya@Mandya
+183,Nagamangala@Mandya
+184,Pandavpura@Mandya
+185,Srirangapatna@Mandya
+186,Heggadadevanakote@Mysuru
+187,Hunsur@Mysuru
+188,K.R.Nagar@Mysuru
+189,Mysuru@Mysuru
+190,Nanjangud@Mysuru
+191,Piriyapatna@Mysuru
+192,Saraguru@Mysuru
+193,T.Narasipura@Mysuru
+194,Devdurga@Raichur
+195,Lingasugur@Raichur
+196,Manvi@Raichur
+197,Maski@Raichur
+198,Raichur@Raichur
+199,Sindhanur@Raichur
+200,Sirivara@Raichur
+201,Channapatna@Ramanagara
+202,Kanakpura@Ramanagara
+203,Magadi@Ramanagara
+204,Ramanagar@Ramanagara
+205,Bhadravathi@Shivamogga
+206,Hosanagar@Shivamogga
+207,Sagara@Shivamogga
+208,shikaripura@Shivamogga
+209,shimoga@Shivamogga
+210,Soraba@Shivamogga
+211,Thirthahalli@Shivamogga
+212,Chiknayakanahalli@Tumakuru
+213,Gubbi@Tumakuru
+214,Koratagere@Tumakuru
+215,Kunigal@Tumakuru
+216,Madhugiri@Tumakuru
+217,Pavagada@Tumakuru
+218,Sira@Tumakuru
+219,Tiptur@Tumakuru
+220,Tumkur@Tumakuru
+221,Turuvekere@Tumakuru
+222,Bramhavara@Udupi
+223,Bynduru@Udupi
+224,Hebri@Udupi
+225,Kapu@Udupi
+226,Karkala@Udupi
+227,Kundapur@Udupi
+228,Udupi@Udupi
+229,Ankola@Uttara Kannada
+230,Bhatkal@Uttara Kannada
+231,Dandelli@Uttara Kannada
+232,Haliyal@Uttara Kannada
+233,Honnavar@Uttara Kannada
+234,Joida@Uttara Kannada
+235,Karwar@Uttara Kannada
+236,Kumta@Uttara Kannada
+237,Mundgod@Uttara Kannada
+238,Siddapur@Uttara Kannada
+239,Sirsi@Uttara Kannada
+240,Yellapur@Uttara Kannada
+241,Babaleshwara@Vijayapura
+242,Basavan Bagewadi@Vijayapura
+243,Bijapur@Vijayapura
+244,Chadachana@Vijayapura
+245,Devara Hipparagi@Vijayapura
+246,Indi@Vijayapura
+247,Kolhara@Vijayapura
+248,Muddebihal@Vijayapura
+249,Nidagundi@Vijayapura
+250,Sindagi@Vijayapura
+251,Talikote@Vijayapura
+252,Tikota@Vijayapura
+253,Gurumithakala@Yadgir
+254,Hunisigi@Yadgir
+255,Shahapur@Yadgir
+256,Shorapur@Yadgir
+257,Vadagera@Yadgir
+258,Yadgir@Yadgir

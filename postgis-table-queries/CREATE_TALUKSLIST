@@ -1,5 +1,0 @@
-CREATE TABLE TALUKSLIST(
-    ID              SERIAL  PRIMARY KEY,
-    DISTRICT        TEXT    NOT NULL,
-    TALUK           TEXT    NOT NULL
-);
