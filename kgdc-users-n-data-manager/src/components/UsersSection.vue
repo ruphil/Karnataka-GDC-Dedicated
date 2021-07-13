@@ -101,7 +101,7 @@ export default defineComponent({
         });
 
         const callDeleteUser = (e: any) => {
-            let username = e.target.getAttribute('updatetype');
+            let username = e.target.getAttribute('username');
             console.log(username);
 
             deleteUser(username);
@@ -162,12 +162,12 @@ export default defineComponent({
             let jurisdictionPresent = parent.getAttribute('jurisdiction');
             let jurisdictionSelect = parent.querySelectorAll('select')[0];
             let jurisdictionToAdd = jurisdictionSelect.options[jurisdictionSelect.selectedIndex].text;
+            
             let jurisdictionArry = jurisdictionPresent.split(',');
-
             jurisdictionArry.push(jurisdictionToAdd);
             let modifiedJurisdictionArry = [...new Set(jurisdictionArry)];
             let modifiedJurisdiction = modifiedJurisdictionArry.join(',').replace(/^,|,$/g,'');
-            // console.log(username, jurisdictionPresent, modifiedJurisdiction);
+            console.log(username, jurisdictionPresent, jurisdictionToAdd, modifiedJurisdiction);
 
             modifyJurisdiction(username, modifiedJurisdiction);
         }
@@ -176,11 +176,13 @@ export default defineComponent({
             let parent = e.target.parentNode;
             let username = parent.getAttribute('username');
             let jurisdictionPresent = parent.getAttribute('jurisdiction');
-            let jurisdictionSelect = parent.querySelectorAll('select')[0];
+            let jurisdictionSelect = parent.querySelectorAll('select')[1];
             let jurisdictionToRemove = jurisdictionSelect.options[jurisdictionSelect.selectedIndex].text;
-            let rolesArry = jurisdictionPresent.split(',');
-            let modifiedJurisdictionArry = rolesArry.filter((i: any) => i != jurisdictionToRemove);
+            
+            let jurisdictionArry = jurisdictionPresent.split(',');
+            let modifiedJurisdictionArry = jurisdictionArry.filter((i: any) => i != jurisdictionToRemove);
             let modifiedJurisdiction = modifiedJurisdictionArry.join(',').replace(/^,|,$/g,'');
+            console.log(username, jurisdictionPresent, jurisdictionToRemove, modifiedJurisdiction);
 
             modifyJurisdiction(username, modifiedJurisdiction);
         }
