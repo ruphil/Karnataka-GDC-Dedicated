@@ -17,7 +17,7 @@ const roleAssignment = () => {
             console.log(responseObj);
             
             if(responseObj.requestStatus == 'success') {
-                showGlobalToast('Credentials Updated Successfully...');
+                showGlobalToast(`${responseObj.action} Successfully...`);
                 getUsers();
             } else {
                 showGlobalToast('Error Updating Credentials...');
