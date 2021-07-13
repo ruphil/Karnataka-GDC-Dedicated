@@ -1,6 +1,6 @@
 import { checkValidUserNGetRoles } from '../common-ts/userRolesAdminCheck';
 
-export const checkUserForJurisdictionNValidity = (params: any) => {
+export const checkUserForValidityNJurisdiction = (params: any) => {
     return new Promise((resolve, reject) => {
         let proxyMsgObj = {
             validateusername: params.get('username'),
@@ -12,19 +12,7 @@ export const checkUserForJurisdictionNValidity = (params: any) => {
         .then((userrow: any) => {
             console.log(userrow);
             
-            let jurisdiction = userrow.jurisdiction;
-            let expiryDate = new Date(userrow.expiry);
-            let todaysDate = new Date();
-            // console.log(expiryDate, todaysDate);
-            // console.log(expiryDate.getTime(), todaysDate.getTime());
-
-            let cond1 = todaysDate.getTime() < expiryDate.getTime();
-            console.log('Expiry Condition: ', cond1);
-            if(!cond1){
-                reject('failure');
-            }
-
-            checkJurisdiction(jurisdiction, params)
+            checkExpiryNJurisdiction(userrow, params)
             .then(() => {
                 resolve('success');
             }).catch(() => {
@@ -37,18 +25,61 @@ export const checkUserForJurisdictionNValidity = (params: any) => {
     })
 }
 
-const checkJurisdiction = (jurisdiction: any, params: any) => {
+export const checkUserForValidityNJurisdictionNAttachment = (params: any) => {
     return new Promise((resolve, reject) => {
+        let proxyMsgObj = {
+            validateusername: params.get('username'),
+            validatepassword: params.get('password')
+        }
+        // console.log(proxyMsgObj);
+    
+        checkValidUserNGetRoles(proxyMsgObj)
+        .then((userrow: any) => {
+            console.log(userrow);
+            
+            checkExpiryNJurisdiction(userrow, params)
+            .then(() => {
+                checkAttachment(params)
+                .then(() => {
+                    resolve('success');
+                }).catch(() => {
+                    reject('failure');
+                });
+            }).catch(() => {
+                reject('failure');
+            });
+        })
+        .catch(() => {
+            reject('failure');
+        })
+    })
+}
+
+const checkExpiryNJurisdiction = (userrow: any, params: any) => {
+    return new Promise((resolve, reject) => {
+        let jurisdiction = userrow.jurisdiction;
+        let expiryDate = new Date(userrow.expiry);
+        let todaysDate = new Date();
+        // console.log(expiryDate, todaysDate);
+        // console.log(expiryDate.getTime(), todaysDate.getTime());
+
+        let validityAvail = todaysDate.getTime() < expiryDate.getTime();
+        if(!validityAvail){
+            console.log('User Expired');
+            reject('failure');
+        }
+
         if(jurisdiction == '' || jurisdiction == null){
+            console.log('Invalid Jurisdiction 1');
             reject('failure');
         }
     
         let clientdistrict = params.get('district');
         let clienttaluk = params.get('taluk');
-        console.log(clientdistrict, clienttaluk);
+        // console.log(clientdistrict, clienttaluk);
     
         let jurisdictionArry = jurisdiction.split(',');
-        console.log(jurisdictionArry);
+        // console.log(jurisdictionArry);
         
         for(let i = 0; jurisdictionArry.length; i++){
             let jurisdictionStr = jurisdictionArry[i];
@@ -70,8 +101,18 @@ const checkJurisdiction = (jurisdiction: any, params: any) => {
                 resolve('success');
             }
         }
-    
-        console.log('came hre');
+
+        console.log('Invalid Jurisdiction 2');
         reject('failure');
+    });
+}
+
+const checkAttachment = (params: any) => {
+    return new Promise((resolve, reject) => {    
+        let clientdistrict = params.get('district');
+        let clienttaluk = params.get('taluk');
+        // console.log(clientdistrict, clienttaluk);
+    
+        
     });
 }

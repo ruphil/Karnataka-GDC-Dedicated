@@ -7,7 +7,7 @@ import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
 import { rename, unlink } from 'fs';
 
-import { checkUserForJurisdictionNValidity } from './authenticator';
+import { checkUserForValidityNJurisdiction, checkUserForValidityNJurisdictionNAttachment } from './authenticator';
 import { addFileRowToDB } from './dbhandlerfiles';
 
 const tempFolder = 'D:/KGDCTEMP/';
@@ -32,11 +32,11 @@ app.use(cors());
 
 const server = new http.Server(app);
 
-const staticAuthentication = (req: any, res: any, next: any) => {
+const uploadAuthentication = (req: any, res: any, next: any) => {
     let searchParams = new URLSearchParams(req._parsedUrl.search);
     // console.log(searchParams);
 
-    checkUserForJurisdictionNValidity(searchParams)
+    checkUserForValidityNJurisdiction(searchParams)
     .then(() => {
         next();
     })
@@ -45,8 +45,21 @@ const staticAuthentication = (req: any, res: any, next: any) => {
     })
 }
 
-app.use('/files', [ staticAuthentication, express.static(storageFolder) ]);
-app.post('/fileupload', [ staticAuthentication, upload.single('uploadedfile') ], function(req: any, res: any){
+const downloadAuthentication = (req: any, res: any, next: any) => {
+    let searchParams = new URLSearchParams(req._parsedUrl.search);
+    // console.log(searchParams);
+
+    checkUserForValidityNJurisdictionNAttachment(searchParams)
+    .then(() => {
+        next();
+    })
+    .catch(() => {
+        res.send('Unauthorized Access');
+    })
+}
+
+app.use('/files', [ downloadAuthentication, express.static(storageFolder) ]);
+app.post('/fileupload', [ uploadAuthentication, upload.single('uploadedfile') ], function(req: any, res: any){
     let file = req.file!;
     // console.log(file);
     // console.log(req.body);
