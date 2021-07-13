@@ -4,7 +4,7 @@ const usersTable = () => {
     const getUsers = () => {
         const adminuser = store.getters.getUsername;
         const adminpass = store.getters.getPassword;
-        const wssURL = store.getters.getUsersDronesModuleWSS;
+        const wssURL = store.getters.getUsersNDataModuleWSS;
         let ws = new WebSocket(wssURL);
 
         ws.addEventListener('message', (event) => {

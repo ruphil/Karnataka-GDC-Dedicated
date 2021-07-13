@@ -2,9 +2,10 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    usersDronesModuleWSS: 'ws://localhost:3010',
+    usersNDataModuleWSS: 'ws://localhost:3010',
     globaltoastmsg: '',
     globaltoastEl: null,
+    jurisdictions: [],
     isLoggedIn: false,
     username: '',
     password: '',
@@ -13,8 +14,8 @@ export default createStore({
     dronenumbers: []
   },
   getters: {
-    getUsersDronesModuleWSS(state){
-      return state.usersDronesModuleWSS;
+    getUsersNDataModuleWSS(state){
+      return state.usersNDataModuleWSS;
     },
     getGlobalToastMsg(state){
       return state.globaltoastmsg;
@@ -24,6 +25,9 @@ export default createStore({
     },
     getLoggedIn(state) {
       return state.isLoggedIn;
+    },
+    getJurisdictions(state) {
+      return state.jurisdictions;
     },
     getUsername(state){
       return state.username;
@@ -47,6 +51,9 @@ export default createStore({
     },
     setGlobalToastMsg(state, msg){
       state.globaltoastmsg = msg;
+    },
+    setJurisdictions(state, jurisdictions){
+      state.jurisdictions = jurisdictions;
     },
     setLoggedIn(state, isLoggedIn){
       state.isLoggedIn = isLoggedIn;
@@ -73,6 +80,9 @@ export default createStore({
     },
     setGlobalToastMsg(context, msg){
       context.commit('setGlobalToastMsg', msg);
+    },
+    setJurisdictions(context, jurisdictions){
+      context.commit('setJurisdictions', jurisdictions);
     },
     setLoggedIn(context, isLoggedIn){
       context.commit('setLoggedIn', isLoggedIn);

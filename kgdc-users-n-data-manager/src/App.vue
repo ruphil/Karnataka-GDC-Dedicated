@@ -12,7 +12,7 @@ import { computed, defineComponent, onMounted, ref } from 'vue';
 import router from './router';
 
 import NavBar from '@/components/NavBar.vue';
-import store from './store';
+import store from '@/store';
 
 export default defineComponent({
   components: {

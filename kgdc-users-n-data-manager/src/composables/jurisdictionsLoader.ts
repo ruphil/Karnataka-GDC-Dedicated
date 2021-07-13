@@ -1,37 +1,29 @@
 import store from "@/store";
-import globalToast from './globalToast';
-import usersTable from './fetchUserTable';
 
-const roleAssignment = () => {
-    const { showGlobalToast } = globalToast();
-    const { getUsers } = usersTable();
+const jurisdictionsLoader = () => {
 
-    const assignRole = (username: any, newrole: any) => {
+    const loadJurisdictions = () => {
         const adminuser = store.getters.getUsername;
         const adminpass = store.getters.getPassword;
         const wssURL = store.getters.getUsersNDataModuleWSS;
         let ws = new WebSocket(wssURL);
 
         ws.addEventListener('message', (event) => {
+            // console.log(event);
             let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
             console.log(responseObj);
             
             if(responseObj.requestStatus == 'success') {
-                showGlobalToast('Role Modified Successfully...');
-                getUsers();
-            } else {
-                showGlobalToast('Error Modifying Role...');
+                store.dispatch('setJurisdictions', responseObj.jurisdictionslist);
             }
             
             ws.close();
         });
         ws.addEventListener('open', (event) => {
             let requestObj = {
-                request: 'assignrole',
+                request: 'getjurisdictions',
                 validateusername: adminuser,
-                validatepassword: adminpass,
-                usernametoupdate: username,
-                newrole
+                validatepassword: adminpass
             };
 
             console.log(requestObj);
@@ -40,7 +32,7 @@ const roleAssignment = () => {
         });
     }
     
-    return { assignRole };
+    return { loadJurisdictions };
 }
 
-export default roleAssignment;
+export default jurisdictionsLoader;

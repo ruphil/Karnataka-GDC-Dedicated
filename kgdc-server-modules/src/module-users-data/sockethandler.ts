@@ -3,6 +3,7 @@ import WebSocket from 'ws';
 import { getRoles, changePassword } from './dbhandlerusers';
 import { newregistration, getUsersTable, assignRole, deleteUser  } from './dbhandlerusers';
 import { addDrone, removeDrone, getDrones  } from './dbhandlerdrones';
+import { getJurisdictions } from './dbhandlerjurisdictions';
 
 export const handleWebSocketConnection = (ws: WebSocket) => {
     ws.on('message', (data: WebSocket.Data)=>{
@@ -36,6 +37,9 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
                 break;
             case 'getdrones':
                 getDrones(ws, msgObj);
+                break;
+            case 'getjurisdictions':
+                getJurisdictions(ws, msgObj);
                 break;
             default:
                 // To clearly inform the Unanonymous Users Requesting Without Base64 String
