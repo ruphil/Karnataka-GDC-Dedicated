@@ -41,8 +41,8 @@ const uploadAuthentication = (req: any, res: any, next: any) => {
         next();
     })
     .catch(() => {
-        res.send('Unauthorized Access');
-    })
+        res.send('unauthorizedupload');
+    });
 }
 
 const downloadAuthentication = (req: any, res: any, next: any) => {

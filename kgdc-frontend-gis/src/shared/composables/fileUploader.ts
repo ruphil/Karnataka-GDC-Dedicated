@@ -59,7 +59,10 @@ const fileUploader = () => {
             .then((response) => {
                 if(response.data == 'success'){
                     showGlobalToast('File Uploaded Successfully');
-                } else {
+                } else if (response.data == 'unauthorizedupload') {
+                    showGlobalToast('Unauthorized Upload Failed');
+                }
+                else {
                     showGlobalToast('Error Uploading File');
                 }
             }).catch((error) => {

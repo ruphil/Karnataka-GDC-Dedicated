@@ -50,7 +50,7 @@ import store from '@/shared/store';
 import { defineComponent, ref, computed, onMounted } from 'vue';
 import './NavBar.scss';
 import globalToast from '@/shared/composables/globalToast';
-import userLoginCheck from '@/shared/composables/userLoginCheck';
+import userLoginCheck from '@/appvillages/composables/userLoginCheck';
 import passwordUpdation from '@/shared/composables/mobilepasswordUpdation';
 
 export default defineComponent({
