@@ -43,6 +43,7 @@ const checkJurisdiction = (jurisdiction: any, params: any) => {
     let clienttaluk = params.get('taluk');
 
     let jurisdictionArry = jurisdiction.split(',');
+    console.log(jurisdictionArry);
     
     let validJurisdiction = false;
     for(let i = 0; jurisdictionArry.length; i++){
@@ -51,6 +52,7 @@ const checkJurisdiction = (jurisdiction: any, params: any) => {
 
         let dbtaluk = talukDistrict[0];
         let dbdistrict = talukDistrict[1];
+        console.log(dbtaluk, dbdistrict);
 
         if(dbdistrict == 'ALL'){
             validJurisdiction = true;
@@ -64,6 +66,8 @@ const checkJurisdiction = (jurisdiction: any, params: any) => {
             validJurisdiction = true;
         }
     }
+
+    console.log('came hre');
 
     return validJurisdiction;
 }
