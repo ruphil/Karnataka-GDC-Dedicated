@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 
 import { getRoles, changePassword } from './dbhandlerusers';
-import { newregistration, getUsersTable, updateUserCredentials, assignRole, deleteUser  } from './dbhandlerusers';
+import { newregistration, getUsersTable, updateUserCredentials, modifyRole, deleteUser  } from './dbhandlerusers';
 import { addDrone, removeDrone, getDrones  } from './dbhandlerdrones';
 import { getJurisdictions } from './dbhandlerjurisdictions';
 
@@ -26,8 +26,8 @@ export const handleWebSocketConnection = (ws: WebSocket) => {
             case 'updateusercredentials':
                 updateUserCredentials(ws, msgObj);
                 break;
-            case 'assignrole':
-                assignRole(ws, msgObj);
+            case 'modifyrole':
+                modifyRole(ws, msgObj);
                 break;
             case 'deleteuser':
                 deleteUser(ws, msgObj);

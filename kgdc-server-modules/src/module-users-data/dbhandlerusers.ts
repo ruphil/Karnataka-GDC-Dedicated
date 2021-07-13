@@ -197,7 +197,7 @@ export const updateUserCredentials = (ws: WebSocket, msgObj: any) => {
     });
 }
 
-export const assignRole = (ws: WebSocket, msgObj: any) => {
+export const modifyRole = (ws: WebSocket, msgObj: any) => {
     checkAdminUser(msgObj)
     .then((res: any) => {
         const client = new Client({ connectionString });
@@ -209,12 +209,12 @@ export const assignRole = (ws: WebSocket, msgObj: any) => {
         let sqlQuery = `UPDATE userstable SET ROLES = '${newrole}' WHERE USERNAME = '${usernametoupdate}'`;
         client.query(sqlQuery)
         .then(() => {
-            let responseObj = { response: 'assignrole', requestStatus: 'success', action: 'updated' };
+            let responseObj = { response: 'modifyrole', requestStatus: 'success', action: 'Modified' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
             // console.log(err);
-            let responseObj = { response: 'assignrole', requestStatus: 'failure', error: 'SQL Error' };
+            let responseObj = { response: 'modifyrole', requestStatus: 'failure', error: 'SQL Error' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .finally(() => {
@@ -222,7 +222,7 @@ export const assignRole = (ws: WebSocket, msgObj: any) => {
         });
     })
     .catch((res: any) => {
-        let responseObj = { response: 'assignrole', requestStatus: 'failure', error: 'Admincheck Error' };
+        let responseObj = { response: 'modifyrole', requestStatus: 'failure', error: 'Admincheck Error' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }

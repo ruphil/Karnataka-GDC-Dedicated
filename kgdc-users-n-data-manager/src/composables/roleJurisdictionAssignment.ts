@@ -2,7 +2,7 @@ import store from "@/store";
 import globalToast from './globalToast';
 import usersTable from './fetchUserTable';
 
-const roleAssignment = () => {
+const roleJurisdictionAssignment = () => {
     const { showGlobalToast } = globalToast();
     const { getUsers } = usersTable();
 
@@ -43,4 +43,4 @@ const roleAssignment = () => {
     return { assignRole };
 }
 
-export default roleAssignment;
+export default roleJurisdictionAssignment;

@@ -124,42 +124,6 @@ export default defineComponent({
             let parent = e.target.parentNode;
             let username = parent.getAttribute('username');
             let rolesPresent = parent.getAttribute('roles');
-            let roleSelect = parent.querySelectorAll('select')[0];
-            let roleToRemove = roleSelect.options[roleSelect.selectedIndex].text;
-
-            // if(roleToAdd == ''){
-            //     showGlobalToast('Enter Some Role...');
-            //     return 0;
-            // }
-
-            // let rolesArry = rolesPresent.split(',');
-            // rolesArry.push(roleToAdd);
-            // let modifiedRolesArry = [...new Set(rolesArry)];
-            // console.log(modifiedRolesArry);
-
-            // let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
-
-            // roleInput.value = '';
-            // assignRole(username, modifiedRole);
-        }
-
-        const removeJurisdiction = (e: any) => {
-            // let parent = e.target.parentNode;
-            // let username = parent.getAttribute('username');
-            // let rolesPresent = parent.getAttribute('roles');
-            // let roleSelect = parent.querySelectorAll('select')[0];
-            // let roleToRemove = roleSelect.options[roleSelect.selectedIndex].text;
-            // let rolesArry = rolesPresent.split(',');
-            // let modifiedRolesArry = rolesArry.filter((i: any) => i != roleToRemove);
-            // let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
-
-            // assignRole(username, modifiedRole);
-        }
-
-        const addJurisdiction = (e: any) => {
-            let parent = e.target.parentNode;
-            let username = parent.getAttribute('username');
-            let rolesPresent = parent.getAttribute('roles');
             let roleInput = parent.querySelectorAll('input')[0];
             let roleToAdd = roleInput.value;
 
@@ -192,11 +156,41 @@ export default defineComponent({
             assignRole(username, modifiedRole);
         }
 
+        const addJurisdiction = (e: any) => {
+            let parent = e.target.parentNode;
+            let username = parent.getAttribute('username');
+            let jurisdictionPresent = parent.getAttribute('jurisdiction');
+            let jurisdictionSelect = parent.querySelectorAll('select')[0];
+            let jurisdictionToAdd = jurisdictionSelect.options[jurisdictionSelect.selectedIndex].text;
+            let jurisdictionArry = jurisdictionPresent.split(',');
+
+            jurisdictionArry.push(jurisdictionToAdd);
+            let modifiedJurisdictionArry = [...new Set(jurisdictionArry)];
+            let modifiedJurisdiction = modifiedJurisdictionArry.join(',').replace(/^,|,$/g,'');
+
+            console.log(username, jurisdictionPresent, modifiedJurisdiction);
+
+            // assignRole(username, modifiedRole);
+        }
+
+        const removeJurisdiction = (e: any) => {
+            // let parent = e.target.parentNode;
+            // let username = parent.getAttribute('username');
+            // let rolesPresent = parent.getAttribute('roles');
+            // let roleSelect = parent.querySelectorAll('select')[0];
+            // let roleToRemove = roleSelect.options[roleSelect.selectedIndex].text;
+            // let rolesArry = rolesPresent.split(',');
+            // let modifiedRolesArry = rolesArry.filter((i: any) => i != roleToRemove);
+            // let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
+
+            // assignRole(username, modifiedRole);
+        }
+
         return { 
-            getUsers, usersData, jurisdictions, renderOptions, 
-            callDeleteUser, updateAction, 
-            addJurisdiction,
-            addRole, removeRole
+            getUsers, usersData, jurisdictions, renderOptions,
+            callDeleteUser, updateAction,
+            addRole, removeRole,
+            addJurisdiction, removeJurisdiction
         }
     },
 })
