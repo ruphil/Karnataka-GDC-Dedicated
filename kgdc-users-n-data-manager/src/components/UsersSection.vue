@@ -7,7 +7,7 @@
         <table border="1" class="tablecenter">
             <tr>
                 <th>Username</th><th>Password</th><th>Mobilenumber</th><th>Description</th>
-                <th>Roles</th><th>Jurisdiction</th><th>Expiry</th><th>Delete</th>
+                <th>Expiry</th><th>Roles</th><th>Jurisdiction</th><th>Delete</th>
             </tr>
             <tr v-for="(user, index) in usersData" v-bind:key="index">
                 <td>{{ user.username }}</td>
@@ -21,6 +21,10 @@
                 </td>
                 <td>
                     <input type="text" size="10" v-bind:value="user.description"><br><br>
+                    <button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'description'">Update</button>
+                </td>
+                <td>
+                    <input type="date" size="10" v-bind:value="user.expiry.substring(0, user.expiry.indexOf('T'))"><br><br>
                     <button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'description'">Update</button>
                 </td>
                 
@@ -37,6 +41,21 @@
                     </select>
                     <button v-on:click="removeRole">Remove</button>
                 </td>
+
+                <td v-bind:username="user.username" v-bind:jurisdiction="user.jurisdiction">
+                    Defined:<br> {{ user.jurisdiction }} <br><br>
+                    <input type="text" />
+                    <button v-on:click="addRole">Add</button>
+                    <br><br>
+                    <select>
+                        <option selected></option>
+                        <option v-for="(item, index) in renderRolesOptions(user.roles)" v-bind:key="index">
+                        {{ item }}
+                        </option>
+                    </select>
+                    <button v-on:click="removeRole">Remove</button>
+                </td>
+
                 <td><button v-bind:username="user.username" v-on:click="callDeleteUser">Delete User</button></td>
             </tr>
         </table>
