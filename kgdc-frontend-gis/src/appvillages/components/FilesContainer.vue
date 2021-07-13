@@ -3,7 +3,8 @@
         <div class="fileuploadercontainer" v-show="showFileUploader">
             <div class="close"><span class="material-icons-outlined" v-on:click="closeFileUploader">close</span></div>
             <div class="village">
-                <span>Current Abadi: {{ currentabadiname }} ({{ currentvillage }})</span>
+                <span>Abadi: {{ currentabadiname }}</span><br>
+                <span>Village: {{ currentvillage }}</span>
             </div>
             <div class="fileuploader">
                 <input class="file" type="file" ref="fileEl"><br>
@@ -140,7 +141,7 @@ export default defineComponent({
             }
 
             if(currentabadiname.value == 'None Selected' ||  currentabadiuuid.value == ''){
-                showGlobalToast('Kindly Load and Select Abadi Limit');
+                showGlobalToast('Kindly Draw / Load and Select Abadi Limit');
                 return 0;
             }
 
@@ -174,7 +175,7 @@ export default defineComponent({
             }
 
             if(currentabadiname.value == 'None Selected' ||  currentabadiuuid.value == ''){
-                showGlobalToast('Kindly Load and Select Abadi Limit');
+                showGlobalToast('Kindly Draw / Load and Select Abadi Limit');
                 return 0;
             }
             
