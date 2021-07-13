@@ -19,14 +19,18 @@ export const checkUserForJurisdictionNValidity = (params: any) => {
             // console.log(expiryDate, todaysDate);
             // console.log(expiryDate.getTime(), todaysDate.getTime());
             let cond1 = todaysDate.getTime() < expiryDate.getTime();
-            let cond2 = checkJurisdiction(jurisdiction, params);
-            console.log(cond1, cond2);
-
-            if(cond1 && cond2){
-                resolve('success');
-            } else {
+            console.log('Expiry Condition: ', cond1);
+            if(!cond1){
                 reject('failure');
             }
+
+            let cond2 = checkJurisdiction(jurisdiction, params);
+            console.log('Jurisdiction Condition: ', cond2);
+            if(!cond2){
+                reject('failure');
+            }
+            
+            resolve('success');
         })
         .catch(() => {
             reject('failure');
@@ -35,7 +39,7 @@ export const checkUserForJurisdictionNValidity = (params: any) => {
 }
 
 const checkJurisdiction = (jurisdiction: any, params: any) => {
-    if(jurisdiction == ''){
+    if(jurisdiction == '' || jurisdiction == null){
         return false;
     }
 

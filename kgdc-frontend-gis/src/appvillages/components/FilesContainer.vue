@@ -140,7 +140,7 @@ export default defineComponent({
             }
 
             if(currentabadiname.value == 'None Selected' ||  currentabadiuuid.value == ''){
-                showGlobalToast('Kindly Load Abadi Limits');
+                showGlobalToast('Kindly Load and Select Abadi Limit');
                 return 0;
             }
 
@@ -174,7 +174,7 @@ export default defineComponent({
             }
 
             if(currentabadiname.value == 'None Selected' ||  currentabadiuuid.value == ''){
-                showGlobalToast('Kindly Load Abadi Limits');
+                showGlobalToast('Kindly Load and Select Abadi Limit');
                 return 0;
             }
             
