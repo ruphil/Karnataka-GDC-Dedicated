@@ -49,10 +49,20 @@ const checkJurisdiction = (jurisdiction: any, params: any) => {
         let jurisdictionStr = jurisdictionArry[i];
         let talukDistrict = jurisdictionStr.split('@');
 
-        let taluk = talukDistrict[0];
-        let district = talukDistrict[1];
-        // if()
+        let dbtaluk = talukDistrict[0];
+        let dbdistrict = talukDistrict[1];
 
+        if(dbdistrict == 'ALL'){
+            validJurisdiction = true;
+        }
+
+        if(dbtaluk == 'ALL' && clientdistrict == dbdistrict){
+            validJurisdiction = true;
+        }
+
+        if(clientdistrict == dbdistrict && clienttaluk == dbtaluk){
+            validJurisdiction = true;
+        }
     }
 
     return validJurisdiction;
