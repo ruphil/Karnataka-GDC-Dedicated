@@ -36,7 +36,7 @@ const userAddition = () => {
                 description: newdescription,
                 roles: '',
                 jurisdiction: '',
-                expiry: '2030-12-31'
+                expiry: '2025-12-31'
             };
 
             console.log(requestObj);
