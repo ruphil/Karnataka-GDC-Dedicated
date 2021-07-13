@@ -175,7 +175,7 @@ export default defineComponent({
         const removeJurisdiction = (e: any) => {
             let parent = e.target.parentNode;
             let username = parent.getAttribute('username');
-            let jurisdictionPresent = parent.getAttribute('roles');
+            let jurisdictionPresent = parent.getAttribute('jurisdiction');
             let jurisdictionSelect = parent.querySelectorAll('select')[0];
             let jurisdictionToRemove = jurisdictionSelect.options[jurisdictionSelect.selectedIndex].text;
             let rolesArry = jurisdictionPresent.split(',');
