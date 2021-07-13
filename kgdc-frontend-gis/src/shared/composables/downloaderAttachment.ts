@@ -19,7 +19,7 @@ const downloaderAttachment = () => {
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
 
-        let href = `${fileServerURL}/files/${filelocation}?username=${username}&password=${password}`;
+        let href = `${fileServerURL}/files/${filelocation}?username=${username}&password=${password}&filelocation=${filelocation}`;
         console.log(href, identifier);
 
         let element = document.createElement('a');

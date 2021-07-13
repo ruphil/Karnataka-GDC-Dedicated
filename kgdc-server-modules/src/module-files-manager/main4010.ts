@@ -71,9 +71,9 @@ app.post('/fileupload', [ uploadAuthentication, upload.single('uploadedfile') ],
         let formData = req.body;
         const { 
             currentdistrict, currenttaluk, currentgp, 
-            currentvillage, currentvillagecode,
-            currentabadiname, currentabadiuuid,
-            fileName, fileType, description, currentuser } = formData;
+            currentvillage, currentabadiname,
+            fileType, description 
+        } = formData;
 
         let modabadi = 'abadi_' + currentabadiname;
 
@@ -85,7 +85,7 @@ app.post('/fileupload', [ uploadAuthentication, upload.single('uploadedfile') ],
             if(!err){
                 // console.log('File Saved Successfully');
 
-                addFileRowToDB(currentvillage, currentvillagecode, currentabadiname, currentabadiuuid, fileName, fileType, description, currentuser, diskidentifier)
+                addFileRowToDB(formData, diskidentifier)
                 .then(() => {
                     res.send('success');
                 })

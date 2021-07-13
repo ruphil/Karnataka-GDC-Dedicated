@@ -1,4 +1,5 @@
 import { checkValidUserNGetRoles } from '../common-ts/userRolesAdminCheck';
+import { checkTalukDistrictForFile } from './dbhandlerfiles';
 
 export const checkUserForValidityNJurisdiction = (params: any) => {
     return new Promise((resolve, reject) => {
@@ -111,8 +112,21 @@ const checkAttachment = (params: any) => {
     return new Promise((resolve, reject) => {    
         let clientdistrict = params.get('district');
         let clienttaluk = params.get('taluk');
+        let filelocation = params.get('filelocation');
         // console.log(clientdistrict, clienttaluk);
+
+        let cond1 = clientdistrict == null || clienttaluk == null || filelocation == null;
+        let cond2 = clientdistrict == '' || clienttaluk == '' || filelocation == '';
+        if(cond1 || cond2){
+            reject('failure');
+        }
     
-        
+        checkTalukDistrictForFile(clientdistrict, clienttaluk, filelocation)
+        .then(() => {
+            resolve('success');
+        })
+        .catch(() => {
+            reject('failure');
+        });
     });
 }
