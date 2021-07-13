@@ -75,15 +75,15 @@ const checkExpiryNJurisdiction = (userrow: any, params: any) => {
             reject('failure');
         }
     
+        let validJurisdiction = false;
         let clientdistrict = params.get('district');
         let clienttaluk = params.get('taluk');
-        // console.log(clientdistrict, clienttaluk);
+        console.log(clientdistrict, clienttaluk);
     
         let jurisdictionArry = jurisdiction.split(',');
         // console.log(jurisdictionArry);
         
-        for(let i = 0; jurisdictionArry.length; i++){
-            let jurisdictionStr = jurisdictionArry[i];
+        jurisdictionArry.forEach((jurisdictionStr: any) => {
             let talukDistrict = jurisdictionStr.split('@');
     
             let dbtaluk = talukDistrict[0];
@@ -91,20 +91,24 @@ const checkExpiryNJurisdiction = (userrow: any, params: any) => {
             console.log(dbtaluk, dbdistrict);
     
             if(dbdistrict == 'ALL'){
-                resolve('success');
+                validJurisdiction = true;
             }
     
             if(dbtaluk == 'ALL' && clientdistrict == dbdistrict){
-                resolve('success');
+                validJurisdiction = true;
             }
     
             if(clientdistrict == dbdistrict && clienttaluk == dbtaluk){
-                resolve('success');
+                validJurisdiction = true;
             }
-        }
+        });
 
-        console.log('Invalid Jurisdiction 2');
-        reject('failure');
+        if(validJurisdiction){
+            resolve('success');
+        } else {
+            console.log('Invalid Jurisdiction 2');
+            reject('failure');
+        }
     });
 }
 
@@ -113,7 +117,7 @@ const checkAttachment = (params: any) => {
         let clientdistrict = params.get('district');
         let clienttaluk = params.get('taluk');
         let filelocation = params.get('filelocation');
-        // console.log(clientdistrict, clienttaluk);
+        console.log(clientdistrict, clienttaluk);
 
         let cond1 = clientdistrict == null || clienttaluk == null || filelocation == null;
         let cond2 = clientdistrict == '' || clienttaluk == '' || filelocation == '';
@@ -126,6 +130,7 @@ const checkAttachment = (params: any) => {
             resolve('success');
         })
         .catch(() => {
+            console.log('Taluk District Check For File In DB Failed');
             reject('failure');
         });
     });

@@ -18,9 +18,9 @@ export const addFileRowToDB = (formData: any, diskidentifier: any) => {
         // console.log(insertQuery);
 
         let insertData = [
-            currentvillage, currentvillagecode, currentabadiname, currentabadiuuid, currentdistrict, currenttaluk,
+            currentvillage, currentvillagecode, currentabadiname, currentabadiuuid, currenttaluk, currentdistrict,
             fileName,  fileType, description, currentuser, diskidentifier, '' ];
-        // console.log(insertData);
+        console.log(insertData);
         
         const client = new Client({ connectionString });
         client.connect();
@@ -47,14 +47,23 @@ export const checkTalukDistrictForFile = (clientdistrict: any, clienttaluk: any,
         let sqlQuery = `
         SELECT * FROM filesattachment
         WHERE DISTRICT = '${clientdistrict}' AND TALUK = '${clienttaluk}' AND FILELOCATION = '${filelocation}'`;
+        // console.log(sqlQuery);
 
         client.query(sqlQuery)
-        .then(() => {
-            
+        .then((res) => {
+            let rows = res.rows;
+            // console.log(rows);
+
+            if(rows.length > 0){
+                console.log(rows[0]);
+                resolve('success');
+            } else {
+                reject('failure');
+            }
         })
         .catch((err) => {
             // console.log(err);
-            
+            reject('failure');
         })
         .finally(() => {
             client.end();

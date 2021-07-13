@@ -9,17 +9,20 @@ const downloaderAttachment = () => {
             return feature.id == id;
         });
 
-        let filelocation = reqdfeature.filelocation + '.' + reqdfeature.filetype;
+        let fileWithExt = reqdfeature.filelocation + '.' + reqdfeature.filetype;
 
-        download(filelocation, reqdfeature.identifier);
+        download(fileWithExt, reqdfeature.filelocation, reqdfeature.identifier);
     }
 
-    const download = (filelocation: any, identifier: any) => {
+    const download = (fileWithExt: any, filelocation: any, identifier: any) => {
         const fileServerURL = store.getters.getFileGetPostServerModule;
         const username = store.getters.getUsername;
         const password = store.getters.getPassword;
+        const currentvillagedetails = store.getters.getCurrentVillageDetails;
 
-        let href = `${fileServerURL}/files/${filelocation}?username=${username}&password=${password}&filelocation=${filelocation}`;
+        let { district, taluk } = currentvillagedetails;
+
+        let href = `${fileServerURL}/files/${fileWithExt}?username=${username}&password=${password}&filelocation=${filelocation}&district=${district}&taluk=${taluk}`;
         console.log(href, identifier);
 
         let element = document.createElement('a');
