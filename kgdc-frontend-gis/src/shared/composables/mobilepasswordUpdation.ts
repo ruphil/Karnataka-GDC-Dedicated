@@ -62,6 +62,7 @@ const mobilepasswordUpdation = () => {
 
             if(responseObj.requestStatus == 'success'){
                 showGlobalToast('MobileNumber Updated Successfully...');
+                updatePasswordInClient(newmobilenumber);
             } else {
                 showGlobalToast('Error Changing Mobile Number...');
             }
@@ -72,6 +73,13 @@ const mobilepasswordUpdation = () => {
         ws.addEventListener('open', (event) => {
             ws.send(btoa(JSON.stringify(requestObj)));
         });
+    }
+
+    const updatePasswordInClient = (newmobilenumber: any) => {
+        let userDetails = store.getters.getUserDetails;
+        userDetails.mobilenumber = newmobilenumber;
+
+        store.dispatch('setUserDetails', userDetails);
     }
 
     return { updatePassword, updateMobile }

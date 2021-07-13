@@ -33,7 +33,10 @@ const userLoginCheck = () => {
 
                 if(responseObj.userDetails.mobilenumber == ''){
                     showGlobalToast('Kindly Update Your Mobilenumber...');
-                    store.dispatch('setShowUserBox', true);
+
+                    setTimeout(() => {
+                        store.dispatch('setShowUserBox', true);    
+                    }, 2000);
                 }
             } else {
                 window.localStorage.removeItem('globalusername');
