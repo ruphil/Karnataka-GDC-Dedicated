@@ -42,7 +42,7 @@ export const changePassword = (ws: WebSocket, msgObj: any) => {
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
-            console.log(err);
+            // console.log(err);
             let responseObj = { response: 'changepassword', requestStatus: 'failure', action: 'SQL Error' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
@@ -112,7 +112,7 @@ export const getUsersTable = (ws: WebSocket, msgObj: any) => {
 
                 try {
                     let rolesArry = roles.split(',');
-                    console.log(rolesArry);
+                    // console.log(rolesArry);
 
                     if(rolesArry.includes('ADMIN')){
                         return false;
