@@ -30,6 +30,7 @@ export default createStore({
     areaMeasureEnabled: false,
     featuresCounter: 0,
     featuresData: [],
+    showUserBox: false,
     showFilesUploader: false,
     showFilesLoader: false,
     fileUploadProgress: 0,
@@ -118,6 +119,9 @@ export default createStore({
     getFeaturesData(state){
       return state.featuresData;
     },
+    getShowUserBox(state){
+      return state.showUserBox;
+    },
     getShowFilesUploader(state){
       return state.showFilesUploader;
     },
@@ -197,6 +201,9 @@ export default createStore({
     },
     setFeaturesData(state, featuresData){
       state.featuresData = featuresData;
+    },
+    setShowUserBox(state, toShow){
+      state.showUserBox = toShow;
     },
     setShowFilesUploader(state, toShow){
       state.showFilesUploader = toShow;
@@ -283,6 +290,9 @@ export default createStore({
     },
     setFeaturesData(context, featuresData){
       context.commit('setFeaturesData', featuresData);
+    },
+    setShowUserBox(context, toShow){
+      context.commit('setShowUserBox', toShow);
     },
     setShowFilesUploader(context, toShow){
       context.commit('setShowFilesUploader', toShow);

@@ -30,6 +30,11 @@ const userLoginCheck = () => {
                 window.localStorage.setItem('globalusername', responseObj.validateusername);
                 window.localStorage.setItem('globalpassword', responseObj.validatepassword);
                 showGlobalToast('Login Successful...');
+
+                if(responseObj.userDetails.mobilenumber == ''){
+                    showGlobalToast('Kindly Update Your Mobilenumber...');
+                    store.dispatch('setShowUserBox', true);
+                }
             } else {
                 window.localStorage.removeItem('globalusername');
                 window.localStorage.removeItem('globalpassword');

@@ -19,14 +19,14 @@
         </span>
       </span>
       <span class="loggedInSpan" v-show="isLoggedIn">
-        <span class="useraction" v-on:click="userBox = !userBox">{{ globalusername }}</span>
+        <span class="useraction" v-on:click="toggleUserBox">{{ globalusername }}</span>
         <button class="logoutbtn" v-on:click="doLogout">Logout</button>
       </span>
       <span class="titlekgdc">Karnataka Geospatial Data Centre</span>
     </div>
     <div class="userbox" v-show="userBox">
       <div class="userdetails">
-        <button class="closebtn" v-on:click="userBox = false">X</button>
+        <button class="closebtn" v-on:click="closeUserBox">X</button>
         <div>UserName: {{ globalusername }}</div>
         <div>Description: {{ userDetails.description }}</div>
         <div>ROLES: {{ userRoles }}</div>
@@ -69,7 +69,23 @@ export default defineComponent({
     const userDetails = computed(() => store.getters.getUserDetails);
     
     const loginBoxShow = ref(false);
-    const userBox = ref(false);
+    const userBox = computed(() => store.getters.getShowUserBox);
+
+    const toggleUserBox = () => {
+      if(store.getters.getShowUserBox){
+        closeUserBox();
+      } else {
+        showUserBox();
+      }
+    }
+
+    const closeUserBox = () => {
+      store.dispatch('setShowUserBox', false);
+    }
+
+    const showUserBox = () => {
+      store.dispatch('setShowUserBox', true);
+    }
 
     const loginusername = ref('');
     const loginpassword = ref('');
@@ -140,6 +156,7 @@ export default defineComponent({
       isLoggedIn, globalusername, userRoles, userDetails, 
       loginBoxShow, userBox, loginusername, loginpassword, 
       oldpassword, newpassword, renewpassword, newmobilenumber,
+      toggleUserBox, closeUserBox, showUserBox,
       doLogin, callUpdatePassword, callUpdateMobile, doLogout 
     }
   },
