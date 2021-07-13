@@ -35,7 +35,7 @@
                     <br><br>
                     <select>
                         <option selected></option>
-                        <option v-for="(item, index) in renderRolesOptions(user.roles)" v-bind:key="index">
+                        <option v-for="(item, index) in renderOptions(user.roles)" v-bind:key="index">
                         {{ item }}
                         </option>
                     </select>
@@ -45,15 +45,15 @@
                 <td v-bind:username="user.username" v-bind:jurisdiction="user.jurisdiction">
                     Defined:<br> {{ user.jurisdiction }} <br><br>
                     <input type="text" />
-                    <button v-on:click="addRole">Add</button>
+                    <button v-on:click="addJurisdiction">Add</button>
                     <br><br>
                     <select>
                         <option selected></option>
-                        <option v-for="(item, index) in renderRolesOptions(user.roles)" v-bind:key="index">
+                        <option v-for="(item, index) in renderOptions(user.jurisdiction)" v-bind:key="index">
                         {{ item }}
                         </option>
                     </select>
-                    <button v-on:click="removeRole">Remove</button>
+                    <button v-on:click="removeJurisdiction">Remove</button>
                 </td>
 
                 <td><button v-bind:username="user.username" v-on:click="callDeleteUser">Delete User</button></td>
@@ -84,7 +84,7 @@ export default defineComponent({
 
         const usersData = computed(() => store.getters.getUsersTable);
 
-        const renderRolesOptions = computed(() => {
+        const renderOptions = computed(() => {
             return (roles: any) => {
                 if(roles != null && roles != ''){
                     return [...new Set(roles.split(','))];
@@ -151,7 +151,7 @@ export default defineComponent({
         }
 
         return { 
-            getUsers, usersData, renderRolesOptions, callDeleteUser,
+            getUsers, usersData, renderOptions, callDeleteUser,
             updateaction, addRole, removeRole
         }
     },
