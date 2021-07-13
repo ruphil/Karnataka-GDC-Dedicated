@@ -7,7 +7,7 @@ import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
 import { rename, unlink } from 'fs';
 
-import { checkuser } from './authenticator';
+import { checkUserForJurisdictionNValidity } from './authenticator';
 import { addFileRowToDB } from './dbhandlerfiles';
 
 const tempFolder = 'D:/KGDCTEMP/';
@@ -36,12 +36,12 @@ const staticAuthentication = (req: any, res: any, next: any) => {
     let searchParams = new URLSearchParams(req._parsedUrl.search);
     // console.log(searchParams);
 
-    checkuser(searchParams)
+    checkUserForJurisdictionNValidity(searchParams)
     .then(() => {
         next();
     })
     .catch(() => {
-        res.status(401).end();
+        res.send('Unauthorized Access');
     })
 }
 
