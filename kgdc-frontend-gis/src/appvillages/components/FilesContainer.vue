@@ -16,7 +16,8 @@
             <div class="village">
                 <span class="material-icons-outlined close" v-on:click="closeFilesLoader">close</span>
                 &emsp;&emsp;&emsp;
-                <span>Current Abadi: {{ currentabadiname }} ({{ currentvillage }})</span>
+                <span>Abadi: {{ currentabadiname }}</span><br>
+                <span>Village: {{ currentvillage }}</span>
                 &emsp;&emsp;&emsp;
                 <button v-on:click="loadFiles">Load Files</button>
             </div>
@@ -134,12 +135,12 @@ export default defineComponent({
             }
 
             if(currentvillage.value == 'None' ||  currentvillagecode.value == ''){
-                showGlobalToast('Select Village First');
+                showGlobalToast('Kindly Load Villages layer');
                 return 0;
             }
 
             if(currentabadiname.value == 'None Selected' ||  currentabadiuuid.value == ''){
-                showGlobalToast('Select / Draw Abadi Limit First');
+                showGlobalToast('Kindly Load Abadi Limits');
                 return 0;
             }
 
@@ -168,12 +169,12 @@ export default defineComponent({
 
         const loadFiles = () => {
             if(currentvillage.value == 'None' ||  currentvillagecode.value == ''){
-                showGlobalToast('Select Village First');
+                showGlobalToast('Kindly Load Villages layer');
                 return 0;
             }
 
             if(currentabadiname.value == 'None Selected' ||  currentabadiuuid.value == ''){
-                showGlobalToast('Select Abadi Limit First');
+                showGlobalToast('Kindly Load Abadi Limits');
                 return 0;
             }
             
