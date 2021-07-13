@@ -13,19 +13,19 @@
                 <td>{{ user.username }}</td>
                 <td>
                     <input type="text" size="10" v-bind:value="user.password"><br><br>
-                    <button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'password'">Update</button>
+                    <button v-bind:username="user.username" v-on:click="updateAction" v-bind:updatetype="'password'">Update</button>
                 </td>
                 <td>
                     <input type="text" size="10" v-bind:value="user.mobilenumber"><br><br>
-                    <button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'mobilenumber'">Update</button>
+                    <button v-bind:username="user.username" v-on:click="updateAction" v-bind:updatetype="'mobilenumber'">Update</button>
                 </td>
                 <td>
                     <input type="text" size="10" v-bind:value="user.description"><br><br>
-                    <button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'description'">Update</button>
+                    <button v-bind:username="user.username" v-on:click="updateAction" v-bind:updatetype="'description'">Update</button>
                 </td>
                 <td>
                     <input type="date" size="10" v-bind:value="user.expiry.substring(0, user.expiry.indexOf('T'))"><br><br>
-                    <button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'expiry'">Update</button>
+                    <button v-bind:username="user.username" v-on:click="updateAction" v-bind:updatetype="'expiry'">Update</button>
                 </td>
                 
                 <td v-bind:username="user.username" v-bind:roles="user.roles">
@@ -44,7 +44,12 @@
 
                 <td v-bind:username="user.username" v-bind:jurisdiction="user.jurisdiction">
                     Defined:<br> {{ user.jurisdiction }} <br><br>
-                    <input type="text" />
+                    <select>
+                        <option selected></option>
+                        <option v-for="(item, index) in jurisdictions" v-bind:key="index">
+                        {{ item.jurisdiction }}
+                        </option>
+                    </select>
                     <button v-on:click="addJurisdiction">Add</button>
                     <br><br>
                     <select>
@@ -83,6 +88,7 @@ export default defineComponent({
         const { updateCredentials } = userCredentialsUpdation();
 
         const usersData = computed(() => store.getters.getUsersTable);
+        const jurisdictions = computed(() => store.getters.getJurisdictions);
 
         const renderOptions = computed(() => {
             return (roles: any) => {
@@ -101,7 +107,7 @@ export default defineComponent({
             deleteUser(username);
         }
 
-        const updateaction = (e: any) => {
+        const updateAction = (e: any) => {
             let el = e.target;
             let parent = e.target.parentNode;
 
@@ -115,6 +121,42 @@ export default defineComponent({
         }
 
         const addRole = (e: any) => {
+            let parent = e.target.parentNode;
+            let username = parent.getAttribute('username');
+            let rolesPresent = parent.getAttribute('roles');
+            let roleSelect = parent.querySelectorAll('select')[0];
+            let roleToRemove = roleSelect.options[roleSelect.selectedIndex].text;
+
+            // if(roleToAdd == ''){
+            //     showGlobalToast('Enter Some Role...');
+            //     return 0;
+            // }
+
+            // let rolesArry = rolesPresent.split(',');
+            // rolesArry.push(roleToAdd);
+            // let modifiedRolesArry = [...new Set(rolesArry)];
+            // console.log(modifiedRolesArry);
+
+            // let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
+
+            // roleInput.value = '';
+            // assignRole(username, modifiedRole);
+        }
+
+        const removeJurisdiction = (e: any) => {
+            // let parent = e.target.parentNode;
+            // let username = parent.getAttribute('username');
+            // let rolesPresent = parent.getAttribute('roles');
+            // let roleSelect = parent.querySelectorAll('select')[0];
+            // let roleToRemove = roleSelect.options[roleSelect.selectedIndex].text;
+            // let rolesArry = rolesPresent.split(',');
+            // let modifiedRolesArry = rolesArry.filter((i: any) => i != roleToRemove);
+            // let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
+
+            // assignRole(username, modifiedRole);
+        }
+
+        const addJurisdiction = (e: any) => {
             let parent = e.target.parentNode;
             let username = parent.getAttribute('username');
             let rolesPresent = parent.getAttribute('roles');
@@ -151,8 +193,10 @@ export default defineComponent({
         }
 
         return { 
-            getUsers, usersData, renderOptions, callDeleteUser,
-            updateaction, addRole, removeRole
+            getUsers, usersData, jurisdictions, renderOptions, 
+            callDeleteUser, updateAction, 
+            addJurisdiction,
+            addRole, removeRole
         }
     },
 })
