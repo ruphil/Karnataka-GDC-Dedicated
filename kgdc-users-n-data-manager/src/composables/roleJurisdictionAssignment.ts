@@ -6,7 +6,7 @@ const roleJurisdictionAssignment = () => {
     const { showGlobalToast } = globalToast();
     const { getUsers } = usersTable();
 
-    const assignRole = (username: any, newrole: any) => {
+    const modifyRole = (username: any, newrole: any) => {
         const adminuser = store.getters.getUsername;
         const adminpass = store.getters.getPassword;
         const wssURL = store.getters.getUsersNDataModuleWSS;
@@ -27,7 +27,7 @@ const roleJurisdictionAssignment = () => {
         });
         ws.addEventListener('open', (event) => {
             let requestObj = {
-                request: 'assignrole',
+                request: 'modifyrole',
                 validateusername: adminuser,
                 validatepassword: adminpass,
                 usernametoupdate: username,
@@ -39,8 +39,42 @@ const roleJurisdictionAssignment = () => {
             ws.send(Buffer.from(JSON.stringify(requestObj)).toString('base64'));
         });
     }
+
+    const modifyJurisdiction = (username: any, newjurisdiction: any) => {
+        const adminuser = store.getters.getUsername;
+        const adminpass = store.getters.getPassword;
+        const wssURL = store.getters.getUsersNDataModuleWSS;
+        let ws = new WebSocket(wssURL);
+
+        ws.addEventListener('message', (event) => {
+            let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
+            console.log(responseObj);
+            
+            if(responseObj.requestStatus == 'success') {
+                showGlobalToast('Jurisdiction Modified Successfully...');
+                getUsers();
+            } else {
+                showGlobalToast('Error Modifying Jurisdiction...');
+            }
+            
+            ws.close();
+        });
+        ws.addEventListener('open', (event) => {
+            let requestObj = {
+                request: 'modifyjurisdiction',
+                validateusername: adminuser,
+                validatepassword: adminpass,
+                usernametoupdate: username,
+                newjurisdiction
+            };
+
+            console.log(requestObj);
+
+            ws.send(Buffer.from(JSON.stringify(requestObj)).toString('base64'));
+        });
+    }
     
-    return { assignRole };
+    return { modifyRole, modifyJurisdiction };
 }
 
 export default roleJurisdictionAssignment;

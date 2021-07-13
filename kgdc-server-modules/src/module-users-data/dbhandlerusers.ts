@@ -203,8 +203,7 @@ export const modifyRole = (ws: WebSocket, msgObj: any) => {
         const client = new Client({ connectionString });
         client.connect();
 
-        let usernametoupdate = msgObj.usernametoupdate;
-        let newrole = msgObj.newrole;
+        let { usernametoupdate, newrole } = msgObj;
 
         let sqlQuery = `UPDATE userstable SET ROLES = '${newrole}' WHERE USERNAME = '${usernametoupdate}'`;
         client.query(sqlQuery)
@@ -227,13 +226,42 @@ export const modifyRole = (ws: WebSocket, msgObj: any) => {
     });
 }
 
+export const modifyJurisdiction = (ws: WebSocket, msgObj: any) => {
+    checkAdminUser(msgObj)
+    .then((res: any) => {
+        const client = new Client({ connectionString });
+        client.connect();
+
+        let { usernametoupdate, newjurisdiction } = msgObj;
+
+        let sqlQuery = `UPDATE userstable SET JURISDICTION = '${newjurisdiction}' WHERE USERNAME = '${usernametoupdate}'`;
+        client.query(sqlQuery)
+        .then(() => {
+            let responseObj = { response: 'modifyjurisdiction', requestStatus: 'success', action: 'Modified' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .catch((err) => {
+            // console.log(err);
+            let responseObj = { response: 'modifyjurisdiction', requestStatus: 'failure', error: 'SQL Error' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .finally(() => {
+            client.end();
+        });
+    })
+    .catch((res: any) => {
+        let responseObj = { response: 'modifyjurisdiction', requestStatus: 'failure', error: 'Admincheck Error' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    });
+}
+
 export const deleteUser = (ws: WebSocket, msgObj: any) => {
     checkAdminUser(msgObj)
     .then((res: any) => {
         const client = new Client({ connectionString });
         client.connect();
 
-        let usernametodelete = msgObj.usernametodelete;
+        let { usernametodelete } = msgObj;
 
         let sqlQuery = `DELETE FROM userstable WHERE USERNAME='${usernametodelete}'`;
         client.query(sqlQuery)

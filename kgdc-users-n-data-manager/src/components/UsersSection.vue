@@ -73,7 +73,7 @@ import './UsersSection.scss';
 import { computed, defineComponent } from 'vue'
 import store from '@/store';
 import usersTable from '@/composables/fetchUserTable';
-import roleAssignment from '@/composables/roleAssignment';
+import roleJurisdictionAssignment from '@/composables/roleJurisdictionAssignment';
 import userDeletion from '@/composables/userDeletion';
 import userCredentialsUpdation from '@/composables/userCredentialsUpdation';
 
@@ -83,7 +83,7 @@ export default defineComponent({
     setup() {
         const { showGlobalToast } = globalToast();
         const { getUsers } = usersTable();
-        const { assignRole } = roleAssignment();
+        const { modifyRole, modifyJurisdiction } = roleJurisdictionAssignment();
         const { deleteUser } = userDeletion();
         const { updateCredentials } = userCredentialsUpdation();
 
@@ -140,7 +140,7 @@ export default defineComponent({
             let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
 
             roleInput.value = '';
-            assignRole(username, modifiedRole);
+            modifyRole(username, modifiedRole);
         }
 
         const removeRole = (e: any) => {
@@ -153,7 +153,7 @@ export default defineComponent({
             let modifiedRolesArry = rolesArry.filter((i: any) => i != roleToRemove);
             let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
 
-            assignRole(username, modifiedRole);
+            modifyRole(username, modifiedRole);
         }
 
         const addJurisdiction = (e: any) => {
@@ -167,23 +167,22 @@ export default defineComponent({
             jurisdictionArry.push(jurisdictionToAdd);
             let modifiedJurisdictionArry = [...new Set(jurisdictionArry)];
             let modifiedJurisdiction = modifiedJurisdictionArry.join(',').replace(/^,|,$/g,'');
+            // console.log(username, jurisdictionPresent, modifiedJurisdiction);
 
-            console.log(username, jurisdictionPresent, modifiedJurisdiction);
-
-            // assignRole(username, modifiedRole);
+            modifyJurisdiction(username, modifiedJurisdiction);
         }
 
         const removeJurisdiction = (e: any) => {
-            // let parent = e.target.parentNode;
-            // let username = parent.getAttribute('username');
-            // let rolesPresent = parent.getAttribute('roles');
-            // let roleSelect = parent.querySelectorAll('select')[0];
-            // let roleToRemove = roleSelect.options[roleSelect.selectedIndex].text;
-            // let rolesArry = rolesPresent.split(',');
-            // let modifiedRolesArry = rolesArry.filter((i: any) => i != roleToRemove);
-            // let modifiedRole = modifiedRolesArry.join(',').replace(/^,|,$/g,'');
+            let parent = e.target.parentNode;
+            let username = parent.getAttribute('username');
+            let jurisdictionPresent = parent.getAttribute('roles');
+            let jurisdictionSelect = parent.querySelectorAll('select')[0];
+            let jurisdictionToRemove = jurisdictionSelect.options[jurisdictionSelect.selectedIndex].text;
+            let rolesArry = jurisdictionPresent.split(',');
+            let modifiedJurisdictionArry = rolesArry.filter((i: any) => i != jurisdictionToRemove);
+            let modifiedJurisdiction = modifiedJurisdictionArry.join(',').replace(/^,|,$/g,'');
 
-            // assignRole(username, modifiedRole);
+            modifyJurisdiction(username, modifiedJurisdiction);
         }
 
         return { 
