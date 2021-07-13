@@ -61,9 +61,9 @@ const mobilepasswordUpdation = () => {
             console.log(responseObj);
 
             if(responseObj.requestStatus == 'success'){
-                showGlobalToast('Password Changed Successfully...');
+                showGlobalToast('MobileNumber Updated Successfully...');
             } else {
-                showGlobalToast('Error Changing Password...');
+                showGlobalToast('Error Changing Mobile Number...');
             }
 
             ws.close();

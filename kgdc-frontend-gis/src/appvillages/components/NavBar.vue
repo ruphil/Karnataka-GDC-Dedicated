@@ -40,8 +40,8 @@
       </div>
       <div>Mobile Number: {{ userDetails.mobilenumber }}</div>
       <div>
-        <input type="text" size="10" v-bind:value="userDetails.mobilenumber"><br>
-        <button class="updateaction" v-on:click="callUpdatePassword">Update Mobile Number</button>
+        <input type="number" size="10" v-model="newmobilenumber"><br>
+        <button class="updateaction" v-on:click="callUpdateMobile">Update Mobile Number</button>
       </div>
     </div>
   </div>
@@ -114,8 +114,8 @@ export default defineComponent({
     }
 
     const callUpdateMobile = () => {
-      if(newpassword.value == ''){
-        showGlobalToast('Please Enter Some Mobile Number');
+      if(newmobilenumber.value == '' || newmobilenumber.value.length != 10){
+        showGlobalToast('Please Enter Valid Mobile Number');
         return 0;
       } else {
         updateMobile(newmobilenumber.value);
