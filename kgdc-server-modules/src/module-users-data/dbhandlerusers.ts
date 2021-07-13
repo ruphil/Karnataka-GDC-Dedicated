@@ -38,7 +38,7 @@ export const changePassword = (ws: WebSocket, msgObj: any) => {
         let sqlQuery = `UPDATE userstable SET PASSWORD = '${newpassword}' WHERE USERNAME = '${validateusername}' AND PASSWORD = '${oldpassword}'`;
         client.query(sqlQuery)
         .then(() => {
-            let responseObj = { response: 'changepassword', requestStatus: 'success', action: 'passwordchanged' };
+            let responseObj = { response: 'changepassword', requestStatus: 'success', action: 'PasswordChanged' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
@@ -52,6 +52,35 @@ export const changePassword = (ws: WebSocket, msgObj: any) => {
     })
     .catch((res: any) => {
         let responseObj = { response: 'changepassword', requestStatus: 'failure', error: 'Usercheck Error' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    });
+}
+
+export const changeMobileNumber = (ws: WebSocket, msgObj: any) => {
+    const { validateusername, validatepassword, newmobilenumber } = msgObj;
+
+    checkValidUserNGetRoles(msgObj)
+    .then((res: any) => {
+        const client = new Client({ connectionString });
+        client.connect();
+
+        let sqlQuery = `UPDATE userstable SET MOBILENUMBER = '${newmobilenumber}' WHERE USERNAME = '${validateusername}' AND PASSWORD = '${validatepassword}'`;
+        client.query(sqlQuery)
+        .then(() => {
+            let responseObj = { response: 'changemobilenumber', requestStatus: 'success', action: 'MobileChanged' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .catch((err) => {
+            // console.log(err);
+            let responseObj = { response: 'changemobilenumber', requestStatus: 'failure', action: 'SQL Error' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .finally(() => {
+            client.end();
+        });
+    })
+    .catch((res: any) => {
+        let responseObj = { response: 'changemobilenumber', requestStatus: 'failure', error: 'Usercheck Error' };
         ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
     });
 }
@@ -75,7 +104,7 @@ export const newregistration = async (ws: WebSocket, msgObj: any) => {
         client.query(insertQuery, insertData)
         .then(() => {
             let responseObj = {
-                response: 'newregistration', requestStatus: 'success', action: 'useradded'
+                response: 'newregistration', requestStatus: 'success', action: 'UserAdded'
             };
 
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
@@ -208,7 +237,7 @@ export const modifyRole = (ws: WebSocket, msgObj: any) => {
         let sqlQuery = `UPDATE userstable SET ROLES = '${newrole}' WHERE USERNAME = '${usernametoupdate}'`;
         client.query(sqlQuery)
         .then(() => {
-            let responseObj = { response: 'modifyrole', requestStatus: 'success', action: 'Modified' };
+            let responseObj = { response: 'modifyrole', requestStatus: 'success', action: 'Role Modified' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
@@ -237,7 +266,7 @@ export const modifyJurisdiction = (ws: WebSocket, msgObj: any) => {
         let sqlQuery = `UPDATE userstable SET JURISDICTION = '${newjurisdiction}' WHERE USERNAME = '${usernametoupdate}'`;
         client.query(sqlQuery)
         .then(() => {
-            let responseObj = { response: 'modifyjurisdiction', requestStatus: 'success', action: 'Modified' };
+            let responseObj = { response: 'modifyjurisdiction', requestStatus: 'success', action: 'Jurisdiction Modified' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {
@@ -266,7 +295,7 @@ export const deleteUser = (ws: WebSocket, msgObj: any) => {
         let sqlQuery = `DELETE FROM userstable WHERE USERNAME='${usernametodelete}'`;
         client.query(sqlQuery)
         .then(() => {
-            let responseObj = { response: 'deleteuser', requestStatus: 'success', adminuser: true, action: 'deleted' };
+            let responseObj = { response: 'deleteuser', requestStatus: 'success', adminuser: true, action: 'User Deleted' };
             ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
         })
         .catch((err) => {

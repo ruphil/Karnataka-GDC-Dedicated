@@ -28,16 +28,20 @@
       <div class="userdetails">
         <button class="closebtn" v-on:click="userBox = false">X</button>
         <div>UserName: {{ globalusername }}</div>
-        <div>Mobile Number: {{ userDetails.mobilenumber }}</div>
         <div>Description: {{ userDetails.description }}</div>
         <div>ROLES: {{ userRoles }}</div>
-      </div><br/>
+      </div>
       <div class="changepassword">
         <div>Change Password</div>
         <input type="text" v-model="oldpassword" placeholder="Old Password"/><br/>
         <input type="password" v-model="newpassword" placeholder="New Password"/><br/>
         <input type="text" v-model="renewpassword" placeholder="Retype New Password"/><br/>
-        <button class="updatepasswd" v-on:click="callUpdatePassword">Update Password</button>
+        <button class="updateaction" v-on:click="callUpdatePassword">Update Password</button>
+      </div>
+      <div>Mobile Number: {{ userDetails.mobilenumber }}</div>
+      <div>
+        <input type="text" size="10" v-bind:value="userDetails.mobilenumber"><br>
+        <button class="updateaction" v-on:click="callUpdatePassword">Update Mobile Number</button>
       </div>
     </div>
   </div>
@@ -51,13 +55,13 @@ import { defineComponent, ref, computed, onMounted } from 'vue';
 import './NavBar.scss';
 import globalToast from '@/shared/composables/globalToast';
 import userLoginCheck from '@/shared/composables/userLoginCheck';
-import passwordUpdation from '@/shared/composables/passwordUpdation';
+import mobilepasswordUpdation from '@/shared/composables/mobilepasswordUpdation';
 
 export default defineComponent({
   setup() {
     const { showGlobalToast } = globalToast();
     const { sendAuthenticationRequest } = userLoginCheck();
-    const { updatePassword } = passwordUpdation();
+    const { updatePassword, updateMobile } = mobilepasswordUpdation();
 
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const globalusername = computed(() => store.getters.getUsername);
@@ -73,6 +77,8 @@ export default defineComponent({
     const oldpassword = ref('');
     const newpassword = ref('');
     const renewpassword = ref('');
+
+    const newmobilenumber = ref('');
 
     const loadCredentials = () => {
       let globalusername = window.localStorage.getItem('globalusername')!;
@@ -97,6 +103,7 @@ export default defineComponent({
     const callUpdatePassword = () => {
       if(newpassword.value != renewpassword.value){
         showGlobalToast('Passwords do not match');
+        return 0;
       } else {
         updatePassword(oldpassword.value, newpassword.value);
       }
@@ -104,6 +111,17 @@ export default defineComponent({
       oldpassword.value = '';
       newpassword.value = '';
       renewpassword.value = '';
+    }
+
+    const callUpdateMobile = () => {
+      if(newpassword.value == ''){
+        showGlobalToast('Please Enter Some Mobile Number');
+        return 0;
+      } else {
+        updateMobile(newmobilenumber.value);
+      }
+
+      newmobilenumber.value = '';
     }
 
     const doLogout = () => {
@@ -121,8 +139,8 @@ export default defineComponent({
     return { 
       isLoggedIn, globalusername, userRoles, userDetails, 
       loginBoxShow, userBox, loginusername, loginpassword, 
-      oldpassword, newpassword, renewpassword,
-      doLogin, callUpdatePassword, doLogout 
+      oldpassword, newpassword, renewpassword, newmobilenumber,
+      doLogin, callUpdatePassword, callUpdateMobile, doLogout 
     }
   },
 })
