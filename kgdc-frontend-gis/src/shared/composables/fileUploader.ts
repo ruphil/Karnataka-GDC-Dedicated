@@ -42,7 +42,7 @@ const fileUploader = () => {
         const password = store.getters.getPassword;
 
         let fileServerURL = store.getters.getFileGetPostServerModule;
-        let uploadURL = fileServerURL + `/fileupload?username=${username}&password=${password}`;
+        let uploadURL = fileServerURL + `/fileupload?username=${username}&password=${password}&district=${district}&taluk=${taluk}`;
         // console.log(uploadURL);
 
         const config = {
