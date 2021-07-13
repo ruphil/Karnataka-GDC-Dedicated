@@ -146,6 +146,57 @@ export const getUsersTable = (ws: WebSocket, msgObj: any) => {
     });
 }
 
+export const updateUserCredentials = (ws: WebSocket, msgObj: any) => {
+    checkAdminUser(msgObj)
+    .then((res: any) => {
+        const client = new Client({ connectionString });
+        client.connect();
+
+        let { usernametoupdate, updatetype, updatevalue } = msgObj;
+
+        let fieldName = '';
+        switch(updatetype){
+            case 'password':
+                fieldName = 'PASSWORD'
+                break;
+            case 'mobilenumber':
+                fieldName = 'MOBILENUMBER'
+                break;
+            case 'description':
+                fieldName = 'DESCRIPTION'
+                break;
+            case 'expiry':
+                fieldName = 'EXPIRY'
+                break;
+        }
+
+        if(fieldName == ''){
+            let responseObj = { response: 'updateusercredentials', requestStatus: 'failure', action: 'Update Type Error' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+            return 0;
+        }
+
+        let sqlQuery = `UPDATE userstable SET ${fieldName} = '${updatevalue}' WHERE USERNAME = '${usernametoupdate}'`;
+        client.query(sqlQuery)
+        .then(() => {
+            let responseObj = { response: 'updateusercredentials', requestStatus: 'success', action: `Updated ${fieldName}` };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .catch((err) => {
+            // console.log(err);
+            let responseObj = { response: 'updateusercredentials', requestStatus: 'failure', error: 'SQL Error' };
+            ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+        })
+        .finally(() => {
+            client.end();
+        });
+    })
+    .catch((res: any) => {
+        let responseObj = { response: 'updateusercredentials', requestStatus: 'failure', error: 'Admincheck Error' };
+        ws.send(Buffer.from(JSON.stringify(responseObj)).toString('base64'));
+    });
+}
+
 export const assignRole = (ws: WebSocket, msgObj: any) => {
     checkAdminUser(msgObj)
     .then((res: any) => {

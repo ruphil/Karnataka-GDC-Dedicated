@@ -6,7 +6,7 @@ const roleAssignment = () => {
     const { showGlobalToast } = globalToast();
     const { getUsers } = usersTable();
 
-    const assignRole = (username: any, newrole: any) => {
+    const updateCredentials = (username: any, updatetype: any, updatevalue: any) => {
         const adminuser = store.getters.getUsername;
         const adminpass = store.getters.getPassword;
         const wssURL = store.getters.getUsersNDataModuleWSS;
@@ -17,10 +17,10 @@ const roleAssignment = () => {
             console.log(responseObj);
             
             if(responseObj.requestStatus == 'success') {
-                showGlobalToast('Role Modified Successfully...');
+                showGlobalToast('Credentials Updated Successfully...');
                 getUsers();
             } else {
-                showGlobalToast('Error Modifying Role...');
+                showGlobalToast('Error Updating Credentials...');
             }
             
             ws.close();
@@ -28,11 +28,11 @@ const roleAssignment = () => {
         
         ws.addEventListener('open', (event) => {
             let requestObj = {
-                request: 'assignrole',
+                request: 'updateusercredentials',
                 validateusername: adminuser,
                 validatepassword: adminpass,
                 usernametoupdate: username,
-                newrole
+                updatetype, updatevalue
             };
 
             console.log(requestObj);
@@ -41,7 +41,7 @@ const roleAssignment = () => {
         });
     }
     
-    return { assignRole };
+    return { updateCredentials };
 }
 
 export default roleAssignment;

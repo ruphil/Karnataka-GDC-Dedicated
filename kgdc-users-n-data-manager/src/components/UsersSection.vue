@@ -25,7 +25,7 @@
                 </td>
                 <td>
                     <input type="date" size="10" v-bind:value="user.expiry.substring(0, user.expiry.indexOf('T'))"><br><br>
-                    <button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'description'">Update</button>
+                    <button v-bind:username="user.username" v-on:click="updateaction" v-bind:updatetype="'expiry'">Update</button>
                 </td>
                 
                 <td v-bind:username="user.username" v-bind:roles="user.roles">
@@ -64,11 +64,13 @@
 
 <script lang="ts">
 import './UsersSection.scss';
+
 import { computed, defineComponent } from 'vue'
 import store from '@/store';
-import usersTable from '../composables/fetchUserTable';
-import roleAssignment from '../composables/roleAssignment';
-import userDeletion from '../composables/userDeletion';
+import usersTable from '@/composables/fetchUserTable';
+import roleAssignment from '@/composables/roleAssignment';
+import userDeletion from '@/composables/userDeletion';
+import userCredentialsUpdation from '@/composables/userCredentialsUpdation';
 
 import globalToast from '@/composables/globalToast';
 
@@ -78,6 +80,7 @@ export default defineComponent({
         const { getUsers } = usersTable();
         const { assignRole } = roleAssignment();
         const { deleteUser } = userDeletion();
+        const { updateCredentials } = userCredentialsUpdation();
 
         const usersData = computed(() => store.getters.getUsersTable);
 
@@ -108,7 +111,7 @@ export default defineComponent({
             let updateinput = parent.querySelectorAll('input')[0];
             let updatevalue = updateinput.value;
 
-            console.log(username, updatetype, updatevalue);
+            updateCredentials(username, updatetype, updatevalue);
         }
 
         const addRole = (e: any) => {
@@ -149,8 +152,7 @@ export default defineComponent({
 
         return { 
             getUsers, usersData, renderRolesOptions, callDeleteUser,
-            updateaction,
-            addRole, removeRole
+            updateaction, addRole, removeRole
         }
     },
 })
