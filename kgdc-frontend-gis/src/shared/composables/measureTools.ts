@@ -206,8 +206,6 @@ const measureTools = () => {
             }
         });
 
-        console.log(map.getInteractions());
-
         source.clear();
 
         map.getOverlays().clear();
