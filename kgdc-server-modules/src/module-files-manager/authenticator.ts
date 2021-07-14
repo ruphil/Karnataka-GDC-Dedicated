@@ -78,7 +78,7 @@ const checkExpiryNJurisdiction = (userrow: any, params: any) => {
         let validJurisdiction = false;
         let clientdistrict = params.get('district');
         let clienttaluk = params.get('taluk');
-        console.log(clientdistrict, clienttaluk);
+        // console.log(clientdistrict, clienttaluk);
     
         let jurisdictionArry = jurisdiction.split(',');
         // console.log(jurisdictionArry);
@@ -88,7 +88,7 @@ const checkExpiryNJurisdiction = (userrow: any, params: any) => {
     
             let dbtaluk = talukDistrict[0];
             let dbdistrict = talukDistrict[1];
-            console.log(dbtaluk, dbdistrict);
+            // console.log(dbtaluk, dbdistrict);
     
             if(dbdistrict == 'ALL'){
                 validJurisdiction = true;
