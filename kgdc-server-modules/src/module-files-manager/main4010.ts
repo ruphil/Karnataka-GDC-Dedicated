@@ -54,7 +54,7 @@ const downloadAuthentication = (req: any, res: any, next: any) => {
         next();
     })
     .catch(() => {
-        res.send('Unauthorized Access');
+        res.send('Unauthorized Access (User Expired / Invalid Jurisdiction)');
     })
 }
 

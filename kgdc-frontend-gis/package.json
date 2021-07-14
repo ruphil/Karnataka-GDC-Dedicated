@@ -7,7 +7,9 @@
     "serve:flights": "vue-cli-service serve --port 8020 --open src/appflights/main.ts",
     "build:villages": "vue-cli-service build --dest dist/villages src/appvillages/main.ts",
     "build:flights": "vue-cli-service build --dest dist/flights src/appflights/main.ts",
-    "serveconcurrently": "concurrently \"yarn serve:villages\" \"yarn serve:flights\""
+    "serveconcurrently": "concurrently --kill-others --restart-tries 999999 \"yarn serve:villages\" \"yarn serve:flights\"",
+    "villagesconc": "concurrently --kill-others --restart-tries 999999 \"yarn serve:villages\"",
+    "flightsconc": "concurrently --kill-others --restart-tries 999999 \"yarn serve:flights\""
   },
   "dependencies": {
     "axios": "^0.21.1",

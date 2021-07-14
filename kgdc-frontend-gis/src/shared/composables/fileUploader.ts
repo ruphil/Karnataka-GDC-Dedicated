@@ -60,7 +60,7 @@ const fileUploader = () => {
                 if(response.data == 'success'){
                     showGlobalToast('File Uploaded Successfully');
                 } else if (response.data == 'unauthorizedupload') {
-                    showGlobalToast('Unauthorized Upload Failed');
+                    showGlobalToast('Failed - Unauthorized Upload (User Expired / Invalid Jurisdiction)');
                 }
                 else {
                     showGlobalToast('Error Uploading File');
