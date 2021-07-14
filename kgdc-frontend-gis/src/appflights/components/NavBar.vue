@@ -19,25 +19,29 @@
         </span>
       </span>
       <span class="loggedInSpan" v-show="isLoggedIn">
-        <span class="useraction" v-on:click="userBox = !userBox">{{ globalusername }}</span>
+        <span class="useraction" v-on:click="toggleUserBox">{{ globalusername }}</span>
         <button class="logoutbtn" v-on:click="doLogout">Logout</button>
       </span>
       <span class="titlekgdc">Karnataka Geospatial Data Centre</span>
     </div>
     <div class="userbox" v-show="userBox">
       <div class="userdetails">
-        <button class="closebtn" v-on:click="userBox = false">X</button>
+        <button class="closebtn" v-on:click="closeUserBox">X</button>
         <div>UserName: {{ globalusername }}</div>
-        <div>Mobile Number: {{ userDetails.mobilenumber }}</div>
         <div>Description: {{ userDetails.description }}</div>
         <div>ROLES: {{ userRoles }}</div>
-      </div><br/>
+      </div>
       <div class="changepassword">
         <div>Change Password</div>
         <input type="text" v-model="oldpassword" placeholder="Old Password"/><br/>
         <input type="password" v-model="newpassword" placeholder="New Password"/><br/>
         <input type="text" v-model="renewpassword" placeholder="Retype New Password"/><br/>
-        <button class="updatepasswd" v-on:click="callUpdatePassword">Update Password</button>
+        <button class="updateaction" v-on:click="callUpdatePassword">Update Password</button>
+      </div>
+      <div>Mobile Number: {{ userDetails.mobilenumber }}</div>
+      <div>
+        <input type="number" size="10" v-model="newmobilenumber"><br>
+        <button class="updateaction" v-on:click="callUpdateMobile">Update Mobile Number</button>
       </div>
     </div>
   </div>
@@ -51,13 +55,13 @@ import { defineComponent, ref, computed, onMounted } from 'vue';
 import './NavBar.scss';
 import globalToast from '@/shared/composables/globalToast';
 import userLoginCheck from '@/appvillages/composables/userLoginCheck';
-import passwordUpdation from '@/shared/composables/mobilepasswordUpdation';
+import mobilepasswordUpdation from '@/shared/composables/mobilepasswordUpdation';
 
 export default defineComponent({
   setup() {
     const { showGlobalToast } = globalToast();
     const { sendAuthenticationRequest } = userLoginCheck();
-    const { updatePassword } = passwordUpdation();
+    const { updatePassword, updateMobile } = mobilepasswordUpdation();
 
     const isLoggedIn = computed(() => store.getters.getLoggedIn);
     const globalusername = computed(() => store.getters.getUsername);
@@ -65,7 +69,23 @@ export default defineComponent({
     const userDetails = computed(() => store.getters.getUserDetails);
     
     const loginBoxShow = ref(false);
-    const userBox = ref(false);
+    const userBox = computed(() => store.getters.getShowUserBox);
+
+    const toggleUserBox = () => {
+      if(store.getters.getShowUserBox){
+        closeUserBox();
+      } else {
+        showUserBox();
+      }
+    }
+
+    const closeUserBox = () => {
+      store.dispatch('setShowUserBox', false);
+    }
+
+    const showUserBox = () => {
+      store.dispatch('setShowUserBox', true);
+    }
 
     const loginusername = ref('');
     const loginpassword = ref('');
@@ -73,6 +93,8 @@ export default defineComponent({
     const oldpassword = ref('');
     const newpassword = ref('');
     const renewpassword = ref('');
+
+    const newmobilenumber = ref('');
 
     const loadCredentials = () => {
       let globalusername = window.localStorage.getItem('globalusername')!;
@@ -97,6 +119,7 @@ export default defineComponent({
     const callUpdatePassword = () => {
       if(newpassword.value != renewpassword.value){
         showGlobalToast('Passwords do not match');
+        return 0;
       } else {
         updatePassword(oldpassword.value, newpassword.value);
       }
@@ -104,6 +127,17 @@ export default defineComponent({
       oldpassword.value = '';
       newpassword.value = '';
       renewpassword.value = '';
+    }
+
+    const callUpdateMobile = () => {
+      if(newmobilenumber.value == '' || newmobilenumber.value.length != 10){
+        showGlobalToast('Please Enter Valid Mobile Number');
+        return 0;
+      } else {
+        updateMobile(newmobilenumber.value);
+      }
+
+      newmobilenumber.value = '';
     }
 
     const doLogout = () => {
@@ -121,8 +155,9 @@ export default defineComponent({
     return { 
       isLoggedIn, globalusername, userRoles, userDetails, 
       loginBoxShow, userBox, loginusername, loginpassword, 
-      oldpassword, newpassword, renewpassword,
-      doLogin, callUpdatePassword, doLogout 
+      oldpassword, newpassword, renewpassword, newmobilenumber,
+      toggleUserBox, closeUserBox, showUserBox,
+      doLogin, callUpdatePassword, callUpdateMobile, doLogout 
     }
   },
 })

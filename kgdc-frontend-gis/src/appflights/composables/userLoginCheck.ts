@@ -21,14 +21,13 @@ const userLoginCheck = () => {
             let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
             console.log(responseObj);
 
-            let roles = responseObj.userDetails.roles;
-            let rolesArry = roles.split(',');
-
             if(responseObj.validUser){
                 let roles = responseObj.userDetails.roles;
+                console.log(roles);
                 let rolesArry = roles.split(',');
+                console.log(rolesArry);
 
-                if(rolesArry.includes('VILLAGES')){
+                if(rolesArry.includes('FLIGHTS')){
                     doLoggedInRituals(responseObj);
                 } else {
                     invalidUsers();

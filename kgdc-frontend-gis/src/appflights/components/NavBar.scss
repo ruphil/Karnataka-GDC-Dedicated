@@ -135,19 +135,17 @@
             }
         }
 
-        > .changepassword {
-            > .updatepasswd {
-                color: white;
-                background-color: rgba(0,60,136,0.5);
-    
-                &:hover {
-                    background-color: rgba(100,60,136,0.8);
-                }
-    
-                &:active {
-                    color: rgba(100,60,136,0.8);
-                    background-color: white;
-                }
+        .updateaction {
+            color: white;
+            background-color: rgba(0,60,136,0.5);
+
+            &:hover {
+                background-color: rgba(100,60,136,0.8);
+            }
+
+            &:active {
+                color: rgba(100,60,136,0.8);
+                background-color: white;
             }
         }
     }
