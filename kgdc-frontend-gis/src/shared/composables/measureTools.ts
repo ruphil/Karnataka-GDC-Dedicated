@@ -216,12 +216,12 @@ const measureTools = () => {
 
         if(!lineMeasureEnabled){
             disableMeasureTool();
-            console.log('Enabling Line Measure');
+            // console.log('Enabling Line Measure');
             enableMeasureTool(GeometryType.LINE_STRING);
             store.dispatch('setLineMeasureEnabled', true);
             store.dispatch('setAreaMeasureEnabled', false);
         } else {
-            console.log('Disabling Line Measure');
+            // console.log('Disabling Line Measure');
             disableMeasureTool();
             store.dispatch('setLineMeasureEnabled', false);
         }
