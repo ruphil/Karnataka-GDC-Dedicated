@@ -21,9 +21,6 @@ const userLoginCheck = () => {
             let responseObj = JSON.parse(Buffer.from(event.data, 'base64').toString());
             console.log(responseObj);
 
-            let roles = responseObj.userDetails.roles;
-            let rolesArry = roles.split(',');
-
             if(responseObj.validUser){
                 let roles = responseObj.userDetails.roles;
                 let rolesArry = roles.split(',');

@@ -23,9 +23,7 @@ const userLoginCheck = () => {
 
             if(responseObj.validUser){
                 let roles = responseObj.userDetails.roles;
-                console.log(roles);
                 let rolesArry = roles.split(',');
-                console.log(rolesArry);
 
                 if(rolesArry.includes('FLIGHTS')){
                     doLoggedInRituals(responseObj);

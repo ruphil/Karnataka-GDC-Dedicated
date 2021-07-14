@@ -199,7 +199,14 @@ const measureTools = () => {
 
     const disableMeasureTool = () => {
         const map = store.getters.getMapObj;
-        map.getInteractions().pop();
+
+        map.getInteractions().forEach(function (interaction: any) {
+            if(interaction instanceof Draw) {
+                map.removeInteraction(interaction);
+            }
+        });
+
+        console.log(map.getInteractions());
 
         source.clear();
 
